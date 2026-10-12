@@ -239,15 +239,23 @@ main{max-width:1400px;padding:36px 36px 56px;min-height:calc(100vh - 170px)}
 .result-hero[data-mode="quick"] .result-stats>div{background:#302519;border-color:#725329}
 .result-hero[data-mode="quick"] .result-stats strong{color:#ffd36b}
 .result-hero[data-mode="quick"] .result-trophy,.result-hero[data-mode="quick"] .eyebrow.accent{color:#ffc247}
+.result-hero[data-mode="quick"] .champion-competition-name{background-image:linear-gradient(110deg,#ffe59a 0%,#ffc247 55%,#ff9a3d 100%)}
+.result-hero[data-mode="quick"] .result-actions .btn-outline{color:#fff0c8;border-color:#9b7840}
 .result-hero[data-mode="champions"]{background:linear-gradient(130deg,#131b49 0%,#15192b 48%,#14161d 100%);border-color:#344c9c}
 .result-hero[data-mode="champions"] .result-stats>div{background:#1a2040;border-color:#354880}
 .result-hero[data-mode="champions"] .result-stats strong{color:#94aaff}
+.result-hero[data-mode="champions"] .champion-competition-name{background-image:linear-gradient(110deg,#d0d7ff 0%,#91a9ff 55%,#73caff 100%)}
+.result-hero[data-mode="champions"] .result-actions .btn-outline{color:#e1e8ff;border-color:#6677bf}
 .result-hero[data-mode="copa-do-brasil"]{background:linear-gradient(130deg,#102a24 0%,#17241d 48%,#15171a 100%);border-color:#34734d}
 .result-hero[data-mode="copa-do-brasil"] .result-stats>div{background:#1c2a22;border-color:#385a42}
 .result-hero[data-mode="copa-do-brasil"] .result-stats strong{color:#91d6a3}
+.result-hero[data-mode="copa-do-brasil"] .champion-competition-name{background-image:linear-gradient(110deg,#94c9ff 0%,#79dfa0 55%,#efd370 100%)}
+.result-hero[data-mode="copa-do-brasil"] .result-actions .btn-outline{color:#e6f4e9;border-color:#5b8a64}
 .result-hero[data-mode="legends"]{background:linear-gradient(130deg,#24262a 0%,#28271f 58%,#1a1a19 100%);border-color:#70623d;color:#f4f1e8}
 .result-hero[data-mode="legends"] .result-stats>div{background:#30302b;border-color:#6f6549}
 .result-hero[data-mode="legends"] .result-stats strong,.result-hero[data-mode="legends"] :is(.result-trophy,.eyebrow.accent){color:#e6ce8a}
+.result-hero[data-mode="legends"] .champion-competition-name{background-image:linear-gradient(110deg,#d6dcda 0%,#c6c8bd 48%,#f0d98c 100%)}
+.result-hero[data-mode="legends"] .result-actions .btn-outline{color:#f1e9d0;border-color:#88794f}
 .result-campaign{overflow:hidden}
 .result-campaign .result-match-row{min-height:68px;padding:14px 18px;background:#17191e;color:#e8ebef;border-color:#2d3239}
 .result-campaign .result-match-row:nth-child(even){background:#1c1f24}
