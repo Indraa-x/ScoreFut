@@ -1,0 +1,45 @@
+/* Larger club identity with the original left-to-right arrangement. */
+#app[data-screen="draft"] .draw-card{padding:10px 22px;gap:18px;align-items:center}
+#app[data-screen="draft"] .draw-club-info{display:grid;grid-template-columns:110px minmax(0,auto);grid-template-rows:auto auto;column-gap:24px;row-gap:7px;align-items:center;justify-content:flex-start;min-width:0}
+#app[data-screen="draft"] .draw-card-top{grid-column:1;grid-row:1/3;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;margin:0;text-align:left}
+#app[data-screen="draft"] .draw-card-top .eyebrow{font-size:10px;white-space:nowrap}
+#app[data-screen="draft"] .season-year{font-size:36px;line-height:1.1}
+#app[data-screen="draft"] .draw-club{grid-column:2;grid-row:1;display:flex;justify-content:flex-start;align-items:center;margin:0;gap:14px;min-width:0}
+#app[data-screen="draft"] .draw-club .club-badge{width:60px;height:60px;font-size:22px;flex-shrink:0}
+#app[data-screen="draft"] .draw-club h2{font-size:30px;line-height:1.15;max-width:360px;text-align:left;overflow-wrap:anywhere}
+#app[data-screen="draft"] .season-award{grid-column:2;grid-row:2;justify-content:flex-start;align-items:center;text-align:left;font-size:13px;line-height:1.5;margin:0;max-width:450px}
+#app[data-screen="draft"] .season-award svg{width:16px;height:16px;margin:0}
+#app[data-screen="draft"] .reroll-buttons{gap:10px}
+#app[data-screen="draft"] .reroll-buttons .btn{min-height:62px;font-size:15px;padding:16px 18px;gap:9px;border-radius:8px}
+#app[data-screen="draft"] .reroll-buttons .btn svg{width:18px;height:18px}
+#app[data-screen="draft"] .draw-card:has(.reroll-block){padding-top:6px;padding-bottom:6px}
+#app[data-screen="draft"] .draft-skip-status{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:20px;margin-bottom:6px;color:#28483a;font-size:12px;font-weight:700;line-height:20px}
+#app[data-screen="draft"] .draft-skip-status strong{font-size:16px;font-weight:800;color:#145d3f;font-variant-numeric:tabular-nums;margin-right:3px}
+#app[data-screen="draft"] .draft-skip-status small{font-size:10px;font-weight:600;color:#586a61;white-space:nowrap}
+#app[data-screen="draft"] .reroll-buttons .btn{background:#145d3f;border:1px solid #104c32;color:#fff;font-weight:800;box-shadow:0 3px 8px #163b2312}
+#app[data-screen="draft"] .reroll-buttons .btn:hover:not(:disabled){background:#0e4b31;filter:none}
+#app[data-screen="draft"] .reroll-buttons .btn:disabled{opacity:1;background:#e4e9e5;border-color:#bdc9c0;color:#68756c;box-shadow:none}
+@media(min-width:1200px) and (min-height:640px){
+  #app[data-screen="draft"] .draft-layout{grid-template-rows:100px minmax(0,1fr)}
+  #app[data-screen="draft"] .draw-card{display:flex;flex-direction:row;justify-content:flex-start}
+  #app[data-screen="draft"] .draw-club-info{grid-column:2;grid-row:1}
+  #app[data-screen="draft"] .reroll-block{flex:0 0 380px;width:380px;margin:0 0 0 auto;padding:0;border:0}
+  #app[data-screen="draft"] .draw-empty{grid-column:1/-1}
+}
+@media(min-width:761px) and (max-width:1199px) and (min-height:640px){
+  #app[data-screen="draft"] .draft-layout{grid-template-rows:100px minmax(0,1fr) 78px}
+  #app[data-screen="draft"] .draw-card{display:flex;flex-direction:row;justify-content:flex-start;gap:12px;padding:10px 18px}
+  #app[data-screen="draft"] .reroll-block{flex:0 0 330px;width:330px;margin:0 0 0 auto;padding:0;border:0}
+  #app[data-screen="draft"] .reroll-buttons .btn{font-size:14px;padding:14px 12px}
+}
+@media(max-width:760px),(max-height:639px){
+  #app[data-screen="draft"] .draw-card{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-start}
+  #app[data-screen="draft"] .reroll-block{width:min(100%,380px);margin:0;padding:0;border:0;flex:0 0 auto}
+}
+@media(max-width:480px){
+  #app[data-screen="draft"] .draw-club-info{grid-template-columns:90px minmax(0,1fr);column-gap:14px}
+  #app[data-screen="draft"] .draw-club h2{font-size:25px}
+  #app[data-screen="draft"] .draw-club .club-badge{width:48px;height:48px}
+  #app[data-screen="draft"] .season-year{font-size:32px}
+  #app[data-screen="draft"] .season-award{font-size:11px}
+}

@@ -1,0 +1,24 @@
+{
+  "provider": "Football Logos",
+  "website": "https://football-logos.cc/",
+  "downloadedAt": "2026-10-10",
+  "logos": [
+    {
+      "id": "copa-do-brasil",
+      "file": "copa-do-brasil.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/copa-do-brasil.7306a59b.png",
+      "page": "https://football-logos.cc/brazil/copa-do-brasil/",
+      "downloadedAt": "2026-10-11"
+    },
+    {
+      "id": "champions",
+      "file": "champions-league.png",
+      "source": "https://assets.football-logos.cc/logos/tournaments/256x256/uefa-champions-league.9cf50c73.png"
+    },
+    {
+      "id": "brasileirao",
+      "file": "brasileirao.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/brazilian-serie-a.f6ec92f8.png"
+    }
+  ]
+}

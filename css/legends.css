@@ -1,0 +1,16 @@
+/* A quiet silver-to-gold identity for historical legends. */
+:root{--legends-gradient:linear-gradient(120deg,#e8eaed 0%,#f2f1e8 55%,#fff2c4 100%);--legends-ink:#303534;--legends-accent:#75612e;--legends-border:#d9d7c7}
+:is(.mode-card,.setup-mode-option)[data-value="legends"]{background:var(--legends-gradient);border-color:var(--legends-border);color:var(--legends-ink)}
+.mode-card[data-value="legends"] :is(p,.mode-card-bottom){color:#58615d}
+.mode-card[data-value="legends"] .mode-icon{background:#ffffff80;color:var(--legends-accent)}
+.mode-card[data-value="legends"] .mode-tag{background:#ffffff90;color:#596052}
+.mode-card[data-value="legends"] .mode-card-bottom{border-top-color:#9c9b8540}
+.setup-mode-option[data-value="legends"].selected{background:var(--legends-gradient);color:var(--legends-ink);border-color:var(--legends-accent);box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--legends-accent);font-weight:800}
+:is(.mode-card,.setup-mode-option)[data-value="legends"]:hover{border-color:#b6ae87}
+.history-entry[data-mode="legends"]{--history-accent:var(--legends-accent);--history-gradient:var(--legends-gradient);--history-ink:var(--legends-ink)}
+.result-hero[data-mode="legends"]{background:linear-gradient(120deg,#eef0f2 0%,#faf9f4 55%,#fff6dc 100%);border-color:var(--legends-border)}
+.result-hero[data-mode="legends"] :is(.result-trophy,.eyebrow.accent){color:var(--legends-accent)}
+.champion-competition-name[data-competition="legends"]{background-image:linear-gradient(110deg,#626b68,#927831);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.result-hero[data-mode="legends"] .result-actions .btn-primary{background:var(--legends-gradient);border:1px solid var(--legends-border);color:var(--legends-ink)}
+.result-hero[data-mode="legends"] .result-stats>div{background:#ffffff90;border-color:var(--legends-border)}
+.result-hero[data-mode="legends"] .result-stats strong{color:var(--legends-accent)}

@@ -1,0 +1,82 @@
+/* A centred, readable overview with the same spacing as the draft and replay. */
+#app[data-screen="summary"]{max-width:1288px;padding:24px}
+#app[data-screen="summary"] .screen-title{width:100%;margin:0 auto 16px;gap:16px}
+#app[data-screen="summary"] .screen-title>div:first-child{flex:1;padding:12px 16px}
+#app[data-screen="summary"] .screen-title h1{font-size:28px;line-height:1.2;margin-top:4px}
+#app[data-screen="summary"] .screen-title p{font-size:13px;margin-top:5px}
+#app[data-screen="summary"] .screen-title .pill{font-size:11px;flex-shrink:0}
+#app[data-screen="summary"] .summary-layout{width:100%;margin:0 auto;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:stretch}
+#app[data-screen="summary"] .summary-pitch{width:100%;max-width:none;min-width:0;margin:0;align-self:stretch;justify-self:stretch;padding:0 12px 12px;display:flex;flex-direction:column;align-items:center;gap:12px}
+#app[data-screen="summary"] .pitch-header{width:calc(100% + 24px);margin:0 -12px;padding:12px 16px;min-height:46px;flex-shrink:0}
+#app[data-screen="summary"] .pitch-header strong{font:600 16px var(--body)}
+#app[data-screen="summary"] .pitch-header>span{font-size:12px}
+#app[data-screen="summary"] .summary-pitch .draft-pitch{width:min(100%,420px);max-width:420px;height:auto;aspect-ratio:3/4;margin:0 auto;border-radius:5px}
+#app[data-screen="summary"] .pitch-slot{width:clamp(82px,24%,116px);padding:0}
+#app[data-screen="summary"] .slot-circle{width:48px;height:48px;font-size:14px}
+#app[data-screen="summary"] .slot-rating{top:36px;right:calc(50% - 24px);font-size:11px}
+#app[data-screen="summary"] .pitch-slot small{font-size:11px;line-height:1.15;margin-top:5px}
+#app[data-screen="summary"] .pitch-slot:is([aria-label^="ME:"],[aria-label^="MD:"],[aria-label^="LE:"],[aria-label^="LD:"]) small{max-width:72px;margin-left:auto;margin-right:auto}
+#app[data-screen="summary"] .team-overview{min-width:0;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(190px,1.3fr) minmax(124px,.9fr) minmax(100px,.7fr)}
+#app[data-screen="summary"] .gauge-card,#app[data-screen="summary"] .attribute-card{min-height:0;padding:18px}
+#app[data-screen="summary"] .eyebrow{font-size:11px;letter-spacing:.8px}
+#app[data-screen="summary"] .gauge{width:150px;margin:16px auto 10px}
+#app[data-screen="summary"] .gauge svg{width:150px;height:84px}
+#app[data-screen="summary"] .gauge-value{font:600 46px/1 var(--body);bottom:4px}
+#app[data-screen="summary"] .gauge-value small{font-size:11px}
+#app[data-screen="summary"] .gauge-card>small{font-size:11px;line-height:1.5;color:var(--muted)}
+#app[data-screen="summary"] .attribute-card>div{margin-top:12px!important}
+#app[data-screen="summary"] .attribute-line{margin-bottom:9px}
+#app[data-screen="summary"] .attribute-line:last-child{margin-bottom:0}
+#app[data-screen="summary"] .attribute-line div{font-size:12px;margin-bottom:4px}
+#app[data-screen="summary"] .attribute-line .micro-bar{height:4px}
+#app[data-screen="summary"] .summary-info{padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#app[data-screen="summary"] .summary-info strong{font:600 32px/1.2 var(--body);margin:9px 0 7px}
+#app[data-screen="summary"] .summary-info p{font-size:12px;line-height:1.5;max-width:240px}
+#app[data-screen="summary"] .summary-start{padding:18px;gap:16px;align-items:center}
+#app[data-screen="summary"] .summary-start h3{font:600 18px/1.25 var(--body);margin-bottom:6px}
+#app[data-screen="summary"] .summary-start p{font-size:12px;line-height:1.5;max-width:260px}
+#app[data-screen="summary"] .summary-start .btn{font-size:13px;min-height:42px;padding:10px 14px;flex-shrink:0}
+@media(min-width:761px) and (min-height:640px){
+ body:has(#app[data-screen="summary"]){height:100dvh;display:flex;flex-direction:column}
+ body:has(#app[data-screen="summary"]) .site-header{height:52px;flex:0 0 52px}
+ body:has(#app[data-screen="summary"]) .header-inner{max-width:1288px;padding:0 24px}
+ body:has(#app[data-screen="summary"]) .brand{font-size:24px}
+ body:has(#app[data-screen="summary"]) footer{flex:0 0 24px}
+ body:has(#app[data-screen="summary"]) .footer-inner{height:24px;min-height:0;max-width:1288px;padding:0 24px}
+ body:has(#app[data-screen="summary"]) .footer-brand{display:none}
+ body:has(#app[data-screen="summary"]) .footer-inner p{font-size:9px;margin:0;max-width:none}
+ body:has(#app[data-screen="summary"]) .footer-dot{display:flex;font-size:9px;margin-left:auto}
+ #app[data-screen="summary"]{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;padding:12px 24px}
+ #app[data-screen="summary"] .screen-title{flex:0 0 auto;margin-bottom:14px}
+ #app[data-screen="summary"] .summary-layout{flex:1;min-height:0}
+ #app[data-screen="summary"] .summary-pitch{min-height:0;height:100%;container-type:size;gap:0;display:grid;grid-template-rows:46px minmax(0,1fr)}
+ #app[data-screen="summary"] .summary-pitch .draft-pitch{width:min(100cqw,calc((100cqh - 58px)*.75));max-width:none;align-self:center;justify-self:center}
+ #app[data-screen="summary"] .slot-circle{width:clamp(44px,8cqh,58px);height:clamp(44px,8cqh,58px);font-size:clamp(13px,2.3cqh,16px)}
+ #app[data-screen="summary"] .slot-rating{top:calc(clamp(44px,8cqh,58px) - 12px);right:calc(50% - clamp(22px,4cqh,29px))}
+ #app[data-screen="summary"] .team-overview{min-height:0}
+}
+@media(min-width:761px) and (max-width:1000px){
+ #app[data-screen="summary"] .summary-layout{gap:12px}
+ #app[data-screen="summary"] .team-overview{gap:12px;grid-template-rows:minmax(190px,1.2fr) minmax(138px,.9fr) minmax(130px,.8fr)}
+ #app[data-screen="summary"] .gauge-card,#app[data-screen="summary"] .attribute-card{padding:14px}
+ #app[data-screen="summary"] .gauge{width:128px}
+ #app[data-screen="summary"] .gauge svg{width:128px;height:76px}
+ #app[data-screen="summary"] .gauge-value{font-size:40px}
+ #app[data-screen="summary"] .summary-start{flex-direction:column;justify-content:center;text-align:center;gap:12px}
+}
+@media(max-width:760px){
+ #app[data-screen="summary"]{padding:20px 14px 28px}
+ #app[data-screen="summary"] .screen-title{align-items:center;gap:10px}
+ #app[data-screen="summary"] .screen-title h1{font-size:24px}
+ #app[data-screen="summary"] .screen-title .pill{font-size:10px}
+ #app[data-screen="summary"] .summary-layout{grid-template-columns:minmax(0,1fr);max-width:540px;gap:16px}
+ #app[data-screen="summary"] .summary-pitch{grid-row:1;order:0}
+ #app[data-screen="summary"] .team-overview{grid-row:2;order:0;grid-template-rows:auto auto auto;gap:12px}
+ #app[data-screen="summary"] .gauge-card,#app[data-screen="summary"] .attribute-card{padding:14px}
+ #app[data-screen="summary"] .gauge{width:128px}
+ #app[data-screen="summary"] .gauge svg{width:128px;height:76px}
+ #app[data-screen="summary"] .gauge-value{font-size:40px}
+ #app[data-screen="summary"] .summary-info{min-height:142px;padding:14px}
+ #app[data-screen="summary"] .summary-start{text-align:center;flex-direction:column;gap:14px}
+ #app[data-screen="summary"] .summary-start .btn{width:auto}
+}

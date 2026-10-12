@@ -1,0 +1,189 @@
+{
+  "provider": "Football Logos",
+  "website": "https://football-logos.cc/",
+  "format": "PNG",
+  "dimensions": "256x256",
+  "downloadedAt": "2026-10-10",
+  "logos": [
+    {
+      "clubId": "liverpool",
+      "file": "liverpool.png",
+      "source": "https://assets.football-logos.cc/logos/england/256x256/liverpool.99c48ae3.png"
+    },
+    {
+      "clubId": "real-madrid",
+      "file": "real-madrid.png",
+      "source": "https://assets.football-logos.cc/logos/spain/256x256/real-madrid.5ce15611.png"
+    },
+    {
+      "clubId": "manchester-city",
+      "file": "manchester-city.png",
+      "source": "https://assets.football-logos.cc/logos/england/256x256/manchester-city.62f9d1f2.png"
+    },
+    {
+      "clubId": "manchester-united",
+      "file": "manchester-united.png",
+      "source": "https://assets.football-logos.cc/logos/england/256x256/manchester-united.7ab9d343.png"
+    },
+    {
+      "clubId": "chelsea",
+      "file": "chelsea.png",
+      "source": "https://assets.football-logos.cc/logos/england/256x256/chelsea.ede8a2a7.png"
+    },
+    {
+      "clubId": "psg",
+      "file": "psg.png",
+      "source": "https://assets.football-logos.cc/logos/france/256x256/paris-saint-germain.7d591ccb.png"
+    },
+    {
+      "clubId": "arsenal",
+      "file": "arsenal.png",
+      "source": "https://assets.football-logos.cc/logos/england/256x256/arsenal.e5528ede.png"
+    },
+    {
+      "clubId": "barcelona",
+      "file": "barcelona.png",
+      "source": "https://assets.football-logos.cc/logos/spain/256x256/barcelona.481f5fb3.png"
+    },
+    {
+      "clubId": "juventus",
+      "file": "juventus.png",
+      "source": "https://assets.football-logos.cc/logos/italy/256x256/juventus.a8baf848.png"
+    },
+    {
+      "clubId": "inter",
+      "file": "inter.png",
+      "source": "https://assets.football-logos.cc/logos/italy/256x256/inter.3a7ce90c.png"
+    },
+    {
+      "clubId": "bayern",
+      "file": "bayern.png",
+      "source": "https://assets.football-logos.cc/logos/germany/256x256/bayern-munchen.6c38f13a.png"
+    },
+    {
+      "clubId": "tottenham",
+      "file": "tottenham.png",
+      "source": "https://assets.football-logos.cc/logos/england/256x256/tottenham.2d86d721.png"
+    },
+    {
+      "clubId": "napoli",
+      "file": "napoli.png",
+      "source": "https://assets.football-logos.cc/logos/italy/256x256/napoli.ee47a50b.png"
+    },
+    {
+      "clubId": "borussia-dortmund",
+      "file": "borussia-dortmund.png",
+      "source": "https://assets.football-logos.cc/logos/germany/256x256/borussia-dortmund.09ffedcd.png"
+    },
+    {
+      "clubId": "milan",
+      "file": "milan.png",
+      "source": "https://assets.football-logos.cc/logos/italy/256x256/milan.75d56f90.png"
+    },
+    {
+      "clubId": "atletico-madrid",
+      "file": "atletico-madrid.png",
+      "source": "https://assets.football-logos.cc/logos/spain/256x256/atletico-madrid.ba72e2cf.png"
+    },
+    {
+      "clubId": "ajax",
+      "file": "ajax.png",
+      "source": "https://assets.football-logos.cc/logos/netherlands/256x256/ajax.fadc62c4.png"
+    },
+    {
+      "clubId": "benfica",
+      "file": "benfica.png",
+      "source": "https://assets.football-logos.cc/logos/portugal/256x256/benfica.3e4d3034.png"
+    },
+    {
+      "clubId": "porto",
+      "file": "porto.png",
+      "source": "https://assets.football-logos.cc/logos/portugal/256x256/fc-porto.b58f31f6.png"
+    },
+    {
+      "clubId": "corinthians",
+      "file": "corinthians.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/corinthians.f3b00d5d.png"
+    },
+    {
+      "clubId": "flamengo",
+      "file": "flamengo.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/flamengo.9c3055f2.png"
+    },
+    {
+      "clubId": "internacional",
+      "file": "internacional.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/internacional.82f72a2f.png"
+    },
+    {
+      "clubId": "gremio",
+      "file": "gremio.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/gremio.d252cec9.png"
+    },
+    {
+      "clubId": "palmeiras",
+      "file": "palmeiras.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/palmeiras.9ab1d558.png"
+    },
+    {
+      "clubId": "sao-paulo",
+      "file": "sao-paulo.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/sao-paulo.468eaeb3.png"
+    },
+    {
+      "clubId": "santos",
+      "file": "santos.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/santos.d23b4286.png"
+    },
+    {
+      "clubId": "valencia",
+      "file": "valencia.png",
+      "source": "https://assets.football-logos.cc/logos/spain/256x256/valencia.f9d9eee2.png"
+    },
+    {
+      "clubId": "monaco",
+      "file": "monaco.png",
+      "source": "https://assets.football-logos.cc/logos/france/256x256/as-monaco.51dd5065.png"
+    },
+    {
+      "clubId": "athletico-paranaense",
+      "file": "athletico-paranaense.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/athletico-paranaense.15469cc7.png"
+    },
+    {
+      "clubId": "atletico-mineiro",
+      "file": "atletico-mineiro.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/atletico-mineiro.c5c81922.png"
+    },
+    {
+      "clubId": "bahia",
+      "file": "bahia.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/bahia.ac6d69f5.png"
+    },
+    {
+      "clubId": "cruzeiro",
+      "file": "cruzeiro.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/cruzeiro.6c188ab8.png"
+    },
+    {
+      "clubId": "fluminense",
+      "file": "fluminense.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/fluminense.118d8b5e.png"
+    },
+    {
+      "clubId": "vasco",
+      "file": "vasco.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/vasco-da-gama.74746cfd.png"
+    },
+    {
+      "clubId": "fortaleza",
+      "file": "fortaleza.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/fortaleza.5f34e5ff.png"
+    },
+    {
+      "clubId": "botafogo",
+      "file": "botafogo.png",
+      "source": "https://assets.football-logos.cc/logos/brazil/256x256/botafogo.e439f7a4.png"
+    }
+  ]
+}

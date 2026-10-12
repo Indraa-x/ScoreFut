@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs><linearGradient id="turf" x1="4" y1="4" x2="61" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#149464"/><stop offset="1" stop-color="#075139"/></linearGradient></defs>
+  <path d="M17 2H52a10 10 0 0 1 10 10v35L47 62H12A10 10 0 0 1 2 52V17Z" fill="url(#turf)"/>
+  <path d="M18 4H52a8 8 0 0 1 8 8v34L46 60H12a8 8 0 0 1-8-8V18Z" stroke="#fff" stroke-opacity=".16"/>
+  <path d="M9 23h12M7 32h11M9 41h12" stroke="#a7e4c0" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="37" cy="32" r="18" fill="#fff"/>
+  <path d="m37 23 8 6-3 9H32l-3-9 8-6Zm-1-9h2v9h-2Zm19 12v2l-10 2-.4-2ZM48 46l-1.6 1.2-6.2-9 1.6-1.2ZM25 46l1.6 1.2 6.2-9-1.6-1.2ZM19 26v2l10 2 .4-2Z" fill="#08734e"/>
+  <path d="m37 14-5 4h10Zm18 14-4-3 1 9Zm-7 18-1-6-6 7Zm-22 0 1-6 6 7Zm-7-18 4-3-1 9Z" fill="#08734e"/>
+</svg>

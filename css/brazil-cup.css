@@ -1,0 +1,21 @@
+.match-aggregate{display:block;margin-top:8px;font-size:11px;color:var(--muted)}
+.match-aggregate b{color:var(--text);font-size:13px;margin-left:5px}
+.match-cup-outcome{display:block;max-width:220px;margin:7px auto 0;font-size:10px;line-height:1.5;color:var(--green)}
+.brazil-cup-bracket{grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
+.cup-tie{overflow:hidden;border:1px solid var(--border);background:var(--surface);border-radius:12px;margin-bottom:14px;padding:0}
+.cup-user-tie{border-color:var(--green)}
+.cup-tie-label{display:block;padding:10px 12px 5px;color:var(--muted);font-size:9px}
+.cup-tie .bracket-team{padding:10px 12px;gap:8px;font-size:11px}
+.cup-tie .bracket-team span{min-width:0;overflow-wrap:anywhere;white-space:normal}
+.cup-tie .bracket-team .club-badge{width:26px;height:26px}
+.cup-tie>small{padding:5px 12px;font-size:9px}
+.cup-leg{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:8px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:9px}
+.cup-leg b{white-space:nowrap;color:var(--text);font-size:11px}
+.cup-tie .cup-qualified{display:flex;align-items:center;gap:5px;color:var(--green);line-height:1.5;padding:9px 12px}
+.cup-qualified svg{width:12px;flex-shrink:0}
+.cup-stage-pending{border:1px dashed var(--border);border-radius:12px;padding:22px 16px;text-align:center;color:var(--muted)}
+.cup-stage-pending>svg{display:block;width:24px;height:24px;margin:0 auto 12px;color:var(--green)}
+.cup-stage-pending strong{display:block;font-size:11px;font-weight:500}
+.cup-stage-pending p{font-size:10px;line-height:1.7;margin-top:8px}
+@media(max-width:1000px){.brazil-cup-bracket{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.brazil-cup-bracket{grid-template-columns:minmax(0,1fr)}.match-cup-outcome{max-width:160px;font-size:9px}}

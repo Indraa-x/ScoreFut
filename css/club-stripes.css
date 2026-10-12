@@ -1,0 +1,17 @@
+/* Club-color bands with enough contrast to identify the player's club. */
+.draft-pitch .pitch-slot.picked .slot-circle{
+  background:linear-gradient(#ffffff38,#ffffff38),
+    linear-gradient(to bottom,
+      var(--stripe-1) 0 33.333%,
+      var(--stripe-2) 33.333% 66.667%,
+      var(--stripe-3) 66.667% 100%);
+  color:#102b34;
+  font-weight:750;
+  text-shadow:0 0 3px #ffffff,0 1px 2px #ffffff;
+  border:2px solid #ffffffb3;
+}
+.draft-pitch .pitch-slot.picked{cursor:grab;touch-action:manipulation}
+.draft-pitch .pitch-slot.picked:active{cursor:grabbing}
+.draft-pitch .pitch-slot.move-origin .slot-circle{box-shadow:0 0 0 4px #ffffff66}
+.draft-pitch .pitch-slot.picked.compatible .slot-circle{box-shadow:0 0 0 4px #c3f4d9aa;border-color:#fff}
+.draft-pitch .pitch-slot.dragging{opacity:.4}

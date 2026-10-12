@@ -1,0 +1,13 @@
+/* Original vector lettering and a compact football mark, at every screen size. */
+.brand{display:inline-flex;align-items:center;gap:0;flex:0 0 auto;background:none;padding:0;border-radius:8px;line-height:1}
+.brand .brand-logo{display:block;width:224px;height:auto;max-width:none;transition:filter .18s;user-select:none}
+.brand:hover .brand-logo{filter:brightness(1.08)}
+.brand:focus-visible{outline-offset:6px}
+.footer-brand{display:flex;flex-direction:column;gap:7px;flex:0 0 auto}
+.footer-brand .brand-logo{width:166px;height:auto;display:block}
+.footer-brand small{margin:0 0 0 48px;font-size:8px;letter-spacing:1px}
+@media(min-width:761px){body:has(#app:is([data-screen="draft"],[data-screen="summary"],[data-screen="match"])) .brand .brand-logo{width:190px}}
+@media(max-width:1100px){.brand .brand-logo{width:200px}}
+@media(max-width:760px){.brand .brand-logo{width:176px}.header-inner nav{margin-left:auto;gap:16px}.header-tools{margin-left:10px}}
+@media(max-width:420px){.brand .brand-logo{width:156px}.header-inner nav{gap:12px;margin-right:0}.header-inner .nav-link{font-size:11px}.header-tools{display:none}}
+@media(max-width:360px){.brand .brand-logo{width:145px}.header-inner nav{gap:10px}}

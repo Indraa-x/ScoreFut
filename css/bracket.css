@@ -1,0 +1,31 @@
+/* Match the site's neutral panels and keep badges in a fixed column. */
+#app[data-screen="bracket"] .screen-title{align-items:center;gap:20px}
+#app[data-screen="bracket"] .screen-title h1{font:800 28px/1.2 var(--body);margin:4px 0 0;letter-spacing:-.6px}
+#app[data-screen="bracket"] .screen-title p{font-size:13px;max-width:none;margin-top:6px}
+#app[data-screen="bracket"] .screen-title .btn{font-size:13px;min-height:44px;padding:12px 16px;flex-shrink:0}
+#app[data-screen="bracket"] .screen-title .competition-logo{width:44px;height:44px}
+#app[data-screen="bracket"] .bracket-note{font-size:12px;line-height:1.6;max-width:none;margin-bottom:24px}
+.bracket-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;align-items:start}
+.bracket-stage{min-width:0}
+.bracket-stage h3{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:12px 14px;margin:0 0 12px;border:1px solid var(--border);border-radius:9px;background:var(--soft);color:var(--text);font:700 13px/1.4 var(--body);letter-spacing:0}
+.bracket-stage h3 small{font-size:10px;font-weight:500;color:var(--muted)}
+.bracket-grid .bracket-match{padding:8px;border-radius:10px;margin-bottom:12px;background:var(--surface);border:1px solid var(--border);overflow:hidden}
+.bracket-grid .cup-user-tie{border-color:var(--green);box-shadow:inset 3px 0 var(--green)}
+.bracket-grid .bracket-team{display:grid;grid-template-columns:32px minmax(0,1fr) 30px;gap:9px;align-items:center;min-width:0;min-height:52px;padding:8px;font-size:12px;color:var(--text);border-radius:6px}
+.bracket-grid .bracket-team.winner{color:var(--green);background:#13754b0c}
+.bracket-grid .bracket-team>.club-badge{display:inline-grid;flex:0 0 32px;width:32px;height:32px;min-width:32px;max-width:32px;min-height:32px;max-height:32px;font-size:10px;overflow:hidden}
+.bracket-grid .bracket-team>.club-badge img{display:block;width:32px;height:32px;max-width:32px;max-height:32px;object-fit:contain}
+.bracket-grid .bracket-team>.bracket-team-name{font-weight:600;min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+.bracket-grid .bracket-team strong{font:800 20px/1.2 var(--body);text-align:right;font-variant-numeric:tabular-nums}
+.bracket-grid .cup-tie-label{padding:6px 8px 8px;font-size:11px;font-weight:600}
+.bracket-grid .cup-leg{padding:9px 8px;font-size:11px;line-height:1.4;gap:10px}
+.bracket-grid .cup-leg>span{min-width:0;overflow-wrap:anywhere}
+.bracket-grid .cup-leg b{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.bracket-grid .bracket-match>small{font-size:11px;line-height:1.5;padding:8px;margin:0}
+.bracket-grid .cup-qualified{border-top:1px solid var(--border);font-weight:600;gap:6px}
+.bracket-grid .cup-qualified svg{width:14px;height:14px;flex:0 0 14px}
+.bracket-grid .cup-stage-pending{background:var(--soft);padding:24px 16px;border-radius:10px}
+.bracket-grid .cup-stage-pending strong{font-size:13px;font-weight:700}
+.bracket-grid .cup-stage-pending p{font-size:12px;line-height:1.6}
+@media(max-width:1100px){.bracket-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
+@media(max-width:650px){.bracket-grid{grid-template-columns:minmax(0,1fr);gap:18px}#app[data-screen="bracket"] .screen-title{align-items:flex-start;flex-direction:column;gap:12px}#app[data-screen="bracket"] .screen-title h1{font-size:24px}#app[data-screen="bracket"] .screen-title .btn{align-self:flex-end}.bracket-grid .bracket-team{font-size:13px}}

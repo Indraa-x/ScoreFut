@@ -1,0 +1,30 @@
+/* Competition colors on the home cards and mode selection buttons. */
+:is(.mode-card,.setup-mode-option)[data-value="copa-do-brasil"]{
+  --competition-gradient:linear-gradient(120deg,#002f87 0%,#176b46 62%,#896610 100%);
+  --competition-border:#176b46;
+}
+:is(.mode-card,.setup-mode-option,.hero-actions .btn)[data-value="champions"]{
+  --competition-gradient:linear-gradient(120deg,#090d38 0%,#243bb0 58%,#136ca5 100%);
+  --competition-border:#243bb0;
+}
+:is(.mode-card,.setup-mode-option):is([data-value="copa-do-brasil"],[data-value="champions"]){
+  background:var(--competition-gradient);
+  border-color:var(--competition-border);
+  color:#fff;
+  position:relative;
+}
+.hero-actions .btn[data-value="champions"]{
+  background:var(--competition-gradient);
+  border-color:var(--competition-border);
+  color:#fff;
+  box-shadow:0 7px 18px #243bb018;
+}
+.mode-card:is([data-value="copa-do-brasil"],[data-value="champions"]) :is(p,.mode-card-bottom){color:#ffffffe0}
+.mode-card:is([data-value="copa-do-brasil"],[data-value="champions"]) .mode-tag{background:#ffffff20;color:#fff}
+:is(.mode-card,.setup-mode-option):is([data-value="copa-do-brasil"],[data-value="champions"]):hover{filter:brightness(1.08)}
+.setup-mode-option:is([data-value="copa-do-brasil"],[data-value="champions"]).selected{
+  box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--competition-border);
+}
+.setup-mode-option:is([data-value="copa-do-brasil"],[data-value="champions"]).selected::after{
+  content:'✓';position:absolute;right:6px;top:3px;font-size:11px;font-weight:800;color:#fff;
+}

@@ -1,0 +1,96 @@
+/* Neutral surfaces throughout the site; the football pitches keep their turf. */
+.site-header,footer{background:var(--surface)}
+.club-badge.club-logo{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;overflow:visible}
+.club-badge.club-logo::after{display:none}
+.club-logo img{display:block;width:100%;height:100%;object-fit:contain}
+#app[data-screen="draft"] .season-year{display:inline-block;font-size:26px;font-weight:800;line-height:1.1;letter-spacing:.3px;background:linear-gradient(115deg,var(--year-color-1),var(--year-color-2));background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-stroke:.45px color-mix(in srgb,var(--year-color-1) 55%,#233345);font-variant-numeric:tabular-nums}
+.competition-logo{display:block;width:48px;height:48px;object-fit:contain;flex:0 0 auto;background:#fff;border-radius:6px;padding:4px}
+.mode-icon:has(.competition-logo){background:transparent}
+.mode-icon .competition-logo{width:100%;height:100%}
+.setup-mode-option{display:flex;align-items:center;justify-content:center;gap:7px}
+.setup-mode-option .competition-logo{width:30px;height:30px;padding:2px}
+.setup-competition-title{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.setup-competition-title .competition-logo{width:58px;height:58px}
+.setup-competition-title h2{margin:6px 0 0;line-height:1.2}
+.setup-competition-title .eyebrow{font-size:9px;letter-spacing:.5px}
+.match-page-title .competition-logo{width:34px;height:34px;padding:2px}
+.league-page-title{align-items:center;margin-bottom:16px}
+.league-page-title>div{display:flex;align-items:center;gap:12px}
+.league-page-title h1{font-size:26px;margin-top:4px}
+.league-page-title p{font-size:12px;margin-top:6px}
+.league-table-panel{padding:14px;overflow:auto}
+.league-standings{min-width:580px;font-size:13px}
+.league-standings td,.league-standings th{padding:9px 8px;text-align:center}
+.league-standings td:nth-child(2),.league-standings th:nth-child(2){text-align:left;width:40%}
+@media(min-width:761px){
+ #app[data-screen="bracket"]:has(.league-table-panel){padding:16px 24px;height:calc(100dvh - 106px);min-height:0;display:flex;flex-direction:column}
+ #app:has(.league-table-panel) .league-table-panel{flex:1;min-height:0}
+ #app:has(.league-table-panel) .screen-title,#app:has(.league-table-panel)>p{flex-shrink:0}
+ .league-standings thead th{position:sticky;top:-14px;background:var(--surface);z-index:1}
+ body:has(.league-table-panel) .site-header{height:56px}
+ body:has(.league-table-panel) .footer-inner{min-height:49px}
+ body:has(.league-table-panel) .footer-brand{display:none}
+ #app:has(.league-table-panel) .bracket-note{font-size:11px;margin-bottom:12px}
+ #app:has(.league-table-panel) .mode-note{font-size:11px;margin-top:12px}
+}
+.standings-team{display:flex;align-items:center;gap:7px}
+.standings-team .club-badge{width:22px;height:22px;flex:0 0 22px;font-size:8px}
+.btn-primary,.skip-link{color:#fff}
+.btn:hover:not(:disabled){filter:brightness(.97)}
+.btn-outline{background:var(--soft)}
+.hero-stadium{background:linear-gradient(145deg,#f0f1f3,#e5e8eb)}
+.stadium-grain{background-image:radial-gradient(#737b8722 1px,transparent 1px)}
+.hero-float{background:#f5f6f7ed;color:var(--text);border-color:var(--border);box-shadow:0 3px 12px #24272d0b}
+.hero-float span{color:var(--muted)}
+.stadium-label,.stadium-season{color:var(--muted)}
+.mode-card:nth-child(4) .mode-icon{color:#7056a3}
+.panel-head,.players-heading,.box-title,.pitch-header,.match-card .scoreboard,.match-feed .panel-head,.group-card h3{background:#d6dce3}
+.players-panel,.draft-box,.draft-center,.group-card{overflow:hidden}
+.player-row{background:#e7ebf0}
+.player-row:nth-child(even){background:#dde3e9}
+.player-row:not(.unavailable):has(.player-select:hover:not(:disabled)){background:#e5e9e7}
+.player-row.selected{background:#e3efe8}
+.player-avatar{background:#e3e6ea}
+.player-details,.player-ovr small{color:var(--muted)}
+.player-row.unavailable{background:var(--blocked-bg);border-top-color:var(--blocked-border);border-left-color:#c74646;box-shadow:none}
+.player-row.unavailable .player-select:disabled{opacity:1;color:var(--blocked-text)}
+.player-row.unavailable .player-name,.player-row.unavailable .player-ovr,.player-row.unavailable .player-details,.player-row.unavailable .player-ovr small{color:var(--blocked-text)}
+.player-row.unavailable .player-avatar{background:#f3cece;color:var(--blocked-text)}
+#app[data-screen="draft"] .player-row.unavailable .position-chip{background:#e99b9b;color:var(--blocked-text);border:1px solid #c74646}
+.player-row.unavailable .position-chip.DEF,.player-row.unavailable .position-chip.ATA,.player-row.unavailable .position-chip.MEI,.player-row.unavailable .position-chip.GOL{color:var(--blocked-text)}
+.player-row.unavailable .player-avatar:after{background:#c74646}
+.player-status{display:block;margin-top:3px;font-size:11px;font-weight:600;line-height:1.15;color:var(--blocked-text)}
+@media(min-width:761px) and (min-height:640px) and (max-height:959px){
+ #app[data-screen="draft"] .player-row.unavailable .player-info{grid-template-rows:auto auto;row-gap:2px}
+ #app[data-screen="draft"] .player-row.unavailable .player-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #app[data-screen="draft"] .player-row.unavailable .player-details{grid-row:1 / 3}
+ #app[data-screen="draft"] .player-status{grid-column:2;grid-row:2;margin:0;font-size:10px}
+}
+.draw-card,.summary-info,.setup-side,.history-widget,.match-statistics,.mode-card,.mode-card.featured{background:var(--soft)}
+.resume-banner,.personal-stats,.summary-start,.pitch-toolbar,.match-card .timeline,.match-card .match-controls,.result-hero,.result-match-row,.history-card,.help-step{background:var(--soft)}
+.box-row,.standings tbody tr{background:#eef0f3}
+.box-row:nth-child(even),.standings tbody tr:nth-child(even){background:#e0e5eb}
+.box-widget,.attribute-card,.gauge-card,.campaign-game{background:var(--soft)}
+.campaign-game.active{background:#e6eee9}
+.match-card .timeline-event.away{color:#426b94}
+.match-card .timeline-event.yellow{color:#946b07}
+.match-card .timeline-event.red{color:var(--red)}
+.feed-event-icon{background:#e4e7eb}
+.feed-item.yellow .feed-event-icon{color:var(--gold)}
+.feed-item.red .feed-event-icon{color:var(--red)}
+.feed-item{background:#eef0f3}
+.feed-item:nth-child(even){background:#e0e5eb}
+.formation-option,.setup-mode-option{background:var(--soft)}
+.formation-option.selected,.setup-mode-option.selected{background:var(--green);color:#fff}
+.result-hero{background:var(--soft)}
+dialog::backdrop{background:#30364055}
+.screen-title>div:first-child{background:var(--soft);border-radius:8px;padding:8px 12px}
+.hero-copy>p{background:var(--soft);border-radius:6px;padding:10px 12px}
+.draw-empty-copy{background:#d6dce3;border-radius:6px;padding:5px 10px}
+.feed-empty,.strength-block,.setup-main{background:#e7ebf0}
+#app[data-screen="draft"] .draw-empty{grid-template-columns:30px minmax(0,max-content) auto;justify-content:start;gap:16px}
+#app[data-screen="draft"] .draw-empty .btn{justify-self:start}
+@media(max-width:760px){
+ #app[data-screen="draft"] .draw-empty{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px}
+ #app[data-screen="draft"] .draw-empty .btn{grid-column:2;width:auto;margin:0}
+}
