@@ -118,7 +118,10 @@ function playerDestinations(id){
 function selectPlayer(id){
   const player=selectedPlayer(id);if(!player||!availableSlots(state.draft,state.formation,player).length)return;
   state.draft.selectedPickId=null;state.draft.selectedId=id;render();
-  if(window.matchMedia('(max-width:760px)').matches)app.querySelector('.draft-center')?.scrollIntoView({behavior:'smooth',block:'start'});
+  scrollToDraftSection('.draft-center');
+}
+function scrollToDraftSection(selector){
+  if(window.matchMedia('(max-width:760px)').matches)app.querySelector(selector)?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
 }
 function selectLineupPlayer(id){
   if(!selectedPlayer(id))return;
@@ -169,7 +172,7 @@ function addPlayer(id,slotId){
     state.draft=confirmPick(state.draft,allSquads,state.formation,id,slotId);
     persist();
     if(state.draft.picks.length===TEAM_SIZE)navigate('summary');
-    else render();
+    else{render();scrollToDraftSection('.draw-card');}
     return true;
   }catch(error){toast(error.message);}
 }
