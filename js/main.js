@@ -166,9 +166,9 @@ function addPlayer(id,slotId){
     }
     if(state.screen!=='draft'||!state.draft?.currentSquadId)return;
     state.draft=confirmPick(state.draft,allSquads,state.formation,id,slotId);
-    const pick=state.draft.picks.at(-1);persist();
+    persist();
     if(state.draft.picks.length===TEAM_SIZE)navigate('summary');
-    else{render();toast(pick.player.nome+' entrou como '+pick.slot.label+'.');}
+    else render();
     return true;
   }catch(error){toast(error.message);}
 }
