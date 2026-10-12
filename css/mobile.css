@@ -1,0 +1,184 @@
+/* Phone layouts share touch targets and spacing, without changing desktop screens. */
+@media(max-width:760px){
+ html{scroll-padding-top:16px}
+ body{font-size:15px}
+ #app,#app[data-screen="setup"]{width:100%;padding:24px 16px 36px;min-height:calc(100dvh - 150px)}
+ .site-header{height:auto;min-height:68px;background:#fff}
+ .header-inner{padding:10px 16px;min-height:68px;gap:12px;flex-wrap:wrap}
+ .brand .brand-logo{width:156px;height:auto}
+ .header-inner nav{margin:0 0 0 auto;gap:4px;align-self:center}
+ .nav-link{font-size:12px;min-height:44px;padding:0 10px;border-radius:8px}
+ .nav-link.active{background:#edf5f0;color:#145d3f}
+ .nav-link.active:after{display:none}
+ .header-tools{display:none}
+ .btn,.text-button,.icon-button{min-height:48px;font-size:14px;font-weight:700;white-space:normal}
+ .icon-button{min-width:48px}
+ input[type=text],input[type=search],select,.history-search input,.quick-search input,#history-mode{font-size:16px;min-height:48px}
+ .screen-title{flex-wrap:wrap;align-items:flex-start;gap:16px;margin-bottom:22px}
+ .screen-title h1{font-size:32px;line-height:1.15;letter-spacing:-1px}
+ .screen-title p{font-size:14px;line-height:1.6}
+ .screen-title>.btn{font-size:14px}
+ .panel{border-radius:14px}
+ .section-head{margin:28px 0 16px}
+ .section-head h2{font-size:22px}
+ .home-hero{gap:22px}
+ .hero-copy h1{font-size:clamp(34px,8.5vw,46px);line-height:1.12;letter-spacing:-1.5px}
+ .hero-copy>p{font-size:15px;line-height:1.65;margin:16px 0 20px}
+ .hero-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+ .hero-actions .btn{width:100%;min-height:54px;font-size:15px}
+ .hero-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:18px}
+ .hero-steps li{font-size:10px;gap:4px;white-space:nowrap}
+ .home-stars{height:240px;min-height:0}
+ .home-stars-heading{padding:14px 14px 6px}
+ .home-stars-heading>span:first-child{font-size:8px;letter-spacing:.6px}
+ .home-stars-heading>span:last-child{font-size:9px}
+ .home-stars-lineup{flex:1;width:83%;min-height:0;grid-template-rows:minmax(0,1fr);padding:0}
+ .home-stars-group{container-type:inline-size;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:minmax(0,1fr);row-gap:0}
+ .home-star-portrait{position:absolute;inset:auto 0 0;aspect-ratio:auto;height:min(100%,55cqw)}
+ .home-stars-footer{padding:11px 12px;font-size:9px;gap:8px;align-items:center}
+ .mode-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ .mode-card,.mode-card.featured{padding:22px;min-height:0}
+ .mode-card h3{font-size:22px}
+ .mode-card p{font-size:14px;line-height:1.6;margin-bottom:18px}
+ .mode-card .mode-card-bottom{font-size:12px}
+ .personal-stats{padding:18px;gap:20px}
+ .stat-item span{font-size:10px;letter-spacing:0}
+ .footer-inner{padding:24px 16px}
+ .footer-inner p{font-size:11px;line-height:1.6}
+ /* Formation controls precede a compact, full-width preview. */
+ .setup-layout,.setup-formation-layout{grid-template-columns:minmax(0,1fr);gap:20px}
+ .setup-main,.setup-side{padding:20px}
+ .setup-choices{max-width:none}
+ .formation-options{gap:8px;margin-bottom:24px}
+ .formation-option{font-size:16px;min-height:50px;border-radius:8px}
+ .setup-mode-options{gap:8px}
+ .setup-mode-option{font-size:13px;min-height:56px;padding:10px 6px;border-radius:8px}
+ .formation-preview{max-width:220px}
+ .formation-preview-player{width:28px;height:28px;font-size:10px}
+ .setup-side h2{font-size:26px}
+ .setup-side .rules-list li{font-size:14px}
+ .setup-side .btn{width:100%;min-height:54px}
+ /* Club picking and review retain the chosen formation. */
+ .quick-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;font-size:11px;margin-bottom:22px}
+ .quick-steps li{flex-direction:column;gap:6px;text-align:center}
+ .quick-steps li+li:before{display:none}
+ .quick-steps li>span{width:28px;height:28px;flex-basis:28px;font-size:12px}
+ .quick-topline{flex-wrap:wrap;gap:10px}
+ .quick-topline .text-button{font-size:13px}
+ .quick-regions{display:flex;gap:6px;flex-wrap:wrap}
+ .quick-regions button{min-height:44px;font-size:13px;padding:10px 16px}
+ .quick-club-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .quick-club-card{min-width:0;padding:16px 12px}
+ .quick-ready-title>div{min-width:0;width:100%;gap:12px}
+ .quick-ready-title>.btn{margin-left:0;width:100%}
+ #app[data-screen="summary"] .quick-ready-title h1{font-size:27px}
+ .quick-ready-layout,.summary-layout{grid-template-columns:minmax(0,1fr);gap:16px}
+ .quick-review{padding:20px}
+ .quick-season-block select{max-width:100%}
+ .quick-launch{padding:18px 12px}
+ .quick-launch .btn-primary{min-height:54px;font-size:15px}
+ /* The roster is beside the task, not below a whole screen of field. */
+ #app[data-screen="draft"] .draft-layout{display:flex;flex-direction:column;gap:16px}
+ #app[data-screen="draft"] .draw-card{order:1;display:flex;flex-direction:column;align-items:stretch;padding:16px;gap:14px}
+ #app[data-screen="draft"] .draw-club-info{grid-template-columns:64px minmax(0,1fr);column-gap:14px;row-gap:8px}
+ #app[data-screen="draft"] .draw-card-top .eyebrow{font-size:8px;white-space:normal;letter-spacing:.6px}
+ #app[data-screen="draft"] .season-year{font-size:27px}
+ #app[data-screen="draft"] .draw-club{gap:10px}
+ #app[data-screen="draft"] .draw-club .club-badge{width:42px;height:42px;flex:0 0 42px}
+ #app[data-screen="draft"] .draw-club h2{font-size:22px;max-width:none}
+ #app[data-screen="draft"] .season-award{font-size:12px}
+ #app[data-screen="draft"] .reroll-block{width:100%;max-width:none;flex:auto;padding:12px 0 0;margin:0;border-top:1px solid var(--border)}
+ #app[data-screen="draft"] .reroll-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #app[data-screen="draft"] .reroll-buttons .btn{font-size:13px;min-height:52px;padding:10px 8px;gap:7px}
+ #app[data-screen="draft"] .draft-left{display:contents}
+ #app[data-screen="draft"] .players-panel{order:2}
+ #app[data-screen="draft"] .goal-warning{order:3;font-size:12px;margin:0}
+ #app[data-screen="draft"] .draft-center{order:4}
+ #app[data-screen="draft"] .draft-right{order:5}
+ #app[data-screen="draft"] .roster-list{max-height:340px;overflow-y:auto;overscroll-behavior-y:contain}
+ #app[data-screen="draft"] .player-select{min-height:72px;padding:12px;gap:10px}
+ #app[data-screen="draft"] .player-name{font-size:15px;line-height:1.3}
+ #app[data-screen="draft"] .player-ovr{font-size:26px}
+ #app[data-screen="draft"] .player-details{font-size:11px}
+ .mobile-pick-hint{display:none}
+ #app[data-screen="draft"] .mobile-pick-hint{display:inline}
+ #app[data-screen="draft"] .desktop-pick-hint{display:none}
+ .draft-center .draft-pitch,.summary-pitch .draft-pitch{width:calc(100% - 20px);max-width:380px;margin:10px auto 16px}
+ .pitch-header{padding:16px;gap:8px}
+ .pitch-header h2,.pitch-header strong{font-size:17px}
+ .pitch-slot{width:90px}
+ .slot-circle{width:44px;height:44px;font-size:16px}
+ .pitch-slot small{font-size:10px;line-height:1.15}
+ .summary-start{flex-wrap:wrap;gap:14px}
+ .summary-start .btn{width:100%}
+ /* Score, pitch and goals form one clear vertical reading order. */
+ #app[data-screen="match"] .match-page-title{display:flex;flex-direction:column;align-items:stretch;gap:14px}
+ #app[data-screen="match"] .match-page-title h1{font-size:23px}
+ .match-page-title .match-next{width:100%;min-width:0;min-height:52px;font-size:15px}
+ #app[data-screen="match"] .match-layout{grid-template-columns:minmax(0,1fr);gap:16px}
+ .match-card .live-scoreboard{grid-template-columns:minmax(0,1fr) 104px minmax(0,1fr);padding:18px 10px;gap:6px}
+ .match-card .match-team h2{font-size:14px;line-height:1.3;overflow-wrap:anywhere}
+ .match-card .score-numbers{font-size:46px;gap:6px}
+ .match-card .score-clock{font-size:18px}
+ .match-card .live-field-wrap{padding:10px 8px}
+ .match-card .live-pitch{width:100%;aspect-ratio:1.55;min-height:0;flex-shrink:0}
+ .live-pitch .match-player{width:23px;height:23px;border-width:1.5px}
+ .live-pitch .match-player>b{font-size:10px}
+ .match-field-legend{padding:8px 12px;gap:12px}
+ .match-field-legend>span{font-size:11px;line-height:1.4}
+ .match-card .live-controls{padding:14px 10px}
+ .match-speed{display:flex;width:100%;gap:8px;justify-content:center}
+ .match-speed>span{width:100%;font-size:13px;text-align:center}
+ .match-speed button{min-height:44px;font-size:13px;padding:10px}
+ .match-calendar{display:flex;flex-direction:column;overflow:visible;gap:16px}
+ .match-calendar>.panel{width:100%}
+ .match-goals-panel{height:260px;flex:0 0 260px}
+ .match-goals-panel .match-scorers p{font-size:14px}
+ .match-calendar .calendar-heading h2{font-size:17px}
+ /* Results and history keep the numbers readable without wide rows. */
+ .result-hero{padding:28px 18px}
+ .result-hero h1{font-size:clamp(30px,8vw,40px);line-height:1.2;overflow-wrap:anywhere}
+ .result-hero>p{font-size:14px}
+ .result-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .result-stats>div{padding:18px 8px;min-width:0}
+ .result-stats strong{font-size:38px}
+ .result-stats span{font-size:10px;letter-spacing:0}
+ .result-top-scorer{font-size:14px;line-height:1.6}
+ .result-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+ .result-actions .btn{width:100%;min-width:0;min-height:50px;font-size:14px}
+ .result-campaign .result-match-row{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);gap:12px 8px;padding:16px 12px}
+ .result-campaign .result-match-row>span:first-child{grid-column:1/3;grid-row:1;font-size:12px}
+ .result-campaign .result-match-row>span:last-child{grid-column:3;grid-row:1;justify-self:end}
+ .result-campaign .result-match-row>div{grid-row:2;flex-direction:column;align-items:center;text-align:center;font-size:12px;line-height:1.4}
+ .result-campaign .result-match-row>div:first-of-type{grid-column:1}
+ .result-campaign .result-match-row>div:last-of-type{grid-column:3}
+ .result-campaign .result-match-row>strong{grid-column:2;grid-row:2;text-align:center;font-size:23px}
+ .history-overview{gap:10px}
+ .history-summary{padding:16px 12px;gap:10px}
+ .history-summary>div>span{font-size:11px}
+ .history-summary strong{font-size:30px}
+ .history-filters{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+ .history-search,#history-mode{min-width:0;width:100%}
+ .history-outcome-filter{justify-content:center}
+ .history-outcome-filter button{flex:1;justify-content:center;min-height:44px;font-size:13px}
+ .history-entry{padding:20px 16px;gap:14px}
+ .history-entry-outcome{margin-left:0}
+ .history-entry-meta{font-size:12px}
+ .history-entry-numbers small{font-size:11px}
+ .history-open{min-height:48px;font-size:14px}
+ dialog{max-height:calc(100dvh - 32px);overflow-y:auto;padding:20px;border-radius:16px}
+ .modal-head h2,.result-lineup-view .modal-head h2{font-size:24px;line-height:1.2}
+ .dialog-actions{flex-wrap:wrap}
+ .dialog-actions .btn{flex:1}
+}
+@media(max-width:360px){
+ .header-inner{gap:6px;padding:10px 12px}
+ .brand .brand-logo{width:138px}
+ .nav-link{padding:0 8px;font-size:11px}
+ #app{padding-left:12px;padding-right:12px}
+ .hero-steps li{font-size:9px}
+ .setup-main,.setup-side{padding:16px}
+ .setup-mode-option{font-size:12px}
+ .home-stars{height:220px}
+ .quick-club-grid{gap:8px}
+}

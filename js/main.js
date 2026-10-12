@@ -118,6 +118,7 @@ function playerDestinations(id){
 function selectPlayer(id){
   const player=selectedPlayer(id);if(!player||!availableSlots(state.draft,state.formation,player).length)return;
   state.draft.selectedPickId=null;state.draft.selectedId=id;render();
+  if(window.matchMedia('(max-width:760px)').matches)app.querySelector('.draft-center')?.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function selectLineupPlayer(id){
   if(!selectedPlayer(id))return;
