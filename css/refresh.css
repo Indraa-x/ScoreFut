@@ -29,6 +29,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .site-header{position:relative;z-index:5;height:76px;background:#101216;border-bottom:1px solid #252930}
 .header-inner{max-width:1400px;padding:0 36px;gap:28px}
 .header-inner nav{margin-left:30px;gap:8px}
+.header-inner nav{align-items:center;align-self:center}
 .nav-link{min-height:44px;padding:0 14px;border-radius:999px;color:#a6abb3;font-size:13px;font-weight:650;transition:color .15s,background .15s}
 .nav-link:hover{background:#1b1e24;color:#fff}
 .nav-link.active,.nav-link.active:hover{background:#22262c;color:#fff}
@@ -73,7 +74,7 @@ main{max-width:1400px;padding:36px 36px 56px;min-height:calc(100vh - 170px)}
 .home-intro .live-indicator{color:#9da5ad}
 .home-hero{min-height:390px;gap:clamp(28px,4vw,56px)}
 .hero-copy h1{font:750 clamp(46px,5vw,70px)/1.04 var(--body);letter-spacing:-2.8px;color:#f5f6f7}
-.hero-copy h1>span{background:linear-gradient(100deg,#f5f6f7 0%,#c9d8d0 62%,#7bd7a7 100%);background-clip:text;-webkit-background-clip:text;color:transparent}
+#app[data-screen="home"] .hero-copy h1>span{background:linear-gradient(100deg,#f5f6f7 0%,#c9d8d0 62%,#7bd7a7 100%);background-clip:text;-webkit-background-clip:text;color:transparent}
 .hero-copy>p{max-width:470px;margin:20px 0 25px;background:transparent;padding:0;color:#aeb4bc;font-size:15px;line-height:1.75}
 .hero-actions{gap:10px}
 .hero-actions .btn{min-height:54px;padding:15px 22px;font-size:14px;font-weight:750}
