@@ -11,7 +11,7 @@
   <path d="m37 23 8 6-3 9H32l-3-9 8-6Zm-1-9h2v9h-2Zm19 12v2l-10 2-.4-2ZM48 46l-1.6 1.2-6.2-9 1.6-1.2ZM25 46l1.6 1.2 6.2-9-1.6-1.2ZM19 26v2l10 2 .4-2Z" fill="#08734e"/>
   <path d="m37 14-5 4h10Zm18 14-4-3 1 9Zm-7 18-1-6-6 7Zm-22 0 1-6 6 7Zm-7-18 4-3-1 9Z" fill="#08734e"/>
   <!-- Lettering drawn as outlines: the logo never depends on a loaded font. -->
-  <g transform="translate(79 17) scale(.79 1) skewX(-9)" fill="#192d25" fill-rule="evenodd">
+  <g transform="translate(79 17) scale(.79 1) skewX(-9)" fill="#f0f5f2" fill-rule="evenodd">
     <path d="M24 0H8C2 0 0 4 0 9s4 8 10 8h6v5H0v8h18c6 0 9-4 9-9s-4-9-10-9H9V8h15Z"/>
     <path transform="translate(32)" d="M25 0H10C3 0 0 5 0 12v6c0 7 3 12 10 12h15v-8H11c-2 0-3-1-3-4v-6c0-3 1-4 3-4h14Z"/>
     <path transform="translate(63)" d="M10 0h8c7 0 10 4 10 10v10c0 6-3 10-10 10h-8C3 30 0 26 0 20V10C0 4 3 0 10 0Zm1 8c-2 0-3 1-3 4v6c0 3 1 4 3 4h6c2 0 3-1 3-4v-6c0-3-1-4-3-4Z"/>
