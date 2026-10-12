@@ -185,3 +185,7 @@ O histórico mostra escudo do time, cores da competição, resultado, formação
 O Modo Lendas usa gradiente discreto de cinza claro para amarelo suave no card, na seleção, no histórico e no resultado. Os textos permanecem escuros para manter a legibilidade; a identidade está em `css/legends.css`.
 
 No draft, os botões Outro clube e Outra temporada compartilham 3 skips por campanha. O contador ao lado deles acompanha o saldo real (3, 2, 1, 0), e as duas ações ficam desabilitadas ao esgotar o saldo. Cada troca consome um skip; o sorteio inicial não consome.
+
+## Site publicado
+
+O jogo é servido pelo GitHub Pages em https://indraa-x.github.io/ScoreFut/. A origem é a raiz da branch `main`; `.nojekyll` mantém os arquivos HTML, CSS, JavaScript e assets como arquivos estáticos. Novos commits em `main` atualizam a publicação.

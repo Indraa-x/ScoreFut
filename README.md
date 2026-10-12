@@ -11,6 +11,10 @@
   Sem framework. Sem instalação de dependências.
 </p>
 
+<p align="center">
+  <a href="https://indraa-x.github.io/ScoreFut/"><strong>Jogar ScoreFut →</strong></a>
+</p>
+
 ---
 
 ScoreFut é um jogo de futebol para navegador com **36 clubes, 144 elencos históricos e equipes de 11 jogadores**. Escolha sua formação, monte ou selecione um time e acompanhe a campanha até o resultado.
