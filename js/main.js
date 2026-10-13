@@ -16,7 +16,7 @@ import {MATCH_SPEEDS} from './match-motion.js';
 import {initMatchPlayback} from './match-playback.js';
 import {initCelebration} from './celebration.js';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
-let toastTimer=null,storageWarning=false;
+let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
 const historyFilters={search:'',mode:'all',titlesOnly:false};
 const playback=initMatchPlayback({app,state,onFinish:finishCurrentMatch,onSave:persist});
 const celebration=initCelebration({app,getRecord:()=>state.resultRecord,getScreen:()=>state.screen});
@@ -29,9 +29,9 @@ function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){dele
 function persist(){if(!state.draft)return;const saved=snapshot();const ok=storage.write('active',saved);if(!ok&&!storageWarning){storageWarning=true;toast('Este navegador não permite salvar o progresso. Você pode continuar jogando.');}}
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
 function navigate(screen){if(state.screen==='match'&&['home','history','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
-function render(){const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
+function render(){const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'history':html=ui.renderHistory(history,stats,historyFilters);break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
+  app.innerHTML=html;app.dataset.screen=state.screen;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
   if(state.screen==='draft'&&!state.rolling)preloadPlayerPortraits(state.draft?.currentSquad?.jogadores);

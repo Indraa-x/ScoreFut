@@ -1,0 +1,88 @@
+/* Restrained, spring-like motion shared by every ScoreFut screen. */
+:root{
+  --motion-standard:cubic-bezier(.2,.75,.25,1);
+  --motion-spring:cubic-bezier(.2,1.15,.35,1);
+}
+
+#app.screen-arrive>*{
+  animation:sf-screen-enter .48s var(--motion-standard) both;
+}
+#app.screen-arrive>*:nth-child(2){animation-delay:35ms}
+#app.screen-arrive>*:nth-child(3){animation-delay:70ms}
+#app.screen-arrive>*:nth-child(4){animation-delay:105ms}
+#app.screen-arrive>*:nth-child(5){animation-delay:140ms}
+#app.screen-arrive>*:nth-child(6){animation-delay:175ms}
+
+@keyframes sf-screen-enter{
+  from{opacity:0;transform:translateY(9px) scale(.997)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.site-header .brand-logo{transition:transform .32s var(--motion-spring)}
+.site-header .brand:hover .brand-logo{transform:scale(1.035)}
+.nav-link{transition:color .2s ease,background-color .2s ease}
+.nav-link:after{transform:scaleX(0);transform-origin:left;transition:transform .28s var(--motion-standard)}
+.nav-link.active:after{transform:scaleX(1)}
+
+#app .btn,
+#app .icon-button,
+#app .formation-option,
+#app .setup-mode-option,
+#app .player-select,
+#app .history-open,
+#app .history-outcome-filter button,
+#app .match-speed button,
+#app .quick-region button,
+#app input,
+#app select{
+  transition-property:color,background-color,border-color,box-shadow,transform,filter;
+  transition-duration:.24s;
+  transition-timing-function:var(--motion-standard);
+}
+
+#app .formation-option,
+#app .setup-mode-option,
+#app .match-speed button,
+#app .history-outcome-filter button{transform:translateZ(0)}
+#app :is(.formation-option,.setup-mode-option,.match-speed button,.history-outcome-filter button):active:not(:disabled){transform:scale(.97)}
+#app :is(.formation-option,.setup-mode-option)[aria-pressed="true"],
+#app .match-speed button[aria-pressed="true"],
+#app .history-outcome-filter button[aria-pressed="true"]{transition:background-color .28s var(--motion-standard),border-color .28s var(--motion-standard),box-shadow .28s var(--motion-standard),color .2s ease}
+#app .btn:active:not(:disabled),
+#app .history-open:active:not(:disabled){transform:scale(.985)}
+#app .icon-button:hover:not(:disabled){background:var(--soft);border-color:var(--green)}
+
+@media(hover:hover) and (pointer:fine){
+  #app .mode-card,
+  #app .quick-club-card,
+  #app .history-entry{
+    transition:transform .3s var(--motion-standard),box-shadow .3s var(--motion-standard),border-color .24s ease;
+  }
+  #app .mode-card:hover,
+  #app .quick-club-card:hover:not(:disabled),
+  #app .history-entry:hover{transform:translateY(-3px)}
+  #app .mode-card .mode-icon,
+  #app .quick-club-card .club-badge{transition:transform .34s var(--motion-spring)}
+  #app .mode-card:hover .mode-icon,
+  #app .quick-club-card:hover .club-badge{transform:scale(1.055)}
+  #app .history-open:hover:not(:disabled){transform:translateX(2px)}
+}
+
+dialog[open]{animation:sf-dialog-enter .3s var(--motion-standard) both}
+dialog[open]::backdrop{animation:sf-backdrop-enter .24s ease both}
+@keyframes sf-dialog-enter{
+  from{opacity:0;transform:translateY(8px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes sf-backdrop-enter{from{opacity:0}to{opacity:1}}
+
+#toast{transition:opacity .24s ease,transform .34s var(--motion-spring)}
+
+@media(prefers-reduced-motion:reduce){
+  #app.screen-arrive>*{animation:none!important}
+  dialog[open],dialog[open]::backdrop{animation:none!important}
+  #app :is(.mode-card,.quick-club-card,.history-entry,.btn,.icon-button,.formation-option,.setup-mode-option,.player-select,.history-open,.history-outcome-filter button,.match-speed button),
+  .site-header .brand-logo,.nav-link,.nav-link:after,#toast{transition:none!important}
+  #app :is(.mode-card,.quick-club-card,.history-entry,.btn,.history-open):active,
+  #app :is(.mode-card,.quick-club-card,.history-entry):hover{transform:none!important}
+}
