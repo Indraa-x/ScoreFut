@@ -15,9 +15,14 @@ import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migr
 import {MATCH_SPEEDS} from './match-motion.js';
 import {initMatchPlayback} from './match-playback.js';
 import {initCelebration} from './celebration.js';
+import { createManagerCareer, managerMarket, playerValue, sellManagerPlayer, signManagerPlayer, simulateManagerSeason, squadForClub } from './manager-career.js';
+import { renderManagerCareer, renderManagerMarketResults } from './manager-career-ui.js';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 let toastTimer=null,storageWarning=false;
 const historyFilters={search:'',mode:'all',titlesOnly:false};
+let managerCareer=storage.read('manager-career',null);
+const managerSetup={clubId:clubs[0]?.id||'',budget:100};
+const managerFilters={search:'',position:'all',visible:18};
 const playback=initMatchPlayback({app,state,onFinish:finishCurrentMatch,onSave:persist});
 const celebration=initCelebration({app,getRecord:()=>state.resultRecord,getScreen:()=>state.screen});
 const validation=validateData();
@@ -30,8 +35,8 @@ function persist(){if(!state.draft)return;const saved=snapshot();const ok=storag
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
 function navigate(screen){if(state.screen==='match'&&['home','history','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
 function render(){const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
-  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'history':html=ui.renderHistory(history,stats,historyFilters);break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
+  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'history':html=ui.renderHistory(history,stats,historyFilters);break;case'career':html=renderManagerCareer({career:managerCareer,clubs,allSquads,setup:managerSetup,filters:managerFilters});break;default:html=ui.renderHome({stats,clubs});}
+  app.innerHTML=html;app.dataset.screen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':state.screen==='career'?'career':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
   if(state.screen==='draft'&&!state.rolling)preloadPlayerPortraits(state.draft?.currentSquad?.jogadores);
@@ -83,6 +88,11 @@ function updateHistoryList(){
   if(list)list.innerHTML=ui.renderHistoryEntries(filtered,Boolean(history.length));
   if(count)count.textContent=`${filtered.length} de ${history.length} campanhas`;
   app.querySelectorAll('[data-action="history-outcome"]').forEach(button=>button.setAttribute('aria-pressed',String((button.dataset.value==='titles')===historyFilters.titlesOnly)));
+}
+function updateManagerMarket(){
+  if(state.screen!=='career'||!managerCareer)return;
+  const results=app.querySelector('#manager-market-results');
+  if(results)results.innerHTML=renderManagerMarketResults(managerCareer,allSquads,managerFilters);
 }
 function startDraft(){state.quickSquadId=null;state.teamName='Meu time';const date=storage.today();
   const seed=crypto.getRandomValues(new Uint32Array(1))[0];state.draft=createDraft(seed,date,state.mode);state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=1;navigate('draft');
@@ -218,7 +228,7 @@ function finishTournament(){
   storage.remove('active');state.resultRecord=record;navigate('result');
 }
 async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
-case'home':navigate('home');break;case'history':navigate('history');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
+case'home':navigate('home');break;case'history':navigate('history');break;case'career':navigate('career');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
 case'setup':openSetup(value||'quick');break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
 case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){restore(saved);window.scrollTo(0,0);}break;}
 case'draw':await roll();break;case'reroll-club':await roll('club');break;case'reroll-season':await roll('season');break;case'player':selectPlayer(value);break;case'slot':slotAction(value);break;
@@ -233,10 +243,18 @@ case'result-lineup':if(state.screen==='result'&&state.resultRecord){document.get
 case'history-outcome':historyFilters.titlesOnly=value==='titles';updateHistoryList();break;
 case'history-clear':Object.assign(historyFilters,{search:'',mode:'all',titlesOnly:false});render();app.querySelector('#history-search')?.focus();break;
 case'history-result':{const record=storage.read('history',[]).find(g=>g.id===value);if(record){state.resultRecord=record;state.tournament=record.tournament||null;state.pendingRound=null;state.mode=record.mode;navigate('result');}break;}
+case'manager-budget':{const amount=Number(value);if(Number.isFinite(amount)){managerSetup.budget=Math.max(50,Math.min(500,Math.round(amount/10)*10));render();}break;}
+case'manager-start':{const selected=squadForClub(clubs,allSquads,managerSetup.clubId);if(!selected){toast('Não foi possível carregar o elenco deste clube.');break;}managerCareer=createManagerCareer(selected.club,selected.squad,managerSetup.budget);if(!storage.write('manager-career',managerCareer))toast('Carreira criada, mas este navegador não permite salvar o progresso.');managerFilters.search='';managerFilters.position='all';managerFilters.visible=18;render();window.scrollTo({top:0,behavior:'smooth'});break;}
+case'manager-buy':{if(!managerCareer)break;const player=managerMarket(allSquads,managerCareer).find(item=>item.id===value);const result=signManagerPlayer(managerCareer,player);if(!result.ok){toast(result.reason);break;}managerCareer=result.career;storage.write('manager-career',managerCareer);render();toast(`${player.nome} contratado por R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1}).format(playerValue(player))} mi.`);break;}
+case'manager-sell':{const result=sellManagerPlayer(managerCareer,value);if(!result.ok){toast(result.reason);break;}managerCareer=result.career;storage.write('manager-career',managerCareer);render();toast(`Transferência concluída: +R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1}).format(result.fee)} mi.`);break;}
+case'manager-season':{const seed=crypto.getRandomValues(new Uint32Array(1))[0];const result=simulateManagerSeason(managerCareer,allSquads,seed);if(!result.ok){toast(result.reason);break;}managerCareer=result.career;storage.write('manager-career',managerCareer);managerFilters.search='';managerFilters.position='all';managerFilters.visible=18;render();window.scrollTo({top:0,behavior:'smooth'});toast(result.record.champion?`Campeão da liga! Premiação de R$ ${result.record.prize} mi.`:`Temporada encerrada em ${result.record.place}º lugar. R$ ${result.record.prize} mi de premiação.`);break;}
+case'manager-more':managerFilters.visible+=18;updateManagerMarket();break;
 }}
 document.addEventListener('click',event=>{const element=event.target.closest('[data-action]');if(element&&!element.disabled)action(element.dataset.action,element.dataset.value,element).catch(error=>{console.error(error);toast('Não foi possível completar a ação. '+error.message);});});
 app.addEventListener('change',event=>{if(event.target.id==='quick-season')action('quick-team',event.target.value,event.target).catch(error=>toast(error.message));});
+app.addEventListener('change',event=>{if(event.target.id==='manager-club'){managerSetup.clubId=event.target.value;render();}if(event.target.id==='manager-budget'){managerSetup.budget=Number(event.target.value);render();}if(event.target.id==='manager-position'){managerFilters.position=event.target.value;managerFilters.visible=18;updateManagerMarket();}});
 app.addEventListener('input',event=>{if(event.target.id==='quick-search'&&state.mode==='quick'&&state.screen==='setup')updateQuickSearch(event.target.value);});
+app.addEventListener('input',event=>{if(event.target.id==='manager-search'){managerFilters.search=event.target.value;managerFilters.visible=18;updateManagerMarket();}if(event.target.id==='manager-budget'){managerSetup.budget=Number(event.target.value);const output=app.querySelector('#manager-budget-value');if(output)output.textContent='R$ '+new Intl.NumberFormat('pt-BR').format(managerSetup.budget)+' mi';app.querySelectorAll('[data-action="manager-budget"]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.value)===managerSetup.budget)));}});
 app.addEventListener('input',event=>{if(event.target.id==='history-search'&&state.screen==='history'){historyFilters.search=event.target.value;updateHistoryList();}});
 app.addEventListener('change',event=>{if(event.target.id==='history-mode'&&state.screen==='history'){historyFilters.mode=event.target.value;updateHistoryList();}});
 initPlayerDrag({

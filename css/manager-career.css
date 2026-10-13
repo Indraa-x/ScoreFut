@@ -1,0 +1,145 @@
+/* Manager career: club identity, transfer decisions, and season results. */
+.header-inner nav .nav-link[data-action="career"]{white-space:nowrap}
+#app[data-screen="career"]{max-width:1440px;padding-top:34px}
+.manager-career-page{max-width:1360px;margin:0 auto}
+.manager-page-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 2px 24px}
+.manager-page-heading h1{margin:5px 0 8px;font:750 clamp(34px,4vw,48px)/1.1 var(--body);letter-spacing:-1.7px;color:#f5f6f7}
+.manager-page-heading p{margin:0;color:#aeb4bc;font-size:14px;line-height:1.65}
+.manager-heading-mark{display:grid;place-items:center;width:60px;height:60px;border:1px solid #365947;border-radius:16px;background:linear-gradient(145deg,#1a3328,#19221e);color:#73d3a1}
+.manager-heading-mark svg{width:27px;height:27px}
+.manager-setup,.manager-panel,.manager-club-hero,.manager-season-card{background:linear-gradient(155deg,#15181d,#111317);border:1px solid #30353d;border-radius:16px;box-shadow:0 12px 34px #0003}
+.manager-setup{padding:28px}
+.manager-setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+.manager-field{min-width:0;padding:22px;border:1px solid #30353d;border-radius:13px;background:#191c21}
+.manager-field>label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;color:#e7e9ec;font-size:14px;font-weight:750}
+.manager-field>label strong{color:#ffe09a;font-size:18px;font-weight:800;white-space:nowrap}
+.manager-field select,.manager-market-filters select{width:100%;min-height:48px;padding:0 14px;border:1px solid #40464e;border-radius:9px;background:#111317;color:#f1f3f5;font-size:14px;font-weight:650}
+.manager-club-preview{display:flex;align-items:center;gap:12px;margin-top:17px;padding:13px;border:1px solid #30353d;border-radius:10px;background:#14171b}
+.manager-club-preview .club-badge{width:44px;height:44px;flex:0 0 44px}
+.manager-club-preview>div{display:grid;gap:3px;min-width:0}
+.manager-club-preview strong{color:#f4f5f6;font-size:15px;font-weight:750}
+.manager-club-preview span{color:#a3aab2;font-size:11px}
+.manager-budget-field input[type="range"]{width:100%;height:8px;margin:14px 0 7px;accent-color:#53c98b;cursor:pointer}
+.manager-budget-scale{display:flex;justify-content:space-between;color:#929aa3;font-size:11px;font-weight:650}
+.manager-budget-field>p{margin:11px 0 14px;color:#9fa6ae;font-size:12px}
+.manager-budget-presets{display:flex;gap:8px;flex-wrap:wrap}
+.manager-budget-presets button{min-height:36px;padding:7px 11px;border:1px solid #3b4149;border-radius:999px;background:#20242a;color:#c9ced4;font-size:11px;font-weight:700;cursor:pointer}
+.manager-budget-presets button[aria-pressed="true"]{border-color:#4c9b70;background:#1d382a;color:#b8f2d0}
+.manager-start-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:22px;padding-top:21px;border-top:1px solid #30353d}
+.manager-start-footer>div{display:grid;gap:4px}
+.manager-start-footer strong{color:#e9ebee;font-size:14px;font-weight:750}
+.manager-start-footer span{color:#9fa6ae;font-size:12px}
+.manager-start-footer .btn{min-width:215px}
+.manager-dashboard{display:grid;gap:18px}
+.manager-club-hero{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:24px 28px;background:linear-gradient(115deg,color-mix(in srgb,var(--manager-club) 25%,#15181d),#131519 72%);border-color:color-mix(in srgb,var(--manager-club) 46%,#30353d)}
+.manager-club-identity{display:flex;align-items:center;gap:16px;min-width:0}
+.manager-club-identity .club-badge{width:64px;height:64px;flex:0 0 64px;background:#f5f5f3}
+.manager-club-identity h1{margin:1px 0 3px;color:#f4f5f6;font:750 clamp(24px,3vw,34px)/1.15 var(--body);letter-spacing:-.8px}
+.manager-club-identity p{margin:0;color:#b4bbc2;font-size:12px}
+.manager-club-identity p i{margin:0 5px;color:#68717b;font-style:normal}
+.manager-club-hero .eyebrow{color:#c0c8c1}
+.manager-club-stats{display:flex;align-items:center;gap:12px}
+.manager-club-stats>div{display:grid;gap:4px;min-width:112px;padding:12px 14px;border:1px solid #ffffff20;border-radius:10px;background:#0f111477}
+.manager-club-stats span{color:#aab1b8;font-size:9px;font-weight:750;letter-spacing:.65px;white-space:nowrap}
+.manager-club-stats strong{color:#f4f5f6;font-size:21px;font-weight:800;white-space:nowrap}
+.manager-club-stats>div:first-child strong{color:#ffe09a;font-size:18px}
+.manager-club-stats strong small{margin-left:5px;color:#9ea6ae;font-size:9px}
+.manager-workspace{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);align-items:start;gap:16px}
+.manager-local-nav{grid-column:1/-1;display:flex;gap:7px;padding:5px;border:1px solid #292e35;border-radius:999px;background:#14161a;width:max-content;max-width:100%}
+.manager-local-nav a{padding:8px 15px;border-radius:999px;color:#b2b9c0;font-size:12px;font-weight:700;text-decoration:none;transition:background .15s,color .15s}
+.manager-local-nav a:hover,.manager-local-nav a:focus-visible{background:#24282e;color:#fff}
+.manager-panel{min-width:0;padding:21px}
+.manager-section-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+.manager-section-heading h2{margin:3px 0 4px;color:#f2f4f6;font-size:21px;font-weight:750;letter-spacing:-.4px}
+.manager-section-heading p{margin:0;color:#9ea6ae;font-size:11px;line-height:1.5}
+.manager-section-heading .eyebrow{font-size:9px}
+.manager-roster-count,.manager-market-count{flex:none;color:#a9b0b8;font-size:10px;font-weight:750;letter-spacing:.45px}
+.manager-market-count{align-self:center;padding:7px 10px;border:1px solid #35453b;border-radius:999px;background:#1b2921;color:#a9e1bd;letter-spacing:0}
+.manager-market-filters{display:grid;grid-template-columns:minmax(0,1fr) 165px;gap:9px;margin:16px 0 10px}
+.manager-search{display:flex;align-items:center;gap:9px;min-width:0;min-height:44px;padding:0 12px;border:1px solid #383e46;border-radius:9px;background:#101216;color:#8d969f}
+.manager-search svg{width:16px;height:16px;flex:none}
+.manager-search input{width:100%;min-width:0;border:0;outline:none!important;background:transparent;color:#eef0f2;font-size:12px}
+.manager-search input::placeholder{color:#737c85}
+.manager-market-filters select{min-height:44px;padding-inline:10px;font-size:11px}
+.manager-player-list{display:grid;gap:7px}
+.manager-player-card{display:grid;grid-template-columns:42px minmax(0,1fr) auto auto;align-items:center;gap:10px;min-height:62px;padding:9px 10px;border:1px solid #2d323a;border-radius:10px;background:#191c21;transition:border-color .15s,background .15s}
+.manager-player-card:hover{border-color:#454d57;background:#1d2127}
+.manager-player-rating{display:grid;place-items:center;align-content:center;width:40px;height:40px;border:1px solid #3d6650;border-radius:10px;background:#1c3025;color:#a3e6bd;font-size:17px;font-weight:800;line-height:1}
+.manager-player-rating small{margin-top:3px;color:#8ea89a;font-size:7px;font-weight:750;letter-spacing:.35px}
+.manager-player-copy{display:grid;gap:4px;min-width:0}
+.manager-player-copy strong{overflow:hidden;color:#eceef0;font-size:12px;font-weight:750;text-overflow:ellipsis;white-space:nowrap}
+.manager-player-copy>span{overflow:hidden;color:#939ba4;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.manager-player-copy>span i{margin-inline:3px;color:#626a73;font-style:normal}
+.manager-player-price{color:#e5e8eb;font-size:11px;font-weight:750;white-space:nowrap}
+.manager-buy,.manager-sell{display:grid;justify-items:center;gap:2px;min-width:77px;min-height:37px;padding:5px 9px;border:1px solid #38845a;border-radius:8px;background:#1b3828;color:#c2f0d2;font-size:10px;font-weight:750;cursor:pointer}
+.manager-buy:hover:not(:disabled),.manager-sell:hover:not(:disabled){background:#254b34;border-color:#55ad76}
+.manager-buy:disabled{border-color:#383d43;background:#23262b;color:#777f88;cursor:not-allowed}
+.manager-sell{min-width:84px;min-height:37px;border-color:#414750;background:#22262c;color:#c7ccd2;font-size:9px}
+.manager-sell span{font-size:8px;font-weight:600;color:#9ca4ad;white-space:nowrap}
+.manager-sell:disabled{opacity:.44;cursor:not-allowed}
+.manager-list-note{margin:12px 0 0;color:#87909a;font-size:10px;line-height:1.5}
+.manager-more{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:43px;margin-top:10px;border:1px solid #353b43;border-radius:9px;background:#1b1e23;color:#d4d8dd;font-size:11px;font-weight:700;cursor:pointer}
+.manager-more:hover{border-color:#4e725d;background:#202a24}
+.manager-more span{color:#aab1b8;font-size:10px}
+.manager-empty-market{display:grid;gap:4px;padding:24px;border:1px dashed #3a4048;border-radius:10px;text-align:center}
+.manager-empty-market strong{color:#e6e9ec;font-size:13px}
+.manager-empty-market span{color:#9ca4ac;font-size:11px}
+.manager-season-card{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:23px 25px;background:linear-gradient(115deg,#1b2b22,#15191a 72%);border-color:#36533f}
+.manager-season-card-copy{min-width:0}
+.manager-season-card h2{margin:4px 0 5px;color:#f1f3f4;font-size:20px;font-weight:750}
+.manager-season-card p{max-width:650px;margin:0;color:#aab2b8;font-size:12px;line-height:1.6}
+.manager-season-meta{display:flex;align-items:center;gap:6px;margin-top:9px;color:#8dcda5;font-size:10px;font-weight:650}
+.manager-season-meta svg{width:14px;height:14px}
+.manager-season-card>.btn{min-width:190px;flex:none}
+.manager-season-card .btn-primary{border-color:#54bc80;background:#4ec07e;color:#0d1b12}
+.manager-season-card .btn-primary:hover:not(:disabled){background:#70d598}
+.manager-empty-season{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding:18px 22px}
+.manager-empty-icon{display:grid;place-items:center;width:42px;height:42px;flex:none;border:1px solid #35443b;border-radius:11px;background:#1b2821;color:#8ccba1}
+.manager-empty-icon svg{width:20px;height:20px}
+.manager-empty-season h2{margin:0 0 3px;color:#edf0f1;font-size:15px;font-weight:750}
+.manager-empty-season p{margin:0;color:#9ca4ad;font-size:11px}
+.manager-season-medal{display:grid;place-items:center;min-width:58px;min-height:45px;padding:0 10px;border:1px solid #363e47;border-radius:12px;background:#20242a;color:#dbe0e4;font-size:13px;font-weight:800}
+.manager-season-medal.champion{border-color:#786232;background:#332a17;color:#ffdf91}
+.manager-season-medal svg{width:23px;height:23px}
+.manager-season-finances{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:18px 0;padding:13px;border:1px solid #30353d;border-radius:11px;background:#181b20}
+.manager-season-finances>div{display:grid;gap:4px;padding:3px 9px}
+.manager-season-finances>div+div{border-left:1px solid #343941}
+.manager-season-finances span{color:#9ba3ac;font-size:10px}
+.manager-season-finances strong{color:#e7eaed;font-size:13px;font-weight:750}
+.manager-season-finances strong.positive{color:#9ce1b4}
+.manager-standings{border:1px solid #30353d;border-radius:10px;background:#171a1f}
+.manager-standings summary{padding:12px 14px;color:#dfe3e7;font-size:11px;font-weight:750;cursor:pointer}
+.manager-table-wrap{overflow-x:auto;border-top:1px solid #30353d}
+.manager-table-wrap table{width:100%;border-collapse:collapse;white-space:nowrap}
+.manager-table-wrap th,.manager-table-wrap td{padding:9px 10px;border-bottom:1px solid #2b3037;color:#aeb5bd;font-size:10px;text-align:right}
+.manager-table-wrap th{color:#87909a;font-size:8px;font-weight:750;letter-spacing:.5px}
+.manager-table-wrap th:nth-child(2),.manager-table-wrap td:nth-child(2){text-align:left}
+.manager-table-wrap td:first-child{color:#e5e8ec;font-weight:750}
+.manager-table-wrap td:nth-child(2){color:#e0e3e6}
+.manager-table-wrap td:nth-child(2) span{margin-left:5px;color:#70d49b;font-size:8px;font-weight:800;text-transform:uppercase}
+.manager-table-wrap tr.user-team{background:#193326}
+.manager-table-wrap tr:last-child td{border-bottom:0}
+.manager-career-years{margin:13px 0 0;color:#9099a2;font-size:10px}
+.manager-past-seasons{margin-top:17px}.manager-past-seasons h3{margin:0 0 8px;color:#e3e6e9;font-size:12px;font-weight:750}.manager-past-seasons>div{display:grid;gap:6px}.manager-past-seasons article{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #2e333a;border-radius:9px;background:#191c21;color:#aeb5bd;font-size:10px}.manager-past-seasons article>strong{color:#e5e8eb;font-size:11px}.manager-past-seasons article>span:last-of-type{margin-left:auto}.manager-past-seasons article i{margin-inline:3px;color:#69717b;font-style:normal}.manager-past-seasons article>b{display:flex;align-items:center;gap:4px;color:#efd58f;font-size:9px}.manager-past-seasons article>b svg{width:13px;height:13px}
+@media(max-width:960px){
+ .header-inner{gap:12px;padding-inline:20px}.header-inner nav{margin-left:auto;gap:3px}.nav-link{padding-inline:10px}.header-tools{display:none}
+ .manager-club-hero{align-items:flex-start;flex-direction:column}.manager-club-stats{width:100%}.manager-club-stats>div{flex:1}
+}
+@media(max-width:760px){
+ #app[data-screen="career"]{padding:23px 16px 38px}
+ .site-header .header-inner{align-items:center;padding:10px 16px;gap:5px 12px}
+ .site-header .header-inner nav{width:100%;justify-content:space-between;margin:0;gap:3px}
+ .site-header .nav-link{flex:1;min-width:0;padding-inline:6px;font-size:11px}
+ .manager-page-heading{align-items:flex-start;margin-bottom:17px}.manager-page-heading h1{font-size:34px}.manager-page-heading p{max-width:520px;font-size:13px}.manager-heading-mark{width:48px;height:48px;flex:none}
+ .manager-setup{padding:19px}.manager-setup-grid{grid-template-columns:minmax(0,1fr);gap:12px;margin-top:20px}.manager-field{padding:17px}
+ .manager-start-footer{align-items:stretch;flex-direction:column}.manager-start-footer .btn{width:100%;min-width:0}
+ .manager-club-hero{gap:19px;padding:19px}.manager-club-identity{gap:12px}.manager-club-identity .club-badge{width:54px;height:54px;flex-basis:54px}.manager-club-identity p{font-size:10px;line-height:1.5}
+ .manager-club-stats{gap:7px}.manager-club-stats>div{min-width:0;padding:10px 9px}.manager-club-stats span{font-size:8px;letter-spacing:.2px}.manager-club-stats strong,.manager-club-stats>div:first-child strong{font-size:15px}
+ .manager-workspace{grid-template-columns:minmax(0,1fr);gap:12px}.manager-local-nav{position:sticky;top:0;z-index:3;grid-column:1;width:100%;justify-content:space-between;border-radius:12px;background:#14161aee;backdrop-filter:blur(10px)}.manager-local-nav a{flex:1;padding:9px 7px;text-align:center;font-size:11px}
+ .manager-panel{padding:16px}.manager-section-heading h2{font-size:19px}.manager-market-filters{grid-template-columns:minmax(0,1fr);gap:8px}.manager-market-filters select{width:100%}
+ .manager-player-card{grid-template-columns:38px minmax(0,1fr) auto;gap:8px;padding:8px}.manager-player-rating{width:36px;height:36px;font-size:15px}.manager-player-price{grid-column:3;grid-row:1;font-size:10px}.manager-player-copy{grid-column:2;grid-row:1}.manager-buy,.manager-sell{grid-column:2/4;grid-row:2;display:flex;align-items:center;justify-content:space-between;width:100%;min-height:38px;padding-inline:11px;font-size:10px}.manager-sell span{font-size:9px}.manager-roster-card{grid-template-rows:auto auto}.manager-season-card{align-items:stretch;flex-direction:column;padding:19px;gap:15px}.manager-season-card>.btn{width:100%;min-width:0}.manager-season-finances{gap:3px;padding:9px 4px}.manager-season-finances>div{padding:3px 6px}.manager-season-finances span{font-size:9px}.manager-season-finances strong{font-size:10px}.manager-season-card h2{font-size:18px}.manager-season-card p{font-size:11px}
+}
+@media(max-width:380px){
+ .site-header .header-inner{padding-inline:11px}.site-header .brand .brand-logo{width:138px}.site-header .nav-link{padding-inline:4px;font-size:10px}
+ #app[data-screen="career"]{padding-inline:12px}.manager-club-stats>div{padding-inline:6px}.manager-club-stats span{font-size:7px}.manager-season-finances strong{font-size:9px}
+}
