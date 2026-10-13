@@ -17,12 +17,13 @@ function setupView({clubs,setup}){
 
 function rosterCard(player,career){
   const value=playerValue(player),sellValue=Math.round(value*.7*10)/10;
-  return `<article class="manager-player-card manager-roster-card"><span class="manager-player-rating">${player.ovr}<small>OVR</small></span><div class="manager-player-copy"><strong>${esc(player.nome)}</strong><span>${esc(role(player))} <i>·</i> ${player.initial?'Elenco inicial':`Contratado em ${player.signedSeason||career.season}`}</span></div><span class="manager-player-price">${player.initial?'Base':money(player.transferFee)}</span><button class="manager-sell" data-action="manager-sell" data-value="${esc(player.entryId)}" ${career.roster.length<=11?'disabled':''} aria-label="Vender ${esc(player.nome)} por ${money(sellValue)}">Vender <span>${money(sellValue)}</span></button></article>`;
+  const playerRole=role(player);
+  return `<article class="manager-player-card manager-roster-card" data-position="${esc(category(player))}"><span class="manager-player-rating">${player.ovr}<small>OVR</small></span><div class="manager-player-copy"><strong>${esc(player.nome)}</strong><span><b class="manager-player-role">${esc(playerRole)}</b><i>·</i>${player.initial?'Elenco inicial':`Contratado em ${player.signedSeason||career.season}`}</span></div><span class="manager-player-price">${player.initial?'Elenco base':money(player.transferFee)}</span><button class="manager-sell" data-action="manager-sell" data-value="${esc(player.entryId)}" ${career.roster.length<=11?'disabled':''} aria-label="Vender ${esc(player.nome)} por ${money(sellValue)}">Vender <span>${money(sellValue)}</span></button></article>`;
 }
 
 function marketCard(player,budget){
   const affordable=player.value<=budget;
-  return `<article class="manager-player-card"><span class="manager-player-rating">${player.ovr}<small>OVR</small></span><div class="manager-player-copy"><strong>${esc(player.nome)}</strong><span>${esc(tags(player))} <i>·</i> ${esc(player.sourceClubName)} ${player.sourceYear}</span></div><span class="manager-player-price">${money(player.value)}</span><button class="manager-buy ${affordable?'':'unaffordable'}" data-action="manager-buy" data-value="${esc(player.id)}" ${affordable?'':'disabled'}>${affordable?'Contratar':'Sem saldo'}</button></article>`;
+  return `<article class="manager-player-card manager-market-card" data-position="${esc(category(player))}"><span class="manager-player-rating">${player.ovr}<small>OVR</small></span><div class="manager-player-copy"><strong>${esc(player.nome)}</strong><span><b class="manager-player-role">${esc(role(player))}</b><i>·</i>${esc(player.sourceClubName)} <i>·</i> ${player.sourceYear}</span></div><span class="manager-player-price">${money(player.value)}</span><button class="manager-buy ${affordable?'':'unaffordable'}" data-action="manager-buy" data-value="${esc(player.id)}" ${affordable?'':'disabled'}>${affordable?'Contratar':'Sem saldo'}</button></article>`;
 }
 
 export function renderManagerMarketResults(career,allSquads,filters){
