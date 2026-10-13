@@ -4,6 +4,8 @@
  * Onze destaques por temporada com cobertura de posições; não é um ranking oficial.
  * Camisas desconhecidas ficam vazias. Vínculos e conquistas: fontes-c.md.
  */
+import { capPlayerOvr } from './ratings.js';
+
 const slug = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const profiles = {
@@ -21,7 +23,7 @@ function p(nome, positions, ovr, id = slug(nome)) {
     keys.map((key,i)=>[key,Math.max(1,Math.min(99,ovr+profiles[tags[0]][i]))]))};
 }
 const s = (ano,conquistas,jogadores)=>({ano,conquistas,jogadores});
-const c = (id,nome,monograma,cores,temporadas)=>({id,nome,monograma,cores,temporadas});
+const c = (id,nome,monograma,cores,temporadas)=>({id,nome,monograma,cores,temporadas:temporadas.map(season=>({...season,jogadores:season.jogadores.map(player=>capPlayerOvr(player))}))});
 
 export const clubsC = [
   c('vasco','Vasco da Gama','VG',['#15191E','#FAFAFA'],[

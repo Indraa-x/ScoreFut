@@ -1,7 +1,19 @@
-/** Editorial OVR calibration. Awards inform the protected group, not the scores. */
-export const RATINGS_VERSION = 1;
+/** Editorial OVR calibration. Awards define a ceiling, not each player's exact score. */
+export const RATINGS_VERSION = 2;
+export const MAX_OVR = 96;
+export const NON_WINNER_OVR_CAP = 94;
 
-// Award winners and established greats retain their existing seasonal ratings.
+// Award-winning peaks may reach 96; other elite players stop at 94.
+// Maradona's honorary Ballon d'Or is recognized alongside the annual winners.
+export const BALLON_DOR_WINNERS = new Set([
+  'lionel-messi','cristiano-ronaldo','ronaldo','zinedine-zidane','kaka',
+  'marco-van-basten','hristo-stoichkov','matthias-sammer','rivaldo','luis-figo',
+  'andriy-shevchenko','luka-modric','karim-benzema','rodri','ousmane-dembele',
+  'ronaldinho-gaucho','fabio-cannavaro','pavel-nedved','george-weah','michael-owen',
+  'diego-maradona',
+]);
+
+// Preserve the editorial seasonal ratings before applying the new elite ceilings.
 // IDs identify people: fame never removes seasonal differences already in the data.
 export const PROTECTED_PLAYERS = new Set([
   'lionel-messi', 'cristiano-ronaldo', 'ronaldo', 'diego-maradona',
@@ -86,13 +98,26 @@ export const ELITE_ADJUSTMENTS = Object.freeze({
 const clamp = (value, min = 50) => Math.max(min, Math.min(99, Math.round(value)));
 const standardOVR = ovr => ovr <= 92 ? ovr - 10 : ovr <= 94 ? ovr - 8 : ovr <= 96 ? ovr - 7 : ovr - 6;
 
-/** Rebalance OVR and the simulation attributes together, before roster sorting. */
-export function recalibratePlayer(player, attributeFloor = 1) {
-  if (PROTECTED_PLAYERS.has(player.id)) return player;
-  const adjustment = ELITE_ADJUSTMENTS[player.id];
-  const ovr = clamp(adjustment === undefined ? standardOVR(player.ovr) : player.ovr + adjustment);
-  const delta = ovr - player.ovr;
-  return { ...player, ovr, atributos: Object.fromEntries(
+/** Apply the elite ceiling to already calibrated seasonal ratings. */
+export function capPlayerOvr(player, attributeFloor = 1) {
+  const cap = BALLON_DOR_WINNERS.has(player.id) ? MAX_OVR : NON_WINNER_OVR_CAP;
+  if (player.ovr <= cap) return player;
+  const delta = cap - player.ovr;
+  return { ...player, ovr: cap, atributos: Object.fromEntries(
     Object.entries(player.atributos).map(([key, value]) => [key, clamp(value + delta, attributeFloor)])
   ) };
+}
+
+/** Rebalance OVR and the simulation attributes together, before roster sorting. */
+export function recalibratePlayer(player, attributeFloor = 1) {
+  const adjustment = ELITE_ADJUSTMENTS[player.id];
+  const calibratedOvr = PROTECTED_PLAYERS.has(player.id)
+    ? player.ovr
+    : clamp(adjustment === undefined ? standardOVR(player.ovr) : player.ovr + adjustment);
+  const calibrated = calibratedOvr === player.ovr ? player : { ...player, ovr: calibratedOvr };
+  const ratingDelta = calibratedOvr - player.ovr;
+  const withCalibratedAttributes = ratingDelta ? { ...calibrated, atributos: Object.fromEntries(
+    Object.entries(player.atributos).map(([key, value]) => [key, clamp(value + ratingDelta, attributeFloor)])
+  ) } : calibrated;
+  return capPlayerOvr(withCalibratedAttributes, attributeFloor);
 }

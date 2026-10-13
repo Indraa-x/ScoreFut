@@ -7,10 +7,10 @@ As notas são uma avaliação editorial para o ScoreFut, não notas oficiais da 
 | 70–79 | Apoio e titulares com menor impacto naquela edição |
 | 80–84 | Bons titulares |
 | 85–89 | Destaques e jogadores de alto nível |
-| 90–94 | Elite excepcional e grandes nomes históricos |
-| 95–99 | Temporadas extraordinárias das lendas preservadas |
+| 90–94 | Elite e grandes temporadas; teto dos jogadores sem Bola de Ouro |
+| 95–96 | Temporadas de auge de vencedores da Bola de Ouro |
 
-Os vencedores dos prêmios mundiais presentes na base e as lendas reconhecidas mantêm suas notas anteriores, conforme solicitado. A fama não iguala as temporadas de uma pessoa: Messi 2009 continua com 98 e Messi 2011 com 99; Henry conserva a diferença entre Monaco e Arsenal. Há uma curadoria própria de grandes nomes que nunca ganharam esses prêmios, incluindo goleiros, defensores e ídolos sul-americanos.
+O teto do jogo agora é 96, reservado aos vencedores da Bola de Ouro em suas temporadas de auge. Os demais jogadores, mesmo lendas e finalistas, chegam no máximo a 94. Diego Maradona também entra no grupo de 96 por ter recebido o troféu honorário da Bola de Ouro. As diferenças entre temporadas continuam preservadas abaixo desses limites.
 
 Para os demais, `ratings.js` abre a escala das notas de referência: os antigos 83–92 passam a 73–82; 93–94 passam a 85–86; 95–96 passam a 88–89; 97–99 passam a 91–93. Os jogadores de elite listados em `ELITE_ADJUSTMENTS` recebem ajustes individuais que preservam a diferença entre suas temporadas. Esses critérios são decisões do jogo, não classificações deduzidas das premiações.
 
@@ -18,8 +18,14 @@ OVR e atributos da simulação mudam juntos, preservando o perfil da posição e
 
 | Edição | Jogador | Antes | Agora |
 |---|---|---:|---:|
-| Barcelona 2011 | Lionel Messi | 99 | 99 |
-| Real Madrid 2017 | Cristiano Ronaldo | 98 | 98 |
+| Barcelona 2011 | Lionel Messi | 99 | 96 |
+| Real Madrid 2017 | Cristiano Ronaldo | 98 | 96 |
+| Inter 1998 | Ronaldo | 99 | 96 |
+| Arsenal 2004 | Thierry Henry | 99 | 94 |
+| Napoli 1990 | Diego Maradona | 98 | 96 |
+| Vasco 2000 | Romário | 98 | 94 |
+| Manchester City 2023 | Erling Haaland | 98 | 94 |
+| Liverpool 2025 | Mohamed Salah | 98 | 94 |
 | PSG 2025 | Ousmane Dembélé | 96 | 96 |
 | Chelsea 2012 | Frank Lampard | 93 | 93 |
 | Chelsea 2012 | Juan Mata | 94 | 86 |
@@ -37,6 +43,7 @@ Referências consultadas para conferir premiações e reconhecimento, sem atribu
 
 - [FIFA: histórico dos vencedores dos prêmios de jogador do mundo](https://www.fifa.com/en/the-best-fifa-football-awards/2025/articles/all-award-winners-history).
 - [UEFA: todos os vencedores da Bola de Ouro](https://www.uefa.com/ballondor/news/0287-195e642735da-0594342b9554-1000--history-of-the-ballon-d-or-all-the-winners/).
+- [UEFA: Maradona e Pelé receberam troféus honorários](https://www.uefa.com/ballondor/news/0292-1c270550362a-8ed0eb6212eb-1000--2024-ballon-d-or-ceremony-when-and-where-all-the-nominees-h/).
 - [UEFA: seleção do ano de 2012](https://www.uefa.com/news-media/news/0205-0e82e5de00d7-2a587889375f-1000--uefa-com-team-of-the-year-2012-announced/).
 - [FIFA: Maradona e o gol do século](https://inside.fifa.com/tournaments/mens/worldcup/1986mexico/news/maradona-s-immortal-11-second-dash-2802747).
 
