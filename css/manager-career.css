@@ -194,7 +194,7 @@
 .manager-search:focus-within{border-color:#53bd80;box-shadow:0 0 0 3px #53bd801c}
 .manager-search input{font-size:12px}
 .manager-market-filters select{padding-inline:12px;font-size:11px}
-.manager-market-count{display:inline-flex;align-items:center;gap:7px;width:max-content;max-width:100%;margin:0 0 10px;padding:6px 10px;border-color:#375542;border-radius:999px;background:#1c2e22;color:#aee2bd;font-size:10px;letter-spacing:.1px}
+.manager-market-count{display:inline-flex;place-self:start;align-items:center;gap:7px;width:max-content;max-width:100%;margin:0 0 10px;padding:6px 10px;border-color:#375542;border-radius:999px;background:#1c2e22;color:#aee2bd;font-size:10px;letter-spacing:.1px}
 .manager-market-count:before{width:6px;height:6px;border-radius:50%;background:#60d38c;box-shadow:0 0 10px #60d38c80;content:""}
 .manager-player-list{gap:8px}
 .manager-player-card{position:relative;grid-template-columns:44px minmax(0,1fr) auto auto;gap:11px;min-height:68px;padding:10px 11px;border-color:#303a35;border-radius:12px;background:linear-gradient(110deg,#1b211e,#191d1b 70%);box-shadow:inset 0 1px #ffffff05;transition:transform .16s,border-color .16s,background .16s,box-shadow .16s}
