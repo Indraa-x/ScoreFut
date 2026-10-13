@@ -191,7 +191,7 @@ main{max-width:1400px;padding:36px 36px 56px;min-height:calc(100vh - 170px)}
 .standings tr.user{background:#193326;color:#fff}
 .standings tr.qualified{color:#82d9a8}
 .draw-empty-copy{background:#20252b;color:#e7eaed}
-.goal-warning,.feed-empty{background:#211c18;color:#f0c487;border-color:#50402b}
+.feed-empty{background:#211c18;color:#f0c487;border-color:#50402b}
 
 /* Match center: legible scoreboard and side-by-side goal information. */
 .match-card,.match-goals-panel,.fixtures-panel,.recent-panel,.result-campaign{background:#14161b;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 24px #0002}

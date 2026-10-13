@@ -96,9 +96,8 @@
  #app[data-screen="draft"] .reroll-buttons .btn{font-size:13px;min-height:52px;padding:10px 8px;gap:7px}
  #app[data-screen="draft"] .draft-left{display:contents}
  #app[data-screen="draft"] .players-panel{order:2}
- #app[data-screen="draft"] .goal-warning{order:3;font-size:12px;margin:0}
- #app[data-screen="draft"] .draft-center{order:4}
- #app[data-screen="draft"] .draft-right{order:5}
+ #app[data-screen="draft"] .draft-center{order:3}
+ #app[data-screen="draft"] .draft-right{order:4}
  #app[data-screen="draft"] .roster-list{max-height:340px;overflow-y:auto;overscroll-behavior-y:contain}
  #app[data-screen="draft"] .player-select{min-height:72px;padding:12px;gap:10px}
  #app[data-screen="draft"] .player-name{font-size:15px;line-height:1.3}

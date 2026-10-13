@@ -93,7 +93,6 @@ main{padding:36px 32px 52px}
 .box-widget strong.level-name{font-size:15px;line-height:1.4}.box-widget small{font-size:10px;line-height:1.5;display:block;margin-top:9px}
 .draft-tip{font-size:12px;line-height:1.65;background:none;border:0;padding:16px 5px;color:var(--muted)}
 .draft-tip svg{width:15px;height:15px;vertical-align:-3px;margin-right:5px}
-.goal-warning{font-size:12px;line-height:1.5;margin:0 3px;color:var(--muted)}.goal-warning svg{width:15px;height:15px}
 .daily-banner{font-size:13px}.feed-empty{font-size:14px;padding:32px 20px}
 .summary-pitch .draft-pitch{max-width:480px}.summary-layout{grid-template-columns:420px minmax(0,1fr)}
 .summary-players .summary-player-name{font-size:14px}.modal-head h2{font-size:26px}.help-step{font-size:14px;line-height:1.6}
@@ -128,7 +127,7 @@ main{padding:36px 32px 52px}
   .screen-title{display:block}.screen-title h1{font-size:28px}.screen-title p{font-size:13px;max-width:none}
   .draft-progress{margin-top:18px;justify-content:space-between;align-items:center;flex-direction:row}.draft-progress .label{font-size:12px}.progress-steps span{width:26px}.reroll-counter{font-size:12px}
   .draft-layout{grid-template-columns:minmax(0,1fr);gap:16px;max-width:520px}
-  .draft-left{display:contents}.draw-card{order:1}.draft-center{order:2}.players-panel{order:3}.goal-warning{order:4}.draft-right{order:5;grid-column:auto}
+  .draft-left{display:contents}.draw-card{order:1}.draft-center{order:2}.players-panel{order:3}.draft-right{order:4;grid-column:auto}
   .draw-card{padding:18px}.draw-club{margin:8px 0}.draw-club h2{font-size:25px}.draw-card-top{margin-bottom:4px}
   .season-award{font-size:12px}.reroll-buttons .btn{font-size:12px;min-height:42px}.reroll-block{margin-top:13px;padding-top:13px}
   .draft-center .draft-pitch{width:min(calc(100% - 32px),360px)}.pitch-header{padding:18px}
@@ -265,7 +264,7 @@ main:has(.draft-layout),main:has(.summary-layout){max-width:1760px;padding-left:
 @media(max-width:760px){
  main:has(.draft-layout),main:has(.summary-layout){padding-left:12px;padding-right:12px}
  .draft-layout{grid-template-columns:minmax(0,1fr);gap:18px;max-width:680px}
- .draft-left{display:contents}.draw-card{order:1}.draft-center{order:2}.players-panel{order:3}.goal-warning{order:4}.draft-right{order:5;grid-column:auto}
+ .draft-left{display:contents}.draw-card{order:1}.draft-center{order:2}.players-panel{order:3}.draft-right{order:4;grid-column:auto}
  .draft-center .draft-pitch,.summary-pitch .draft-pitch{width:calc(100% - 8px);max-width:640px}
  .players-heading{padding:20px}.roster-list{max-height:760px}
  .player-select{min-height:88px;padding:18px 16px}
@@ -338,7 +337,6 @@ main:has(.draft-layout),main:has(.summary-layout){max-width:1760px;padding-left:
  #app[data-screen="draft"] .player-details>span:not(.position-chip){display:none}
  #app[data-screen="draft"] .player-ovr{font-size:24px;padding:0}
  #app[data-screen="draft"] .player-ovr small{font-size:8px;margin-top:2px}
- #app[data-screen="draft"] .goal-warning{flex:0 0 17px;font-size:10px;line-height:1.4;margin:0 4px}
  #app[data-screen="draft"] .draft-center{grid-column:2;grid-row:2;min-height:0;height:100%;display:grid;grid-template-rows:42px minmax(0,1fr) 36px;padding:0 6px;container-type:size}
  #app[data-screen="draft"] .pitch-header{padding:10px 12px}
  #app[data-screen="draft"] .pitch-header h2{font-size:19px}
