@@ -28,7 +28,7 @@ export function automaticSlot(draft,formation,player) {
   return availableSlots(draft,formation,player).sort((a,b)=>positionFit(player,a)-positionFit(player,b)||naturalOrder(a)-naturalOrder(b))[0]||null;
 }
 /** Pure draw: every exposed or discarded squad stays in seen, shared rerolls persist. */
-export function drawSquad(draft,squads,formation,kind='new') {
+export function drawSquad(draft,squads,formation,kind='new',mode=draft.mode||'') {
   if(draft.picks.length>=TEAM_SIZE) throw new Error('Seu time já está completo.');
   const reroll=kind!=='new';if(reroll&&draft.rerolls<=0) throw new Error('Você usou todos os re-sorteios.');
   const current=squads.find(s=>s.id===draft.currentSquadId);
@@ -41,7 +41,23 @@ export function drawSquad(draft,squads,formation,kind='new') {
     &&(!needsForcedKeeper||s.jogadores.some(p=>p.tags.includes('GOL')))
     &&s.jogadores.some(p=>!draft.picks.some(pick=>pick.player.id===p.id)&&availableSlots(draft,formation,p).length));
   if(!candidates.length) throw new Error(kind==='season'?'Não há outra temporada compatível disponível para este clube.':'Não há elenco compatível com as posições que faltam.');
-  const rng=mulberry32(draft.rngState);const clubIds=[...new Set(candidates.map(s=>s.clubId))];const clubId=clubIds[Math.floor(rng()*clubIds.length)];const clubSeasons=candidates.filter(s=>s.clubId===clubId);const squad=clubSeasons[Math.floor(rng()*clubSeasons.length)];
+  const rng=mulberry32(draft.rngState);const clubIds=[...new Set(candidates.map(s=>s.clubId))];
+  const clubAverages=new Map();
+  if(mode==='champions')for(const squad of squads){
+    const record=clubAverages.get(squad.clubId)||{total:0,count:0};
+    for(const player of squad.jogadores){record.total+=player.ovr;record.count++;}
+    clubAverages.set(squad.clubId,record);
+  }
+  const clubWeight=clubId=>{
+    if(mode!=='champions')return 1;
+    const record=clubAverages.get(clubId);
+    const average=record?.count?record.total/record.count:82;
+    return Math.exp(-Math.max(0,average-82)*.05);
+  };
+  const weights=clubIds.map(clubWeight),totalWeight=weights.reduce((sum,weight)=>sum+weight,0);
+  let roll=rng()*totalWeight,clubIndex=weights.findIndex(weight=>(roll-=weight)<=0);
+  if(clubIndex<0)clubIndex=clubIds.length-1;
+  const clubId=clubIds[clubIndex],clubSeasons=candidates.filter(s=>s.clubId===clubId),squad=clubSeasons[Math.floor(rng()*clubSeasons.length)];
   return {...draft,rngState:rng.getState(),rerolls:draft.rerolls-(reroll?1:0),currentSquadId:squad.id,seen:[...draft.seen,squad.id]};
 }
 export function confirmPick(draft,squads,formation,playerId,targetSlotId) {

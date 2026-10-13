@@ -7,12 +7,12 @@ import {calculateTeam,FORMATIONS,squadTeam} from '../js/engine.js';
 import {renderSetup,renderSummary,renderQuickClubCards,renderHelp} from '../js/ui.js';
 
 test('club cards show the latest available season and the same rating as its actual selected lineup',()=>{
-  assert.equal(quickCatalog.length,36);
+  assert.equal(quickCatalog.length,40);
   for(const club of quickCatalog){
     const selection=selectQuickTeam({squadId:club.squad.id,seed:1,date:'2026-10-11',squads:allSquads});
     assert.equal(club.overall,Math.round(calculateTeam(selection.draft.picks).overall));
     assert.equal(club.squad.ano,Math.max(...allSquads.filter(item=>item.clubId===club.id).map(item=>item.ano)));
-    assert.equal(club.seasonCount,4);
+    assert.equal(club.seasonCount,allSquads.filter(item=>item.clubId===club.id).length);
     const preview=renderSummary({mode:'quick',...selection});
     assert.ok(preview.includes(club.squad.conquistas));
     assert.ok(preview.includes('aria-current="step"'));
@@ -26,8 +26,8 @@ test('search ignores accents, case and outer spaces, and composes with region fi
   assert.deepEqual(filterQuickClubs({search:'PSG'}).map(club=>club.id),['psg']);
   assert.deepEqual(filterQuickClubs({search:'barcelona',region:'brasil'}),[]);
   assert.equal(filterQuickClubs({region:'brasil'}).length,15);
-  assert.equal(filterQuickClubs({region:'europa'}).length,21);
-  assert.equal(filterQuickClubs({search:'  ',region:'all'}).length,36);
+  assert.equal(filterQuickClubs({region:'europa'}).length,25);
+  assert.equal(filterQuickClubs({search:'  ',region:'all'}).length,40);
   assert.equal(filterQuickClubs({search:'not a club'}).length,0);
 });
 
@@ -50,7 +50,7 @@ test('filtered selection and empty state remain actionable and escape the search
 test('formation-specific cards expose only compatible seasons and keep incompatible clubs visibly disabled',()=>{
   for(const formation of Object.keys(FORMATIONS)){
     const catalog=filterQuickClubs({formation});
-    assert.equal(catalog.length,36);
+    assert.equal(catalog.length,40);
     for(const club of catalog){
       const seasons=quickSeasons(club.id,formation);
       assert.equal(club.seasonCount,seasons.length);

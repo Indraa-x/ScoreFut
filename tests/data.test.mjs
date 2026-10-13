@@ -8,16 +8,16 @@ const porNome = nome => entradas.filter(jogador => jogador.nome === nome);
 const porId = id => entradas.filter(jogador => jogador.id === id);
 const elenco = (clube, ano) => allSquads.find(time => time.clubId === clube && time.ano === ano);
 
-test('a base completa contém os 36 clubes, 144 elencos e 1584 entradas válidas', () => {
+test('a base completa contém os 40 clubes, 148 elencos e 1628 entradas válidas', () => {
   assert.equal(ELENCO_TAMANHO, 11);
   assert.deepEqual(validateData(), {
-    valid: true, errors: [], clubs: 36, squads: 144, players: 1584
+    valid: true, errors: [], clubs: 40, squads: 148, players: 1628
   });
-  assert.equal(entradas.length, 1584);
-  assert.equal(new Set(allSquads.map(time => time.id)).size, 144);
+  assert.equal(entradas.length, 1628);
+  assert.equal(new Set(allSquads.map(time => time.id)).size, 148);
 });
 
-test('cada clube usa exatamente os quatro anos solicitados', () => {
+test('cada clube mantém as temporadas históricas declaradas', () => {
   const esperados = {
     'real-madrid': [2002, 2014, 2017, 2024], barcelona: [1992, 2009, 2011, 2015],
     bayern: [2001, 2010, 2013, 2020], milan: [1990, 1994, 2003, 2007],
@@ -37,7 +37,8 @@ test('cada clube usa exatamente os quatro anos solicitados', () => {
     fluminense: [2007, 2010, 2012, 2023], botafogo: [1995, 2007, 2023, 2024],
     cruzeiro: [1997, 2003, 2013, 2014], 'atletico-mineiro': [1999, 2013, 2021, 2024],
     'athletico-paranaense': [2001, 2005, 2018, 2021], bahia: [2001, 2017, 2021, 2025],
-    fortaleza: [2018, 2019, 2022, 2023]
+    fortaleza: [2018, 2019, 2022, 2023],
+    celtic: [1967], marseille: [1993], psv: [1988], roma: [2007]
   };
   assert.deepEqual(new Set(clubs.map(clube => clube.id)), new Set(Object.keys(esperados)));
   for (const clube of clubs) {

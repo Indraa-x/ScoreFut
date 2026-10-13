@@ -2,9 +2,11 @@
 
 Jogo de draft e simulação de futebol em português do Brasil. Monte uma escalação de **11 jogadores — um goleiro e dez de linha**. Cada sorteio oferece onze destaques de um clube em uma temporada histórica; escolha um atleta por rodada e dispute a competição. O Modo rápido usa os onze titulares de um clube na formação escolhida.
 
-São 36 clubes, quatro temporadas por clube e 144 elencos. O projeto usa HTML, CSS e JavaScript com módulos ES, sem framework ou dependências de execução. Notas e atributos são avaliações editoriais. Os 36 escudos dos clubes foram baixados do [Football Logos](https://football-logos.cc/) em PNG transparente de 256×256 e ficam em `assets/logos/`, com as URLs de origem em `sources.json`. Sorteios, partidas, campanhas e chaveamento usam esses arquivos locais. “Meu time” conserva seu símbolo genérico.
+São 40 clubes e 148 elencos históricos; os 36 clubes originais têm quatro temporadas, e quatro clubes europeus têm uma edição de destaque cada. O projeto usa HTML, CSS e JavaScript com módulos ES, sem framework ou dependências de execução. Notas e atributos são avaliações editoriais. Os 36 escudos originais foram baixados do [Football Logos](https://football-logos.cc/) em PNG transparente de 256×256 e ficam em `assets/logos/`, com as URLs de origem em `sources.json`. Os quatro novos clubes usam monogramas até que seus escudos sejam incluídos. Sorteios, partidas, campanhas e chaveamento usam esses arquivos locais. “Meu time” conserva seu símbolo genérico.
 
 A Copa do Brasil oferece Flamengo, Palmeiras, São Paulo, Corinthians, Santos, Grêmio, Internacional, Vasco, Fluminense, Botafogo, Cruzeiro, Atlético-MG, Athletico-PR, Bahia e Fortaleza. Boca Juniors e River Plate foram removidos da base ativa.
+
+As quatro escalações europeias adicionais e suas referências estão em [VERIFICACAO-CHAMPIONS.md](../data/VERIFICACAO-CHAMPIONS.md).
 
 ## Executar localmente
 
@@ -69,10 +71,10 @@ A força geral é a média do OVR dos jogadores escalados. Clube e temporada nã
 |---|---|
 | Modo rápido | Escolha a formação e o clube, confira o elenco e clique em Pular para simulação; mata-mata com 16 times e até quatro partidas |
 | Copa do Brasil | Até 16 equipes, uma temporada por clube brasileiro e Meu time; oitavas, quartas e semifinais em ida e volta; final em jogo único |
-| Champions League | Somente os 21 clubes europeus históricos da base; 32 elencos no formato clássico de grupos e mata-mata |
+| Champions League | 25 clubes europeus históricos da base; 32 elencos no formato clássico de grupos e mata-mata |
 | Modo Lendas | Copa com as notas ocultas durante o draft |
 
-Modo rápido: substitui a Copa ScoreFut na página inicial e na seleção de modos, com gradiente amarelo, âmbar e laranja. A mesma identidade aparece nos botões, etapas, filtros, atributos, resultado e PNG da campanha rápida. Primeiro escolha uma das oito formações e clique em Escolher time. Depois escolha um dos 36 clubes; a temporada mais recente compatível com a formação escolhida aparece pronta no campinho. A formação não é substituída automaticamente. Clubes sem uma temporada compatível ficam identificados e desabilitados; use Alterar formação para escolher outro esquema. Essa escolha não inicia a simulação. Na prévia, é possível trocar entre temporadas compatíveis do clube ou voltar para escolher outro time mantendo a formação. Somente **Pular para simulação** calcula a campanha inteira, usando o motor por OVR e atributos com a ajuda leve de dificuldade. Escudo, nome do clube e jogadores são preservados no resultado e no histórico.
+Modo rápido: substitui a Copa ScoreFut na página inicial e na seleção de modos, com gradiente amarelo, âmbar e laranja. A mesma identidade aparece nos botões, etapas, filtros, atributos, resultado e PNG da campanha rápida. Primeiro escolha uma das oito formações e clique em Escolher time. Depois escolha um dos 40 clubes; a temporada mais recente compatível com a formação escolhida aparece pronta no campinho. A formação não é substituída automaticamente. Clubes sem uma temporada compatível ficam identificados e desabilitados; use Alterar formação para escolher outro esquema. Essa escolha não inicia a simulação. Na prévia, é possível trocar entre temporadas compatíveis do clube ou voltar para escolher outro time mantendo a formação. Somente **Pular para simulação** calcula a campanha inteira, usando o motor por OVR e atributos com a ajuda leve de dificuldade. Escudo, nome do clube e jogadores são preservados no resultado e no histórico.
 
 A biblioteca do Modo rápido tem busca sem distinção de acentos ou maiúsculas, filtros Brasil/Europa e cards com temporada e OVR do mesmo elenco que será escolhido. A prévia mostra os titulares no campo, os quatro atributos do time, as conquistas da temporada e uma única ação principal para simular. O estado da busca é mantido ao voltar para escolher outro clube. As telas inicial, de revisão, de partida e de resultado compartilham superfícies claras, títulos fortes e divisores discretos em `css/design-system.css`; o fluxo rápido fica em `css/quick-game.css`.
 
@@ -115,7 +117,7 @@ Na Europa, o ano indica o encerramento da temporada: 2024 significa 2023/24. Na 
 
 As referências de vínculo, posição e conquistas estão em [VERIFICACAO-A.md](../data/VERIFICACAO-A.md) , [fontes-b.md](../data/fontes-b.md) e [fontes-c.md](../data/fontes-c.md).
 
-A validação confere 36 clubes, quatro anos distintos por clube, 144 elencos, **1.584 registros**, onze jogadores únicos por elenco, exatamente um goleiro, tags válidas, OVR e atributos obrigatórios. No console:
+A validação confere 40 clubes, temporadas únicas, 148 elencos, **1.628 registros**, onze jogadores únicos por elenco, exatamente um goleiro, tags válidas, OVR e atributos obrigatórios. No console:
 
 ```js
 const { validateData } = await import('./data/clubs.js');
@@ -140,7 +142,7 @@ npm run check
 node tests/calibrate.mjs 1000
 ```
 
-Os testes cobrem onze escolhas, três re-sorteios compartilhados, impedimento de duplicatas, posições exatas, migração de saves antigos, as 144 escalações adversárias, simulação por semente, xG, eventos, pênaltis, grupos e chaveamento. Também verificam o avanço por rodada, a ausência de resultados futuros, continuidade das 22 bolinhas e da bola, relógio, velocidades e pausa da animação.
+Os testes cobrem onze escolhas, três re-sorteios compartilhados, impedimento de duplicatas, posições exatas, migração de saves antigos, as 148 escalações adversárias, simulação por semente, xG, eventos, pênaltis, grupos e chaveamento. Também verificam o avanço por rodada, a ausência de resultados futuros, continuidade das 22 bolinhas e da bola, relógio, velocidades e pausa da animação.
 
 ## Arquivos e persistência
 

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {FORMATIONS,TEAM_SIZE,hashSeed,positionFit} from '../js/engine.js';
 import {allSquads} from '../data/clubs.js';
+import {squadsForMode} from '../data/competitions.js';
 import {createDraft,availableSlots,automaticSlot,drawSquad,confirmPick,migrateDraft} from '../js/draft.js';
 const formation='4-3-3',slots=FORMATIONS[formation].slots;
 const player=(id,tag)=>({id,nome:id,tags:[tag],ovr:88,atributos:{ataque:88,meio:88,defesa:88,finalizacao:88,reflexo:88,posicionamento:88}});
@@ -28,6 +29,30 @@ test('daily draws are deterministic and never allow rerolls',()=>{
  const run=()=>{let next=d;for(const slot of slots){next=drawSquad(next,squads,formation);next=pick(next,slot.id)}return next};
  assert.deepEqual(run(),run());assert.equal(d.picks.length,0);assert.equal(d.rngState,hashSeed('ScoreFut:2026-10-10'));
  const drawn=drawSquad(d,squads,formation);assert.throws(()=>drawSquad(drawn,squads,formation,'club'),/todos os re-sorteios/);assert.throws(()=>drawSquad(drawn,squads,formation,'season'),/todos os re-sorteios/);
+});
+test('Champions keeps strong clubs attainable while making them slightly less common',()=>{
+ const pool=squadsForMode(allSquads,'champions');
+ const averages=new Map();
+ for(const squad of pool){
+  const record=averages.get(squad.clubId)||{total:0,count:0};
+  for(const player of squad.jogadores){record.total+=player.ovr;record.count++;}
+  averages.set(squad.clubId,record);
+ }
+ const strong=new Set([...averages].filter(([,record])=>record.total/record.count>=85).map(([id])=>id));
+ let weightedStrong=0,uniformStrong=0,weightedSamples=0;
+ for(let seed=0;seed<1000;seed++){
+  const initial=createDraft(seed,'date','champions');
+  const weighted=drawSquad(initial,pool,formation,'new','champions');
+  const uniform=drawSquad(initial,pool,formation,'new','quick');
+  const weightedClub=pool.find(squad=>squad.id===weighted.currentSquadId).clubId;
+  const uniformClub=pool.find(squad=>squad.id===uniform.currentSquadId).clubId;
+  if(strong.has(weightedClub))weightedStrong++;
+  if(strong.has(uniformClub))uniformStrong++;
+  if(weightedClub==='real-madrid')weightedSamples++;
+ }
+ assert.ok(weightedStrong<uniformStrong*.92,`${weightedStrong} vs ${uniformStrong}`);
+ assert.ok(weightedStrong>100,'os clubes fortes continuam aparecendo com frequência');
+ assert.ok(weightedSamples>0,'Real Madrid continua podendo ser sorteado');
 });
 test('the same person cannot be selected twice across seasons',()=>{
  const person=player('same-person','MC'),current={...squads[0],jogadores:[person,...squads[0].jogadores]};

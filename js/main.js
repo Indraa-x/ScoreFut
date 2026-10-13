@@ -94,7 +94,7 @@ async function roll(kind='new'){
   state.rolling=true;render();
   await new Promise(r=>setTimeout(r,1500));
   if(state.screen!=='draft'||state.draft!==draftAtStart){state.rolling=false;return;}
-  try{state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind);drawn=true;persist();}
+  try{state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind,state.mode);drawn=true;persist();}
   catch(error){toast(error.message);}
   finally{
     state.rolling=false;render();

@@ -7,8 +7,9 @@
 import { clubsA } from './clubs-a.js';
 import { clubsB } from './clubs-b.js';
 import { clubsC } from './clubs-c.js';
+import { championsAdditions } from './champions-additions.js';
 export const ELENCO_TAMANHO = 11;
-export const clubs = [...clubsA, ...clubsB, ...clubsC];
+export const clubs = [...clubsA, ...clubsB, ...clubsC, ...championsAdditions];
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
 // Uma pessoa conserva o mesmo ID mesmo quando o nome de exibição muda.
 const aliases = {'di-maria':'angel-di-maria','jorginho':'jorginho-frello','falcao':'radamel-falcao','mbappe':'kylian-mbappe','gundogan':'ilkay-gundogan','thiago':'thiago-alcantara','eto-o':'samuel-etoo','samuel-eto-o':'samuel-etoo','luis-suarez':'luis-suarez','luis-figo':'luis-figo'};
@@ -22,10 +23,10 @@ function roster(season) {
 export const allSquads = clubs.flatMap(club => club.temporadas.map(season => ({id:`${club.id}-${season.ano}`,clubId:club.id,nome:club.nome,monograma:club.monograma,cores:club.cores,ano:season.ano,conquistas:season.conquistas,jogadores:roster(season)})));
 export function validateData() {
   const errors = [];
-  if(clubs.length !== 36) errors.push(`Esperados 36 clubes, encontrados ${clubs.length}.`);
+  if(clubs.length !== 40) errors.push(`Esperados 40 clubes, encontrados ${clubs.length}.`);
   if(new Set(clubs.map(c=>c.id)).size !== clubs.length) errors.push('IDs de clube repetidos.');
   for(const club of clubs) {
-    if(club.temporadas.length !== 4 || new Set(club.temporadas.map(s=>s.ano)).size !== 4) errors.push(`${club.nome}: são necessárias 4 temporadas únicas.`);
+    if(!club.temporadas.length || new Set(club.temporadas.map(s=>s.ano)).size !== club.temporadas.length) errors.push(`${club.nome}: são necessárias temporadas únicas.`);
   }
   for(const squad of allSquads) {
     const players = squad.jogadores;

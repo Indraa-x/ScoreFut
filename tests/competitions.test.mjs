@@ -19,7 +19,8 @@ test('the categories include instant quick play and both local competition logos
     assert.ok(setup.includes('assets/competitions/champions-league.png'));
   }
   assert.equal(squadsForMode(allSquads,'copa-do-brasil').length,60);
-  assert.equal(squadsForMode(allSquads,'champions').length,84);
+  assert.equal(squadsForMode(allSquads,'champions').length,88);
+  assert.deepEqual(EUROPE_CLUB_IDS.slice(-4),['celtic','marseille','psv','roma']);
 });
 
 test('regional drafts can fill eleven compatible positions in every formation using only their own clubs',()=>{

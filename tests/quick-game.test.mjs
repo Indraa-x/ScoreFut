@@ -5,6 +5,7 @@ import {positionFit,calculateTeam,SIMULATION_SETTINGS,FORMATIONS,squadTeam} from
 import {selectQuickTeam,simulateQuickGame} from '../js/quick-game.js';
 import {renderHome,renderSetup,renderSummary,renderResult} from '../js/ui.js';
 import {competitionName} from '../data/competitions.js';
+import {filterQuickClubs} from '../js/quick-catalog.js';
 const choose=squadId=>selectQuickTeam({squadId,seed:42,date:'2026-10-11',squads:allSquads});
 
 test('choosing any historical team preserves its eleven real players and stops with a ready lineup, without simulating',()=>{
@@ -72,7 +73,8 @@ test('quick mode replaces ScoreFut, offers club selection and stops on a preview
   assert.ok(!first.includes('data-action="quick-team"'));
   assert.ok(!first.includes('data-action="tournament"'));
   const setup=renderSetup({mode:'quick',formation:'4-3-3',quickStep:'clubs'});
-  assert.equal((setup.match(/data-action="quick-team"/g)||[]).length,36);
+  assert.equal((setup.match(/data-action="quick-team"/g)||[]).length,
+    filterQuickClubs({formation:'4-3-3'}).filter(club=>club.available).length);
   assert.ok(!setup.includes('auto-quick'));
   assert.ok(!setup.includes('Montar meu time'));
   assert.ok(!setup.includes('data-action="tournament"'));

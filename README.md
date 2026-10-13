@@ -17,7 +17,7 @@
 
 ---
 
-ScoreFut é um jogo de futebol para navegador com **36 clubes, 144 elencos históricos e equipes de 11 jogadores**. Escolha sua formação, monte ou selecione um time e acompanhe a campanha até o resultado.
+ScoreFut é um jogo de futebol para navegador com **40 clubes, 148 elencos históricos e equipes de 11 jogadores**. Escolha sua formação, monte ou selecione um time e acompanhe a campanha até o resultado.
 
 ## Modos de jogo
 
@@ -25,7 +25,7 @@ ScoreFut é um jogo de futebol para navegador com **36 clubes, 144 elencos hist�
 | --- | --- |
 | **Modo rápido** | Formação → clube → elenco → simulação completa. Mata-mata com 16 times e até 4 jogos. |
 | **Copa do Brasil** | Draft de craques brasileiros. Ida e volta até a semifinal e final em jogo único. |
-| **Champions League** | Draft de craques europeus. Fase de grupos e mata-mata no formato clássico. |
+| **Champions League** | Draft entre 25 clubes europeus. Fase de grupos e mata-mata no formato clássico. |
 | **Modo Lendas** | Escolha os jogadores pela temporada, com os OVRs ocultos durante o draft. |
 
 ## No campo

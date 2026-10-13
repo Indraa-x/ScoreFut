@@ -29,7 +29,7 @@ OVR e atributos da simulação mudam juntos, preservando o perfil da posição e
 | Napoli 2025 | Scott McTominay | 94 | 86 |
 | Dortmund 2024 | Julian Brandt | 87 | 84 |
 
-Na auditoria anterior à ampliação brasileira, a média caiu de 90,84 para 83,41. Dos 1.320 registros daquela versão, 430 estavam abaixo de 80, 637 entre 80 e 89 e 253 entre 90 e 99. Foram alteradas 1.131 edições de jogadores; as 189 edições dos nomes preservados ficaram iguais. A base atual tem 144 elencos de onze opções. O lote C usa notas editoriais já calibradas na escala final, sem aplicar uma segunda redução.
+Na auditoria anterior à ampliação brasileira, a média caiu de 90,84 para 83,41. Dos 1.320 registros daquela versão, 430 estavam abaixo de 80, 637 entre 80 e 89 e 253 entre 90 e 99. Foram alteradas 1.131 edições de jogadores; as 189 edições dos nomes preservados ficaram iguais. Naquela auditoria, a base tinha 144 elencos de onze opções; a base atual tem 148. O lote C usa notas editoriais já calibradas na escala final, sem aplicar uma segunda redução.
 
 Um draft salvo ainda sem competição atualiza as notas dos atletas escolhidos pela mesma edição, preservando posições, sorteios, saldo e semente. Partidas e campanhas já iniciadas conservam seus valores; resultados concluídos não são reescritos.
 
