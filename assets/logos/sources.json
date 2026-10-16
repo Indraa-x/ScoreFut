@@ -1,9 +1,9 @@
 {
-  "provider": "Football Logos",
+  "provider": "Football Logos / Wikimedia",
   "website": "https://football-logos.cc/",
   "format": "PNG",
   "dimensions": "256x256",
-  "downloadedAt": "2026-10-10",
+  "downloadedAt": "2026-10-16",
   "logos": [
     {
       "clubId": "liverpool",
@@ -184,6 +184,34 @@
       "clubId": "botafogo",
       "file": "botafogo.png",
       "source": "https://assets.football-logos.cc/logos/brazil/256x256/botafogo.e439f7a4.png"
+    },
+    {
+      "clubId": "celtic",
+      "file": "celtic.png",
+      "source": "https://en.wikipedia.org/wiki/Celtic_F.C.",
+      "url": "https://thumb.wikimedia.org/wikipedia/en/thumb/7/71/Celtic_FC_crest.svg/250px-Celtic_FC_crest.svg.png",
+      "sha256": "96113b821b3d0e26644569db911f1372031622f17fdb6cd7958794cd5b14b6b9"
+    },
+    {
+      "clubId": "marseille",
+      "file": "marseille.png",
+      "source": "https://en.wikipedia.org/wiki/Olympique_de_Marseille",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Olympique_de_Marseille_2026_logo.svg/330px-Olympique_de_Marseille_2026_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "sha256": "37c2aa3e00fbdd312f1f438f4f78f4dd097c27bcf0058854fee7fd7e70fe0f65"
+    },
+    {
+      "clubId": "psv",
+      "file": "psv.png",
+      "source": "https://en.wikipedia.org/wiki/PSV_Eindhoven",
+      "url": "https://thumb.wikimedia.org/wikipedia/en/thumb/0/05/PSV_Eindhoven.svg/250px-PSV_Eindhoven.svg.png",
+      "sha256": "8b437ffc134e35cf7e6b5afca5e69d68f2daccc39594a1382225dbb4bcc1db82"
+    },
+    {
+      "clubId": "roma",
+      "file": "roma.png",
+      "source": "https://en.wikipedia.org/wiki/AS_Roma",
+      "url": "https://thumb.wikimedia.org/wikipedia/en/thumb/f/f7/AS_Roma_logo_%282017%29.svg/330px-AS_Roma_logo_%282017%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "sha256": "46212ef2b781c39c95be533bdab26612f6c75e5870e808235d98d524df9e2a90"
     }
   ]
 }

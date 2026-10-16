@@ -1,4 +1,4 @@
-// Generated from verified, locally saved PNGs. See assets/players/sources.json.
+// Generated from verified local image files. See assets/players/sources.json.
 export const PLAYER_PORTRAITS = {
   "zinedine-zidane": {
     "src": "assets/players/zinedine-zidane.png",
@@ -40,14 +40,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.91207
     }
   },
-  "iker-casillas": {
-    "src": "assets/players/iker-casillas.png",
+  "fernando-hierro": {
+    "src": "assets/players/fernando-hierro.png",
     "type": "cutout",
     "frame": {
-      "x": -0.0203,
-      "y": 0.02898,
-      "width": 1.0517,
-      "height": 0.8899
+      "x": -0.05135,
+      "y": -0.02848,
+      "width": 1.12193,
+      "height": 0.94933
     }
   },
   "claude-makelele": {
@@ -58,16 +58,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.03416,
       "width": 1.13005,
       "height": 0.95619
-    }
-  },
-  "fernando-hierro": {
-    "src": "assets/players/fernando-hierro.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.05135,
-      "y": -0.02848,
-      "width": 1.12193,
-      "height": 0.94933
     }
   },
   "fernando-morientes": {
@@ -100,6 +90,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.99241
     }
   },
+  "iker-casillas": {
+    "src": "assets/players/iker-casillas.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.0203,
+      "y": 0.02898,
+      "width": 1.0517,
+      "height": 0.8899
+    }
+  },
   "santiago-solari": {
     "src": "assets/players/santiago-solari.png",
     "type": "portrait",
@@ -120,36 +120,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.03959
     }
   },
-  "sergio-ramos": {
-    "src": "assets/players/sergio-ramos.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.0661,
-      "y": -0.0349,
-      "width": 1.11466,
-      "height": 0.94318
-    }
-  },
-  "luka-modric": {
-    "src": "assets/players/luka-modric.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.08773,
-      "y": -0.04749,
-      "width": 1.17385,
-      "height": 0.99326
-    }
-  },
-  "karim-benzema": {
-    "src": "assets/players/karim-benzema.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.09622,
-      "y": -0.05974,
-      "width": 1.19402,
-      "height": 1.01032
-    }
-  },
   "gareth-bale": {
     "src": "assets/players/gareth-bale.png",
     "type": "cutout",
@@ -160,24 +130,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.87906
     }
   },
-  "marcelo": {
-    "src": "assets/players/marcelo.png",
+  "sergio-ramos": {
+    "src": "assets/players/sergio-ramos.png",
     "type": "cutout",
     "frame": {
-      "x": -0.02262,
-      "y": 0.01853,
-      "width": 1.02383,
-      "height": 0.86632
-    }
-  },
-  "xabi-alonso": {
-    "src": "assets/players/xabi-alonso.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.01944,
-      "y": 0.02783,
-      "width": 1.07005,
-      "height": 0.90542
+      "x": -0.0661,
+      "y": -0.0349,
+      "width": 1.11466,
+      "height": 0.94318
     }
   },
   "angel-di-maria": {
@@ -190,6 +150,36 @@ export const PLAYER_PORTRAITS = {
       "height": 0.98371
     }
   },
+  "luka-modric": {
+    "src": "assets/players/luka-modric.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.08773,
+      "y": -0.04749,
+      "width": 1.17385,
+      "height": 0.99326
+    }
+  },
+  "xabi-alonso": {
+    "src": "assets/players/xabi-alonso.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.01944,
+      "y": 0.02783,
+      "width": 1.07005,
+      "height": 0.90542
+    }
+  },
+  "karim-benzema": {
+    "src": "assets/players/karim-benzema.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.09622,
+      "y": -0.05974,
+      "width": 1.19402,
+      "height": 1.01032
+    }
+  },
   "pepe": {
     "src": "assets/players/pepe.png",
     "type": "portrait",
@@ -198,6 +188,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.09441,
       "width": 1.2027,
       "height": 1.01767
+    }
+  },
+  "marcelo": {
+    "src": "assets/players/marcelo.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02262,
+      "y": 0.01853,
+      "width": 1.02383,
+      "height": 0.86632
     }
   },
   "dani-carvajal": {
@@ -220,14 +220,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.898
     }
   },
-  "casemiro": {
-    "src": "assets/players/casemiro.png",
+  "isco": {
+    "src": "assets/players/isco.png",
     "type": "cutout",
     "frame": {
-      "x": -0.04514,
-      "y": 0.00307,
-      "width": 1.10502,
-      "height": 0.93502
+      "x": -0.06794,
+      "y": -0.07133,
+      "width": 1.13051,
+      "height": 0.95658
     }
   },
   "keylor-navas": {
@@ -240,14 +240,14 @@ export const PLAYER_PORTRAITS = {
       "height": 1.01251
     }
   },
-  "isco": {
-    "src": "assets/players/isco.png",
+  "casemiro": {
+    "src": "assets/players/casemiro.png",
     "type": "cutout",
     "frame": {
-      "x": -0.06794,
-      "y": -0.07133,
-      "width": 1.13051,
-      "height": 0.95658
+      "x": -0.04514,
+      "y": 0.00307,
+      "width": 1.10502,
+      "height": 0.93502
     }
   },
   "raphael-varane": {
@@ -280,16 +280,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.92074
     }
   },
-  "antonio-rudiger": {
-    "src": "assets/players/antonio-rudiger.png",
-    "type": "cutout",
-    "frame": {
-      "x": 0.00119,
-      "y": 0.00404,
-      "width": 1.00728,
-      "height": 0.85232
-    }
-  },
   "federico-valverde": {
     "src": "assets/players/federico-valverde.png",
     "type": "cutout",
@@ -298,6 +288,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.03072,
       "width": 1.13446,
       "height": 0.95993
+    }
+  },
+  "antonio-rudiger": {
+    "src": "assets/players/antonio-rudiger.png",
+    "type": "cutout",
+    "frame": {
+      "x": 0.00119,
+      "y": 0.00404,
+      "width": 1.00728,
+      "height": 0.85232
     }
   },
   "rodrygo": {
@@ -470,6 +470,16 @@ export const PLAYER_PORTRAITS = {
       "height": 1.03942
     }
   },
+  "carles-puyol": {
+    "src": "assets/players/carles-puyol.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02551,
+      "y": 0.05438,
+      "width": 1.03078,
+      "height": 0.8722
+    }
+  },
   "xavi": {
     "src": "assets/players/xavi.png",
     "type": "cutout",
@@ -478,16 +488,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.05311,
       "width": 1.15102,
       "height": 0.97394
-    }
-  },
-  "samuel-etoo": {
-    "src": "assets/players/samuel-etoo.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06171,
-      "y": 0.00498,
-      "width": 1.0606,
-      "height": 0.89743
     }
   },
   "andres-iniesta": {
@@ -500,14 +500,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.94755
     }
   },
-  "thierry-henry": {
-    "src": "assets/players/thierry-henry.png",
+  "samuel-etoo": {
+    "src": "assets/players/samuel-etoo.png",
     "type": "cutout",
     "frame": {
-      "x": -0.03489,
-      "y": -0.01868,
-      "width": 1.11439,
-      "height": 0.94294
+      "x": -0.06171,
+      "y": 0.00498,
+      "width": 1.0606,
+      "height": 0.89743
     }
   },
   "dani-alves": {
@@ -520,14 +520,34 @@ export const PLAYER_PORTRAITS = {
       "height": 1.05146
     }
   },
-  "carles-puyol": {
-    "src": "assets/players/carles-puyol.png",
+  "thierry-henry": {
+    "src": "assets/players/thierry-henry.png",
     "type": "cutout",
     "frame": {
-      "x": -0.02551,
-      "y": 0.05438,
-      "width": 1.03078,
-      "height": 0.8722
+      "x": -0.03489,
+      "y": -0.01868,
+      "width": 1.11439,
+      "height": 0.94294
+    }
+  },
+  "eric-abidal": {
+    "src": "assets/players/eric-abidal.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.0652,
+      "y": -0.00094,
+      "width": 1.10942,
+      "height": 0.93874
+    }
+  },
+  "victor-valdes": {
+    "src": "assets/players/victor-valdes.png",
+    "type": "portrait",
+    "frame": {
+      "x": 0.09974,
+      "y": -0.01293,
+      "width": 0.49666,
+      "height": 0.29589
     }
   },
   "gerard-pique": {
@@ -548,26 +568,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.04964,
       "width": 1.20047,
       "height": 1.01578
-    }
-  },
-  "victor-valdes": {
-    "src": "assets/players/victor-valdes.png",
-    "type": "portrait",
-    "frame": {
-      "x": 0.09974,
-      "y": -0.01293,
-      "width": 0.49666,
-      "height": 0.29589
-    }
-  },
-  "eric-abidal": {
-    "src": "assets/players/eric-abidal.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.0652,
-      "y": -0.00094,
-      "width": 1.10942,
-      "height": 0.93874
     }
   },
   "david-villa": {
@@ -610,16 +610,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.01638
     }
   },
-  "jordi-alba": {
-    "src": "assets/players/jordi-alba.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.10998,
-      "y": -0.04559,
-      "width": 1.21436,
-      "height": 1.02753
-    }
-  },
   "ivan-rakitic": {
     "src": "assets/players/ivan-rakitic.png",
     "type": "cutout",
@@ -648,6 +638,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.02339,
       "width": 1.11126,
       "height": 0.9403
+    }
+  },
+  "jordi-alba": {
+    "src": "assets/players/jordi-alba.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.10998,
+      "y": -0.04559,
+      "width": 1.21436,
+      "height": 1.02753
     }
   },
   "oliver-kahn": {
@@ -760,16 +760,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.75735
     }
   },
-  "arjen-robben": {
-    "src": "assets/players/arjen-robben.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06975,
-      "y": -0.01232,
-      "width": 1.10712,
-      "height": 0.93679
-    }
-  },
   "franck-ribery": {
     "src": "assets/players/franck-ribery.png",
     "type": "cutout",
@@ -790,14 +780,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.91474
     }
   },
-  "thomas-muller": {
-    "src": "assets/players/thomas-muller.png",
+  "arjen-robben": {
+    "src": "assets/players/arjen-robben.png",
     "type": "cutout",
     "frame": {
-      "x": -0.02254,
-      "y": 0.04194,
-      "width": 1.01217,
-      "height": 0.85645
+      "x": -0.06975,
+      "y": -0.01232,
+      "width": 1.10712,
+      "height": 0.93679
     }
   },
   "bastian-schweinsteiger": {
@@ -808,6 +798,16 @@ export const PLAYER_PORTRAITS = {
       "y": 0.03983,
       "width": 1.04676,
       "height": 0.88572
+    }
+  },
+  "martin-demichelis": {
+    "src": "assets/players/martin-demichelis.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02082,
+      "y": 0.05485,
+      "width": 1.02641,
+      "height": 0.8685
     }
   },
   "ivica-olic": {
@@ -830,16 +830,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.02999
     }
   },
-  "holger-badstuber": {
-    "src": "assets/players/holger-badstuber.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.09707,
-      "y": -0.02754,
-      "width": 1.14912,
-      "height": 0.97233
-    }
-  },
   "daniel-van-buyten": {
     "src": "assets/players/daniel-van-buyten.png",
     "type": "cutout",
@@ -848,16 +838,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.12124,
       "width": 1.24088,
       "height": 1.04997
-    }
-  },
-  "martin-demichelis": {
-    "src": "assets/players/martin-demichelis.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.02082,
-      "y": 0.05485,
-      "width": 1.02641,
-      "height": 0.8685
     }
   },
   "hans-jorg-butt": {
@@ -870,6 +850,26 @@ export const PLAYER_PORTRAITS = {
       "height": 1.04394
     }
   },
+  "thomas-muller": {
+    "src": "assets/players/thomas-muller.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02254,
+      "y": 0.04194,
+      "width": 1.01217,
+      "height": 0.85645
+    }
+  },
+  "holger-badstuber": {
+    "src": "assets/players/holger-badstuber.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.09707,
+      "y": -0.02754,
+      "width": 1.14912,
+      "height": 0.97233
+    }
+  },
   "manuel-neuer": {
     "src": "assets/players/manuel-neuer.png",
     "type": "cutout",
@@ -880,24 +880,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.94159
     }
   },
-  "david-alaba": {
-    "src": "assets/players/david-alaba.png",
+  "dante": {
+    "src": "assets/players/dante.png",
     "type": "cutout",
     "frame": {
-      "x": -0.08178,
-      "y": -0.06645,
-      "width": 1.15892,
-      "height": 0.98063
-    }
-  },
-  "mario-mandzukic": {
-    "src": "assets/players/mario-mandzukic.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.04741,
-      "y": 0.03277,
-      "width": 1.07535,
-      "height": 0.90991
+      "x": -0.05679,
+      "y": 0.01609,
+      "width": 1.07948,
+      "height": 0.91341
     }
   },
   "javi-martinez": {
@@ -910,6 +900,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.97809
     }
   },
+  "mario-mandzukic": {
+    "src": "assets/players/mario-mandzukic.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.04741,
+      "y": 0.03277,
+      "width": 1.07535,
+      "height": 0.90991
+    }
+  },
   "jerome-boateng": {
     "src": "assets/players/jerome-boateng.png",
     "type": "cutout",
@@ -920,14 +920,14 @@ export const PLAYER_PORTRAITS = {
       "height": 1.08151
     }
   },
-  "dante": {
-    "src": "assets/players/dante.png",
+  "david-alaba": {
+    "src": "assets/players/david-alaba.png",
     "type": "cutout",
     "frame": {
-      "x": -0.05679,
-      "y": 0.01609,
-      "width": 1.07948,
-      "height": 0.91341
+      "x": -0.08178,
+      "y": -0.06645,
+      "width": 1.15892,
+      "height": 0.98063
     }
   },
   "robert-lewandowski": {
@@ -960,16 +960,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.97646
     }
   },
-  "alphonso-davies": {
-    "src": "assets/players/alphonso-davies.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.01891,
-      "y": 0.05436,
-      "width": 1.03061,
-      "height": 0.87205
-    }
-  },
   "serge-gnabry": {
     "src": "assets/players/serge-gnabry.png",
     "type": "cutout",
@@ -998,6 +988,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.00388,
       "width": 1.10845,
       "height": 0.93792
+    }
+  },
+  "alphonso-davies": {
+    "src": "assets/players/alphonso-davies.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.01891,
+      "y": 0.05436,
+      "width": 1.03061,
+      "height": 0.87205
     }
   },
   "marco-van-basten": {
@@ -1110,16 +1110,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.62939
     }
   },
-  "marcel-desailly": {
-    "src": "assets/players/marcel-desailly.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.05764,
-      "y": -0.03222,
-      "width": 1.08003,
-      "height": 0.91387
-    }
-  },
   "dejan-savicevic": {
     "src": "assets/players/dejan-savicevic.png",
     "type": "portrait",
@@ -1128,6 +1118,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.03973,
       "width": 1.54275,
       "height": 0.7914
+    }
+  },
+  "marcel-desailly": {
+    "src": "assets/players/marcel-desailly.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.05764,
+      "y": -0.03222,
+      "width": 1.08003,
+      "height": 0.91387
     }
   },
   "demetrio-albertini": {
@@ -1180,6 +1180,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.94522
     }
   },
+  "rui-costa": {
+    "src": "assets/players/rui-costa.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.03898,
+      "y": -0.09675,
+      "width": 1.05661,
+      "height": 0.89406
+    }
+  },
   "clarence-seedorf": {
     "src": "assets/players/clarence-seedorf.png",
     "type": "cutout",
@@ -1200,16 +1210,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.9207
     }
   },
-  "dida": {
-    "src": "assets/players/dida.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.17109,
-      "y": -0.01639,
-      "width": 1.02939,
-      "height": 0.57977
-    }
-  },
   "filippo-inzaghi": {
     "src": "assets/players/filippo-inzaghi.png",
     "type": "cutout",
@@ -1220,14 +1220,14 @@ export const PLAYER_PORTRAITS = {
       "height": 1.03232
     }
   },
-  "rui-costa": {
-    "src": "assets/players/rui-costa.png",
+  "dida": {
+    "src": "assets/players/dida.png",
     "type": "portrait",
     "frame": {
-      "x": -0.03898,
-      "y": -0.09675,
-      "width": 1.05661,
-      "height": 0.89406
+      "x": -0.17109,
+      "y": -0.01639,
+      "width": 1.02939,
+      "height": 0.57977
     }
   },
   "gennaro-gattuso": {
@@ -1260,16 +1260,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.90336
     }
   },
-  "massimo-ambrosini": {
-    "src": "assets/players/massimo-ambrosini.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.02888,
-      "y": -0.00664,
-      "width": 0.75793,
-      "height": 0.41686
-    }
-  },
   "marek-jankulovski": {
     "src": "assets/players/marek-jankulovski.png",
     "type": "portrait",
@@ -1288,6 +1278,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.09281,
       "width": 1.2076,
       "height": 1.02182
+    }
+  },
+  "massimo-ambrosini": {
+    "src": "assets/players/massimo-ambrosini.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.02888,
+      "y": -0.00664,
+      "width": 0.75793,
+      "height": 0.41686
     }
   },
   "eric-cantona": {
@@ -1410,16 +1410,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.93594
     }
   },
-  "paul-scholes": {
-    "src": "assets/players/paul-scholes.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.03795,
-      "y": 0.03154,
-      "width": 1.06279,
-      "height": 0.89928
-    }
-  },
   "dwight-yorke": {
     "src": "assets/players/dwight-yorke.png",
     "type": "portrait",
@@ -1428,6 +1418,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.01886,
       "width": 0.61909,
       "height": 0.45182
+    }
+  },
+  "paul-scholes": {
+    "src": "assets/players/paul-scholes.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.03795,
+      "y": 0.03154,
+      "width": 1.06279,
+      "height": 0.89928
     }
   },
   "jaap-stam": {
@@ -1470,6 +1470,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.67569
     }
   },
+  "wayne-rooney": {
+    "src": "assets/players/wayne-rooney.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06204,
+      "y": -0.00485,
+      "width": 1.1121,
+      "height": 0.94101
+    }
+  },
   "rio-ferdinand": {
     "src": "assets/players/rio-ferdinand.png",
     "type": "cutout",
@@ -1480,14 +1490,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.95066
     }
   },
-  "wayne-rooney": {
-    "src": "assets/players/wayne-rooney.png",
+  "carlos-tevez": {
+    "src": "assets/players/carlos-tevez.png",
     "type": "cutout",
     "frame": {
-      "x": -0.06204,
-      "y": -0.00485,
-      "width": 1.1121,
-      "height": 0.94101
+      "x": -0.14417,
+      "y": -0.11282,
+      "width": 1.26929,
+      "height": 1.07401
     }
   },
   "nemanja-vidic": {
@@ -1510,26 +1520,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.91028
     }
   },
-  "carlos-tevez": {
-    "src": "assets/players/carlos-tevez.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.14417,
-      "y": -0.11282,
-      "width": 1.26929,
-      "height": 1.07401
-    }
-  },
-  "patrice-evra": {
-    "src": "assets/players/patrice-evra.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06008,
-      "y": -0.0684,
-      "width": 1.11873,
-      "height": 0.94662
-    }
-  },
   "michael-carrick": {
     "src": "assets/players/michael-carrick.png",
     "type": "cutout",
@@ -1548,6 +1538,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.07341,
       "width": 1.08462,
       "height": 0.91776
+    }
+  },
+  "patrice-evra": {
+    "src": "assets/players/patrice-evra.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06008,
+      "y": -0.0684,
+      "width": 1.11873,
+      "height": 0.94662
     }
   },
   "dimitar-berbatov": {
@@ -1580,74 +1580,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.88454
     }
   },
-  "jamie-carragher": {
-    "src": "assets/players/jamie-carragher.png",
+  "djibril-cisse": {
+    "src": "assets/players/djibril-cisse.png",
     "type": "cutout",
     "frame": {
-      "x": -0.02503,
-      "y": 0.03214,
-      "width": 1.06683,
-      "height": 0.9027
-    }
-  },
-  "sami-hyypia": {
-    "src": "assets/players/sami-hyypia.png",
-    "type": "portrait",
-    "frame": {
-      "x": 0.19089,
-      "y": -0.05576,
-      "width": 0.6643,
-      "height": 0.84447
-    }
-  },
-  "luis-garcia": {
-    "src": "assets/players/luis-garcia.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.09483,
-      "y": -0.04847,
-      "width": 1.17559,
-      "height": 0.99473
-    }
-  },
-  "john-arne-riise": {
-    "src": "assets/players/john-arne-riise.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.08442,
-      "y": -0.0365,
-      "width": 1.15687,
-      "height": 0.97889
-    }
-  },
-  "dietmar-hamann": {
-    "src": "assets/players/dietmar-hamann.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.16651,
-      "y": -0.1112,
-      "width": 1.29349,
-      "height": 0.99051
-    }
-  },
-  "jerzy-dudek": {
-    "src": "assets/players/jerzy-dudek.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.3837,
-      "y": -0.18213,
-      "width": 1.83734,
-      "height": 1.166
-    }
-  },
-  "steve-finnan": {
-    "src": "assets/players/steve-finnan.png",
-    "type": "portrait",
-    "frame": {
-      "x": 0.08665,
-      "y": 0.1058,
-      "width": 0.67992,
-      "height": 0.45845
+      "x": -0.13497,
+      "y": -0.18879,
+      "width": 1.29042,
+      "height": 1.09189
     }
   },
   "milan-baros": {
@@ -1660,14 +1600,74 @@ export const PLAYER_PORTRAITS = {
       "height": 0.42409
     }
   },
-  "djibril-cisse": {
-    "src": "assets/players/djibril-cisse.png",
+  "sami-hyypia": {
+    "src": "assets/players/sami-hyypia.png",
+    "type": "portrait",
+    "frame": {
+      "x": 0.19089,
+      "y": -0.05576,
+      "width": 0.6643,
+      "height": 0.84447
+    }
+  },
+  "dietmar-hamann": {
+    "src": "assets/players/dietmar-hamann.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.16651,
+      "y": -0.1112,
+      "width": 1.29349,
+      "height": 0.99051
+    }
+  },
+  "jamie-carragher": {
+    "src": "assets/players/jamie-carragher.png",
     "type": "cutout",
     "frame": {
-      "x": -0.13497,
-      "y": -0.18879,
-      "width": 1.29042,
-      "height": 1.09189
+      "x": -0.02503,
+      "y": 0.03214,
+      "width": 1.06683,
+      "height": 0.9027
+    }
+  },
+  "jerzy-dudek": {
+    "src": "assets/players/jerzy-dudek.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.3837,
+      "y": -0.18213,
+      "width": 1.83734,
+      "height": 1.166
+    }
+  },
+  "john-arne-riise": {
+    "src": "assets/players/john-arne-riise.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.08442,
+      "y": -0.0365,
+      "width": 1.15687,
+      "height": 0.97889
+    }
+  },
+  "luis-garcia": {
+    "src": "assets/players/luis-garcia.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.09483,
+      "y": -0.04847,
+      "width": 1.17559,
+      "height": 0.99473
+    }
+  },
+  "steve-finnan": {
+    "src": "assets/players/steve-finnan.png",
+    "type": "portrait",
+    "frame": {
+      "x": 0.08665,
+      "y": 0.1058,
+      "width": 0.67992,
+      "height": 0.45845
     }
   },
   "virgil-van-dijk": {
@@ -1690,16 +1690,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.04849
     }
   },
-  "alisson": {
-    "src": "assets/players/alisson.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.11468,
-      "y": -0.09623,
-      "width": 1.20258,
-      "height": 1.01757
-    }
-  },
   "sadio-mane": {
     "src": "assets/players/sadio-mane.png",
     "type": "cutout",
@@ -1710,24 +1700,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.89848
     }
   },
-  "trent-alexander-arnold": {
-    "src": "assets/players/trent-alexander-arnold.png",
+  "alisson": {
+    "src": "assets/players/alisson.png",
     "type": "cutout",
     "frame": {
-      "x": -0.04916,
-      "y": 0.02207,
-      "width": 1.08256,
-      "height": 0.91601
-    }
-  },
-  "andrew-robertson": {
-    "src": "assets/players/andrew-robertson.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.10395,
-      "y": -0.0785,
-      "width": 1.21077,
-      "height": 1.0245
+      "x": -0.11468,
+      "y": -0.09623,
+      "width": 1.20258,
+      "height": 1.01757
     }
   },
   "roberto-firmino": {
@@ -1750,14 +1730,14 @@ export const PLAYER_PORTRAITS = {
       "height": 1.01544
     }
   },
-  "jordan-henderson": {
-    "src": "assets/players/jordan-henderson.png",
+  "andrew-robertson": {
+    "src": "assets/players/andrew-robertson.png",
     "type": "cutout",
     "frame": {
-      "x": -0.0937,
-      "y": -0.05761,
-      "width": 1.17131,
-      "height": 0.99111
+      "x": -0.10395,
+      "y": -0.0785,
+      "width": 1.21077,
+      "height": 1.0245
     }
   },
   "georginio-wijnaldum": {
@@ -1770,6 +1750,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.96797
     }
   },
+  "jordan-henderson": {
+    "src": "assets/players/jordan-henderson.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.0937,
+      "y": -0.05761,
+      "width": 1.17131,
+      "height": 0.99111
+    }
+  },
   "joel-matip": {
     "src": "assets/players/joel-matip.png",
     "type": "cutout",
@@ -1778,6 +1768,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.09117,
       "width": 1.22337,
       "height": 1.03516
+    }
+  },
+  "trent-alexander-arnold": {
+    "src": "assets/players/trent-alexander-arnold.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.04916,
+      "y": 0.02207,
+      "width": 1.08256,
+      "height": 0.91601
     }
   },
   "joe-gomez": {
@@ -1800,6 +1800,16 @@ export const PLAYER_PORTRAITS = {
       "height": 1.01434
     }
   },
+  "ibrahima-konate": {
+    "src": "assets/players/ibrahima-konate.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.09426,
+      "y": -0.06559,
+      "width": 1.17358,
+      "height": 0.99303
+    }
+  },
   "luis-diaz": {
     "src": "assets/players/luis-diaz.png",
     "type": "cutout",
@@ -1820,16 +1830,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.97381
     }
   },
-  "dominik-szoboszlai": {
-    "src": "assets/players/dominik-szoboszlai.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.07834,
-      "y": -0.03921,
-      "width": 1.1338,
-      "height": 0.95937
-    }
-  },
   "cody-gakpo": {
     "src": "assets/players/cody-gakpo.png",
     "type": "cutout",
@@ -1840,14 +1840,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.99369
     }
   },
-  "ibrahima-konate": {
-    "src": "assets/players/ibrahima-konate.png",
+  "dominik-szoboszlai": {
+    "src": "assets/players/dominik-szoboszlai.png",
     "type": "cutout",
     "frame": {
-      "x": -0.09426,
-      "y": -0.06559,
-      "width": 1.17358,
-      "height": 0.99303
+      "x": -0.07834,
+      "y": -0.03921,
+      "width": 1.1338,
+      "height": 0.95937
     }
   },
   "kevin-de-bruyne": {
@@ -1890,46 +1890,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.00519
     }
   },
-  "ederson": {
-    "src": "assets/players/ederson.png",
-    "type": "portrait",
-    "frame": {
-      "x": 0.02104,
-      "y": -0.05967,
-      "width": 1.01093,
-      "height": 0.8554
-    }
-  },
-  "leroy-sane": {
-    "src": "assets/players/leroy-sane.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.0418,
-      "y": 0.01892,
-      "width": 1.07513,
-      "height": 0.90972
-    }
-  },
-  "raheem-sterling": {
-    "src": "assets/players/raheem-sterling.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.0728,
-      "y": -0.08048,
-      "width": 1.16925,
-      "height": 0.98936
-    }
-  },
-  "kyle-walker": {
-    "src": "assets/players/kyle-walker.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06793,
-      "y": -0.02756,
-      "width": 1.14973,
-      "height": 0.97285
-    }
-  },
   "nicolas-otamendi": {
     "src": "assets/players/nicolas-otamendi.png",
     "type": "cutout",
@@ -1948,6 +1908,46 @@ export const PLAYER_PORTRAITS = {
       "y": -0.02377,
       "width": 1.13719,
       "height": 0.96224
+    }
+  },
+  "raheem-sterling": {
+    "src": "assets/players/raheem-sterling.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.0728,
+      "y": -0.08048,
+      "width": 1.16925,
+      "height": 0.98936
+    }
+  },
+  "leroy-sane": {
+    "src": "assets/players/leroy-sane.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.0418,
+      "y": 0.01892,
+      "width": 1.07513,
+      "height": 0.90972
+    }
+  },
+  "ederson": {
+    "src": "assets/players/ederson.png",
+    "type": "portrait",
+    "frame": {
+      "x": 0.02104,
+      "y": -0.05967,
+      "width": 1.01093,
+      "height": 0.8554
+    }
+  },
+  "kyle-walker": {
+    "src": "assets/players/kyle-walker.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06793,
+      "y": -0.02756,
+      "width": 1.14973,
+      "height": 0.97285
     }
   },
   "fabian-delph": {
@@ -1980,6 +1980,16 @@ export const PLAYER_PORTRAITS = {
       "height": 1.05042
     }
   },
+  "riyad-mahrez": {
+    "src": "assets/players/riyad-mahrez.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.05523,
+      "y": -0.01909,
+      "width": 1.10578,
+      "height": 0.93566
+    }
+  },
   "ilkay-gundogan": {
     "src": "assets/players/ilkay-gundogan.png",
     "type": "cutout",
@@ -1988,6 +1998,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.05312,
       "width": 1.18371,
       "height": 1.0016
+    }
+  },
+  "gabriel-jesus": {
+    "src": "assets/players/gabriel-jesus.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06757,
+      "y": -0.05547,
+      "width": 1.14332,
+      "height": 0.96742
     }
   },
   "phil-foden": {
@@ -2000,16 +2020,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.95234
     }
   },
-  "riyad-mahrez": {
-    "src": "assets/players/riyad-mahrez.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.05523,
-      "y": -0.01909,
-      "width": 1.10578,
-      "height": 0.93566
-    }
-  },
   "john-stones": {
     "src": "assets/players/john-stones.png",
     "type": "cutout",
@@ -2018,16 +2028,6 @@ export const PLAYER_PORTRAITS = {
       "y": 0.02222,
       "width": 1.07063,
       "height": 0.90592
-    }
-  },
-  "gabriel-jesus": {
-    "src": "assets/players/gabriel-jesus.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06757,
-      "y": -0.05547,
-      "width": 1.14332,
-      "height": 0.96742
     }
   },
   "oleksandr-zinchenko": {
@@ -2090,16 +2090,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.91034
     }
   },
-  "josko-gvardiol": {
-    "src": "assets/players/josko-gvardiol.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.02855,
-      "y": -0.06025,
-      "width": 1.11932,
-      "height": 0.94712
-    }
-  },
   "manuel-akanji": {
     "src": "assets/players/manuel-akanji.png",
     "type": "cutout",
@@ -2108,6 +2098,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.10403,
       "width": 1.22725,
       "height": 1.03844
+    }
+  },
+  "josko-gvardiol": {
+    "src": "assets/players/josko-gvardiol.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.02855,
+      "y": -0.06025,
+      "width": 1.11932,
+      "height": 0.94712
     }
   },
   "dennis-bergkamp": {
@@ -2128,16 +2128,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.03693,
       "width": 1.15328,
       "height": 0.97585
-    }
-  },
-  "david-seaman": {
-    "src": "assets/players/david-seaman.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.22303,
-      "y": -0.03412,
-      "width": 1.2626,
-      "height": 0.70111
     }
   },
   "tony-adams": {
@@ -2190,6 +2180,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.90098
     }
   },
+  "david-seaman": {
+    "src": "assets/players/david-seaman.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.22303,
+      "y": -0.03412,
+      "width": 1.2626,
+      "height": 0.70111
+    }
+  },
   "lee-dixon": {
     "src": "assets/players/lee-dixon.png",
     "type": "cutout",
@@ -2230,16 +2230,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.00368
     }
   },
-  "ashley-cole": {
-    "src": "assets/players/ashley-cole.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.05416,
-      "y": 0.00128,
-      "width": 1.07702,
-      "height": 0.91132
-    }
-  },
   "sol-campbell": {
     "src": "assets/players/sol-campbell.png",
     "type": "cutout",
@@ -2260,6 +2250,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.29066
     }
   },
+  "ashley-cole": {
+    "src": "assets/players/ashley-cole.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.05416,
+      "y": 0.00128,
+      "width": 1.07702,
+      "height": 0.91132
+    }
+  },
   "lauren": {
     "src": "assets/players/lauren.png",
     "type": "portrait",
@@ -2268,16 +2268,6 @@ export const PLAYER_PORTRAITS = {
       "y": 0.15464,
       "width": 0.20041,
       "height": 0.12411
-    }
-  },
-  "jens-lehmann": {
-    "src": "assets/players/jens-lehmann.png",
-    "type": "portrait",
-    "frame": {
-      "x": 0.33528,
-      "y": 0.08272,
-      "width": 0.60107,
-      "height": 0.67813
     }
   },
   "kolo-toure": {
@@ -2300,14 +2290,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.92548
     }
   },
-  "cesc-fabregas": {
-    "src": "assets/players/cesc-fabregas.png",
-    "type": "cutout",
+  "jens-lehmann": {
+    "src": "assets/players/jens-lehmann.png",
+    "type": "portrait",
     "frame": {
-      "x": -0.01916,
-      "y": 0.04891,
-      "width": 1.04334,
-      "height": 0.88283
+      "x": 0.33528,
+      "y": 0.08272,
+      "width": 0.60107,
+      "height": 0.67813
     }
   },
   "jose-antonio-reyes": {
@@ -2318,6 +2308,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.01685,
       "width": 1.1738,
       "height": 0.99321
+    }
+  },
+  "cesc-fabregas": {
+    "src": "assets/players/cesc-fabregas.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.01916,
+      "y": 0.04891,
+      "width": 1.04334,
+      "height": 0.88283
     }
   },
   "emmanuel-eboue": {
@@ -2350,14 +2350,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.99781
     }
   },
-  "petr-cech": {
-    "src": "assets/players/petr-cech.png",
+  "ricardo-carvalho": {
+    "src": "assets/players/ricardo-carvalho.png",
     "type": "cutout",
     "frame": {
-      "x": -0.04333,
-      "y": 0.02484,
-      "width": 1.06289,
-      "height": 0.89937
+      "x": -0.10285,
+      "y": -0.03032,
+      "width": 1.12673,
+      "height": 0.95338
     }
   },
   "didier-drogba": {
@@ -2370,14 +2370,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.9107
     }
   },
-  "ricardo-carvalho": {
-    "src": "assets/players/ricardo-carvalho.png",
+  "william-gallas": {
+    "src": "assets/players/william-gallas.png",
     "type": "cutout",
     "frame": {
-      "x": -0.10285,
-      "y": -0.03032,
-      "width": 1.12673,
-      "height": 0.95338
+      "x": -0.29285,
+      "y": -0.23668,
+      "width": 1.4838,
+      "height": 1.25552
     }
   },
   "damien-duff": {
@@ -2390,14 +2390,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.88388
     }
   },
-  "william-gallas": {
-    "src": "assets/players/william-gallas.png",
+  "petr-cech": {
+    "src": "assets/players/petr-cech.png",
     "type": "cutout",
     "frame": {
-      "x": -0.29285,
-      "y": -0.23668,
-      "width": 1.4838,
-      "height": 1.25552
+      "x": -0.04333,
+      "y": 0.02484,
+      "width": 1.06289,
+      "height": 0.89937
     }
   },
   "paulo-ferreira": {
@@ -2420,16 +2420,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.86489
     }
   },
-  "michael-ballack": {
-    "src": "assets/players/michael-ballack.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.02953,
-      "y": 0.03286,
-      "width": 1.06352,
-      "height": 0.8999
-    }
-  },
   "michael-essien": {
     "src": "assets/players/michael-essien.png",
     "type": "cutout",
@@ -2438,6 +2428,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.01711,
       "width": 1.12029,
       "height": 0.94794
+    }
+  },
+  "michael-ballack": {
+    "src": "assets/players/michael-ballack.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02953,
+      "y": 0.03286,
+      "width": 1.06352,
+      "height": 0.8999
     }
   },
   "florent-malouda": {
@@ -2470,26 +2470,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.9593
     }
   },
-  "ramires": {
-    "src": "assets/players/ramires.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.02751,
-      "y": 0.04026,
-      "width": 1.03798,
-      "height": 0.87829
-    }
-  },
-  "gary-cahill": {
-    "src": "assets/players/gary-cahill.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.10097,
-      "y": -0.06372,
-      "width": 1.20044,
-      "height": 1.01576
-    }
-  },
   "fernando-torres": {
     "src": "assets/players/fernando-torres.png",
     "type": "cutout",
@@ -2508,6 +2488,26 @@ export const PLAYER_PORTRAITS = {
       "y": 0.02508,
       "width": 1.03569,
       "height": 0.87635
+    }
+  },
+  "ramires": {
+    "src": "assets/players/ramires.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02751,
+      "y": 0.04026,
+      "width": 1.03798,
+      "height": 0.87829
+    }
+  },
+  "gary-cahill": {
+    "src": "assets/players/gary-cahill.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.10097,
+      "y": -0.06372,
+      "width": 1.20044,
+      "height": 1.01576
     }
   },
   "ngolo-kante": {
@@ -2530,14 +2530,24 @@ export const PLAYER_PORTRAITS = {
       "height": 0.90512
     }
   },
-  "edouard-mendy": {
-    "src": "assets/players/edouard-mendy.png",
+  "timo-werner": {
+    "src": "assets/players/timo-werner.png",
     "type": "cutout",
     "frame": {
-      "x": -0.09633,
-      "y": -0.05231,
-      "width": 1.16138,
-      "height": 0.9827
+      "x": -0.02973,
+      "y": -0.03255,
+      "width": 1.06013,
+      "height": 0.89703
+    }
+  },
+  "kai-havertz": {
+    "src": "assets/players/kai-havertz.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.04406,
+      "y": -0.01104,
+      "width": 1.09405,
+      "height": 0.92573
     }
   },
   "cesar-azpilicueta": {
@@ -2570,16 +2580,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.01374
     }
   },
-  "reece-james": {
-    "src": "assets/players/reece-james.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.05803,
-      "y": -0.01581,
-      "width": 1.12549,
-      "height": 0.95234
-    }
-  },
   "ben-chilwell": {
     "src": "assets/players/ben-chilwell.png",
     "type": "cutout",
@@ -2590,24 +2590,24 @@ export const PLAYER_PORTRAITS = {
       "height": 0.91849
     }
   },
-  "timo-werner": {
-    "src": "assets/players/timo-werner.png",
+  "reece-james": {
+    "src": "assets/players/reece-james.png",
     "type": "cutout",
     "frame": {
-      "x": -0.02973,
-      "y": -0.03255,
-      "width": 1.06013,
-      "height": 0.89703
+      "x": -0.05803,
+      "y": -0.01581,
+      "width": 1.12549,
+      "height": 0.95234
     }
   },
-  "kai-havertz": {
-    "src": "assets/players/kai-havertz.png",
+  "edouard-mendy": {
+    "src": "assets/players/edouard-mendy.png",
     "type": "cutout",
     "frame": {
-      "x": -0.04406,
-      "y": -0.01104,
-      "width": 1.09405,
-      "height": 0.92573
+      "x": -0.09633,
+      "y": -0.05231,
+      "width": 1.16138,
+      "height": 0.9827
     }
   },
   "ronaldo": {
@@ -2620,26 +2620,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.93171
     }
   },
-  "javier-zanetti": {
-    "src": "assets/players/javier-zanetti.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.003,
-      "y": 0.01752,
-      "width": 0.99965,
-      "height": 0.84586
-    }
-  },
-  "gianluca-pagliuca": {
-    "src": "assets/players/gianluca-pagliuca.png",
-    "type": "portrait",
-    "frame": {
-      "x": 0.16085,
-      "y": 0.02368,
-      "width": 0.6403,
-      "height": 0.3674
-    }
-  },
   "youri-djorkaeff": {
     "src": "assets/players/youri-djorkaeff.png",
     "type": "portrait",
@@ -2650,6 +2630,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.74483
     }
   },
+  "javier-zanetti": {
+    "src": "assets/players/javier-zanetti.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.003,
+      "y": 0.01752,
+      "width": 0.99965,
+      "height": 0.84586
+    }
+  },
   "ivan-zamorano": {
     "src": "assets/players/ivan-zamorano.png",
     "type": "portrait",
@@ -2658,6 +2648,16 @@ export const PLAYER_PORTRAITS = {
       "y": 0.01668,
       "width": 1.36161,
       "height": 0.78129
+    }
+  },
+  "gianluca-pagliuca": {
+    "src": "assets/players/gianluca-pagliuca.png",
+    "type": "portrait",
+    "frame": {
+      "x": 0.16085,
+      "y": 0.02368,
+      "width": 0.6403,
+      "height": 0.3674
     }
   },
   "giuseppe-bergomi": {
@@ -2730,36 +2730,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.93815
     }
   },
-  "maicon": {
-    "src": "assets/players/maicon.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.08229,
-      "y": -0.17433,
-      "width": 1.17416,
-      "height": 0.99352
-    }
-  },
-  "hernan-crespo": {
-    "src": "assets/players/hernan-crespo.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06232,
-      "y": -0.04725,
-      "width": 1.12591,
-      "height": 0.95269
-    }
-  },
-  "julio-cesar": {
-    "src": "assets/players/julio-cesar.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.01242,
-      "y": -0.07918,
-      "width": 0.95132,
-      "height": 0.55844
-    }
-  },
   "esteban-cambiasso": {
     "src": "assets/players/esteban-cambiasso.png",
     "type": "cutout",
@@ -2800,6 +2770,26 @@ export const PLAYER_PORTRAITS = {
       "height": 0.59922
     }
   },
+  "maicon": {
+    "src": "assets/players/maicon.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.08229,
+      "y": -0.17433,
+      "width": 1.17416,
+      "height": 0.99352
+    }
+  },
+  "hernan-crespo": {
+    "src": "assets/players/hernan-crespo.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06232,
+      "y": -0.04725,
+      "width": 1.12591,
+      "height": 0.95269
+    }
+  },
   "maxwell": {
     "src": "assets/players/maxwell.png",
     "type": "cutout",
@@ -2808,6 +2798,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.03339,
       "width": 1.14467,
       "height": 0.96857
+    }
+  },
+  "julio-cesar": {
+    "src": "assets/players/julio-cesar.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.01242,
+      "y": -0.07918,
+      "width": 0.95132,
+      "height": 0.55844
     }
   },
   "wesley-sneijder": {
@@ -2820,16 +2820,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.98902
     }
   },
-  "lucio": {
-    "src": "assets/players/lucio.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.10538,
-      "y": -0.08759,
-      "width": 1.17185,
-      "height": 0.70959
-    }
-  },
   "diego-milito": {
     "src": "assets/players/diego-milito.png",
     "type": "cutout",
@@ -2838,6 +2828,16 @@ export const PLAYER_PORTRAITS = {
       "y": 0.03341,
       "width": 1.10778,
       "height": 0.93736
+    }
+  },
+  "lucio": {
+    "src": "assets/players/lucio.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.10538,
+      "y": -0.08759,
+      "width": 1.17185,
+      "height": 0.70959
     }
   },
   "thiago-motta": {
@@ -2870,6 +2870,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.92631
     }
   },
+  "hakan-calhanoglu": {
+    "src": "assets/players/hakan-calhanoglu.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.10488,
+      "y": -0.04288,
+      "width": 1.17798,
+      "height": 0.99675
+    }
+  },
   "alessandro-bastoni": {
     "src": "assets/players/alessandro-bastoni.png",
     "type": "cutout",
@@ -2888,26 +2898,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.03408,
       "width": 1.13327,
       "height": 0.95892
-    }
-  },
-  "hakan-calhanoglu": {
-    "src": "assets/players/hakan-calhanoglu.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.10488,
-      "y": -0.04288,
-      "width": 1.17798,
-      "height": 0.99675
-    }
-  },
-  "yann-sommer": {
-    "src": "assets/players/yann-sommer.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.09313,
-      "y": -0.05274,
-      "width": 1.18671,
-      "height": 1.00414
     }
   },
   "marcus-thuram": {
@@ -2970,6 +2960,16 @@ export const PLAYER_PORTRAITS = {
       "height": 1.01618
     }
   },
+  "yann-sommer": {
+    "src": "assets/players/yann-sommer.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.09313,
+      "y": -0.05274,
+      "width": 1.18671,
+      "height": 1.00414
+    }
+  },
   "alessandro-del-piero": {
     "src": "assets/players/alessandro-del-piero.png",
     "type": "cutout",
@@ -2978,16 +2978,6 @@ export const PLAYER_PORTRAITS = {
       "y": 0.03637,
       "width": 1.15086,
       "height": 0.9738
-    }
-  },
-  "angelo-peruzzi": {
-    "src": "assets/players/angelo-peruzzi.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.24262,
-      "y": -0.07444,
-      "width": 1.36336,
-      "height": 0.94452
     }
   },
   "gianluca-vialli": {
@@ -3008,6 +2998,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.08625,
       "width": 1.39521,
       "height": 0.83746
+    }
+  },
+  "angelo-peruzzi": {
+    "src": "assets/players/angelo-peruzzi.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.24262,
+      "y": -0.07444,
+      "width": 1.36336,
+      "height": 0.94452
     }
   },
   "didier-deschamps": {
@@ -3110,14 +3110,14 @@ export const PLAYER_PORTRAITS = {
       "height": 0.18368
     }
   },
-  "gianluigi-buffon": {
-    "src": "assets/players/gianluigi-buffon.png",
+  "arturo-vidal": {
+    "src": "assets/players/arturo-vidal.png",
     "type": "cutout",
     "frame": {
-      "x": -0.02244,
-      "y": 0.04048,
-      "width": 1.06571,
-      "height": 0.90176
+      "x": -0.03373,
+      "y": 0.00397,
+      "width": 1.06885,
+      "height": 0.90441
     }
   },
   "giorgio-chiellini": {
@@ -3140,14 +3140,24 @@ export const PLAYER_PORTRAITS = {
       "height": 0.95908
     }
   },
-  "arturo-vidal": {
-    "src": "assets/players/arturo-vidal.png",
+  "claudio-marchisio": {
+    "src": "assets/players/claudio-marchisio.png",
     "type": "cutout",
     "frame": {
-      "x": -0.03373,
-      "y": 0.00397,
-      "width": 1.06885,
-      "height": 0.90441
+      "x": -0.03965,
+      "y": 0.03486,
+      "width": 1.05459,
+      "height": 0.89235
+    }
+  },
+  "gianluigi-buffon": {
+    "src": "assets/players/gianluigi-buffon.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02244,
+      "y": 0.04048,
+      "width": 1.06571,
+      "height": 0.90176
     }
   },
   "leonardo-bonucci": {
@@ -3158,16 +3168,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.0673,
       "width": 1.14021,
       "height": 0.96479
-    }
-  },
-  "claudio-marchisio": {
-    "src": "assets/players/claudio-marchisio.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.03965,
-      "y": 0.03486,
-      "width": 1.05459,
-      "height": 0.89235
     }
   },
   "alvaro-morata": {
@@ -3190,16 +3190,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.9261
     }
   },
-  "paulo-dybala": {
-    "src": "assets/players/paulo-dybala.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.08359,
-      "y": -0.01434,
-      "width": 1.13598,
-      "height": 0.96121
-    }
-  },
   "gonzalo-higuain": {
     "src": "assets/players/gonzalo-higuain.png",
     "type": "cutout",
@@ -3208,6 +3198,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.0869,
       "width": 1.18411,
       "height": 1.00194
+    }
+  },
+  "paulo-dybala": {
+    "src": "assets/players/paulo-dybala.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.08359,
+      "y": -0.01434,
+      "width": 1.13598,
+      "height": 0.96121
     }
   },
   "andrea-barzagli": {
@@ -3220,16 +3220,6 @@ export const PLAYER_PORTRAITS = {
       "height": 1.00785
     }
   },
-  "alex-sandro": {
-    "src": "assets/players/alex-sandro.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06057,
-      "y": -0.0189,
-      "width": 1.11524,
-      "height": 0.94366
-    }
-  },
   "miralem-pjanic": {
     "src": "assets/players/miralem-pjanic.png",
     "type": "cutout",
@@ -3238,6 +3228,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.01052,
       "width": 1.11649,
       "height": 0.94473
+    }
+  },
+  "alex-sandro": {
+    "src": "assets/players/alex-sandro.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06057,
+      "y": -0.0189,
+      "width": 1.11524,
+      "height": 0.94366
     }
   },
   "sami-khedira": {
@@ -3730,16 +3730,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.98644
     }
   },
-  "khvicha-kvaratskhelia": {
-    "src": "assets/players/khvicha-kvaratskhelia.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.07982,
-      "y": -0.02823,
-      "width": 1.14981,
-      "height": 0.97291
-    }
-  },
   "victor-osimhen": {
     "src": "assets/players/victor-osimhen.png",
     "type": "cutout",
@@ -3750,6 +3740,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.94118
     }
   },
+  "khvicha-kvaratskhelia": {
+    "src": "assets/players/khvicha-kvaratskhelia.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.07982,
+      "y": -0.02823,
+      "width": 1.14981,
+      "height": 0.97291
+    }
+  },
   "kim-min-jae": {
     "src": "assets/players/kim-min-jae.png",
     "type": "cutout",
@@ -3758,16 +3758,6 @@ export const PLAYER_PORTRAITS = {
       "y": 0.00157,
       "width": 1.10574,
       "height": 0.93563
-    }
-  },
-  "alex-meret": {
-    "src": "assets/players/alex-meret.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.08498,
-      "y": -0.04554,
-      "width": 1.1692,
-      "height": 0.98932
     }
   },
   "stanislav-lobotka": {
@@ -3828,6 +3818,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.04035,
       "width": 1.16423,
       "height": 0.98512
+    }
+  },
+  "alex-meret": {
+    "src": "assets/players/alex-meret.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.08498,
+      "y": -0.04554,
+      "width": 1.1692,
+      "height": 0.98932
     }
   },
   "scott-mctominay": {
@@ -3900,16 +3900,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.93845
     }
   },
-  "hugo-lloris": {
-    "src": "assets/players/hugo-lloris.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06288,
-      "y": -0.0271,
-      "width": 1.14254,
-      "height": 0.96676
-    }
-  },
   "mousa-dembele": {
     "src": "assets/players/mousa-dembele.png",
     "type": "cutout",
@@ -3918,16 +3908,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.0367,
       "width": 1.15681,
       "height": 0.97884
-    }
-  },
-  "jan-vertonghen": {
-    "src": "assets/players/jan-vertonghen.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.09464,
-      "y": -0.04939,
-      "width": 1.18408,
-      "height": 1.00191
     }
   },
   "christian-eriksen": {
@@ -3950,6 +3930,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.96058
     }
   },
+  "jan-vertonghen": {
+    "src": "assets/players/jan-vertonghen.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.09464,
+      "y": -0.04939,
+      "width": 1.18408,
+      "height": 1.00191
+    }
+  },
   "danny-rose": {
     "src": "assets/players/danny-rose.png",
     "type": "cutout",
@@ -3970,6 +3960,16 @@ export const PLAYER_PORTRAITS = {
       "height": 1.01177
     }
   },
+  "hugo-lloris": {
+    "src": "assets/players/hugo-lloris.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06288,
+      "y": -0.0271,
+      "width": 1.14254,
+      "height": 0.96676
+    }
+  },
   "erik-lamela": {
     "src": "assets/players/erik-lamela.png",
     "type": "cutout",
@@ -3980,16 +3980,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.98747
     }
   },
-  "son-heung-min": {
-    "src": "assets/players/son-heung-min.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.08816,
-      "y": -0.06644,
-      "width": 1.17828,
-      "height": 0.99701
-    }
-  },
   "victor-wanyama": {
     "src": "assets/players/victor-wanyama.png",
     "type": "cutout",
@@ -3998,6 +3988,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.04448,
       "width": 1.16433,
       "height": 0.9852
+    }
+  },
+  "son-heung-min": {
+    "src": "assets/players/son-heung-min.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.08816,
+      "y": -0.06644,
+      "width": 1.17828,
+      "height": 0.99701
     }
   },
   "lucas-moura": {
@@ -4230,16 +4230,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.73904
     }
   },
-  "thibaut-courtois": {
-    "src": "assets/players/thibaut-courtois.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.02738,
-      "y": -0.01156,
-      "width": 1.09208,
-      "height": 0.92407
-    }
-  },
   "diego-costa": {
     "src": "assets/players/diego-costa.png",
     "type": "cutout",
@@ -4248,6 +4238,16 @@ export const PLAYER_PORTRAITS = {
       "y": 0.00498,
       "width": 1.10726,
       "height": 0.93692
+    }
+  },
+  "thibaut-courtois": {
+    "src": "assets/players/thibaut-courtois.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02738,
+      "y": -0.01156,
+      "width": 1.09208,
+      "height": 0.92407
     }
   },
   "diego-godin": {
@@ -4550,36 +4550,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.99624
     }
   },
-  "roman-weidenfeller": {
-    "src": "assets/players/roman-weidenfeller.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.12734,
-      "y": -0.05524,
-      "width": 1.22142,
-      "height": 1.03351
-    }
-  },
-  "sven-bender": {
-    "src": "assets/players/sven-bender.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.04262,
-      "y": 0.03208,
-      "width": 1.05042,
-      "height": 0.88882
-    }
-  },
-  "neven-subotic": {
-    "src": "assets/players/neven-subotic.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06789,
-      "y": -0.02365,
-      "width": 1.13471,
-      "height": 0.96014
-    }
-  },
   "jakub-b-aszczykowski": {
     "src": "assets/players/jakub-b-aszczykowski.png",
     "type": "cutout",
@@ -4598,6 +4568,36 @@ export const PLAYER_PORTRAITS = {
       "y": 0.01255,
       "width": 1.0612,
       "height": 0.89794
+    }
+  },
+  "neven-subotic": {
+    "src": "assets/players/neven-subotic.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06789,
+      "y": -0.02365,
+      "width": 1.13471,
+      "height": 0.96014
+    }
+  },
+  "sven-bender": {
+    "src": "assets/players/sven-bender.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.04262,
+      "y": 0.03208,
+      "width": 1.05042,
+      "height": 0.88882
+    }
+  },
+  "roman-weidenfeller": {
+    "src": "assets/players/roman-weidenfeller.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.12734,
+      "y": -0.05524,
+      "width": 1.22142,
+      "height": 1.03351
     }
   },
   "marcel-schmelzer": {
@@ -4630,6 +4630,16 @@ export const PLAYER_PORTRAITS = {
       "height": 0.90943
     }
   },
+  "nico-schlotterbeck": {
+    "src": "assets/players/nico-schlotterbeck.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.11247,
+      "y": -0.06946,
+      "width": 1.20039,
+      "height": 1.01572
+    }
+  },
   "julian-brandt": {
     "src": "assets/players/julian-brandt.png",
     "type": "cutout",
@@ -4648,16 +4658,6 @@ export const PLAYER_PORTRAITS = {
       "y": -0.03042,
       "width": 1.149,
       "height": 0.97223
-    }
-  },
-  "nico-schlotterbeck": {
-    "src": "assets/players/nico-schlotterbeck.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.11247,
-      "y": -0.06946,
-      "width": 1.20039,
-      "height": 1.01572
     }
   },
   "niclas-fullkrug": {
@@ -4840,16 +4840,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.93374
     }
   },
-  "david-luiz": {
-    "src": "assets/players/david-luiz.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.07388,
-      "y": -0.00772,
-      "width": 1.14084,
-      "height": 0.96533
-    }
-  },
   "blaise-matuidi": {
     "src": "assets/players/blaise-matuidi.png",
     "type": "cutout",
@@ -4858,6 +4848,16 @@ export const PLAYER_PORTRAITS = {
       "y": 0.00334,
       "width": 1.10524,
       "height": 0.9352
+    }
+  },
+  "david-luiz": {
+    "src": "assets/players/david-luiz.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.07388,
+      "y": -0.00772,
+      "width": 1.14084,
+      "height": 0.96533
     }
   },
   "serge-aurier": {
@@ -4950,16 +4950,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.96564
     }
   },
-  "gianluigi-donnarumma": {
-    "src": "assets/players/gianluigi-donnarumma.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.07386,
-      "y": -0.0777,
-      "width": 1.13531,
-      "height": 0.96065
-    }
-  },
   "vitinha": {
     "src": "assets/players/vitinha.png",
     "type": "cutout",
@@ -4968,6 +4958,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.00301,
       "width": 1.04035,
       "height": 0.8803
+    }
+  },
+  "gianluigi-donnarumma": {
+    "src": "assets/players/gianluigi-donnarumma.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.07386,
+      "y": -0.0777,
+      "width": 1.13531,
+      "height": 0.96065
     }
   },
   "achraf-hakimi": {
@@ -5430,16 +5430,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.53345
     }
   },
-  "pablo-aimar": {
-    "src": "assets/players/pablo-aimar.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.06492,
-      "y": 0.01477,
-      "width": 1.11628,
-      "height": 0.94455
-    }
-  },
   "oscar-cardozo": {
     "src": "assets/players/oscar-cardozo.png",
     "type": "cutout",
@@ -5448,6 +5438,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.06564,
       "width": 1.19649,
       "height": 1.01241
+    }
+  },
+  "pablo-aimar": {
+    "src": "assets/players/pablo-aimar.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06492,
+      "y": 0.01477,
+      "width": 1.11628,
+      "height": 0.94455
     }
   },
   "javier-saviola": {
@@ -5680,16 +5680,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.92987
     }
   },
-  "santiago-canizares": {
-    "src": "assets/players/santiago-canizares.png",
-    "type": "portrait",
-    "frame": {
-      "x": 0.25298,
-      "y": 0.03588,
-      "width": 0.49602,
-      "height": 0.42502
-    }
-  },
   "gaizka-mendieta": {
     "src": "assets/players/gaizka-mendieta.png",
     "type": "portrait",
@@ -5708,6 +5698,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.01225,
       "width": 0.6948,
       "height": 0.46994
+    }
+  },
+  "santiago-canizares": {
+    "src": "assets/players/santiago-canizares.png",
+    "type": "portrait",
+    "frame": {
+      "x": 0.25298,
+      "y": 0.03588,
+      "width": 0.49602,
+      "height": 0.42502
     }
   },
   "kily-gonzalez": {
@@ -5870,16 +5870,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.41686
     }
   },
-  "fabien-barthez": {
-    "src": "assets/players/fabien-barthez.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.15959,
-      "y": -0.11166,
-      "width": 1.33854,
-      "height": 0.75389
-    }
-  },
   "sonny-anderson": {
     "src": "assets/players/sonny-anderson.png",
     "type": "portrait",
@@ -5908,6 +5898,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.13777,
       "width": 1.77901,
       "height": 1.15721
+    }
+  },
+  "fabien-barthez": {
+    "src": "assets/players/fabien-barthez.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.15959,
+      "y": -0.11166,
+      "width": 1.33854,
+      "height": 0.75389
     }
   },
   "ali-benarbia": {
@@ -6280,16 +6280,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.5444
     }
   },
-  "giorgian-de-arrascaeta": {
-    "src": "assets/players/giorgian-de-arrascaeta.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.09222,
-      "y": -0.14303,
-      "width": 1.2019,
-      "height": 1.017
-    }
-  },
   "gabriel-barbosa": {
     "src": "assets/players/gabriel-barbosa.png",
     "type": "portrait",
@@ -6308,6 +6298,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.05396,
       "width": 0.90773,
       "height": 0.76808
+    }
+  },
+  "giorgian-de-arrascaeta": {
+    "src": "assets/players/giorgian-de-arrascaeta.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.09222,
+      "y": -0.14303,
+      "width": 1.2019,
+      "height": 1.017
     }
   },
   "everton-ribeiro": {
@@ -6510,16 +6510,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.91217
     }
   },
-  "cafu": {
-    "src": "assets/players/cafu.png",
-    "type": "cutout",
-    "frame": {
-      "x": -0.07697,
-      "y": -0.00666,
-      "width": 1.11192,
-      "height": 0.94086
-    }
-  },
   "djalminha": {
     "src": "assets/players/djalminha.png",
     "type": "portrait",
@@ -6528,6 +6518,16 @@ export const PLAYER_PORTRAITS = {
       "y": -0.01586,
       "width": 1.12093,
       "height": 0.63133
+    }
+  },
+  "cafu": {
+    "src": "assets/players/cafu.png",
+    "type": "cutout",
+    "frame": {
+      "x": -0.07697,
+      "y": -0.00666,
+      "width": 1.11192,
+      "height": 0.94086
     }
   },
   "muller-luiz-antonio-correa": {
@@ -6710,16 +6710,6 @@ export const PLAYER_PORTRAITS = {
       "height": 0.95568
     }
   },
-  "weverton": {
-    "src": "assets/players/weverton.png",
-    "type": "portrait",
-    "frame": {
-      "x": -0.05786,
-      "y": -0.11962,
-      "width": 1.09136,
-      "height": 0.92346
-    }
-  },
   "gustavo-gomez": {
     "src": "assets/players/gustavo-gomez.png",
     "type": "cutout",
@@ -6728,6 +6718,16 @@ export const PLAYER_PORTRAITS = {
       "y": 0.06133,
       "width": 0.96672,
       "height": 0.818
+    }
+  },
+  "weverton": {
+    "src": "assets/players/weverton.png",
+    "type": "portrait",
+    "frame": {
+      "x": -0.05786,
+      "y": -0.11962,
+      "width": 1.09136,
+      "height": 0.92346
     }
   },
   "raphael-veiga": {
@@ -10829,5 +10829,431 @@ export const PLAYER_PORTRAITS = {
       "width": 1.08786,
       "height": 0.92049
     }
+  },
+  "jimmy-johnstone": {
+    "src": "assets/players/jimmy-johnstone.jpg",
+    "type": "photo"
+  },
+  "tommy-gemmell": {
+    "src": "assets/players/tommy-gemmell.jpg",
+    "type": "photo"
+  },
+  "bobby-murdoch": {
+    "src": "assets/players/bobby-murdoch.jpg",
+    "type": "photo"
+  },
+  "billy-mcneill": {
+    "src": "assets/players/billy-mcneill.jpg",
+    "type": "photo"
+  },
+  "bobby-lennox": {
+    "src": "assets/players/bobby-lennox.jpg",
+    "type": "photo"
+  },
+  "bertie-auld": {
+    "src": "assets/players/bertie-auld.jpg",
+    "type": "photo",
+    "frame": {
+      "x": 0.42,
+      "y": 0.02,
+      "width": 0.36,
+      "height": 0.39
+    }
+  },
+  "willie-wallace": {
+    "src": "assets/players/willie-wallace.jpg",
+    "type": "photo"
+  },
+  "steve-chalmers": {
+    "src": "assets/players/steve-chalmers.jpg",
+    "type": "photo"
+  },
+  "ronnie-simpson": {
+    "src": "assets/players/ronnie-simpson.jpg",
+    "type": "photo"
+  },
+  "john-clark": {
+    "src": "assets/players/john-clark.jpg",
+    "type": "photo"
+  },
+  "jim-craig": {
+    "src": "assets/players/jim-craig.jpg",
+    "type": "photo"
+  },
+  "david-hay": {
+    "src": "assets/players/david-hay.jpg",
+    "type": "photo"
+  },
+  "john-hughes": {
+    "src": "assets/players/john-hughes.jpg",
+    "type": "photo"
+  },
+  "jim-brogan": {
+    "src": "assets/players/jim-brogan.jpg",
+    "type": "photo"
+  },
+  "evan-williams": {
+    "src": "assets/players/evan-williams.jpg",
+    "type": "photo"
+  },
+  "henrik-larsson": {
+    "src": "assets/players/henrik-larsson.jpg",
+    "type": "photo"
+  },
+  "stiliyan-petrov": {
+    "src": "assets/players/stiliyan-petrov.jpg",
+    "type": "photo"
+  },
+  "chris-sutton": {
+    "src": "assets/players/chris-sutton.jpg",
+    "type": "photo"
+  },
+  "alan-thompson": {
+    "src": "assets/players/alan-thompson.png",
+    "type": "photo"
+  },
+  "bobo-balde": {
+    "src": "assets/players/bobo-balde.png",
+    "type": "photo"
+  },
+  "johan-mjallby": {
+    "src": "assets/players/johan-mjallby.jpg",
+    "type": "photo"
+  },
+  "neil-lennon": {
+    "src": "assets/players/neil-lennon.jpg",
+    "type": "photo"
+  },
+  "didier-agathe": {
+    "src": "assets/players/didier-agathe.jpg",
+    "type": "photo"
+  },
+  "joos-valgaeren": {
+    "src": "assets/players/joos-valgaeren.jpg",
+    "type": "photo"
+  },
+  "rab-douglas": {
+    "src": "assets/players/rab-douglas.jpg",
+    "type": "photo"
+  },
+  "abedi-pele": {
+    "src": "assets/players/abedi-pele.jpg",
+    "type": "photo",
+    "frame": {
+      "x": 0.36,
+      "y": 0.08,
+      "width": 0.62,
+      "height": 0.52
+    }
+  },
+  "alen-boksic": {
+    "src": "assets/players/alen-boksic.jpg",
+    "type": "photo"
+  },
+  "franck-sauzee": {
+    "src": "assets/players/franck-sauzee.png",
+    "type": "photo",
+    "frame": {
+      "x": 0.14,
+      "y": 0.02,
+      "width": 0.72,
+      "height": 0.44
+    }
+  },
+  "rudi-voller": {
+    "src": "assets/players/rudi-voller.jpg",
+    "type": "photo",
+    "frame": {
+      "x": 0.2,
+      "y": 0.06,
+      "width": 0.55,
+      "height": 0.7
+    }
+  },
+  "basile-boli": {
+    "src": "assets/players/basile-boli.jpg",
+    "type": "photo"
+  },
+  "eric-di-meco": {
+    "src": "assets/players/eric-di-meco.png",
+    "type": "photo"
+  },
+  "jean-jacques-eydelie": {
+    "src": "assets/players/jean-jacques-eydelie.jpg",
+    "type": "photo"
+  },
+  "jean-pierre-papin": {
+    "src": "assets/players/jean-pierre-papin.jpg",
+    "type": "photo"
+  },
+  "chris-waddle": {
+    "src": "assets/players/chris-waddle.jpg",
+    "type": "photo"
+  },
+  "manuel-amoros": {
+    "src": "assets/players/manuel-amoros.jpg",
+    "type": "photo"
+  },
+  "carlos-mozer": {
+    "src": "assets/players/carlos-mozer.png",
+    "type": "photo"
+  },
+  "bernard-casoni": {
+    "src": "assets/players/bernard-casoni.jpg",
+    "type": "photo"
+  },
+  "pascal-olmeta": {
+    "src": "assets/players/pascal-olmeta.png",
+    "type": "photo"
+  },
+  "bruno-germain": {
+    "src": "assets/players/bruno-germain.png",
+    "type": "photo"
+  },
+  "lucho-gonzalez": {
+    "src": "assets/players/lucho-gonzalez.jpg",
+    "type": "photo"
+  },
+  "mamadou-niang": {
+    "src": "assets/players/mamadou-niang.jpg",
+    "type": "photo"
+  },
+  "steve-mandanda": {
+    "src": "assets/players/steve-mandanda.jpg",
+    "type": "photo"
+  },
+  "gabriel-heinze": {
+    "src": "assets/players/gabriel-heinze.jpg",
+    "type": "photo"
+  },
+  "stephane-mbia": {
+    "src": "assets/players/stephane-mbia.jpg",
+    "type": "photo"
+  },
+  "souleymane-diawara": {
+    "src": "assets/players/souleymane-diawara.jpg",
+    "type": "photo"
+  },
+  "benoit-cheyrou": {
+    "src": "assets/players/benoit-cheyrou.jpg",
+    "type": "photo"
+  },
+  "mathieu-valbuena": {
+    "src": "assets/players/mathieu-valbuena.jpg",
+    "type": "photo"
+  },
+  "brandao-evaeverson-lemos-da-silva": {
+    "src": "assets/players/brandao-evaeverson-lemos-da-silva.jpg",
+    "type": "photo"
+  },
+  "laurent-bonnart": {
+    "src": "assets/players/laurent-bonnart.jpg",
+    "type": "photo"
+  },
+  "hans-van-breukelen": {
+    "src": "assets/players/hans-van-breukelen.jpg",
+    "type": "photo"
+  },
+  "eric-gerets": {
+    "src": "assets/players/eric-gerets.jpg",
+    "type": "photo"
+  },
+  "gerald-vanenburg": {
+    "src": "assets/players/gerald-vanenburg.jpg",
+    "type": "photo"
+  },
+  "s-ren-lerby": {
+    "src": "assets/players/s-ren-lerby.jpg",
+    "type": "photo"
+  },
+  "wim-kieft": {
+    "src": "assets/players/wim-kieft.jpg",
+    "type": "photo"
+  },
+  "ivan-nielsen": {
+    "src": "assets/players/ivan-nielsen.jpg",
+    "type": "photo"
+  },
+  "berry-van-aerle": {
+    "src": "assets/players/berry-van-aerle.jpg",
+    "type": "photo"
+  },
+  "jan-heintze": {
+    "src": "assets/players/jan-heintze.jpg",
+    "type": "photo"
+  },
+  "edward-linskens": {
+    "src": "assets/players/edward-linskens.jpg",
+    "type": "photo",
+    "frame": {
+      "x": 0.08,
+      "y": 0.08,
+      "width": 0.36,
+      "height": 0.455
+    }
+  },
+  "hans-gillhaus": {
+    "src": "assets/players/hans-gillhaus.jpg",
+    "type": "photo"
+  },
+  "phillip-cocu": {
+    "src": "assets/players/phillip-cocu.jpg",
+    "type": "photo"
+  },
+  "park-ji-sung": {
+    "src": "assets/players/park-ji-sung.jpg",
+    "type": "photo"
+  },
+  "andre-ooijer": {
+    "src": "assets/players/andre-ooijer.jpg",
+    "type": "photo"
+  },
+  "wilfred-bouma": {
+    "src": "assets/players/wilfred-bouma.jpg",
+    "type": "photo"
+  },
+  "lee-young-pyo": {
+    "src": "assets/players/lee-young-pyo.jpg",
+    "type": "photo"
+  },
+  "jefferson-farfan": {
+    "src": "assets/players/jefferson-farfan.jpg",
+    "type": "photo"
+  },
+  "jan-vennegoor-of-hesselink": {
+    "src": "assets/players/jan-vennegoor-of-hesselink.jpg",
+    "type": "photo"
+  },
+  "johann-vogel": {
+    "src": "assets/players/johann-vogel.jpg",
+    "type": "photo"
+  },
+  "carlos-salcido": {
+    "src": "assets/players/carlos-salcido.jpg",
+    "type": "photo"
+  },
+  "timmy-simons": {
+    "src": "assets/players/timmy-simons.jpg",
+    "type": "photo"
+  },
+  "ibrahim-afellay": {
+    "src": "assets/players/ibrahim-afellay.jpg",
+    "type": "photo"
+  },
+  "arouna-kone": {
+    "src": "assets/players/arouna-kone.jpg",
+    "type": "photo"
+  },
+  "edison-mendez": {
+    "src": "assets/players/edison-mendez.jpg",
+    "type": "photo"
+  },
+  "jan-kromkamp": {
+    "src": "assets/players/jan-kromkamp.jpg",
+    "type": "photo"
+  },
+  "manuel-da-costa": {
+    "src": "assets/players/manuel-da-costa.jpg",
+    "type": "photo"
+  },
+  "francesco-totti": {
+    "src": "assets/players/francesco-totti.jpg",
+    "type": "photo"
+  },
+  "daniele-de-rossi": {
+    "src": "assets/players/daniele-de-rossi.jpg",
+    "type": "photo"
+  },
+  "christian-panucci": {
+    "src": "assets/players/christian-panucci.jpg",
+    "type": "photo"
+  },
+  "philippe-mexes": {
+    "src": "assets/players/philippe-mexes.jpg",
+    "type": "photo"
+  },
+  "cristian-chivu": {
+    "src": "assets/players/cristian-chivu.jpg",
+    "type": "photo"
+  },
+  "simone-perrotta": {
+    "src": "assets/players/simone-perrotta.jpg",
+    "type": "photo"
+  },
+  "rodrigo-taddei": {
+    "src": "assets/players/rodrigo-taddei.jpg",
+    "type": "photo"
+  },
+  "doni": {
+    "src": "assets/players/doni.jpg",
+    "type": "photo"
+  },
+  "marco-cassetti": {
+    "src": "assets/players/marco-cassetti.jpg",
+    "type": "photo"
+  },
+  "christian-wilhelmsson": {
+    "src": "assets/players/christian-wilhelmsson.jpg",
+    "type": "photo"
+  },
+  "gabriel-batistuta": {
+    "src": "assets/players/gabriel-batistuta.jpg",
+    "type": "photo"
+  },
+  "vincenzo-montella": {
+    "src": "assets/players/vincenzo-montella.jpg",
+    "type": "photo"
+  },
+  "vincent-candela": {
+    "src": "assets/players/vincent-candela.jpg",
+    "type": "photo"
+  },
+  "damiano-tommasi": {
+    "src": "assets/players/damiano-tommasi.jpg",
+    "type": "photo"
+  },
+  "francesco-antonioli": {
+    "src": "assets/players/francesco-antonioli.jpg",
+    "type": "photo"
+  },
+  "jonathan-zebina": {
+    "src": "assets/players/jonathan-zebina.jpg",
+    "type": "photo"
+  },
+  "radja-nainggolan": {
+    "src": "assets/players/radja-nainggolan.jpg",
+    "type": "photo"
+  },
+  "edin-dzeko": {
+    "src": "assets/players/edin-dzeko.jpg",
+    "type": "photo"
+  },
+  "kostas-manolas": {
+    "src": "assets/players/kostas-manolas.jpg",
+    "type": "photo"
+  },
+  "aleksandar-kolarov": {
+    "src": "assets/players/aleksandar-kolarov.jpg",
+    "type": "photo"
+  },
+  "kevin-strootman": {
+    "src": "assets/players/kevin-strootman.jpg",
+    "type": "photo"
+  },
+  "alessandro-florenzi": {
+    "src": "assets/players/alessandro-florenzi.jpg",
+    "type": "photo"
+  },
+  "federico-fazio": {
+    "src": "assets/players/federico-fazio.jpg",
+    "type": "photo"
+  },
+  "juan-jesus": {
+    "src": "assets/players/juan-jesus.jpg",
+    "type": "photo"
+  },
+  "patrik-schick": {
+    "src": "assets/players/patrik-schick.jpg",
+    "type": "photo"
   }
 };

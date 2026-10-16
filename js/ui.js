@@ -1,9 +1,9 @@
 import { MODES } from './state.js';
-import { CLUB_LOGOS } from '../data/club-logos.js';
+import { CLUB_LOGOS } from '../data/club-logos.js?v=club-assets-20261016-1';
 import { clubs, allSquads } from '../data/clubs.js';
 import {filterQuickClubs,quickSeasons} from './quick-catalog.js';
 import {filterHistory,formatHistoryDate} from './history.js';
-import { playerPortrait } from './player-portraits.js';
+import { playerPortrait } from './player-portraits.js?v=club-assets-20261016-1';
 import { competitionName, competitionLogo } from '../data/competitions.js';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js';
 import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js';
@@ -121,7 +121,7 @@ function playerRow(p,s,squad){
   const unavailable=duplicate||!slot,disabled=unavailable||s.rolling,hidden=s.mode==='legends';
   const selected=s.draft.selectedId===p.id;
   const status=duplicate?'Já escolhido':!slot?'Posição ocupada':'';
-  return `<div class="player-row ${selected?'selected':''} ${unavailable?'unavailable':''}" style="--club-1:${squad.cores[0]}"><button class="player-select" data-action="player" data-value="${esc(p.id)}" ${disabled?'disabled':''} draggable="false" aria-pressed="${selected}" aria-label="${esc(unavailable?p.nome+' · '+status:s.rolling?p.nome+' · Sorteando elenco':'Selecionar '+p.nome+' para colocar no campo')}"><span class="player-avatar">${esc(p.camisa||initials(p.nome))}</span><span class="player-info"><span class="player-name">${esc(p.nome)}</span><span class="player-details"><span class="position-chip ${POSITION_MAP[p.tags[0]]}">${esc(p.tags.join(' / '))}</span>${unavailable?'':'<span class="desktop-pick-hint">Arraste para o campo</span><span class="mobile-pick-hint">Toque e escolha a posição</span>'}</span>${status?`<span class="player-status">${status}</span>`:''}</span><span class="player-ovr">${hidden?'??':p.ovr}<small>OVR</small></span></button></div>`;
+  return `<div class="player-row ${selected?'selected':''} ${unavailable?'unavailable':''}" style="--club-1:${squad.cores[0]}"><button class="player-select" data-action="player" data-value="${esc(p.id)}" ${disabled?'disabled':''} draggable="false" aria-pressed="${selected}" aria-label="${esc(unavailable?p.nome+' · '+status:s.rolling?p.nome+' · Sorteando elenco':'Selecionar '+p.nome+' para colocar no campo')}"><span class="player-avatar">${esc(p.tags[0])}</span><span class="player-info"><span class="player-name">${esc(p.nome)}</span><span class="player-details"><span class="position-chip ${POSITION_MAP[p.tags[0]]}">${esc(p.tags.join(' / '))}</span>${unavailable?'':'<span class="desktop-pick-hint">Arraste para o campo</span><span class="mobile-pick-hint">Toque e escolha a posição</span>'}</span>${status?`<span class="player-status">${status}</span>`:''}</span><span class="player-ovr">${hidden?'??':p.ovr}<small>OVR</small></span></button></div>`;
 }
 export function renderPlayerDragCard({player,squad,hidden}) {
   const portrait=playerPortrait(player.id);

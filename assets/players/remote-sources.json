@@ -1,0 +1,42 @@
+{
+  "provider": "Wikimedia Commons",
+  "updated": "2026-10-16",
+  "note": "Registro de pesquisa anterior. As fotos foram baixadas para assets/players e estão registradas em sources.json. O jogo não depende destas URLs externas.",
+  "players": {
+    "billy-mcneill": { "fileTitle": "Billy Mcneill 1982-09-28.jpg", "source": "https://commons.wikimedia.org/wiki/File:Billy_Mcneill_1982-09-28.jpg", "license": "ver fonte original", "credit": "Fotocollectie Anefo; detalhes na fonte" },
+    "tommy-gemmell": { "fileTitle": "Tommy Gemmell 1971 (cropped).jpg", "source": "https://commons.wikimedia.org/wiki/File:Tommy_Gemmell_1971_(cropped).jpg", "license": "CC0", "credit": "Joost Evers / Anefo" },
+    "bertie-auld": { "fileTitle": "Bertie Auld 1959.jpg", "source": "https://commons.wikimedia.org/wiki/File:Bertie_Auld_1959.jpg", "license": "CC0", "credit": "Joop van Bilsen / Anefo" },
+    "jimmy-johnstone": { "fileTitle": "Jimmy Johnstone (cropped).jpg", "source": "https://commons.wikimedia.org/wiki/File:Jimmy_Johnstone_(cropped).jpg", "license": "CC0", "credit": "Wikimedia Commons — fonte original" },
+    "willie-wallace": { "fileTitle": "Willie Wallace 1971.jpg", "source": "https://commons.wikimedia.org/wiki/File:Willie_Wallace_1971.jpg", "license": "CC0", "credit": "Joost Evers / Anefo" },
+    "bobby-lennox": { "fileTitle": "Bobby Lennox (1971).jpg", "source": "https://commons.wikimedia.org/wiki/File:Bobby_Lennox_(1971).jpg", "license": "ver fonte original", "credit": "Wikimedia Commons — autor listado na fonte" },
+
+    "basile-boli": { "fileTitle": "Basile Boli.jpg", "source": "https://commons.wikimedia.org/wiki/File:Basile_Boli.jpg", "license": "CC BY-SA 3.0", "credit": "autor listado na fonte original" },
+    "eric-di-meco": { "fileTitle": "Éric Di Meco au Very good trip festival à Bellocq le 8 juin 2025 (cropped).png", "source": "https://commons.wikimedia.org/wiki/File:%C3%89ric_Di_Meco_au_Very_good_trip_festival_%C3%A0_Bellocq_le_8_juin_2025_(cropped).png", "license": "CC0", "credit": "Baduld" },
+    "jean-jacques-eydelie": { "fileTitle": "Jean-Jacques Eydelie.jpg", "source": "https://commons.wikimedia.org/wiki/File:Jean-Jacques_Eydelie.jpg", "license": "CC BY-SA 3.0", "credit": "autor listado na fonte original" },
+    "abedi-pele": { "fileTitle": "Abédi Pélé (cropped).jpg", "source": "https://commons.wikimedia.org/wiki/File:Ab%C3%A9di_P%C3%A9l%C3%A9_(cropped).jpg", "license": "ver fonte original", "credit": "autor listado na fonte original" },
+    "rudi-voller": { "fileTitle": "Rudi Völler.jpg", "source": "https://commons.wikimedia.org/wiki/File:Rudi_V%C3%B6ller.jpg", "license": "CC BY-SA 3.0", "credit": "9EkieraM1" },
+
+    "hans-van-breukelen": { "fileTitle": "Hans van Breukelen.jpg", "source": "https://commons.wikimedia.org/wiki/File:Hans_van_Breukelen.jpg", "license": "CC0", "credit": "Nationaal Archief / Anefo" },
+    "eric-gerets": { "fileTitle": "Eric Gerets 2012 1.jpg", "source": "https://commons.wikimedia.org/wiki/File:Eric_Gerets_2012_1.jpg", "license": "CC BY 2.0", "credit": "autor listado na fonte original" },
+    "ivan-nielsen": { "fileTitle": "Ivan Nielsen.jpg", "source": "https://commons.wikimedia.org/wiki/File:Ivan_Nielsen.jpg", "license": "ver fonte original", "credit": "autor listado na fonte original" },
+    "jan-heintze": { "fileTitle": "PSV koppen 15 , 16 Jan Heintze , 17 , Bestanddeelnr 934-0448.jpg", "source": "https://commons.wikimedia.org/wiki/File:PSV_koppen_15_,_16_Jan_Heintze_,_17_,_Bestanddeelnr_934-0448.jpg", "license": "CC0", "credit": "Marcel Antonisse / Anefo" },
+    "s-ren-lerby": { "fileTitle": "PSV tegen Ajax 1-1 Stevens (rechts) aan de bal, midden Lerby, Bestanddeelnr 930-7671.jpg", "source": "https://commons.wikimedia.org/wiki/File:PSV_tegen_Ajax_1-1_Stevens_(rechts)_aan_de_bal,_midden_Lerby,_Bestanddeelnr_930-7671.jpg", "license": "CC0", "credit": "Hans van Dijk / Anefo" },
+    "berry-van-aerle": { "fileTitle": "PSV koppen 12, 13 Barry van Aerle , 14 Frank Arensen, Bestanddeelnr 934-0447.jpg", "source": "https://commons.wikimedia.org/wiki/File:PSV_koppen_12,_13_Barry_van_Aerle_,_14_Frank_Arensen,_Bestanddeelnr_934-0447.jpg", "license": "CC0", "credit": "Bart Molendijk / Anefo" },
+    "gerald-vanenburg": { "fileTitle": "Gerald Vanenburg (1981).jpg", "source": "https://commons.wikimedia.org/wiki/File:Gerald_Vanenburg_(1981).jpg", "license": "CC0", "credit": "Marcel Antonisse / Anefo" },
+    "edward-linskens": { "fileTitle": "PSV Eindhoven, 1987–88 European Cup Semi-final, Santiago Bernabéu, Madrid.jpg", "source": "https://commons.wikimedia.org/wiki/File:PSV_Eindhoven,_1987%E2%80%9388_European_Cup_Semi-final,_Santiago_Bernab%C3%A9u,_Madrid.jpg", "license": "CC BY-SA 3.0 NL", "credit": "Spaarnestad Photo", "frame": { "x": 0.34, "y": 0.08, "width": 0.32, "height": 0.82 } },
+    "wim-kieft": { "fileTitle": "Wim Kieft (1981).jpg", "source": "https://commons.wikimedia.org/wiki/File:Wim_Kieft_(1981).jpg", "license": "CC0", "credit": "Marcel Antonisse / Anefo" },
+    "hans-gillhaus": { "fileTitle": "Hans-gillhaus-1314714362.jpg", "source": "https://commons.wikimedia.org/wiki/File:Hans-gillhaus-1314714362.jpg", "license": "CC BY 3.0", "credit": "Jeroen De Volder / SV Zulte Waregem" },
+
+    "doni": { "fileTitle": "Doni.jpg", "source": "https://commons.wikimedia.org/wiki/File:Doni.jpg", "license": "CC BY-SA 3.0", "credit": "Roberto Vicario" },
+    "marco-cassetti": { "fileTitle": "Cassetti Roma Store.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cassetti_Roma_Store.jpg", "license": "CC BY-SA 4.0", "credit": "Roby Fabulous Fonte" },
+    "philippe-mexes": { "fileTitle": "Philippe Mexès 2012-06-11.jpg", "source": "https://commons.wikimedia.org/wiki/File:Philippe_Mex%C3%A8s_2012-06-11.jpg", "license": "CC BY-SA 3.0", "credit": "Stanislav Vedmid" },
+    "christian-panucci": { "fileTitle": "Panucci UDI-PAR 2-2.jpg", "source": "https://commons.wikimedia.org/wiki/File:Panucci_UDI-PAR_2-2.jpg", "license": "domínio público", "credit": "King84" },
+    "cristian-chivu": { "fileTitle": "RO B ROMAUT Cristian Chivu 1.jpg", "source": "https://commons.wikimedia.org/wiki/File:RO_B_ROMAUT_Cristian_Chivu_1.jpg", "license": "CC BY-SA 3.0", "credit": "Andrei Stroe" },
+    "daniele-de-rossi": { "fileTitle": "Daniele De Rossi Euro 2012 vs England.jpg", "source": "https://commons.wikimedia.org/wiki/File:Daniele_De_Rossi_Euro_2012_vs_England.jpg", "license": "CC BY-SA 3.0", "credit": "Илья Хохлов" },
+    "simone-perrotta": { "fileTitle": "Simone Perrotta 2007.jpg", "source": "https://commons.wikimedia.org/wiki/File:Simone_Perrotta_2007.jpg", "license": "domínio público", "credit": "Gaúcho" },
+    "rodrigo-taddei": { "fileTitle": "Rodrigo Taddei (cropped).jpg", "source": "https://commons.wikimedia.org/wiki/File:Rodrigo_Taddei_(cropped).jpg", "license": "CC BY 2.0", "credit": "md.faisalzaman" },
+    "christian-wilhelmsson": { "fileTitle": "Christian Wilhelmsson (cropped).jpg", "source": "https://commons.wikimedia.org/wiki/File:Christian_Wilhelmsson_(cropped).jpg", "license": "CC BY 2.0", "credit": "Ricardo Alvarez" },
+    "francesco-totti": { "fileTitle": "Francesco Totti.jpg", "source": "https://commons.wikimedia.org/wiki/File:Francesco_Totti.jpg", "license": "CC BY 2.0", "credit": "md.faisalzaman" },
+    "mancini": { "alias": "amantino-mancini", "source": "https://www.futbin.com/players", "license": "FUTBIN / EA SPORTS", "credit": "retrato local existente de Amantino Mancini" }
+  }
+}

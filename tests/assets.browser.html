@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ScoreFut · Verificação de imagens</title>
+<link rel="stylesheet" href="../css/player-drag.css">
+<style>*{box-sizing:border-box}body{font:14px/1.5 system-ui;background:#f4f7f5;color:#173b2a;margin:24px}main{max-width:1200px;margin:auto}h1{margin:0 0 8px}#status{font-weight:700}.pass{color:#13754b}.fail{color:#b42626}.logos{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:10px}.logo-card{border:1px solid #d8e3da;border-radius:10px;background:white;padding:12px;text-align:center}.logo-card img{display:block;margin:0 auto 6px;width:48px;height:48px;object-fit:contain}.logo-card small{display:block;color:#586f60}.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}.player-drag-card{width:140px}.drag-card-top .club-badge{display:block}.club-badge img{width:100%;height:100%;object-fit:contain}.club-badge:not(.image-badge){display:grid;place-items:center;border-radius:50%;background:#13754b;color:#fff;font-size:8px}select{font:inherit;padding:10px;border:1px solid #cad8ce;border-radius:8px}h2{font-size:20px;margin-top:28px}h3{font-size:15px}</style></head>
+<body><main><h1>Escudos e fotos das cartinhas</h1><p id="status" role="status">Verificando as imagens publicadas…</p><ul id="failures"></ul><h2>Escudos dos clubes</h2><div id="logos" class="logos"></div><h2>Cartinhas por clube e temporada</h2><label>Clube <select id="club"></select></label><div id="seasons"></div></main>
+<script type="module">
+import {clubs,allSquads} from '../data/clubs.js';
+import {CLUB_LOGOS} from '../data/club-logos.js?v=club-assets-20261016-1';
+import {PLAYER_PORTRAITS} from '../data/player-portraits.js?v=club-assets-20261016-1';
+import {renderPlayerDragCard} from '../js/ui.js?v=club-assets-20261016-1';
+const root=new URL('../',location.href);
+function logoCard(club){
+ const el=document.createElement('div');el.className='logo-card';const image=document.createElement('img');image.src=new URL(CLUB_LOGOS[club.id],root);image.alt=club.nome;
+ const name=document.createElement('strong');name.textContent=club.nome;el.append(image,name);
+ const small=document.createElement('small');small.textContent=club.temporadas.map(s=>s.ano).join(' · ');el.append(small);return el;
+}
+for(const club of clubs){
+ document.querySelector('#logos').append(logoCard(club));
+ const option=document.createElement('option');option.value=club.id;option.textContent=club.nome;document.querySelector('#club').append(option);
+}
+document.querySelector('#club').value=new URLSearchParams(location.search).get('club')||'roma';
+function showClub(){
+ const el=document.querySelector('#seasons');el.replaceChildren();
+ for(const squad of allSquads.filter(s=>s.clubId===document.querySelector('#club').value)){
+  const title=document.createElement('h3');title.textContent=squad.ano+' · '+squad.conquistas;el.append(title);
+  const grid=document.createElement('div');grid.className='photos';
+  for(const player of squad.jogadores){
+   const holder=document.createElement('div');holder.innerHTML=renderPlayerDragCard({player,squad,hidden:false});
+   for(const img of holder.querySelectorAll('img')){
+    img.src=new URL(img.getAttribute('src'),root);
+    if(img.hasAttribute('data-player-portrait')){
+     img.addEventListener('load',()=>img.parentElement.classList.add('photo-ready'),{once:true});
+     if(img.complete&&img.naturalWidth)img.parentElement.classList.add('photo-ready');
+    }
+   }
+   grid.append(holder.firstElementChild);
+  }
+  el.append(grid);
+ }
+}
+document.querySelector('#club').addEventListener('change',showClub);showClub();
+const jobs=[...clubs.map(c=>({id:c.id,src:CLUB_LOGOS[c.id]})),...Object.entries(PLAYER_PORTRAITS).map(([id,p])=>({id,src:p.src}))];
+let next=0,passed=0,failed=0,completed=0;
+async function worker(){
+ while(next<jobs.length){
+  const job=jobs[next++];let timer;
+  try{
+   if(!job.src?.startsWith('assets/'))throw Error('Imagem local ausente');
+   const image=new Image();image.src=new URL(job.src,root);
+   await Promise.race([image.decode(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Timeout')),20000);})]);
+   if(!image.naturalWidth||!image.naturalHeight)throw Error('Imagem sem dimensões');passed++;
+  }catch(e){failed++;const item=document.createElement('li');item.textContent=job.id+': '+e.message;document.querySelector('#failures').append(item);}finally{clearTimeout(timer);}
+  document.querySelector('#status').textContent=(++completed)+'/'+jobs.length+' imagens conferidas';
+ }
+}
+await Promise.all(Array.from({length:8},worker));
+const status=document.querySelector('#status');status.textContent=clubs.length+' escudos + '+Object.keys(PLAYER_PORTRAITS).length+' fotos · '+passed+' carregadas · '+failed+' falhas';status.className=failed?'fail':'pass';document.documentElement.dataset.testStatus=failed?'fail':'pass';
+</script></body></html>
