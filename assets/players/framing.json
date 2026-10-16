@@ -3,7 +3,7 @@
     "width": 104,
     "height": 88
   },
-  "note": "Local face detection and visual review. Originals remain unchanged; normalized display windows include the head and neck.",
+  "note": "Head and upper neck only. Existing reviewed frames preserved; each added portrait has a face-aligned window.",
   "players": {
     "iker-casillas": {
       "x": -0.0203,
@@ -5998,7 +5998,7 @@
     },
     "rolando": {
       "x": -0.04535,
-      "y": 0.00009,
+      "y": 9e-05,
       "width": 1.09809,
       "height": 0.92916,
       "sourceHash": "4e65bc9cf0c9e82112897a8678ca436d736588f52d7ae21e89d8318e8e545181",
@@ -13664,7 +13664,7 @@
     },
     "borges-humberlito": {
       "x": 0.17931,
-      "y": -0.00005,
+      "y": -5e-05,
       "width": 0.67037,
       "height": 0.44906,
       "sourceHash": "2a8aa92a8ec4a4125483fbdbd5f1d3836c8f5bc7c4b025b1ef4ed26c61ee79a7",
@@ -16528,6 +16528,1506 @@
         "width": 0.43097,
         "height": 0.45536
       }
+    },
+    "jimmy-johnstone": {
+      "x": -0.112523,
+      "y": -0.037987,
+      "width": 1.301439,
+      "height": 0.839678,
+      "sourceHash": "3950c02bfa0be9201e36a4aeb3d34503c9a212e2a3b423b07c423fbc981a0579",
+      "face": {
+        "x": 0.264707650273224,
+        "y": 0.18592708333333335,
+        "width": 0.5469781420765027,
+        "height": 0.5597854166666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "tommy-gemmell": {
+      "x": 0.283492,
+      "y": 0.053398,
+      "width": 0.667849,
+      "height": 0.647374,
+      "sourceHash": "1401459599ae1187788c44acfa1414db4f3c93bb4926056ef499ffb0a69e5d0c",
+      "face": {
+        "x": 0.46743541666666666,
+        "y": 0.22603102625298327,
+        "width": 0.2999625,
+        "height": 0.431582338902148
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "billy-mcneill": {
+      "x": 0.135465,
+      "y": 0.002548,
+      "width": 0.790841,
+      "height": 0.568797,
+      "sourceHash": "7c9100a48e56d31cf194ce809e1153078ddd9079a3acff898c5a5d5dfa001a4b",
+      "face": {
+        "x": 0.36587745098039215,
+        "y": 0.15422708333333332,
+        "width": 0.33001470588235293,
+        "height": 0.37919791666666663
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "bobby-lennox": {
+      "x": -0.173662,
+      "y": -0.000647,
+      "width": 1.298075,
+      "height": 0.823778,
+      "sourceHash": "a716861cd7c567b20b862cddf93b6801f735132f020112f6ad0a3dfe95763367",
+      "face": {
+        "x": 0.21856944444444446,
+        "y": 0.21902708333333332,
+        "width": 0.5136111111111111,
+        "height": 0.5491854166666666
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "abedi-pele": {
+      "x": 0.449034,
+      "y": 0.154578,
+      "width": 0.550244,
+      "height": 0.462786,
+      "sourceHash": "bfc8f5172a056aa6aab7ade1437067bd310118dfa6e7fc4cf200196f7650172a",
+      "face": {
+        "x": 0.595360606060606,
+        "y": 0.2779879518072289,
+        "width": 0.2575909090909091,
+        "height": 0.3085240963855422
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "willie-wallace": {
+      "x": -0.053331,
+      "y": 0.059177,
+      "width": 1.144751,
+      "height": 0.84334,
+      "sourceHash": "7cc739fb989ccb404e5cd031419ac11a5d4852ee7a6c89bbcb2da4d4dc3f6b69",
+      "face": {
+        "x": 0.2778285714285714,
+        "y": 0.28406716417910444,
+        "width": 0.48243142857142857,
+        "height": 0.5622263681592039
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "bobby-murdoch": {
+      "x": 0.287987,
+      "y": 0.00089,
+      "width": 0.227489,
+      "height": 0.192491,
+      "sourceHash": "d7b60140e9575f91b87869dbbbd0c4b6299cc14dd1d734693ea30ba98d4b93b9",
+      "face": {
+        "x": 0.35265416666666666,
+        "y": 0.052220833333333334,
+        "width": 0.09815416666666667,
+        "height": 0.12832708333333334
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "basile-boli": {
+      "x": -0.31697,
+      "y": -0.050595,
+      "width": 1.54259,
+      "height": 0.864741,
+      "sourceHash": "a21e5139992caddef36d91a909d999a63149dbebb5ab271f936f84f1e66f37a0",
+      "face": {
+        "x": 0.13433962264150942,
+        "y": 0.1800020833333333,
+        "width": 0.6399716981132075,
+        "height": 0.5764937499999999
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "rudi-voller": {
+      "x": 0.249736,
+      "y": 0.108547,
+      "width": 0.483161,
+      "height": 0.613242,
+      "sourceHash": "e115f6cd83575aacf669d9484e66fc05cfe1b0552035b51edca52b9428f8f558",
+      "face": {
+        "x": 0.38370625,
+        "y": 0.272078125,
+        "width": 0.21522083333333333,
+        "height": 0.408828125
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "david-hay": {
+      "x": 0.077386,
+      "y": 0.060555,
+      "width": 0.801775,
+      "height": 0.508819,
+      "sourceHash": "64624e8795d813e49e7271789822ec29d94d720abfa4a73c10493b72a64f4968",
+      "face": {
+        "x": 0.29099722222222224,
+        "y": 0.19623958333333333,
+        "width": 0.3745527777777778,
+        "height": 0.33921250000000003
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "eric-di-meco": {
+      "x": 0.267192,
+      "y": 0.090829,
+      "width": 0.383681,
+      "height": 0.220494,
+      "sourceHash": "c12f4553e2dd3b2827361ad369389ea4e5f98a5b960eec161c8e495fef36d4fb",
+      "face": {
+        "x": 0.36405214723926377,
+        "y": 0.14962708333333333,
+        "width": 0.1899601226993865,
+        "height": 0.14699583333333335
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "evan-williams": {
+      "x": -0.217373,
+      "y": 0.04293,
+      "width": 1.119157,
+      "height": 0.805639,
+      "sourceHash": "6797399ba581d2695ce14146d4571cc897700f7ebd6f35e49ce33444f4c960b5",
+      "face": {
+        "x": 0.12231929824561402,
+        "y": 0.2577671641791045,
+        "width": 0.43977192982456137,
+        "height": 0.5370925373134328
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "henrik-larsson": {
+      "x": -0.155616,
+      "y": -0.129272,
+      "width": 1.228841,
+      "height": 0.810169,
+      "sourceHash": "4bf85165d78fbece5889670731d019ede3c584ae0bb90fce5ff3c21d2541fc70",
+      "face": {
+        "x": 0.21660427807486632,
+        "y": 0.08677291666666667,
+        "width": 0.4844010695187166,
+        "height": 0.5401125
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "stiliyan-petrov": {
+      "x": 0.175017,
+      "y": 0.032659,
+      "width": 0.6888,
+      "height": 0.460194,
+      "sourceHash": "3f342373d67113ca2fcb48b4dd67abf39ee7e2068baddb315435aa3b26a316b9",
+      "face": {
+        "x": 0.37449340369393136,
+        "y": 0.15537708333333333,
+        "width": 0.2898469656992085,
+        "height": 0.3067958333333333
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "neil-lennon": {
+      "x": 0.292906,
+      "y": 0.063258,
+      "width": 0.653848,
+      "height": 0.410331,
+      "sourceHash": "6c639e36a175b5e29f57a2cbed1c093067569d510a68ecb28df6d66910c8122e",
+      "face": {
+        "x": 0.47951966292134834,
+        "y": 0.17267916666666666,
+        "width": 0.2806207865168539,
+        "height": 0.2735541666666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "steve-chalmers": {
+      "x": 0.416384,
+      "y": 0.008138,
+      "width": 0.190409,
+      "height": 0.161116,
+      "sourceHash": "a681e8689d7d6abed8d8ec560e3a5913897d517e8dad021e3e509f4a42681020",
+      "face": {
+        "x": 0.46513958333333333,
+        "y": 0.05110208333333333,
+        "width": 0.09289791666666666,
+        "height": 0.10741041666666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "ronnie-simpson": {
+      "x": 0.376098,
+      "y": 0.094611,
+      "width": 0.248171,
+      "height": 0.209991,
+      "sourceHash": "72eef73e9a0ab01b2c698cb552270dfe8e4d9e65334dff02ee20907daed17d1a",
+      "face": {
+        "x": 0.44686458333333334,
+        "y": 0.15060833333333334,
+        "width": 0.1066375,
+        "height": 0.13999375
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "john-clark": {
+      "x": -0.016159,
+      "y": -0.01449,
+      "width": 1.094557,
+      "height": 0.617442,
+      "sourceHash": "d73fbf6aca5784d97a185586252e0a126a895c5c1f733345ce1aa6020ed73fd5",
+      "face": {
+        "x": 0.31158052171979633,
+        "y": 0.15016076471898465,
+        "width": 0.439078070900657,
+        "height": 0.41162815341701753
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jim-craig": {
+      "x": 0.501673,
+      "y": 0.051511,
+      "width": 0.19449,
+      "height": 0.164569,
+      "sourceHash": "2ee99c8c6695b411306f8205ce091582e5ccfc2941969dd188341b69b6c55398",
+      "face": {
+        "x": 0.5517208333333333,
+        "y": 0.09539583333333333,
+        "width": 0.09439375,
+        "height": 0.1097125
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "john-hughes": {
+      "x": 0.159316,
+      "y": 0.04296,
+      "width": 0.672038,
+      "height": 0.45018,
+      "sourceHash": "00b103184c6cb0cf9e566c4380e30e83729a476156772642db0298b5ad68b1ec",
+      "face": {
+        "x": 0.35065798651903196,
+        "y": 0.16300743895691708,
+        "width": 0.2893534495418233,
+        "height": 0.30011967250279015
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "chris-sutton": {
+      "x": 0.107417,
+      "y": -0.08455,
+      "width": 0.81072,
+      "height": 1.010052,
+      "sourceHash": "8ec668520d2c4c2456a4c6219689dae149488411293f0c792a23641065e91b93",
+      "face": {
+        "x": 0.3389979166666667,
+        "y": 0.18479754601226994,
+        "width": 0.34755833333333336,
+        "height": 0.6733680981595092
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "bobo-balde": {
+      "x": -0.01025,
+      "y": 0.045198,
+      "width": 1.012656,
+      "height": 0.571242,
+      "sourceHash": "552435672511b2f13c9fe64c20889e76a77b5050d1a70527920a37a533e9cf4d",
+      "face": {
+        "x": 0.27569679161170857,
+        "y": 0.19752878956980519,
+        "width": 0.4407631391054624,
+        "height": 0.3808279904452237
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "johan-mjallby": {
+      "x": -0.041235,
+      "y": 0.017827,
+      "width": 1.048958,
+      "height": 0.590146,
+      "sourceHash": "a5cd8de9738c2b5e933eb553652635c483749739b3bd6ae453c889ead5ae339f",
+      "face": {
+        "x": 0.238496,
+        "y": 0.1751994680851064,
+        "width": 0.489496,
+        "height": 0.3934308510638298
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jean-jacques-eydelie": {
+      "x": -0.032872,
+      "y": 0.085699,
+      "width": 1.009728,
+      "height": 0.59095,
+      "sourceHash": "0c5dd936aa3aafece3aa07746384c94e087e72c8f6b4668d7cfc2119a2f370cd",
+      "face": {
+        "x": 0.257539156626506,
+        "y": 0.24328541666666667,
+        "width": 0.42890662650602407,
+        "height": 0.3939666666666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jean-pierre-papin": {
+      "x": -0.107532,
+      "y": -0.031198,
+      "width": 1.19852,
+      "height": 0.708193,
+      "sourceHash": "6cf5eaeb7a7a00aefc89758ab8dd9f00d1783e3b000a78bb16420d9a789f64b4",
+      "face": {
+        "x": 0.248148,
+        "y": 0.1576536312849162,
+        "width": 0.48716000000000004,
+        "height": 0.4721284916201117
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "chris-waddle": {
+      "x": 0.046194,
+      "y": -0.084335,
+      "width": 1.142707,
+      "height": 0.641184,
+      "sourceHash": "8dc68ad956d83f8a03fa81cb7399e796b964d55d4caa7a9ba13cd30c1f4845d3",
+      "face": {
+        "x": 0.373104,
+        "y": 0.08664721485411139,
+        "width": 0.488888,
+        "height": 0.4274562334217507
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "bernard-casoni": {
+      "x": -0.02978,
+      "y": -0.049647,
+      "width": 1.073126,
+      "height": 0.605353,
+      "sourceHash": "6449f0d90a26e08aa7854fbd052c5d1da49c4f2cf915700054fe61f849e283eb",
+      "face": {
+        "x": 0.28147323410232344,
+        "y": 0.11178074873887099,
+        "width": 0.45061932600937876,
+        "height": 0.40356888709130223
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "manuel-amoros": {
+      "x": 0.025103,
+      "y": -0.011328,
+      "width": 0.913537,
+      "height": 0.515329,
+      "sourceHash": "7c4b2ebb956b2d1da2987569dea5e74349268cf64a5b131c036e3e25fb10265a",
+      "face": {
+        "x": 0.2629575481662502,
+        "y": 0.1260934557233538,
+        "width": 0.4378291786491097,
+        "height": 0.3435525274896002
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "pascal-olmeta": {
+      "x": -0.087141,
+      "y": 0.007175,
+      "width": 1.152202,
+      "height": 0.710598,
+      "sourceHash": "dbe5922307e318581eb9a73bcbf2182812f9646ad1b99e25fc81a0ac1a4c57f3",
+      "face": {
+        "x": 0.251432,
+        "y": 0.19666763848396498,
+        "width": 0.475056,
+        "height": 0.473731778425656
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "lucho-gonzalez": {
+      "x": 0.276081,
+      "y": 0.063644,
+      "width": 0.524359,
+      "height": 0.323388,
+      "sourceHash": "04f9c3f5c1d7f6ea37d6b97e589996c55d11b11117afb54abf8398b9752f6c99",
+      "face": {
+        "x": 0.419136,
+        "y": 0.14988046647230321,
+        "width": 0.238248,
+        "height": 0.21559183673469387
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "steve-mandanda": {
+      "x": -0.120461,
+      "y": -0.124662,
+      "width": 1.342614,
+      "height": 0.757372,
+      "sourceHash": "5ec4de65dfdb7252376f7a454fea5b3bbe93720b87ad22fb4c5be49aa4462908",
+      "face": {
+        "x": 0.24086000000000002,
+        "y": 0.077304,
+        "width": 0.619972,
+        "height": 0.5049146666666666
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "mamadou-niang": {
+      "x": 0.023003,
+      "y": 0.019026,
+      "width": 0.858326,
+      "height": 0.540384,
+      "sourceHash": "d25aa6fb8ff2a6c24837138a63d5c6af8337ec54aeb828f0bc5270ab3f39bb7a",
+      "face": {
+        "x": 0.25633999999999996,
+        "y": 0.1631279761904762,
+        "width": 0.391652,
+        "height": 0.3602559523809524
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "gabriel-heinze": {
+      "x": 0.209542,
+      "y": 0.052286,
+      "width": 0.549368,
+      "height": 0.432017,
+      "sourceHash": "0dfa331579c498e84dc3b07074a7779e22d1e683908bbb2fd74e2ff5923a8c62",
+      "face": {
+        "x": 0.363508,
+        "y": 0.16749070631970261,
+        "width": 0.241436,
+        "height": 0.28801115241635683
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "stephane-mbia": {
+      "x": 0.174216,
+      "y": -0.025949,
+      "width": 0.727698,
+      "height": 0.408854,
+      "sourceHash": "ee9fb021ee59de3e9f8fd1966d716bc74a8ca911264afe69cb2367083e2ee115",
+      "face": {
+        "x": 0.3721495037290752,
+        "y": 0.08307869403393238,
+        "width": 0.3318312842975366,
+        "height": 0.27256940866445567
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "benoit-cheyrou": {
+      "x": 0.119616,
+      "y": 0.071642,
+      "width": 0.804769,
+      "height": 0.601553,
+      "sourceHash": "8e31319c920254af9acab32f8489ac88522922f2b1c05b558a91c642345ce99c",
+      "face": {
+        "x": 0.35506400000000005,
+        "y": 0.23205653710247348,
+        "width": 0.333872,
+        "height": 0.4010353356890459
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "souleymane-diawara": {
+      "x": 0.168645,
+      "y": -0.060722,
+      "width": 0.672113,
+      "height": 0.379141,
+      "sourceHash": "03fba42aa6939d4bfcb673c87013130560b8fce090b233c2d204fc1a0e267c06",
+      "face": {
+        "x": 0.3742126613468319,
+        "y": 0.04038191460943841,
+        "width": 0.26097796180031513,
+        "height": 0.2527605527407163
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "mathieu-valbuena": {
+      "x": 0.140317,
+      "y": 0.020257,
+      "width": 0.726948,
+      "height": 0.410073,
+      "sourceHash": "b25f78979b29b8f598f13e60b6f621d07804101083e0dca160619e45a3243db1",
+      "face": {
+        "x": 0.3508228698334136,
+        "y": 0.12960976439637023,
+        "width": 0.30593520325499696,
+        "height": 0.2733820630358411
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "brandao-evaeverson-lemos-da-silva": {
+      "x": 0.199645,
+      "y": 0.04304,
+      "width": 0.523355,
+      "height": 0.295226,
+      "sourceHash": "4d84fd7f8427494706b2aaf9daba20dd0ce47233706148ec481408fc9343a4dd",
+      "face": {
+        "x": 0.3537929089038403,
+        "y": 0.1217665858082957,
+        "width": 0.21506006686718432,
+        "height": 0.196817447612812
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "hans-van-breukelen": {
+      "x": -0.218641,
+      "y": 0.071569,
+      "width": 1.191121,
+      "height": 0.663516,
+      "sourceHash": "c51a61336aa7584f599019f7ce0325b7943a47e0007d16438be9c95c511e4530",
+      "face": {
+        "x": 0.13217088607594937,
+        "y": 0.24850625,
+        "width": 0.489496835443038,
+        "height": 0.44234375
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "laurent-bonnart": {
+      "x": 0.042824,
+      "y": -0.00767,
+      "width": 0.924235,
+      "height": 0.521364,
+      "sourceHash": "0f68f0bae2787faa6499e414937d0e4a295c30e1d9b54ffdc11831309cfdb5b0",
+      "face": {
+        "x": 0.31899254043380937,
+        "y": 0.13136011594301694,
+        "width": 0.3718976107510653,
+        "height": 0.3475756954837155
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "gerald-vanenburg": {
+      "x": -0.055165,
+      "y": 0.10375,
+      "width": 1.096885,
+      "height": 0.6961,
+      "sourceHash": "868643c8bc3f26ba40c5f41f61a686e54c7e530a67ffac06d5ecc190c0737a51",
+      "face": {
+        "x": 0.24684722222222222,
+        "y": 0.28937708333333334,
+        "width": 0.49286111111111114,
+        "height": 0.4640666666666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "eric-gerets": {
+      "x": 0.22524,
+      "y": -0.026942,
+      "width": 0.766476,
+      "height": 0.796182,
+      "sourceHash": "ba786e80717cb85883972129d331b1419a5f58dd537bb6390c5d08fb741ba092",
+      "face": {
+        "x": 0.4556729166666667,
+        "y": 0.18537340153452683,
+        "width": 0.3056104166666667,
+        "height": 0.5307877237851663
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "wim-kieft": {
+      "x": -0.113655,
+      "y": 0.074871,
+      "width": 1.27305,
+      "height": 0.807897,
+      "sourceHash": "612aba9849afbbf4c3820d30e8eaf6e678f01bb548090f068a1bf91a4c24ebb4",
+      "face": {
+        "x": 0.24470833333333333,
+        "y": 0.2903104166666666,
+        "width": 0.5563222222222223,
+        "height": 0.5385979166666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "ivan-nielsen": {
+      "x": 0.096822,
+      "y": 0.019422,
+      "width": 0.67974,
+      "height": 0.383443,
+      "sourceHash": "e813dcabfd342d39d1ca9c46e678c49c0d3aeb06de297d99dd8e1b3b97ee9d7d",
+      "face": {
+        "x": 0.2961715351451527,
+        "y": 0.12167359636975572,
+        "width": 0.28104144257384456,
+        "height": 0.2556285858154297
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jan-heintze": {
+      "x": -0.113123,
+      "y": 0.151095,
+      "width": 1.023209,
+      "height": 0.573588,
+      "sourceHash": "f9d23e7bdd75737862b41112d4953d5096ca85ac249b4de741106d1727b2fe19",
+      "face": {
+        "x": 0.16918553459119498,
+        "y": 0.30405208333333333,
+        "width": 0.45859119496855344,
+        "height": 0.3823916666666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "berry-van-aerle": {
+      "x": -0.172137,
+      "y": 0.068888,
+      "width": 1.173691,
+      "height": 0.655875,
+      "sourceHash": "7a32ecd4e1d6634e4de374f1bfd4f9eea60516f7ba9cea44959160c3b1585d4e",
+      "face": {
+        "x": 0.15772870662460567,
+        "y": 0.2437875,
+        "width": 0.5139589905362777,
+        "height": 0.43724999999999997
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "phillip-cocu": {
+      "x": -0.219798,
+      "y": -0.019532,
+      "width": 1.348436,
+      "height": 0.760656,
+      "sourceHash": "2eb3238d65d0903f7cbadc44d653d3eda2e68550542a68ab54fbed8359b728d9",
+      "face": {
+        "x": 0.163332,
+        "y": 0.18330933333333332,
+        "width": 0.582176,
+        "height": 0.507104
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "park-ji-sung": {
+      "x": 0.026173,
+      "y": 0.049117,
+      "width": 0.928838,
+      "height": 0.548841,
+      "sourceHash": "76d9b1cd8c4dbdc3da2c3e3938fc4371eda81110cab5769f88e28756bbe79600",
+      "face": {
+        "x": 0.28273200000000004,
+        "y": 0.19547486033519554,
+        "width": 0.41572000000000003,
+        "height": 0.36589385474860336
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "hans-gillhaus": {
+      "x": -0.063818,
+      "y": -0.130749,
+      "width": 0.828414,
+      "height": 1.051448,
+      "sourceHash": "3955a81e6bc7a757f2db538c927ae3601857cc055ea92634ca76e436d2d0af00",
+      "face": {
+        "x": 0.18111458333333333,
+        "y": 0.1496375,
+        "width": 0.3385479166666666,
+        "height": 0.700965625
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "andre-ooijer": {
+      "x": 0.104516,
+      "y": -0.027222,
+      "width": 0.854696,
+      "height": 0.96685,
+      "sourceHash": "f647efbec3667f473f5e5d8777ef1758bde1e7b146635c940e76292e69841505",
+      "face": {
+        "x": 0.365276,
+        "y": 0.2306042780748663,
+        "width": 0.33317599999999997,
+        "height": 0.6445668449197861
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "wilfred-bouma": {
+      "x": 0.094383,
+      "y": -0.078567,
+      "width": 0.909657,
+      "height": 1.029024,
+      "sourceHash": "debf3721e012f40e898b49690dcfe6b67c352d3e9cb4039fa8f99650a4b58feb",
+      "face": {
+        "x": 0.34342399999999995,
+        "y": 0.19583957219251336,
+        "width": 0.411576,
+        "height": 0.6860160427807487
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jefferson-farfan": {
+      "x": 0.158283,
+      "y": -0.03872,
+      "width": 0.614203,
+      "height": 0.345537,
+      "sourceHash": "670a737711570528de817870e877815c43eb7d9e02f5e097fd6a1a80bdebe28a",
+      "face": {
+        "x": 0.34591817588995455,
+        "y": 0.0534235718962434,
+        "width": 0.23893213387893,
+        "height": 0.23035807423777394
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "lee-young-pyo": {
+      "x": 0.055022,
+      "y": 0.086694,
+      "width": 0.871203,
+      "height": 0.532639,
+      "sourceHash": "f7579a018e7f16db83651d7f88f076929c5e30bce2fb5748978aa3907086809b",
+      "face": {
+        "x": 0.290416,
+        "y": 0.22873121387283238,
+        "width": 0.400416,
+        "height": 0.3550924855491329
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jan-vennegoor-of-hesselink": {
+      "x": -0.10238,
+      "y": -0.000461,
+      "width": 1.208943,
+      "height": 0.681968,
+      "sourceHash": "55344f1d72a90ef04c6d03898c7826b9334481e14cdc1c5660422b39f439eba3",
+      "face": {
+        "x": 0.264804,
+        "y": 0.18139733333333333,
+        "width": 0.474576,
+        "height": 0.4546453333333333
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "carlos-salcido": {
+      "x": 0.081672,
+      "y": 0.053836,
+      "width": 0.814136,
+      "height": 0.920968,
+      "sourceHash": "edb9440904e8f3292160d0a53f7b372233910144ecb6adf3d159f496f7571d76",
+      "face": {
+        "x": 0.317656,
+        "y": 0.299427807486631,
+        "width": 0.342168,
+        "height": 0.6139786096256684
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "timmy-simons": {
+      "x": 0.081955,
+      "y": 0.059759,
+      "width": 0.867841,
+      "height": 0.489551,
+      "sourceHash": "d641d6a3e0d9dc9ab9add5f2b6d49161475ee9eeca715558ae087f2d72c7f5e9",
+      "face": {
+        "x": 0.33596762124594154,
+        "y": 0.19030618048333503,
+        "width": 0.35981532505580355,
+        "height": 0.32636756401557426
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "ibrahim-afellay": {
+      "x": 0.079836,
+      "y": 0.060105,
+      "width": 0.6281,
+      "height": 0.354313,
+      "sourceHash": "dc767252fb1a882ed8b82e700c7324069243f6240232fb3ae28fc00f95cbd2e8",
+      "face": {
+        "x": 0.2639200037175959,
+        "y": 0.1545880057594993,
+        "width": 0.2599325180053711,
+        "height": 0.23620863084669239
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "edison-mendez": {
+      "x": -0.005193,
+      "y": 0.063219,
+      "width": 1.031046,
+      "height": 0.581615,
+      "sourceHash": "743132b744b8911f0d138977d30972bd7e46a976759ad48185f386816239f2e7",
+      "face": {
+        "x": 0.31334183432839136,
+        "y": 0.21831668506969104,
+        "width": 0.3939756789764801,
+        "height": 0.387743615484857
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "arouna-kone": {
+      "x": 0.101052,
+      "y": 0.06055,
+      "width": 0.741901,
+      "height": 0.418508,
+      "sourceHash": "bf479d021a6528f430d5c544df80d8721f9bf8e7224a8ef0919618c41f985f82",
+      "face": {
+        "x": 0.306904,
+        "y": 0.172152,
+        "width": 0.33019600000000005,
+        "height": 0.2790053333333333
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jan-kromkamp": {
+      "x": -0.310169,
+      "y": 0.003381,
+      "width": 1.388755,
+      "height": 0.972765,
+      "sourceHash": "150cdb7e39199dfe99ae20f0203602f9e1dddf4c986308b74ca6aaffe52a15a9",
+      "face": {
+        "x": 0.065372,
+        "y": 0.26278476821192054,
+        "width": 0.637672,
+        "height": 0.6485099337748345
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "daniele-de-rossi": {
+      "x": -0.001933,
+      "y": 0.001961,
+      "width": 1.025448,
+      "height": 0.577248,
+      "sourceHash": "9433f912cfdf45a45cb82d182e1ab4f8ce76ce94fd66c31305c2ba1083e8ed35",
+      "face": {
+        "x": 0.2870951325911123,
+        "y": 0.1558934620448521,
+        "width": 0.44739123924508994,
+        "height": 0.3848319363284421
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "francesco-totti": {
+      "x": -0.036939,
+      "y": 0.022354,
+      "width": 1.049472,
+      "height": 0.888015,
+      "sourceHash": "b871198e25622f45059e00eb1047abc8620b49fca414c5431a774aed49473a67",
+      "face": {
+        "x": 0.2719234119762074,
+        "y": 0.25915827069963726,
+        "width": 0.4317462475268871,
+        "height": 0.5920098540070768
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "philippe-mexes": {
+      "x": -0.052551,
+      "y": -0.061105,
+      "width": 1.059881,
+      "height": 0.681916,
+      "sourceHash": "2232d8c677c38ecd42b66638c1500a3ad2aedbde5155cb8ab583fbfdb6b280c5",
+      "face": {
+        "x": 0.25528181818181817,
+        "y": 0.12073963133640554,
+        "width": 0.44421515151515156,
+        "height": 0.454610599078341
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "christian-panucci": {
+      "x": -0.072419,
+      "y": 0.041723,
+      "width": 1.164929,
+      "height": 0.65714,
+      "sourceHash": "7a6f76de6569b796c9f1bdadf4be7aab990f61a1cefcc8841dfd1ea1ca32f51f",
+      "face": {
+        "x": 0.28745745374010756,
+        "y": 0.2169600895472935,
+        "width": 0.445177140173974,
+        "height": 0.43809306157099737
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "cristian-chivu": {
+      "x": 0.053372,
+      "y": 0.00493,
+      "width": 0.893325,
+      "height": 0.503927,
+      "sourceHash": "33f71a1f48706987a91694abce9a05f5b6a3d11dd40fe2678d4d2865acb50c2c",
+      "face": {
+        "x": 0.3180388165758801,
+        "y": 0.13931066339666193,
+        "width": 0.363991118096686,
+        "height": 0.3359511734603287
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "marco-cassetti": {
+      "x": -0.037371,
+      "y": 0.003126,
+      "width": 0.701446,
+      "height": 0.631696,
+      "sourceHash": "394e7eaab8ccd5a5cd85c896f7ea8c25373ae3471ed2ce14c16bb341ad64210f",
+      "face": {
+        "x": 0.16042083333333332,
+        "y": 0.17157871396895788,
+        "width": 0.3058625,
+        "height": 0.4211308203991131
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "simone-perrotta": {
+      "x": -0.026301,
+      "y": -0.053526,
+      "width": 0.887364,
+      "height": 0.750847,
+      "sourceHash": "49e4f2c73ef57f8ea5997fd4a505fab4e00adde8c3d072ec64e9d9d27ad51172",
+      "face": {
+        "x": 0.21130208333333333,
+        "y": 0.1467,
+        "width": 0.41215833333333335,
+        "height": 0.5005645833333333
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "gabriel-batistuta": {
+      "x": 0.23045,
+      "y": -0.025844,
+      "width": 0.948508,
+      "height": 0.535056,
+      "sourceHash": "4bec076731b0d2baf5e6c52450d90b27d07493e6329138f3c866b41e8042de75",
+      "face": {
+        "x": 0.510204,
+        "y": 0.11683733333333333,
+        "width": 0.389,
+        "height": 0.356704
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "vincent-candela": {
+      "x": -0.081168,
+      "y": 0.04305,
+      "width": 1.152556,
+      "height": 0.766698,
+      "sourceHash": "e357e01e619a641c3d707dc716268100dd98d2e111e40f6bb7d4d08e362fe8b2",
+      "face": {
+        "x": 0.25312799999999996,
+        "y": 0.24750314465408807,
+        "width": 0.483964,
+        "height": 0.511132075471698
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "christian-wilhelmsson": {
+      "x": 0.325403,
+      "y": 0.012758,
+      "width": 0.538868,
+      "height": 0.247931,
+      "sourceHash": "637b103273e5b71108d11dadfcb358490aea344231eea220ccd2c4ff08ca56fd",
+      "face": {
+        "x": 0.4771072796934866,
+        "y": 0.07887291666666667,
+        "width": 0.2354597701149425,
+        "height": 0.16528749999999998
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "vincenzo-montella": {
+      "x": 0.205331,
+      "y": -0.013124,
+      "width": 0.609421,
+      "height": 0.558078,
+      "sourceHash": "3272cdb53f9c4bf993a50e617caa6ff28d3adc048a2674833966938ac06b8576",
+      "face": {
+        "x": 0.381264,
+        "y": 0.1356969696969697,
+        "width": 0.257556,
+        "height": 0.3720519480519481
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jonathan-zebina": {
+      "x": -0.152567,
+      "y": 0.043482,
+      "width": 1.145402,
+      "height": 0.969186,
+      "sourceHash": "2fb97f7484c5b7657d85afad99e77ec79c3ee258cd4d52c771cea0a99cb3bde1",
+      "face": {
+        "x": 0.19981200000000002,
+        "y": 0.30193200000000003,
+        "width": 0.440644,
+        "height": 0.646124
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "damiano-tommasi": {
+      "x": 0.108475,
+      "y": 0.131013,
+      "width": 0.815015,
+      "height": 0.453703,
+      "sourceHash": "b00de1c6317be3b467871839073d8e2fc1ffdc30b69e3899ac9712790e8dcf18",
+      "face": {
+        "x": 0.33242,
+        "y": 0.252,
+        "width": 0.367124,
+        "height": 0.3024684210526316
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "radja-nainggolan": {
+      "x": 0.105719,
+      "y": 0.004327,
+      "width": 0.569918,
+      "height": 0.380314,
+      "sourceHash": "68f437e5a54c0606984de6487a68193bc4da1cd97ddf27f9dc8f7e5f415842f2",
+      "face": {
+        "x": 0.271604,
+        "y": 0.10574447949526813,
+        "width": 0.238148,
+        "height": 0.25354258675078867
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "edin-dzeko": {
+      "x": -0.007257,
+      "y": -0.017006,
+      "width": 1.040066,
+      "height": 0.586704,
+      "sourceHash": "763b419e338cf90d26fa066070535b4c2831a2b776266f1f197773c41169a50b",
+      "face": {
+        "x": 0.287644,
+        "y": 0.139448,
+        "width": 0.450264,
+        "height": 0.391136
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "kostas-manolas": {
+      "x": 0.072096,
+      "y": -0.024794,
+      "width": 0.706496,
+      "height": 0.577031,
+      "sourceHash": "eb57c4ea1ac6ba968fe49170ff7fe222215f378a0c9ffbb8f5dde92b10dc898b",
+      "face": {
+        "x": 0.282808,
+        "y": 0.1290810810810811,
+        "width": 0.285072,
+        "height": 0.38468725868725867
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "kevin-strootman": {
+      "x": -0.139151,
+      "y": -0.004148,
+      "width": 1.252914,
+      "height": 0.76823,
+      "sourceHash": "151e802f1d786ca148f9d8a647d200248007e6026bfdf2be48db8fd686a3e13f",
+      "face": {
+        "x": 0.237604,
+        "y": 0.20071304347826086,
+        "width": 0.499404,
+        "height": 0.5121536231884058
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "aleksandar-kolarov": {
+      "x": -0.062781,
+      "y": -0.065803,
+      "width": 1.133702,
+      "height": 0.642953,
+      "sourceHash": "697418052b85dff14c22f6329fcf7e8b5437c5217a1554cf81e3214495213149",
+      "face": {
+        "x": 0.269428,
+        "y": 0.1056514745308311,
+        "width": 0.469284,
+        "height": 0.4286353887399464
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "alessandro-florenzi": {
+      "x": -0.10803,
+      "y": 0.053312,
+      "width": 1.113025,
+      "height": 0.543759,
+      "sourceHash": "8e7bb3928cada618aa0836894f6d2970d5e660b656333bed619f80e597c21f5b",
+      "face": {
+        "x": 0.214588,
+        "y": 0.19831408775981527,
+        "width": 0.46778800000000004,
+        "height": 0.36250577367205544
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "juan-jesus": {
+      "x": 0.076752,
+      "y": -0.028906,
+      "width": 0.858163,
+      "height": 0.505667,
+      "sourceHash": "2287266ed3a46c78f7101ea86c23b81f8387444c8e7655ab78779c410033f028",
+      "face": {
+        "x": 0.323032,
+        "y": 0.10593871866295264,
+        "width": 0.365604,
+        "height": 0.33711142061281335
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "patrik-schick": {
+      "x": 0.074268,
+      "y": 0.069176,
+      "width": 0.785221,
+      "height": 0.664418,
+      "sourceHash": "db34f38430d7cd8da6ba958f7756cf5a105ee6e5463b0c6d67a911c5f5adf6e9",
+      "face": {
+        "x": 0.3094818181818182,
+        "y": 0.24635454545454544,
+        "width": 0.3147939393939394,
+        "height": 0.44294545454545453
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "mancini": {
+      "x": 0.16346,
+      "y": 0.031512,
+      "width": 0.7045,
+      "height": 0.471925,
+      "sourceHash": "fe43b436c9cd2967402c76327716057e066cf8721c188e43f8813e1ac7e0ee60",
+      "face": {
+        "x": 0.3766,
+        "y": 0.15735833333333332,
+        "width": 0.278221052631579,
+        "height": 0.31461666666666666
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "johann-vogel": {
+      "x": -0.02247,
+      "y": -0.027517,
+      "width": 1.20978,
+      "height": 0.768514,
+      "sourceHash": "5e8dada2202b79d2352c5e16c4885ccbebc7821fd51d192ce744166e35a4c3f8",
+      "face": {
+        "x": 0.309104,
+        "y": 0.17742042042042042,
+        "width": 0.5466319999999999,
+        "height": 0.5123423423423424
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "alan-thompson": {
+      "x": -0.060679,
+      "y": -0.092681,
+      "width": 1.065863,
+      "height": 0.754084,
+      "sourceHash": "cc79f255bf79c1999814c0450ee28bb4c50ffea4b0bed3a71f14c8348192a41a",
+      "face": {
+        "x": 0.251876,
+        "y": 0.10840802675585284,
+        "width": 0.44075200000000003,
+        "height": 0.5027224080267558
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "franck-sauzee": {
+      "x": 0.201245,
+      "y": 0.061131,
+      "width": 0.589311,
+      "height": 0.343859,
+      "sourceHash": "c4c5c36156d8983a591d026a83e54834cbe360a949250dfdd6e3b998c251620a",
+      "face": {
+        "x": 0.36766163141993957,
+        "y": 0.15282708333333334,
+        "width": 0.2564773413897281,
+        "height": 0.22923958333333333
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "bruno-germain": {
+      "x": 0.233984,
+      "y": 0.076036,
+      "width": 0.532967,
+      "height": 0.288434,
+      "sourceHash": "8d74ca8bb1238120fed08b3b224366dc83e429a770bf2e8c670a1ce09c9ad0f3",
+      "face": {
+        "x": 0.384557003257329,
+        "y": 0.15295208333333335,
+        "width": 0.23182084690553745,
+        "height": 0.19228958333333335
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "francesco-antonioli": {
+      "x": 0.188409,
+      "y": 0.036007,
+      "width": 0.629103,
+      "height": 0.354879,
+      "sourceHash": "b2b37cd1746462a628dc34b3052c84344ac5439a5906724b228f97890dfa6ffa",
+      "face": {
+        "x": 0.3716737078381823,
+        "y": 0.13064116936225395,
+        "width": 0.2625739667322729,
+        "height": 0.23658579046075995
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "rab-douglas": {
+      "x": -0.017855,
+      "y": -0.057657,
+      "width": 1.109251,
+      "height": 0.625732,
+      "sourceHash": "95c53eedf2d1ba7dd077b75e524e5bb2869dfa9b66e33e0cfef0be8b02ad4c13",
+      "face": {
+        "x": 0.31527008948388036,
+        "y": 0.10920445330731281,
+        "width": 0.44300075630088903,
+        "height": 0.41715438644607344
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "joos-valgaeren": {
+      "x": -0.290513,
+      "y": -0.094351,
+      "width": 1.509932,
+      "height": 0.982796,
+      "sourceHash": "2eaa8fa709a5559c29c6f9f991462171e64e6e9550abb2c37d4262c6279b7e7c",
+      "face": {
+        "x": 0.15981666666666666,
+        "y": 0.16772820512820513,
+        "width": 0.6092733333333333,
+        "height": 0.6551974358974358
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "alen-boksic": {
+      "x": 0.179233,
+      "y": -0.012181,
+      "width": 0.722028,
+      "height": 0.59737,
+      "sourceHash": "7bcd2792d1fb65f16e3ab570a211683f7e62243b94d760ffc9f41b522dc553aa",
+      "face": {
+        "x": 0.39558863636363634,
+        "y": 0.1471177777777778,
+        "width": 0.2893159090909091,
+        "height": 0.3982466666666667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "carlos-mozer": {
+      "x": 0.05096,
+      "y": -0.019932,
+      "width": 0.828828,
+      "height": 0.701316,
+      "sourceHash": "53ecdbfafa55746d5d2f9fe96b0bfcb1199ba07cd25cdc34198692c888c27e8e",
+      "face": {
+        "x": 0.29404375,
+        "y": 0.16708541666666665,
+        "width": 0.3426604166666667,
+        "height": 0.46754375
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "doni": {
+      "x": 0.240022,
+      "y": 0.045722,
+      "width": 0.52372,
+      "height": 0.37428,
+      "sourceHash": "2f563bd017b17e0f9a958d2fa28896afd630dac72dcdc2c9d1b1027e2da28752",
+      "face": {
+        "x": 0.386804,
+        "y": 0.1455304054054054,
+        "width": 0.230156,
+        "height": 0.2495202702702703
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "rodrigo-taddei": {
+      "x": -0.009158,
+      "y": 0.036507,
+      "width": 1.004632,
+      "height": 0.566715,
+      "sourceHash": "d99bf009d7e4cdd4c5d70d3d8a8c7ee9338b1ab0f102622bbe47ca7e88e045ae",
+      "face": {
+        "x": 0.3039377633627359,
+        "y": 0.18763156989952187,
+        "width": 0.37843991564465806,
+        "height": 0.3778103172004997
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "federico-fazio": {
+      "x": 0.318959,
+      "y": 0.011282,
+      "width": 0.688414,
+      "height": 0.350062,
+      "sourceHash": "d3bd384b3922dc67c0151b3606b3c5e7005da101aed826898fe93c1926533e6c",
+      "face": {
+        "x": 0.5160800000000001,
+        "y": 0.10463221153846154,
+        "width": 0.29417200000000004,
+        "height": 0.233375
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "manuel-da-costa": {
+      "x": 0.086971,
+      "y": -0.066932,
+      "width": 1.111486,
+      "height": 0.618742,
+      "sourceHash": "6c27eeaed7d714b9794ca394381b8ef003dbd859aee47b153ad3f40127a32ae8",
+      "face": {
+        "x": 0.422408,
+        "y": 0.09806578947368422,
+        "width": 0.440612,
+        "height": 0.41249473684210525
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "didier-agathe": {
+      "x": 0.463385,
+      "y": -0.043092,
+      "width": 0.338521,
+      "height": 0.429661,
+      "sourceHash": "866ba87c3189f043001aebaa7616861a4728336059a4eca3ac3be69666f49e92",
+      "face": {
+        "x": 0.5594229166666668,
+        "y": 0.071484375,
+        "width": 0.14644583333333333,
+        "height": 0.286440625
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "s-ren-lerby": {
+      "x": 0.060386,
+      "y": 0.152021,
+      "width": 0.900439,
+      "height": 0.56859,
+      "sourceHash": "2d491a7c5eda494db804c24befd08a3b7d9ec0947cd140d33106ad2d58dcedd3",
+      "face": {
+        "x": 0.296428,
+        "y": 0.303644776119403,
+        "width": 0.428356,
+        "height": 0.3790597014925373
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "edward-linskens": {
+      "x": 0.141339,
+      "y": 0.141826,
+      "width": 0.171083,
+      "height": 0.217144,
+      "sourceHash": "373774cd7a600b8ef84c45a134d94c6f71c3352e6aa82f494cc5f1723acc1f0f",
+      "face": {
+        "x": 0.1900769230769231,
+        "y": 0.19973076923076924,
+        "width": 0.0736068376068376,
+        "height": 0.1447628205128205
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "jim-brogan": {
+      "x": 0.00999,
+      "y": -0.072671,
+      "width": 0.929618,
+      "height": 0.622725,
+      "sourceHash": "743890facf55ff119ab7db2564d73508e3bb5a3226801e7c8b88fd2aa3c6406c",
+      "face": {
+        "x": 0.3044744818811944,
+        "y": 0.09338875560017375,
+        "width": 0.3406500148186517,
+        "height": 0.41515006028212503
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
+    },
+    "bertie-auld": {
+      "x": -0.107342,
+      "y": -0.013957,
+      "width": 1.184667,
+      "height": 0.793575,
+      "sourceHash": "b22af725ee85f1feb4f5e3de3e40bee58cab56863fa47f7b47eada5a5dc0ce7f",
+      "face": {
+        "x": 0.21780433055071982,
+        "y": 0.19766265076476258,
+        "width": 0.5343742240233039,
+        "height": 0.52904986096667
+      },
+      "crop": "head-and-neck",
+      "faceIndex": 0
     }
   }
 }

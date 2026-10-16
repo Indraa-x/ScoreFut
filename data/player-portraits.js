@@ -10832,428 +10832,992 @@ export const PLAYER_PORTRAITS = {
   },
   "jimmy-johnstone": {
     "src": "assets/players/jimmy-johnstone.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.112523,
+      "y": -0.037987,
+      "width": 1.301439,
+      "height": 0.839678
+    }
   },
   "tommy-gemmell": {
     "src": "assets/players/tommy-gemmell.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.283492,
+      "y": 0.053398,
+      "width": 0.667849,
+      "height": 0.647374
+    }
   },
   "bobby-murdoch": {
     "src": "assets/players/bobby-murdoch.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.287987,
+      "y": 0.00089,
+      "width": 0.227489,
+      "height": 0.192491
+    }
   },
   "billy-mcneill": {
     "src": "assets/players/billy-mcneill.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.135465,
+      "y": 0.002548,
+      "width": 0.790841,
+      "height": 0.568797
+    }
   },
   "bobby-lennox": {
     "src": "assets/players/bobby-lennox.jpg",
-    "type": "photo"
-  },
-  "bertie-auld": {
-    "src": "assets/players/bertie-auld.jpg",
     "type": "photo",
     "frame": {
-      "x": 0.42,
-      "y": 0.02,
-      "width": 0.36,
-      "height": 0.39
+      "x": -0.173662,
+      "y": -0.000647,
+      "width": 1.298075,
+      "height": 0.823778
+    }
+  },
+  "bertie-auld": {
+    "src": "assets/players/bertie-auld-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.107342,
+      "y": -0.013957,
+      "width": 1.184667,
+      "height": 0.793575
     }
   },
   "willie-wallace": {
     "src": "assets/players/willie-wallace.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.053331,
+      "y": 0.059177,
+      "width": 1.144751,
+      "height": 0.84334
+    }
   },
   "steve-chalmers": {
     "src": "assets/players/steve-chalmers.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.416384,
+      "y": 0.008138,
+      "width": 0.190409,
+      "height": 0.161116
+    }
   },
   "ronnie-simpson": {
     "src": "assets/players/ronnie-simpson.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.376098,
+      "y": 0.094611,
+      "width": 0.248171,
+      "height": 0.209991
+    }
   },
   "john-clark": {
-    "src": "assets/players/john-clark.jpg",
-    "type": "photo"
+    "src": "assets/players/john-clark-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.016159,
+      "y": -0.01449,
+      "width": 1.094557,
+      "height": 0.617442
+    }
   },
   "jim-craig": {
     "src": "assets/players/jim-craig.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.501673,
+      "y": 0.051511,
+      "width": 0.19449,
+      "height": 0.164569
+    }
   },
   "david-hay": {
     "src": "assets/players/david-hay.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.077386,
+      "y": 0.060555,
+      "width": 0.801775,
+      "height": 0.508819
+    }
   },
   "john-hughes": {
-    "src": "assets/players/john-hughes.jpg",
-    "type": "photo"
+    "src": "assets/players/john-hughes-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.159316,
+      "y": 0.04296,
+      "width": 0.672038,
+      "height": 0.45018
+    }
   },
   "jim-brogan": {
-    "src": "assets/players/jim-brogan.jpg",
-    "type": "photo"
+    "src": "assets/players/jim-brogan-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.00999,
+      "y": -0.072671,
+      "width": 0.929618,
+      "height": 0.622725
+    }
   },
   "evan-williams": {
     "src": "assets/players/evan-williams.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.217373,
+      "y": 0.04293,
+      "width": 1.119157,
+      "height": 0.805639
+    }
   },
   "henrik-larsson": {
     "src": "assets/players/henrik-larsson.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.155616,
+      "y": -0.129272,
+      "width": 1.228841,
+      "height": 0.810169
+    }
   },
   "stiliyan-petrov": {
     "src": "assets/players/stiliyan-petrov.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.175017,
+      "y": 0.032659,
+      "width": 0.6888,
+      "height": 0.460194
+    }
   },
   "chris-sutton": {
     "src": "assets/players/chris-sutton.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.107417,
+      "y": -0.08455,
+      "width": 0.81072,
+      "height": 1.010052
+    }
   },
   "alan-thompson": {
     "src": "assets/players/alan-thompson.png",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.060679,
+      "y": -0.092681,
+      "width": 1.065863,
+      "height": 0.754084
+    }
   },
   "bobo-balde": {
-    "src": "assets/players/bobo-balde.png",
-    "type": "photo"
+    "src": "assets/players/bobo-balde-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.01025,
+      "y": 0.045198,
+      "width": 1.012656,
+      "height": 0.571242
+    }
   },
   "johan-mjallby": {
     "src": "assets/players/johan-mjallby.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.041235,
+      "y": 0.017827,
+      "width": 1.048958,
+      "height": 0.590146
+    }
   },
   "neil-lennon": {
     "src": "assets/players/neil-lennon.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.292906,
+      "y": 0.063258,
+      "width": 0.653848,
+      "height": 0.410331
+    }
   },
   "didier-agathe": {
     "src": "assets/players/didier-agathe.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.463385,
+      "y": -0.043092,
+      "width": 0.338521,
+      "height": 0.429661
+    }
   },
   "joos-valgaeren": {
     "src": "assets/players/joos-valgaeren.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.290513,
+      "y": -0.094351,
+      "width": 1.509932,
+      "height": 0.982796
+    }
   },
   "rab-douglas": {
-    "src": "assets/players/rab-douglas.jpg",
-    "type": "photo"
+    "src": "assets/players/rab-douglas-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.017855,
+      "y": -0.057657,
+      "width": 1.109251,
+      "height": 0.625732
+    }
   },
   "abedi-pele": {
     "src": "assets/players/abedi-pele.jpg",
     "type": "photo",
     "frame": {
-      "x": 0.36,
-      "y": 0.08,
-      "width": 0.62,
-      "height": 0.52
+      "x": 0.449034,
+      "y": 0.154578,
+      "width": 0.550244,
+      "height": 0.462786
     }
   },
   "alen-boksic": {
     "src": "assets/players/alen-boksic.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.179233,
+      "y": -0.012181,
+      "width": 0.722028,
+      "height": 0.59737
+    }
   },
   "franck-sauzee": {
     "src": "assets/players/franck-sauzee.png",
     "type": "photo",
     "frame": {
-      "x": 0.14,
-      "y": 0.02,
-      "width": 0.72,
-      "height": 0.44
+      "x": 0.201245,
+      "y": 0.061131,
+      "width": 0.589311,
+      "height": 0.343859
     }
   },
   "rudi-voller": {
     "src": "assets/players/rudi-voller.jpg",
     "type": "photo",
     "frame": {
-      "x": 0.2,
-      "y": 0.06,
-      "width": 0.55,
-      "height": 0.7
+      "x": 0.249736,
+      "y": 0.108547,
+      "width": 0.483161,
+      "height": 0.613242
     }
   },
   "basile-boli": {
     "src": "assets/players/basile-boli.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.31697,
+      "y": -0.050595,
+      "width": 1.54259,
+      "height": 0.864741
+    }
   },
   "eric-di-meco": {
     "src": "assets/players/eric-di-meco.png",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.267192,
+      "y": 0.090829,
+      "width": 0.383681,
+      "height": 0.220494
+    }
   },
   "jean-jacques-eydelie": {
     "src": "assets/players/jean-jacques-eydelie.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.032872,
+      "y": 0.085699,
+      "width": 1.009728,
+      "height": 0.59095
+    }
   },
   "jean-pierre-papin": {
     "src": "assets/players/jean-pierre-papin.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.107532,
+      "y": -0.031198,
+      "width": 1.19852,
+      "height": 0.708193
+    }
   },
   "chris-waddle": {
     "src": "assets/players/chris-waddle.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.046194,
+      "y": -0.084335,
+      "width": 1.142707,
+      "height": 0.641184
+    }
   },
   "manuel-amoros": {
-    "src": "assets/players/manuel-amoros.jpg",
-    "type": "photo"
+    "src": "assets/players/manuel-amoros-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.025103,
+      "y": -0.011328,
+      "width": 0.913537,
+      "height": 0.515329
+    }
   },
   "carlos-mozer": {
     "src": "assets/players/carlos-mozer.png",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.05096,
+      "y": -0.019932,
+      "width": 0.828828,
+      "height": 0.701316
+    }
   },
   "bernard-casoni": {
-    "src": "assets/players/bernard-casoni.jpg",
-    "type": "photo"
+    "src": "assets/players/bernard-casoni-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.02978,
+      "y": -0.049647,
+      "width": 1.073126,
+      "height": 0.605353
+    }
   },
   "pascal-olmeta": {
     "src": "assets/players/pascal-olmeta.png",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.087141,
+      "y": 0.007175,
+      "width": 1.152202,
+      "height": 0.710598
+    }
   },
   "bruno-germain": {
     "src": "assets/players/bruno-germain.png",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.233984,
+      "y": 0.076036,
+      "width": 0.532967,
+      "height": 0.288434
+    }
   },
   "lucho-gonzalez": {
     "src": "assets/players/lucho-gonzalez.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.276081,
+      "y": 0.063644,
+      "width": 0.524359,
+      "height": 0.323388
+    }
   },
   "mamadou-niang": {
     "src": "assets/players/mamadou-niang.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.023003,
+      "y": 0.019026,
+      "width": 0.858326,
+      "height": 0.540384
+    }
   },
   "steve-mandanda": {
     "src": "assets/players/steve-mandanda.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.120461,
+      "y": -0.124662,
+      "width": 1.342614,
+      "height": 0.757372
+    }
   },
   "gabriel-heinze": {
     "src": "assets/players/gabriel-heinze.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.209542,
+      "y": 0.052286,
+      "width": 0.549368,
+      "height": 0.432017
+    }
   },
   "stephane-mbia": {
-    "src": "assets/players/stephane-mbia.jpg",
-    "type": "photo"
+    "src": "assets/players/stephane-mbia-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.174216,
+      "y": -0.025949,
+      "width": 0.727698,
+      "height": 0.408854
+    }
   },
   "souleymane-diawara": {
-    "src": "assets/players/souleymane-diawara.jpg",
-    "type": "photo"
+    "src": "assets/players/souleymane-diawara-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.168645,
+      "y": -0.060722,
+      "width": 0.672113,
+      "height": 0.379141
+    }
   },
   "benoit-cheyrou": {
     "src": "assets/players/benoit-cheyrou.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.119616,
+      "y": 0.071642,
+      "width": 0.804769,
+      "height": 0.601553
+    }
   },
   "mathieu-valbuena": {
-    "src": "assets/players/mathieu-valbuena.jpg",
-    "type": "photo"
+    "src": "assets/players/mathieu-valbuena-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.140317,
+      "y": 0.020257,
+      "width": 0.726948,
+      "height": 0.410073
+    }
   },
   "brandao-evaeverson-lemos-da-silva": {
-    "src": "assets/players/brandao-evaeverson-lemos-da-silva.jpg",
-    "type": "photo"
+    "src": "assets/players/brandao-evaeverson-lemos-da-silva-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.199645,
+      "y": 0.04304,
+      "width": 0.523355,
+      "height": 0.295226
+    }
   },
   "laurent-bonnart": {
-    "src": "assets/players/laurent-bonnart.jpg",
-    "type": "photo"
+    "src": "assets/players/laurent-bonnart-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.042824,
+      "y": -0.00767,
+      "width": 0.924235,
+      "height": 0.521364
+    }
   },
   "hans-van-breukelen": {
     "src": "assets/players/hans-van-breukelen.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.218641,
+      "y": 0.071569,
+      "width": 1.191121,
+      "height": 0.663516
+    }
   },
   "eric-gerets": {
     "src": "assets/players/eric-gerets.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.22524,
+      "y": -0.026942,
+      "width": 0.766476,
+      "height": 0.796182
+    }
   },
   "gerald-vanenburg": {
     "src": "assets/players/gerald-vanenburg.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.055165,
+      "y": 0.10375,
+      "width": 1.096885,
+      "height": 0.6961
+    }
   },
   "s-ren-lerby": {
     "src": "assets/players/s-ren-lerby.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.060386,
+      "y": 0.152021,
+      "width": 0.900439,
+      "height": 0.56859
+    }
   },
   "wim-kieft": {
     "src": "assets/players/wim-kieft.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.113655,
+      "y": 0.074871,
+      "width": 1.27305,
+      "height": 0.807897
+    }
   },
   "ivan-nielsen": {
-    "src": "assets/players/ivan-nielsen.jpg",
-    "type": "photo"
+    "src": "assets/players/ivan-nielsen-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.096822,
+      "y": 0.019422,
+      "width": 0.67974,
+      "height": 0.383443
+    }
   },
   "berry-van-aerle": {
     "src": "assets/players/berry-van-aerle.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.172137,
+      "y": 0.068888,
+      "width": 1.173691,
+      "height": 0.655875
+    }
   },
   "jan-heintze": {
     "src": "assets/players/jan-heintze.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.113123,
+      "y": 0.151095,
+      "width": 1.023209,
+      "height": 0.573588
+    }
   },
   "edward-linskens": {
     "src": "assets/players/edward-linskens.jpg",
     "type": "photo",
     "frame": {
-      "x": 0.08,
-      "y": 0.08,
-      "width": 0.36,
-      "height": 0.455
+      "x": 0.141339,
+      "y": 0.141826,
+      "width": 0.171083,
+      "height": 0.217144
     }
   },
   "hans-gillhaus": {
     "src": "assets/players/hans-gillhaus.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.063818,
+      "y": -0.130749,
+      "width": 0.828414,
+      "height": 1.051448
+    }
   },
   "phillip-cocu": {
     "src": "assets/players/phillip-cocu.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.219798,
+      "y": -0.019532,
+      "width": 1.348436,
+      "height": 0.760656
+    }
   },
   "park-ji-sung": {
     "src": "assets/players/park-ji-sung.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.026173,
+      "y": 0.049117,
+      "width": 0.928838,
+      "height": 0.548841
+    }
   },
   "andre-ooijer": {
     "src": "assets/players/andre-ooijer.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.104516,
+      "y": -0.027222,
+      "width": 0.854696,
+      "height": 0.96685
+    }
   },
   "wilfred-bouma": {
     "src": "assets/players/wilfred-bouma.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.094383,
+      "y": -0.078567,
+      "width": 0.909657,
+      "height": 1.029024
+    }
   },
   "lee-young-pyo": {
     "src": "assets/players/lee-young-pyo.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.055022,
+      "y": 0.086694,
+      "width": 0.871203,
+      "height": 0.532639
+    }
   },
   "jefferson-farfan": {
-    "src": "assets/players/jefferson-farfan.jpg",
-    "type": "photo"
+    "src": "assets/players/jefferson-farfan-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.158283,
+      "y": -0.03872,
+      "width": 0.614203,
+      "height": 0.345537
+    }
   },
   "jan-vennegoor-of-hesselink": {
     "src": "assets/players/jan-vennegoor-of-hesselink.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.10238,
+      "y": -0.000461,
+      "width": 1.208943,
+      "height": 0.681968
+    }
   },
   "johann-vogel": {
     "src": "assets/players/johann-vogel.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.02247,
+      "y": -0.027517,
+      "width": 1.20978,
+      "height": 0.768514
+    }
   },
   "carlos-salcido": {
     "src": "assets/players/carlos-salcido.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.081672,
+      "y": 0.053836,
+      "width": 0.814136,
+      "height": 0.920968
+    }
   },
   "timmy-simons": {
-    "src": "assets/players/timmy-simons.jpg",
-    "type": "photo"
+    "src": "assets/players/timmy-simons-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.081955,
+      "y": 0.059759,
+      "width": 0.867841,
+      "height": 0.489551
+    }
   },
   "ibrahim-afellay": {
-    "src": "assets/players/ibrahim-afellay.jpg",
-    "type": "photo"
+    "src": "assets/players/ibrahim-afellay-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.079836,
+      "y": 0.060105,
+      "width": 0.6281,
+      "height": 0.354313
+    }
   },
   "arouna-kone": {
     "src": "assets/players/arouna-kone.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.101052,
+      "y": 0.06055,
+      "width": 0.741901,
+      "height": 0.418508
+    }
   },
   "edison-mendez": {
-    "src": "assets/players/edison-mendez.jpg",
-    "type": "photo"
+    "src": "assets/players/edison-mendez-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.005193,
+      "y": 0.063219,
+      "width": 1.031046,
+      "height": 0.581615
+    }
   },
   "jan-kromkamp": {
     "src": "assets/players/jan-kromkamp.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.310169,
+      "y": 0.003381,
+      "width": 1.388755,
+      "height": 0.972765
+    }
   },
   "manuel-da-costa": {
     "src": "assets/players/manuel-da-costa.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.086971,
+      "y": -0.066932,
+      "width": 1.111486,
+      "height": 0.618742
+    }
   },
   "francesco-totti": {
-    "src": "assets/players/francesco-totti.jpg",
-    "type": "photo"
+    "src": "assets/players/francesco-totti-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.036939,
+      "y": 0.022354,
+      "width": 1.049472,
+      "height": 0.888015
+    }
   },
   "daniele-de-rossi": {
-    "src": "assets/players/daniele-de-rossi.jpg",
-    "type": "photo"
+    "src": "assets/players/daniele-de-rossi-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.001933,
+      "y": 0.001961,
+      "width": 1.025448,
+      "height": 0.577248
+    }
   },
   "christian-panucci": {
-    "src": "assets/players/christian-panucci.jpg",
-    "type": "photo"
+    "src": "assets/players/christian-panucci-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.072419,
+      "y": 0.041723,
+      "width": 1.164929,
+      "height": 0.65714
+    }
   },
   "philippe-mexes": {
     "src": "assets/players/philippe-mexes.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.052551,
+      "y": -0.061105,
+      "width": 1.059881,
+      "height": 0.681916
+    }
   },
   "cristian-chivu": {
-    "src": "assets/players/cristian-chivu.jpg",
-    "type": "photo"
+    "src": "assets/players/cristian-chivu-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.053372,
+      "y": 0.00493,
+      "width": 0.893325,
+      "height": 0.503927
+    }
   },
   "simone-perrotta": {
     "src": "assets/players/simone-perrotta.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.026301,
+      "y": -0.053526,
+      "width": 0.887364,
+      "height": 0.750847
+    }
   },
   "rodrigo-taddei": {
-    "src": "assets/players/rodrigo-taddei.jpg",
-    "type": "photo"
+    "src": "assets/players/rodrigo-taddei-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": -0.009158,
+      "y": 0.036507,
+      "width": 1.004632,
+      "height": 0.566715
+    }
   },
   "doni": {
     "src": "assets/players/doni.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.240022,
+      "y": 0.045722,
+      "width": 0.52372,
+      "height": 0.37428
+    }
   },
   "marco-cassetti": {
     "src": "assets/players/marco-cassetti.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.037371,
+      "y": 0.003126,
+      "width": 0.701446,
+      "height": 0.631696
+    }
   },
   "christian-wilhelmsson": {
     "src": "assets/players/christian-wilhelmsson.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.325403,
+      "y": 0.012758,
+      "width": 0.538868,
+      "height": 0.247931
+    }
   },
   "gabriel-batistuta": {
     "src": "assets/players/gabriel-batistuta.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.23045,
+      "y": -0.025844,
+      "width": 0.948508,
+      "height": 0.535056
+    }
   },
   "vincenzo-montella": {
     "src": "assets/players/vincenzo-montella.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.205331,
+      "y": -0.013124,
+      "width": 0.609421,
+      "height": 0.558078
+    }
   },
   "vincent-candela": {
     "src": "assets/players/vincent-candela.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.081168,
+      "y": 0.04305,
+      "width": 1.152556,
+      "height": 0.766698
+    }
   },
   "damiano-tommasi": {
     "src": "assets/players/damiano-tommasi.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.108475,
+      "y": 0.131013,
+      "width": 0.815015,
+      "height": 0.453703
+    }
   },
   "francesco-antonioli": {
-    "src": "assets/players/francesco-antonioli.jpg",
-    "type": "photo"
+    "src": "assets/players/francesco-antonioli-head.webp",
+    "type": "portrait",
+    "frame": {
+      "x": 0.188409,
+      "y": 0.036007,
+      "width": 0.629103,
+      "height": 0.354879
+    }
   },
   "jonathan-zebina": {
     "src": "assets/players/jonathan-zebina.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.152567,
+      "y": 0.043482,
+      "width": 1.145402,
+      "height": 0.969186
+    }
   },
   "radja-nainggolan": {
     "src": "assets/players/radja-nainggolan.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.105719,
+      "y": 0.004327,
+      "width": 0.569918,
+      "height": 0.380314
+    }
   },
   "edin-dzeko": {
     "src": "assets/players/edin-dzeko.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.007257,
+      "y": -0.017006,
+      "width": 1.040066,
+      "height": 0.586704
+    }
   },
   "kostas-manolas": {
     "src": "assets/players/kostas-manolas.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.072096,
+      "y": -0.024794,
+      "width": 0.706496,
+      "height": 0.577031
+    }
   },
   "aleksandar-kolarov": {
     "src": "assets/players/aleksandar-kolarov.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.062781,
+      "y": -0.065803,
+      "width": 1.133702,
+      "height": 0.642953
+    }
   },
   "kevin-strootman": {
     "src": "assets/players/kevin-strootman.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.139151,
+      "y": -0.004148,
+      "width": 1.252914,
+      "height": 0.76823
+    }
   },
   "alessandro-florenzi": {
     "src": "assets/players/alessandro-florenzi.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": -0.10803,
+      "y": 0.053312,
+      "width": 1.113025,
+      "height": 0.543759
+    }
   },
   "federico-fazio": {
     "src": "assets/players/federico-fazio.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.318959,
+      "y": 0.011282,
+      "width": 0.688414,
+      "height": 0.350062
+    }
   },
   "juan-jesus": {
     "src": "assets/players/juan-jesus.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.076752,
+      "y": -0.028906,
+      "width": 0.858163,
+      "height": 0.505667
+    }
   },
   "patrik-schick": {
     "src": "assets/players/patrik-schick.jpg",
-    "type": "photo"
+    "type": "photo",
+    "frame": {
+      "x": 0.074268,
+      "y": 0.069176,
+      "width": 0.785221,
+      "height": 0.664418
+    }
   }
 };

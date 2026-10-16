@@ -18,8 +18,10 @@ for(const [id] of players){
   const hash=createHash('sha256').update(bytes).digest('hex');
   if(hash!==source.sha256)throw Error('Arquivo de retrato diferente do registro: '+id);
   const f=framing.players[id];
-  const frame=f?.sourceHash===hash?{x:f.x,y:f.y,width:f.width,height:f.height}:source.frame||null;
+  if(!f?.face||f.sourceHash!==hash)throw Error('Foto sem enquadramento de rosto verificado: '+id);
+  const frame={x:f.x,y:f.y,width:f.width,height:f.height};
   if(frame&&(!Object.values(frame).every(Number.isFinite)||frame.width<=0||frame.height<=0))throw Error('Enquadramento inválido: '+id);
+  if(frame.y+frame.height>f.face.y+f.face.height*1.26+0.0001)throw Error('Enquadramento inclui corpo abaixo do pescoço: '+id);
   portraits[id]={src:source.file,type:source.type,...(frame?{frame}:{})};
 }
 const missing=players.filter(([id])=>!portraits[id]).map(([id,name])=>({id,name}));

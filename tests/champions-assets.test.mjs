@@ -12,6 +12,7 @@ const root=new URL('../',import.meta.url);
 const sources=JSON.parse(fs.readFileSync(new URL('assets/players/sources.json',root),'utf8'));
 const logoSources=JSON.parse(fs.readFileSync(new URL('assets/logos/sources.json',root),'utf8'));
 const missing=JSON.parse(fs.readFileSync(new URL('assets/players/missing.json',root),'utf8'));
+const framing=JSON.parse(fs.readFileSync(new URL('assets/players/framing.json',root),'utf8'));
 const players=[...new Map(allSquads.flatMap(s=>s.jogadores.map(p=>[p.id,p]))).values()];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 function assertImage(file){
@@ -41,6 +42,16 @@ test('todas as pessoas têm uma foto local íntegra, sem depender de URL externa
   assert.equal(hash(assertImage(portrait.src)),source.sha256,id);
  }
 });
+test('todos os retratos têm janela de rosto e pescoço ligada ao arquivo correto',()=>{
+ for(const [id,portrait] of Object.entries(PLAYER_PORTRAITS)){
+  const verified=framing.players[id],frame=portrait.frame,face=verified?.face;
+  assert.ok(frame&&face,id);
+  assert.equal(verified.sourceHash,sources.players[id].sha256,id);
+  const eps=.0001;
+  assert.ok(face.x>=frame.x-eps&&face.y>=frame.y-eps&&face.x+face.width<=frame.x+frame.width+eps&&face.y+face.height<=frame.y+frame.height+eps,'Rosto cortado: '+id);
+  assert.ok(frame.y+frame.height<=face.y+face.height*1.26+eps,'Corpo abaixo do pescoço: '+id);
+ }
+});
 test('a lista mostra posições e as fotos ficam nos cartões ao arrastar',()=>{
  for(const squad of allSquads){
   const draft={...createDraft(123,'2026-10-16','champions'),currentSquad:squad,currentSquadId:squad.id};
@@ -52,6 +63,7 @@ test('a lista mostra posições e as fotos ficam nos cartões ao arrastar',()=>{
  for(const player of players){
   const card=renderPlayerDragCard({player,squad:allSquads[0],hidden:false});
   assert.ok(card.includes('src="'+playerPortrait(player.id).src+'"'),player.id);
+  assert.ok(card.includes('class="face-framed"')&&card.includes('--portrait-x:'),player.id);
  }
 });
 test('um save antigo de Mancini conserva a foto da mesma pessoa',()=>{

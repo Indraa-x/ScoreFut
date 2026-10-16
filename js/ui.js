@@ -1,9 +1,9 @@
 import { MODES } from './state.js';
-import { CLUB_LOGOS } from '../data/club-logos.js?v=club-assets-20261016-1';
+import { CLUB_LOGOS } from '../data/club-logos.js?v=headshots-20261016-2';
 import { clubs, allSquads } from '../data/clubs.js';
 import {filterQuickClubs,quickSeasons} from './quick-catalog.js';
 import {filterHistory,formatHistoryDate} from './history.js';
-import { playerPortrait } from './player-portraits.js?v=club-assets-20261016-1';
+import { playerPortrait } from './player-portraits.js?v=headshots-20261016-2';
 import { competitionName, competitionLogo } from '../data/competitions.js';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js';
 import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js';
