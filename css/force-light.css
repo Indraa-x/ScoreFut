@@ -1,0 +1,33 @@
+/* Keep the ScoreFut palette and native controls light on every device. */
+:root {
+  color-scheme: only light !important;
+  --bg: #f4f5f6 !important;
+  --surface: #fff !important;
+  --elevated: #dce1e7 !important;
+  --text: #24272d !important;
+  --muted: #505966 !important;
+  --green: #13754b !important;
+  --gold: #94700a !important;
+  --cyan: #007488 !important;
+  --red: #b64d4d !important;
+  --orange: #a65310 !important;
+  --border: #c5ccd4 !important;
+  --soft: #e0e4e9 !important;
+  --shadow: 0 16px 55px #24272d0b !important;
+  --blocked-bg: #f4b8b8 !important;
+  --blocked-border: #d76969 !important;
+  --blocked-text: #821f26 !important;
+}
+
+html,
+body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+input,
+select,
+textarea,
+dialog {
+  color-scheme: only light;
+}
