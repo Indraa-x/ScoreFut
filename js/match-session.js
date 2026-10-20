@@ -1,4 +1,4 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS } from './engine.js?v=club-only-cleanup-20261020';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=champions-two-legs-20261020';
 
 export const MATCH_FLOW_VERSION = 1;
 
@@ -9,6 +9,16 @@ export function currentMatch(state) {
 
 export function canContinueTournament(tournament) {
   return !tournament.complete && !tournament.campaign?.eliminated;
+}
+
+/** Keep completed games when an active Champions save adopts two-legged ties. */
+export function migrateChampionsFormat(state) {
+  if (!state.tournament) return {};
+  const tournament = upgradeChampionsTournament(state.tournament);
+  if (tournament === state.tournament) return {};
+  if (!state.pendingRound) return {tournament};
+  const session = prepareUserRound(tournament);
+  return {...session, matchMinute:currentMatch(state)?.id === currentMatch(session)?.id ? state.matchMinute : 0};
 }
 
 /** Prepare only the next round. Its results stay private until the final whistle. */

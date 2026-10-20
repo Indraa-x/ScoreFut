@@ -69,7 +69,7 @@ test('Champions opponents remain European when creation receives the complete gl
   const tournament=simulateTournament(createTournament(user,allSquads,{mode:'champions',seed:83}));
   assert.equal(tournament.teams.length,32);
   assert.equal(tournament.groups.length,8);
-  assert.equal(tournament.matches.length,63);
+  assert.equal(tournament.matches.length,77);
   assert.ok(tournament.teams.filter(team=>!team.isUser).every(team=>EUROPE_CLUB_IDS.includes(team.clubId)));
   assert.ok(tournament.groups.every(group=>new Set(group.teamIds.map(id=>tournament.teams.find(team=>team.id===id).clubId)).size===4));
 });

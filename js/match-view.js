@@ -1,7 +1,7 @@
 import {renderMatchGoals} from './match-goals.js?v=club-only-cleanup-20261020';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=club-only-cleanup-20261020';
-import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=club-only-cleanup-20261020';
-import { formatMatchClock, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=club-only-cleanup-20261020';
+import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=champions-two-legs-20261020';
+import { formatMatchClock, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=champions-two-legs-20261020';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {
@@ -13,6 +13,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const t = s.tournament, match = currentMatch(s);
   if (!match) return '';
   const result = match.result, ended = s.matchMinute >= result.duration;
+  const twoLegged = !!match.tieId;
   const home = t.teams.find(team => team.id === match.homeId), away = t.teams.find(team => team.id === match.awayId);
   const scores = scoreAt(result, s.matchMinute), anchors = lineupAnchors(home, away);
   const homeKit=home.id===t.userTeamId?'#13754b':'#3169b8';
@@ -38,16 +39,15 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const phase = s.matchMinute >= 90 && !ended ? 'Prorrogação' : s.matchMinute >= 45 ? '2º tempo' : '1º tempo';
   const morePlayed = s.userMatchIndex < t.userMatches.length - 1;
   const nextFixture = morePlayed ? t.userMatches[s.userMatchIndex+1] : upcoming[0];
-  const nextLabel = morePlayed ? 'Rever próximo jogo' : match.stage==='final' ? 'Ver resultado' : s.pendingRound || canContinueTournament(t)
+  const nextLabel = morePlayed ? 'Rever próximo jogo' : twoLegged && match.leg===1 && match.stage!=='final' ? 'Jogar a volta' : match.stage==='final' ? 'Ver resultado' : s.pendingRound || canContinueTournament(t)
     ? nextFixture?.stage === match.stage ? 'Próxima partida' : 'Próxima etapa' : 'Ver resultado';
   const logo = competitionLogo(s.mode), speed = MATCH_SPEEDS.includes(s.matchSpeed) ? s.matchSpeed : 1;
   const penaltyScore = ended && result.penalties ? `<span class="match-penalties">Pênaltis <b>${result.penalties.join(' – ')}</b></span>` : '';
-  const brazilCup = t.mode === 'copa-do-brasil';
-  const firstLeg = brazilCup && match.leg === 2 ? t.matches.find(fixture => fixture.tieId === match.tieId && fixture.leg === 1) : null;
+  const firstLeg = twoLegged && match.leg === 2 ? t.matches.find(fixture => fixture.tieId === match.tieId && fixture.leg === 1) : null;
   const previousGoals = firstLeg ? [firstLeg.result.awayGoals, firstLeg.result.homeGoals] : [0,0];
-  const aggregateScore = brazilCup && match.leg === 2
+  const aggregateScore = twoLegged && match.leg === 2
     ? `<span class="match-aggregate">Ida + volta <b data-match-aggregate data-home="${previousGoals[0]}" data-away="${previousGoals[1]}">${previousGoals[0]+scores[0]} – ${previousGoals[1]+scores[1]}</b></span>` : '';
-  const tie = ended && brazilCup && (match.leg === 2 || match.stage === 'final') ? (s.pendingRound || t).bracket.flatMap(stage => stage.ties).find(tie => tie.id === match.tieId) : null;
+  const tie = ended && twoLegged && (match.leg === 2 || match.stage === 'final') ? (s.pendingRound || t).bracket.flatMap(stage => stage.ties || []).find(tie => tie.id === match.tieId) : null;
   const cupStatus = tie?.winnerId
     ? `<span class="match-cup-outcome">${match.stage === 'final' ? 'Campeão' : 'Classificado'}: ${esc(displayName(t.teams.find(team => team.id === tie.winnerId)))}</span>`
     : '';

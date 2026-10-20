@@ -1,5 +1,5 @@
-import { currentMatch } from './match-session.js?v=club-only-cleanup-20261020';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, scoreAt } from './match-motion.js?v=club-only-cleanup-20261020';
+import { currentMatch } from './match-session.js?v=champions-two-legs-20261020';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, scoreAt } from './match-motion.js?v=champions-two-legs-20261020';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=club-only-cleanup-20261020';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {

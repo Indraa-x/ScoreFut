@@ -38,8 +38,8 @@ test('every knockout opponent is an actual qualifier or previous winner; future 
     state.matchMinute=match.result.duration;commitUserRound(state);
     const t=state.tournament;
     for(let index=1;index<t.bracket.length;index++){
-      const expected=t.bracket[index-1].matches.map(fixture=>fixture.result.winnerId).sort();
-      const actual=t.bracket[index].matches.flatMap(fixture=>[fixture.homeId,fixture.awayId]).sort();
+      const expected=t.bracket[index-1].ties.map(tie=>tie.winnerId).sort();
+      const actual=t.bracket[index].ties.flatMap(tie=>tie.teamIds).sort();
       assert.deepEqual(actual,expected);
     }
     if(!canContinueTournament(t))break;
