@@ -7,7 +7,7 @@ import { state, MODES } from './state.js?v=club-only-cleanup-20261020';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=club-only-cleanup-20261020';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=club-only-cleanup-20261020';
 import * as storage from './storage.js?v=club-only-cleanup-20261020';
-import * as ui from './ui.js?v=hero-play-single-20261020';
+import * as ui from './ui.js?v=play-button-polish-20261020';
 import {downloadResult} from './share.js?v=club-only-cleanup-20261020';
 import {initPlayerDrag} from './player-drag.js?v=club-only-cleanup-20261020';
 import {preloadPlayerPortraits} from './player-portraits.js?v=club-only-cleanup-20261020';
@@ -217,9 +217,23 @@ function finishTournament(){
   if(!history.some(g=>g.id===record.id)){history.push(record);storage.write('history',history.slice(-50));}
   storage.remove('active');state.resultRecord=record;navigate('result');
 }
+async function launchFromHome(button){
+  if(state.screen!=='home'||button?.disabled)return;
+  if(button){
+    button.classList.add('is-launching');
+    button.disabled=true;
+    button.setAttribute('aria-busy','true');
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const animations=button.getAnimations?.({subtree:true});
+      if(animations)await Promise.all(animations.filter(animation=>animation.animationName?.startsWith('sf-play-')).map(animation=>animation.finished.catch(()=>{})));
+      else await new Promise(resolve=>setTimeout(resolve,620));
+    }
+  }
+  if(state.screen==='home')openSetup('quick');
+}
 async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
 case'home':navigate('home');break;case'history':navigate('history');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
-case'setup':openSetup(value||'quick');break;case'play-home':{if(state.screen!=='home')break;if(element){element.classList.add('is-launching');element.disabled=true;element.setAttribute('aria-busy','true');}if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)await new Promise(resolve=>setTimeout(resolve,380));openSetup('quick');break;}case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
+case'setup':openSetup(value||'quick');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
 case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){restore(saved);window.scrollTo(0,0);}break;}
 case'draw':await roll();break;case'reroll-club':await roll('club');break;case'reroll-season':await roll('season');break;case'player':selectPlayer(value);break;case'slot':slotAction(value);break;
 case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value);break;case'quick-choose-club':openSetup('quick','clubs');break;case'quick-formation':openSetup('quick');break;

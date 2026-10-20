@@ -1,0 +1,106 @@
+/* One clear play action, with a single coordinated launch. */
+#app .hero-actions .hero-play-cta {
+  --play-duration: 620ms;
+  position: relative;
+  isolation: isolate;
+  min-width: 232px;
+  min-height: 74px;
+  padding: 16px 32px;
+  border: 1px solid #13754b;
+  border-radius: 14px;
+  background: var(--green);
+  color: #fff;
+  box-shadow: inset 0 1px 0 #ffffff24, 0 6px 18px #13754b20;
+  overflow: hidden;
+}
+
+#app .hero-actions .hero-play-cta:hover:not(:disabled) {
+  background: #106b44;
+  border-color: #106b44;
+  box-shadow: inset 0 1px 0 #ffffff24, 0 8px 22px #13754b2b;
+}
+
+.hero-play-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.hero-play-label {
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.7px;
+}
+
+.hero-play-ball {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  filter: drop-shadow(0 2px 2px #063b2b3d);
+}
+
+.hero-play-ball img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  pointer-events: none;
+}
+
+#app .hero-actions .hero-play-cta.is-launching:disabled {
+  opacity: 1;
+  cursor: progress;
+  animation: sf-play-press var(--play-duration) cubic-bezier(.2,.8,.25,1) both;
+}
+
+.hero-play-cta.is-launching .hero-play-content {
+  animation: sf-play-together var(--play-duration) cubic-bezier(.2,.8,.25,1) both;
+}
+
+.hero-play-cta.is-launching .hero-play-ball {
+  animation: sf-play-hop var(--play-duration) cubic-bezier(.2,.75,.3,1) both;
+}
+
+.hero-play-cta.is-launching .hero-play-ball img {
+  animation: sf-play-roll var(--play-duration) cubic-bezier(.25,.5,.35,1) both;
+}
+
+@keyframes sf-play-press {
+  0%,100% { transform: scale(1); }
+  18% { transform: scale(.975); }
+  58% { transform: scale(1.012); }
+}
+
+@keyframes sf-play-together {
+  0%,18% { transform: translateX(0); }
+  64% { transform: translateX(5px); }
+  100% { transform: translateX(8px); }
+}
+
+@keyframes sf-play-hop {
+  0%,18%,100% { transform: translateY(0); }
+  52% { transform: translateY(-5px); }
+  80% { transform: translateY(1px); }
+}
+
+@keyframes sf-play-roll {
+  0%,12% { transform: rotate(0); }
+  100% { transform: rotate(300deg); }
+}
+
+@media (max-width:520px) {
+  #app .hero-actions .hero-play-cta { width:100%; min-width:0; min-height:72px; }
+  .hero-play-label { font-size:25px; }
+  .hero-play-ball { width:40px; height:40px; flex-basis:40px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .hero-play-cta.is-launching,
+  .hero-play-cta.is-launching .hero-play-content,
+  .hero-play-cta.is-launching .hero-play-ball,
+  .hero-play-cta.is-launching .hero-play-ball img { animation:none!important; }
+}
