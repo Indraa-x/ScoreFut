@@ -15,14 +15,19 @@ import {playerPortrait} from '../js/player-portraits.js';
 import {CLUB_LOGOS} from '../data/club-logos.js';
 
 const user={...squadTeam(nationalSquads[0]),id:'user',clubId:'user',name:'Meu time'};
-test('World Cup replaces Legends and isolates twenty complete national XIs from club modes',()=>{
-  assert.equal(nationalTeams.length,20);
+test('World Cup has three historical XIs for each of twenty countries and stays isolated from club modes',()=>{
+  assert.equal(nationalTeams.length,60);
   assert.equal(new Set(nationalTeams.map(t=>t.id)).size,20);
-  assert.equal(nationalSquads.reduce((n,s)=>n+s.jogadores.length,0),220);
+  assert.equal(nationalSquads.reduce((n,s)=>n+s.jogadores.length,0),660);
+  for(const id of new Set(nationalTeams.map(t=>t.id))){
+    const eras=nationalTeams.filter(team=>team.id===id);
+    assert.equal(eras.length,3,id);
+    assert.equal(new Set(eras.map(team=>team.ano)).size,3,id);
+  }
   assert.ok(!MODES.some(m=>m.id==='legends'));
   assert.equal(competitionName('world-cup'),'Copa do Mundo');
   assert.ok(fs.existsSync(competitionLogo('world-cup')));
-  assert.equal(squadsForMode(allSquads,'world-cup').length,20);
+  assert.equal(squadsForMode(allSquads,'world-cup').length,60);
   for(const mode of ['quick','champions','copa-do-brasil','cup']){
     assert.deepEqual(squadsForMode(allSquads,mode),squadsForMode(clubSquads,mode));
   }
@@ -33,14 +38,14 @@ test('World Cup replaces Legends and isolates twenty complete national XIs from 
     assert.ok(squad.jogadores.find(p=>p.tags.includes('GOL')).atributos.posicionamento>=65,'Goalkeeper positioning must use the goalkeeper attribute');
     for(const p of squad.jogadores){
       assert.ok(p.ovr>=50&&p.ovr<=96);
-      assert.equal(p.ratingEdition,'FIFA 20');
-      assert.match(p.ratingSource,/sofifa\.com\/player\//);
+      assert.equal(p.ratingEdition,'Pico histórico ScoreFut');
       assert.ok(Object.values(p.atributos).every(Number.isFinite));
     }
+    assert.doesNotThrow(()=>squadTeam(squad),`${squad.nome} ${squad.ano} must be usable as a tournament opponent`);
   }
 });
 
-test('all national crests and every player card have local verified face portraits',()=>{
+test('national crests stay local and available face portraits render on every historical player card',()=>{
   const logos=JSON.parse(fs.readFileSync('assets/logos/national-sources.json','utf8'));
   const sources=JSON.parse(fs.readFileSync('assets/players/sources.json','utf8')).players;
   for(const squad of nationalSquads){
@@ -49,15 +54,17 @@ test('all national crests and every player card have local verified face portrai
     assert.equal(createHash('sha256').update(fs.readFileSync(logo.file)).digest('hex'),logo.sha256);
     for(const player of squad.jogadores){
       const portrait=playerPortrait(player.id);
-      assert.ok(portrait?.frame,player.id);
-      assert.ok(fs.existsSync(portrait.src));
-      assert.equal(String(sources[player.id].eaId),player.eaId,'National photos must use the verified EA identity, never a name-only homonym');
       const html=renderPlayerDragCard({player,squad,hidden:false});
-      assert.ok(html.includes(portrait.src)&&html.includes('face-framed'));
+      if(portrait){
+        assert.ok(fs.existsSync(portrait.src),player.id);
+        assert.ok(html.includes(portrait.src),player.id);
+        if(portrait.frame)assert.ok(html.includes('face-framed'),player.id);
+        if(sources[player.id]?.sha256)assert.equal(createHash('sha256').update(fs.readFileSync(portrait.src)).digest('hex'),sources[player.id].sha256);
+      }else assert.ok(html.includes('drag-card-initials'),player.id);
     }
   }
   const setup=renderSetup({mode:'world-cup',formation:'4-3-3'});
-  assert.ok(setup.includes('Copa do Mundo')&&setup.includes('OVRs de referência FIFA 20'));
+  assert.ok(setup.includes('Copa do Mundo')&&setup.includes('OVRs históricos ScoreFut')&&setup.includes('3 fases históricas por seleção'));
   const home=renderHome({clubs,stats:{titles:0,best:'—',streak:0,winRate:0}});
   assert.ok(home.includes('data-value="world-cup"')&&!home.includes('Modo Lendas'));
 });
@@ -69,15 +76,30 @@ test('national draft fills every formation with three shared skips and keeps pho
       draft=drawSquad(draft,nationalSquads,formation);
       if(i<3)draft=drawSquad(draft,nationalSquads,formation,'club');
       const squad=nationalSquads.find(s=>s.id===draft.currentSquadId);
-      const html=renderDraft({mode:'world-cup',formation,draft:{...draft,currentSquad:squad}});
-      assert.ok(html.includes('Seleção sorteada')&&!html.includes('Outra temporada'));
+      const html=renderDraft({mode:'world-cup',formation,draft:{...draft,currentSquad:squad,otherSeasonAvailable:true}});
+      assert.ok(html.includes('Fase histórica sorteada')&&html.includes('Outra fase')&&!html.includes('Outra temporada'));
       const player=squad.jogadores.find(p=>!draft.picks.some(pick=>pick.player.id===p.id)&&automaticSlot(draft,formation,p));
       assert.ok(player,formation+'/'+seed+'/'+i);
       draft=confirmPick(draft,nationalSquads,formation,player.id);
     }
     assert.equal(draft.picks.length,11);
+    assert.equal(new Set(draft.picks.map(pick=>pick.clubId)).size,11,'Each selected country appears once even though it has three eras');
     assert.equal(draft.rerolls,0);
   }
+});
+
+test('two phase rerolls expose all three eras of the current country',()=>{
+  let draft=createDraft(728,'2026-10-20','world-cup');
+  draft=drawSquad(draft,nationalSquads,'4-3-3','new','world-cup');
+  const first=nationalSquads.find(squad=>squad.id===draft.currentSquadId);
+  const years=new Set([first.ano]);
+  for(let i=0;i<2;i++){
+    draft=drawSquad(draft,nationalSquads,'4-3-3','season','world-cup');
+    const next=nationalSquads.find(squad=>squad.id===draft.currentSquadId);
+    assert.equal(next.clubId,first.clubId);
+    years.add(next.ano);
+  }
+  assert.deepEqual([...years].sort((a,b)=>a-b),nationalSquads.filter(squad=>squad.clubId===first.clubId).map(squad=>squad.ano).sort((a,b)=>a-b));
 });
 
 test('twenty-team groups schedule every pair once, qualify eight, and finish a deterministic seven-game route',()=>{
@@ -85,6 +107,7 @@ test('twenty-team groups schedule every pair once, qualify eight, and finish a d
     let t=createTournament(user,allSquads,{mode:'world-cup',seed,excludeSquadIds:nationalSquads.map(s=>s.id)});
     assert.equal(t.teams.length,20);
     assert.equal(new Set(t.teams.map(t=>t.clubId)).size,20);
+    assert.equal(t.teams.filter(team=>team.id!=='user').length,19);
     assert.equal(t.matches.length,40);
     assert.equal(prepareUserRound(t).pendingRound.userMatches[0].round,1);
     for(const group of t.groups){
@@ -126,3 +149,4 @@ test('live World Cup handles group byes, saves, and elimination without skipping
   assert.equal(watched,session.tournament.userMatches.length);
   assert.ok(watched>=4&&watched<=7);
 });
+

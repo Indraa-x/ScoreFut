@@ -1,4 +1,4 @@
-import {nationalSquads} from './national-teams.js?v=worldcup-20261020';
+import {nationalSquads} from './national-teams.js?v=national-peaks-20261020';
 export const BRAZIL_CLUB_IDS = Object.freeze([
   'flamengo','palmeiras','sao-paulo','corinthians','santos','gremio','internacional',
   'vasco','fluminense','botafogo','cruzeiro','atletico-mineiro','athletico-paranaense','bahia','fortaleza',

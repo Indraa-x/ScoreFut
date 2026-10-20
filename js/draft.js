@@ -1,6 +1,6 @@
-import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=worldcup-20261020';
+import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=national-peaks-20261020';
 export const DEFAULT_REROLLS = 3;
-export function createDraft(seed,date,mode) {return {seed:hashSeed(seed),rngState:hashSeed(seed),date,rerolls:mode==='daily'?0:DEFAULT_REROLLS,seen:[],picks:[],currentSquadId:null,selectedId:null};}
+export function createDraft(seed,date,mode) {return {seed:hashSeed(seed),rngState:hashSeed(seed),date,mode,rerolls:mode==='daily'?0:DEFAULT_REROLLS,seen:[],picks:[],currentSquadId:null,selectedId:null};}
 export function availableSlots(draft,formation,player) {return FORMATIONS[formation].slots.filter(slot=>!draft.picks.some(p=>p.slot.id===slot.id)&&positionFit(player,slot)!==null);}
 /** A filled destination permits a swap only when both players fit their new roles. */
 export function movableSlots(draft,formation,playerId) {
@@ -38,6 +38,7 @@ export function drawSquad(draft,squads,formation,kind='new',mode=draft.mode||'')
   const needsForcedKeeper=needsKeeper&&draft.picks.length===TEAM_SIZE-1;
   const candidates=squads.filter(s=>!draft.seen.includes(s.id)
     &&(!reroll||kind==='season'?(!reroll||s.clubId===current.clubId):s.clubId!==current.clubId)
+    &&(mode!=='world-cup'||kind==='season'||!draft.picks.some(pick=>pick.clubId===s.clubId))
     &&(!needsForcedKeeper||s.jogadores.some(p=>p.tags.includes('GOL')))
     &&s.jogadores.some(p=>!draft.picks.some(pick=>pick.player.id===p.id)&&availableSlots(draft,formation,p).length));
   if(!candidates.length) throw new Error(kind==='season'?'Não há outra temporada compatível disponível para este clube.':'Não há elenco compatível com as posições que faltam.');

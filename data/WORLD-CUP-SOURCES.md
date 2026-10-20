@@ -1,20 +1,44 @@
-# Copa do Mundo — ScoreFut
+# Seleções históricas — ScoreFut
 
-20 seleções, 220 jogadores. Elencos de fantasia baseados em jogadores ativos na base FIFA 20 (2019/2020), com um goleiro e dez jogadores de linha por seleção. Não representam uma convocação oficial de uma Copa específica. O ano 2020 aparece em cada sorteio. As seleções são Brasil, Argentina, França, Alemanha, Espanha, Itália, Inglaterra, Portugal, Países Baixos, Bélgica, Croácia, Uruguai, Colômbia, México, Estados Unidos, Japão, Coreia do Sul, Marrocos, Senegal e Austrália.
+O modo Copa do Mundo oferece 20 países e 60 elencos: três fases históricas de onze jogadores por país, totalizando 660 jogadores em escalações. As fases incluem Brasil 2002, 1994 e 1970, como solicitado, e foram escolhidas pelo desempenho máximo da seleção em Copas do Mundo ou por conquistas continentais e gerações marcantes.
 
-## OVR e atributos
+| Seleção | Três fases disponíveis |
+| --- | --- |
+| Brasil | 2002, 1994, 1970 |
+| Argentina | 2022, 1986, 1978 |
+| França | 2018, 2006, 1998 |
+| Alemanha | 2014, 1990, 1974 |
+| Espanha | 2012, 2010, 2008 |
+| Itália | 2006, 1990, 1982 |
+| Inglaterra | 2018, 1990, 1966 |
+| Portugal | 2016, 2006, 1966 |
+| Países Baixos | 2010, 1978, 1974 |
+| Bélgica | 2018, 2014, 1986 |
+| Croácia | 2022, 2018, 1998 |
+| Uruguai | 2010, 1950, 1930 |
+| Colômbia | 2014, 2001, 1990 |
+| México | 2014, 1999, 1986 |
+| Estados Unidos | 2002, 1994, 1930 |
+| Japão | 2022, 2010, 2002 |
+| Coreia do Sul | 2022, 2010, 2002 |
+| Marrocos | 2022, 1998, 1986 |
+| Senegal | 2022, 2021, 2002 |
+| Austrália | 2022, 2015, 2006 |
 
-OVR original da edição FIFA 20, sem converter as notas para a curva editorial dos clubes. Ataque, meio, defesa, finalização, reflexos e posicionamento usam os campos de atributos correspondentes dessa edição; campos ausentes usam o OVR. Posições primárias e secundárias preservadas. Cada jogador inclui ratingSource, ratingEdition e eaId.
+## Critérios e limites
 
-Referência de consulta: https://www.fifaindex.com/players/fifa20/
-Base tabular: FIFA 20 complete player dataset, Stefanoleone992 / SoFIFA, players_20.csv (snapshot já existente no projeto).
+Cada ano representa um elenco histórico selecionável; o onze do ScoreFut é uma escalação representativa da fase, não uma alegação de que esses onze começaram juntos uma partida específica. Os OVRs são referências editoriais de pico histórico, feitas para o balanceamento do jogo. Não são apresentados como OVR oficial da EA para temporadas em que não existe uma edição FIFA comparável. A escala vai até 96 para preservar a diferença entre lendas no auge e grandes jogadores da época.
 
-## Formato do jogo
+As campanhas usadas como referência podem ser verificadas no arquivo oficial da FIFA. A FIFA registra, por exemplo, os cinco títulos brasileiros em 1958, 1962, 1970, 1994 e 2002; os títulos argentinos de 1978, 1986 e 2022; e os melhores resultados uruguaios em 1930 e 1950. Para as seleções que ainda não venceram a Copa, o cadastro usa as campanhas de maior destaque e, quando pertinente, uma conquista continental da geração.
 
-Formato próprio do ScoreFut, com seu elenco e 19 seleções adversárias diferentes. Quatro grupos de cinco, quatro partidas por participante e uma folga em cinco rodadas. Os dois primeiros avançam. Quartas, semifinais e final em jogo único; empate leva a prorrogação e pênaltis. Até sete partidas para o jogador. Não se apresenta como o regulamento oficial de 2026.
+- FIFA, [história da Seleção Brasileira na Copa](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-team-profile-history)
+- FIFA, [finais e campeões da Copa do Mundo](https://www.fifa.com/en/tournaments/mens/worldcup/articles/world-cup-champions-1982-2026-italy-argentina-germany-brazil-france-spain)
+- FIFA, [campanhas e convocações do Uruguai](https://www.fifa.com/es/articles/uruguay-en-las-copas-mundiales-planteles-entrenadores-y-resultados)
+- FIFA, [história da Seleção de Portugal na Copa](https://www.fifa.com/en/articles/fifa.com/en/articles/portugal-team-profile-history)
 
-## Imagens
+## Formato do modo
 
-Escudos reais das federações: https://football-logos.cc/national-teams/ — crédito a football-logos.cc. Arquivos e hashes em assets/logos/national-sources.json. Marca da competição: logo FIFA World Cup 2026 fornecido no mesmo catálogo. Troféu: ilustração da taça por Pierdisilvestre7, Wikimedia Commons, CC0 1.0.
+A Copa do Mundo mantém 20 participantes, com uma seleção adversária por país. O sorteio escolhe uma das três fases disponíveis; “Outra fase” percorre as outras escalações do mesmo país. Um país já usado no draft não pode voltar em outra fase, para não ocupar duas vagas na escalação do jogador.
 
-Retratos reais: FUTBIN / EA SPORTS, identificação pelo ID do jogador da mesma edição FIFA 20; fotografias existentes com ID EA verificado são reutilizadas. Originais convertidos para WebP sem EXIF/XMP. Fontes e hashes individuais em assets/players/sources.json; recortes de rosto e pescoço ligados ao hash em assets/players/framing.json. A lista continua mostrando posições, e as fotos aparecem nas cartinhas.
+Os escudos e os retratos já cadastrados são servidos localmente. Quando o retrato existe, aparece no cartão do jogador; a lista de escolha continua apresentando as posições.
+

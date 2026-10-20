@@ -1,4 +1,4 @@
-import {nationalTeams} from './national-teams.js?v=worldcup-20261020';
+import {nationalTeams} from './national-teams.js?v=national-peaks-20261020';
 /** All club crests are shipped with the site, without external image dependencies. */
 const localClubLogos = Object.fromEntries([
   'real-madrid', 'barcelona', 'bayern', 'milan', 'manchester-united',
