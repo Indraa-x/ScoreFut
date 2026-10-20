@@ -28,18 +28,18 @@
 .hero-actions .btn{min-height:62px;min-width:190px;padding:18px 28px;font-size:16px;gap:12px;border-radius:9px}
 .hero-actions .btn-primary{min-width:190px}
 .hero-actions .btn svg{width:20px;height:20px}
-.hero-actions .hero-play-cta{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 7px 18px #13754b25}
+.hero-actions .hero-play-cta{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 7px 18px #13754b25;font-size:19px;font-weight:750;gap:14px}
 .hero-actions .hero-play-cta:hover:not(:disabled){background:#0f6842;border-color:#0f6842;filter:none}
 .hero-actions .hero-play-cta.is-launching:disabled{opacity:1;cursor:wait}
-.hero-play-ball{display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 20px}
-.hero-play-ball svg{width:20px;height:20px;stroke-width:1.8}
+.hero-play-ball{display:inline-grid;place-items:center;width:26px;height:26px;flex:0 0 26px}
+.hero-play-ball svg{width:26px;height:26px;stroke-width:1.8}
 .hero-play-arrow{display:inline-flex;transition:transform .2s ease,opacity .2s ease}
 .hero-play-cta:hover .hero-play-arrow{transform:translateX(3px)}
-.hero-play-cta.is-launching .hero-play-ball{animation:sf-hero-ball-roll 460ms cubic-bezier(.2,.75,.25,1) both}
+.hero-play-cta.is-launching .hero-play-ball{animation:sf-hero-ball-roll 240ms cubic-bezier(.2,.75,.25,1) both}
 @keyframes sf-hero-ball-roll{
   0%{transform:translateX(0) rotate(0) scale(1)}
   38%{transform:translateX(5px) rotate(135deg) scale(1.08)}
   72%{transform:translateX(11px) rotate(270deg) scale(.98)}
   100%{transform:translateX(0) rotate(360deg) scale(1)}
 }
-@media(max-width:480px){.hero-actions .btn{width:100%;min-width:0;min-height:58px;padding:16px 20px;font-size:15px}}
+@media(max-width:480px){.hero-actions .btn{width:100%;min-width:0;min-height:58px;padding:16px 20px;font-size:15px}.hero-actions .hero-play-cta{font-size:17px}}
