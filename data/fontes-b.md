@@ -1,6 +1,6 @@
 # ScoreFut — referências do lote B
 
-Consultadas em 10/10/2026. Estes links registram as fontes usadas na conferência histórica dos 660 jogadores em `clubs-b.js`; OVR, atributos e a seleção dos onze jogadores são editoriais. As fontes sustentam vínculos, escalações e conquistas, e não as notas do jogo. As camisas permanecem vazias quando não foram confirmadas. A exceção preenchida é Dortmund 2012, cuja numeração foi publicada pelo clube. Cada elenco oferece onze opções, incluindo o principal goleiro; o time montado no jogo tem onze posições.
+Consultadas em 10/10/2026. Estes links registram a conferência histórica dos 660 jogadores em `clubs-b.js`. A seleção dos onze jogadores e os atributos de simulação são editoriais; os OVRs com uma correspondência histórica verificada são substituídos pela edição FIFA/FC indicada em `ratings.js`. As fontes desta página sustentam vínculos, escalações e conquistas, não OVRs. As camisas permanecem vazias quando não foram confirmadas. A exceção preenchida é Dortmund 2012, cuja numeração foi publicada pelo clube. Cada elenco oferece onze opções, incluindo o principal goleiro; o time montado no jogo tem onze posições.
 
 O ano corresponde ao término da temporada na Europa e à edição da competição na América do Sul. Os títulos da edição 2020 do Palmeiras foram decididos em 2021. A seleção admite atletas que foram transferidos durante a temporada, desde que tenham atuado nela.
 

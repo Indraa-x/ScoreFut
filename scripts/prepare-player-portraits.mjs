@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {allSquads} from '../data/clubs.js';
+import {allSquads} from '../data/game-squads.js';
 const root=new URL('../',import.meta.url);
 const sources=JSON.parse(await fs.readFile(new URL('assets/players/sources.json',root),'utf8'));
 let framing={players:{}};

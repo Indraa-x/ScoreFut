@@ -11819,5 +11819,1455 @@ export const PLAYER_PORTRAITS = {
       "width": 0.785221,
       "height": 0.664418
     }
+  },
+  "world-212831": {
+    "src": "assets/players/world-212831-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.038228,
+      "y": 0.014629,
+      "width": 1.050906,
+      "height": 0.889228
+    }
+  },
+  "world-207865": {
+    "src": "assets/players/world-207865-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.057333,
+      "y": -0.03622,
+      "width": 1.090261,
+      "height": 0.922528
+    }
+  },
+  "world-184949": {
+    "src": "assets/players/world-184949-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.085464,
+      "y": -0.04819,
+      "width": 1.148129,
+      "height": 0.971494
+    }
+  },
+  "world-230658": {
+    "src": "assets/players/world-230658-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.044875,
+      "y": -0.029387,
+      "width": 1.0802,
+      "height": 0.914016
+    }
+  },
+  "world-180403": {
+    "src": "assets/players/world-180403-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.02728,
+      "y": 0.088398,
+      "width": 0.925596,
+      "height": 0.783197
+    }
+  },
+  "world-215316": {
+    "src": "assets/players/world-215316-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.008211,
+      "y": 0.084841,
+      "width": 1.008859,
+      "height": 0.85365
+    }
+  },
+  "world-226226": {
+    "src": "assets/players/world-226226-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06384,
+      "y": -0.043045,
+      "width": 1.103611,
+      "height": 0.933825
+    }
+  },
+  "world-143076": {
+    "src": "assets/players/world-143076-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.037743,
+      "y": 0.00479,
+      "width": 1.068666,
+      "height": 0.904256
+    }
+  },
+  "world-224334": {
+    "src": "assets/players/world-224334-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.036246,
+      "y": 0.025239,
+      "width": 1.044436,
+      "height": 0.883753
+    }
+  },
+  "world-212218": {
+    "src": "assets/players/world-212218-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.028874,
+      "y": 0.012365,
+      "width": 1.054041,
+      "height": 0.891881
+    }
+  },
+  "world-205600": {
+    "src": "assets/players/world-205600-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.011552,
+      "y": -0.005616,
+      "width": 1.01133,
+      "height": 0.855741
+    }
+  },
+  "world-216643": {
+    "src": "assets/players/world-216643-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.054556,
+      "y": 0.014286,
+      "width": 1.077131,
+      "height": 0.911419
+    }
+  },
+  "world-200458": {
+    "src": "assets/players/world-200458-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.063061,
+      "y": -0.020021,
+      "width": 1.103478,
+      "height": 0.933713
+    }
+  },
+  "world-216594": {
+    "src": "assets/players/world-216594-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.063538,
+      "y": -0.033826,
+      "width": 1.133582,
+      "height": 0.959184
+    }
+  },
+  "world-212190": {
+    "src": "assets/players/world-212190-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.046162,
+      "y": -0.024576,
+      "width": 1.093418,
+      "height": 0.9252
+    }
+  },
+  "world-200536": {
+    "src": "assets/players/world-200536-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.048965,
+      "y": 0.00332,
+      "width": 1.085762,
+      "height": 0.918722
+    }
+  },
+  "world-193080": {
+    "src": "assets/players/world-193080-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.029969,
+      "y": 0.000471,
+      "width": 1.064013,
+      "height": 0.900319
+    }
+  },
+  "world-152729": {
+    "src": "assets/players/world-152729-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.01882,
+      "y": 0.042891,
+      "width": 0.966978,
+      "height": 0.818212
+    }
+  },
+  "world-220834": {
+    "src": "assets/players/world-220834-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.066147,
+      "y": -0.041274,
+      "width": 1.125926,
+      "height": 0.952706
+    }
+  },
+  "world-192629": {
+    "src": "assets/players/world-192629-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.079032,
+      "y": -0.039619,
+      "width": 1.135376,
+      "height": 0.960703
+    }
+  },
+  "world-203551": {
+    "src": "assets/players/world-203551-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.060279,
+      "y": 0.006056,
+      "width": 1.10524,
+      "height": 0.935203
+    }
+  },
+  "world-173208": {
+    "src": "assets/players/world-173208-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.034004,
+      "y": -0.004,
+      "width": 1.057321,
+      "height": 0.894656
+    }
+  },
+  "world-205498": {
+    "src": "assets/players/world-205498-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.034137,
+      "y": 0.013684,
+      "width": 1.065343,
+      "height": 0.901444
+    }
+  },
+  "world-189125": {
+    "src": "assets/players/world-189125-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.056301,
+      "y": 0.020104,
+      "width": 1.091014,
+      "height": 0.923166
+    }
+  },
+  "world-212404": {
+    "src": "assets/players/world-212404-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.079102,
+      "y": -0.064082,
+      "width": 1.163053,
+      "height": 0.984122
+    }
+  },
+  "world-190813": {
+    "src": "assets/players/world-190813-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.032082,
+      "y": 0.030675,
+      "width": 1.040314,
+      "height": 0.880266
+    }
+  },
+  "world-204935": {
+    "src": "assets/players/world-204935-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.019714,
+      "y": 0.012514,
+      "width": 1.033134,
+      "height": 0.874191
+    }
+  },
+  "world-203263": {
+    "src": "assets/players/world-203263-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.003386,
+      "y": 0.045933,
+      "width": 0.972197,
+      "height": 0.822628
+    }
+  },
+  "world-205988": {
+    "src": "assets/players/world-205988-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.052716,
+      "y": -0.00916,
+      "width": 1.086726,
+      "height": 0.919538
+    }
+  },
+  "world-207494": {
+    "src": "assets/players/world-207494-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.089038,
+      "y": -0.058452,
+      "width": 1.147907,
+      "height": 0.971306
+    }
+  },
+  "world-198719": {
+    "src": "assets/players/world-198719-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.045572,
+      "y": -0.039637,
+      "width": 1.079425,
+      "height": 0.913359
+    }
+  },
+  "world-199482": {
+    "src": "assets/players/world-199482-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.083868,
+      "y": -0.059488,
+      "width": 1.152661,
+      "height": 0.975328
+    }
+  },
+  "world-120533": {
+    "src": "assets/players/world-120533-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.054478,
+      "y": -0.017837,
+      "width": 1.088399,
+      "height": 0.920953
+    }
+  },
+  "world-171791": {
+    "src": "assets/players/world-171791-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.092124,
+      "y": -0.04459,
+      "width": 1.181368,
+      "height": 0.999619
+    }
+  },
+  "world-210514": {
+    "src": "assets/players/world-210514-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.046035,
+      "y": -0.006827,
+      "width": 1.095557,
+      "height": 0.927009
+    }
+  },
+  "world-178424": {
+    "src": "assets/players/world-178424-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.073917,
+      "y": -0.042581,
+      "width": 1.144628,
+      "height": 0.968531
+    }
+  },
+  "world-212198": {
+    "src": "assets/players/world-212198-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.075207,
+      "y": -0.034236,
+      "width": 1.136396,
+      "height": 0.961566
+    }
+  },
+  "world-224293": {
+    "src": "assets/players/world-224293-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.000193,
+      "y": 0.065607,
+      "width": 0.986323,
+      "height": 0.834581
+    }
+  },
+  "world-218667": {
+    "src": "assets/players/world-218667-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.088259,
+      "y": -0.045755,
+      "width": 1.151242,
+      "height": 0.974128
+    }
+  },
+  "world-224411": {
+    "src": "assets/players/world-224411-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.016963,
+      "y": 0.027869,
+      "width": 0.997325,
+      "height": 0.843891
+    }
+  },
+  "world-199987": {
+    "src": "assets/players/world-199987-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.047728,
+      "y": -0.034927,
+      "width": 1.062706,
+      "height": 0.899212
+    }
+  },
+  "world-186190": {
+    "src": "assets/players/world-186190-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.018589,
+      "y": 0.039091,
+      "width": 1.015285,
+      "height": 0.859088
+    }
+  },
+  "world-225953": {
+    "src": "assets/players/world-225953-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.067846,
+      "y": -0.045586,
+      "width": 1.144318,
+      "height": 0.968269
+    }
+  },
+  "world-208808": {
+    "src": "assets/players/world-208808-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.079457,
+      "y": -0.027687,
+      "width": 1.118702,
+      "height": 0.946594
+    }
+  },
+  "world-202556": {
+    "src": "assets/players/world-202556-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.056429,
+      "y": -0.016577,
+      "width": 1.090626,
+      "height": 0.922837
+    }
+  },
+  "world-202371": {
+    "src": "assets/players/world-202371-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.040421,
+      "y": -0.056635,
+      "width": 1.055593,
+      "height": 0.893194
+    }
+  },
+  "world-215970": {
+    "src": "assets/players/world-215970-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.029183,
+      "y": 0.030806,
+      "width": 1.035771,
+      "height": 0.876422
+    }
+  },
+  "world-177413": {
+    "src": "assets/players/world-177413-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.004564,
+      "y": 0.069598,
+      "width": 0.991409,
+      "height": 0.838884
+    }
+  },
+  "world-178518": {
+    "src": "assets/players/world-178518-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.064539,
+      "y": -0.085466,
+      "width": 1.147885,
+      "height": 0.971288
+    }
+  },
+  "world-203486": {
+    "src": "assets/players/world-203486-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.057241,
+      "y": 0.005126,
+      "width": 1.077951,
+      "height": 0.912112
+    }
+  },
+  "world-183277": {
+    "src": "assets/players/world-183277-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.068023,
+      "y": -0.031195,
+      "width": 1.136684,
+      "height": 0.961809
+    }
+  },
+  "world-241671": {
+    "src": "assets/players/world-241671-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.064929,
+      "y": -0.00463,
+      "width": 1.127421,
+      "height": 0.953972
+    }
+  },
+  "world-181786": {
+    "src": "assets/players/world-181786-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.034979,
+      "y": 0.038383,
+      "width": 1.043328,
+      "height": 0.882816
+    }
+  },
+  "world-195086": {
+    "src": "assets/players/world-195086-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.075821,
+      "y": -0.043074,
+      "width": 1.131798,
+      "height": 0.957675
+    }
+  },
+  "world-203890": {
+    "src": "assets/players/world-203890-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.120615,
+      "y": -0.089045,
+      "width": 1.235292,
+      "height": 1.045247
+    }
+  },
+  "world-201139": {
+    "src": "assets/players/world-201139-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.029122,
+      "y": 0.086356,
+      "width": 0.918962,
+      "height": 0.777583
+    }
+  },
+  "world-207410": {
+    "src": "assets/players/world-207410-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.069273,
+      "y": -0.052714,
+      "width": 1.12854,
+      "height": 0.954919
+    }
+  },
+  "world-216349": {
+    "src": "assets/players/world-216349-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.010869,
+      "y": 0.053346,
+      "width": 0.985625,
+      "height": 0.833991
+    }
+  },
+  "world-181458": {
+    "src": "assets/players/world-181458-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.045541,
+      "y": 0.031218,
+      "width": 1.067714,
+      "height": 0.90345
+    }
+  },
+  "world-182494": {
+    "src": "assets/players/world-182494-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.057097,
+      "y": -0.015039,
+      "width": 1.084776,
+      "height": 0.917887
+    }
+  },
+  "world-203843": {
+    "src": "assets/players/world-203843-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.059014,
+      "y": -0.029489,
+      "width": 1.119954,
+      "height": 0.947653
+    }
+  },
+  "world-240976": {
+    "src": "assets/players/world-240976-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.04811,
+      "y": 0.017373,
+      "width": 1.067414,
+      "height": 0.903197
+    }
+  },
+  "world-223959": {
+    "src": "assets/players/world-223959-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.058309,
+      "y": -0.037148,
+      "width": 1.118192,
+      "height": 0.946163
+    }
+  },
+  "world-197225": {
+    "src": "assets/players/world-197225-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.038793,
+      "y": 0.017598,
+      "width": 1.061542,
+      "height": 0.898228
+    }
+  },
+  "world-189338": {
+    "src": "assets/players/world-189338-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.109506,
+      "y": -0.072435,
+      "width": 1.188436,
+      "height": 1.0056
+    }
+  },
+  "world-213400": {
+    "src": "assets/players/world-213400-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.101152,
+      "y": -0.029812,
+      "width": 1.155486,
+      "height": 0.977719
+    }
+  },
+  "world-176550": {
+    "src": "assets/players/world-176550-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.098425,
+      "y": -0.054581,
+      "width": 1.167119,
+      "height": 0.987562
+    }
+  },
+  "world-220793": {
+    "src": "assets/players/world-220793-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.014918,
+      "y": -0.026605,
+      "width": 0.995298,
+      "height": 0.842175
+    }
+  },
+  "world-201377": {
+    "src": "assets/players/world-201377-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.037469,
+      "y": 0.028656,
+      "width": 1.04325,
+      "height": 0.88275
+    }
+  },
+  "world-204259": {
+    "src": "assets/players/world-204259-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.062407,
+      "y": -0.028771,
+      "width": 1.129183,
+      "height": 0.955462
+    }
+  },
+  "world-214040": {
+    "src": "assets/players/world-214040-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.083773,
+      "y": 0.008025,
+      "width": 1.089839,
+      "height": 0.922172
+    }
+  },
+  "world-213991": {
+    "src": "assets/players/world-213991-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.048992,
+      "y": -0.046595,
+      "width": 1.076522,
+      "height": 0.910903
+    }
+  },
+  "world-198710": {
+    "src": "assets/players/world-198710-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02354,
+      "y": 0.052818,
+      "width": 1.025999,
+      "height": 0.868153
+    }
+  },
+  "world-210513": {
+    "src": "assets/players/world-210513-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.05404,
+      "y": -0.000851,
+      "width": 1.09508,
+      "height": 0.926606
+    }
+  },
+  "world-193082": {
+    "src": "assets/players/world-193082-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.038348,
+      "y": 0.013345,
+      "width": 1.055183,
+      "height": 0.892847
+    }
+  },
+  "world-219411": {
+    "src": "assets/players/world-219411-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.054468,
+      "y": -0.00483,
+      "width": 1.084987,
+      "height": 0.918066
+    }
+  },
+  "world-167397": {
+    "src": "assets/players/world-167397-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.068171,
+      "y": -0.01793,
+      "width": 1.099612,
+      "height": 0.930441
+    }
+  },
+  "world-140233": {
+    "src": "assets/players/world-140233-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.003388,
+      "y": 0.067015,
+      "width": 0.979255,
+      "height": 0.8286
+    }
+  },
+  "world-212888": {
+    "src": "assets/players/world-212888-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.055645,
+      "y": -0.033351,
+      "width": 1.12084,
+      "height": 0.948403
+    }
+  },
+  "world-235844": {
+    "src": "assets/players/world-235844-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.053613,
+      "y": -0.014772,
+      "width": 1.086671,
+      "height": 0.919491
+    }
+  },
+  "world-178322": {
+    "src": "assets/players/world-178322-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.032042,
+      "y": 0.054886,
+      "width": 1.024559,
+      "height": 0.866934
+    }
+  },
+  "world-233493": {
+    "src": "assets/players/world-233493-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.092786,
+      "y": -0.068074,
+      "width": 1.179772,
+      "height": 0.998269
+    }
+  },
+  "world-156519": {
+    "src": "assets/players/world-156519-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.059327,
+      "y": -0.041196,
+      "width": 1.135941,
+      "height": 0.961181
+    }
+  },
+  "world-171897": {
+    "src": "assets/players/world-171897-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.052138,
+      "y": 0.014054,
+      "width": 1.095501,
+      "height": 0.926963
+    }
+  },
+  "world-170370": {
+    "src": "assets/players/world-170370-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.068283,
+      "y": -0.0179,
+      "width": 1.10319,
+      "height": 0.933469
+    }
+  },
+  "world-169416": {
+    "src": "assets/players/world-169416-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.056231,
+      "y": 0.000563,
+      "width": 1.099312,
+      "height": 0.930187
+    }
+  },
+  "world-192350": {
+    "src": "assets/players/world-192350-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.096168,
+      "y": -0.057436,
+      "width": 1.176891,
+      "height": 0.995831
+    }
+  },
+  "world-204838": {
+    "src": "assets/players/world-204838-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.014481,
+      "y": 0.051275,
+      "width": 0.994112,
+      "height": 0.841172
+    }
+  },
+  "world-234777": {
+    "src": "assets/players/world-234777-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.07968,
+      "y": -0.032254,
+      "width": 1.135753,
+      "height": 0.961022
+    }
+  },
+  "world-204082": {
+    "src": "assets/players/world-204082-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.063017,
+      "y": -0.048417,
+      "width": 1.121771,
+      "height": 0.949191
+    }
+  },
+  "world-222123": {
+    "src": "assets/players/world-222123-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.085792,
+      "y": -0.050034,
+      "width": 1.146633,
+      "height": 0.970228
+    }
+  },
+  "world-212722": {
+    "src": "assets/players/world-212722-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.040603,
+      "y": 0.019932,
+      "width": 0.928045,
+      "height": 0.785269
+    }
+  },
+  "world-184643": {
+    "src": "assets/players/world-184643-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.048388,
+      "y": -0.0099,
+      "width": 1.065908,
+      "height": 0.901922
+    }
+  },
+  "world-232999": {
+    "src": "assets/players/world-232999-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.051858,
+      "y": -0.006648,
+      "width": 1.069497,
+      "height": 0.904959
+    }
+  },
+  "world-238744": {
+    "src": "assets/players/world-238744-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.047144,
+      "y": 0.013312,
+      "width": 1.067957,
+      "height": 0.903656
+    }
+  },
+  "world-202078": {
+    "src": "assets/players/world-202078-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.032543,
+      "y": -0.037059,
+      "width": 1.062761,
+      "height": 0.899259
+    }
+  },
+  "world-211672": {
+    "src": "assets/players/world-211672-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.087382,
+      "y": -0.056058,
+      "width": 1.148151,
+      "height": 0.971513
+    }
+  },
+  "world-227796": {
+    "src": "assets/players/world-227796-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.005841,
+      "y": 0.054215,
+      "width": 0.99255,
+      "height": 0.83985
+    }
+  },
+  "world-176237": {
+    "src": "assets/players/world-176237-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.043067,
+      "y": -0.006586,
+      "width": 1.065708,
+      "height": 0.901753
+    }
+  },
+  "world-232441": {
+    "src": "assets/players/world-232441-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.009213,
+      "y": 0.057134,
+      "width": 0.992882,
+      "height": 0.840131
+    }
+  },
+  "world-181098": {
+    "src": "assets/players/world-181098-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.046245,
+      "y": -0.007415,
+      "width": 1.080765,
+      "height": 0.914494
+    }
+  },
+  "world-232869": {
+    "src": "assets/players/world-232869-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.085546,
+      "y": -0.061402,
+      "width": 1.15738,
+      "height": 0.979322
+    }
+  },
+  "world-208520": {
+    "src": "assets/players/world-208520-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.060594,
+      "y": -0.013357,
+      "width": 1.10832,
+      "height": 0.937809
+    }
+  },
+  "world-194359": {
+    "src": "assets/players/world-194359-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.050997,
+      "y": -0.013439,
+      "width": 1.101894,
+      "height": 0.932372
+    }
+  },
+  "world-140196": {
+    "src": "assets/players/world-140196-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.051908,
+      "y": 0.120044,
+      "width": 0.902484,
+      "height": 0.763641
+    }
+  },
+  "world-232883": {
+    "src": "assets/players/world-232883-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.00541,
+      "y": 0.053345,
+      "width": 1.016238,
+      "height": 0.859894
+    }
+  },
+  "world-232905": {
+    "src": "assets/players/world-232905-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.080523,
+      "y": -0.026584,
+      "width": 1.121039,
+      "height": 0.948572
+    }
+  },
+  "world-232862": {
+    "src": "assets/players/world-232862-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.025828,
+      "y": 0.08409,
+      "width": 0.975432,
+      "height": 0.825366
+    }
+  },
+  "world-191565": {
+    "src": "assets/players/world-191565-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.02262,
+      "y": 0.03305,
+      "width": 1.041422,
+      "height": 0.881203
+    }
+  },
+  "world-212432": {
+    "src": "assets/players/world-212432-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.040195,
+      "y": 0.03081,
+      "width": 1.063758,
+      "height": 0.900103
+    }
+  },
+  "world-200588": {
+    "src": "assets/players/world-200588-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.08839,
+      "y": -0.074485,
+      "width": 1.162787,
+      "height": 0.983897
+    }
+  },
+  "world-176346": {
+    "src": "assets/players/world-176346-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.047996,
+      "y": 0.113934,
+      "width": 0.914495,
+      "height": 0.773803
+    }
+  },
+  "world-213317": {
+    "src": "assets/players/world-213317-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.013516,
+      "y": 0.008568,
+      "width": 1.036026,
+      "height": 0.876637
+    }
+  },
+  "world-180283": {
+    "src": "assets/players/world-180283-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.017595,
+      "y": 0.078249,
+      "width": 0.973759,
+      "height": 0.82395
+    }
+  },
+  "world-243780": {
+    "src": "assets/players/world-243780-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.045923,
+      "y": 0.00719,
+      "width": 1.06922,
+      "height": 0.904725
+    }
+  },
+  "world-221671": {
+    "src": "assets/players/world-221671-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.036522,
+      "y": 0.026729,
+      "width": 1.044314,
+      "height": 0.88365
+    }
+  },
+  "world-211927": {
+    "src": "assets/players/world-211927-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.00344,
+      "y": 0.084002,
+      "width": 0.968563,
+      "height": 0.819553
+    }
+  },
+  "world-199301": {
+    "src": "assets/players/world-199301-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.032291,
+      "y": -0.002394,
+      "width": 1.0725,
+      "height": 0.9075
+    }
+  },
+  "world-209981": {
+    "src": "assets/players/world-209981-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.012542,
+      "y": 0.0454,
+      "width": 1.000815,
+      "height": 0.846844
+    }
+  },
+  "world-205705": {
+    "src": "assets/players/world-205705-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.06694,
+      "y": -0.051646,
+      "width": 1.112287,
+      "height": 0.941166
+    }
+  },
+  "world-206493": {
+    "src": "assets/players/world-206493-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.085378,
+      "y": -0.062187,
+      "width": 1.168449,
+      "height": 0.988687
+    }
+  },
+  "world-205083": {
+    "src": "assets/players/world-205083-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.079402,
+      "y": -0.04654,
+      "width": 1.13716,
+      "height": 0.962213
+    }
+  },
+  "world-193738": {
+    "src": "assets/players/world-193738-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.057944,
+      "y": -0.02769,
+      "width": 1.088189,
+      "height": 0.920775
+    }
+  },
+  "world-183108": {
+    "src": "assets/players/world-183108-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.070057,
+      "y": -0.03191,
+      "width": 1.121627,
+      "height": 0.949069
+    }
+  },
+  "world-211381": {
+    "src": "assets/players/world-211381-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.010988,
+      "y": 0.055949,
+      "width": 0.999076,
+      "height": 0.845372
+    }
+  },
+  "world-213761": {
+    "src": "assets/players/world-213761-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": 0.021728,
+      "y": 0.048624,
+      "width": 0.931657,
+      "height": 0.788325
+    }
+  },
+  "world-201956": {
+    "src": "assets/players/world-201956-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.038205,
+      "y": -0.027886,
+      "width": 1.065985,
+      "height": 0.901988
+    }
+  },
+  "world-215699": {
+    "src": "assets/players/world-215699-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.07356,
+      "y": -0.03713,
+      "width": 1.134069,
+      "height": 0.959597
+    }
+  },
+  "world-222840": {
+    "src": "assets/players/world-222840-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.07421,
+      "y": -0.037286,
+      "width": 1.093739,
+      "height": 0.925472
+    }
+  },
+  "world-193474": {
+    "src": "assets/players/world-193474-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.056293,
+      "y": -0.013701,
+      "width": 1.067437,
+      "height": 0.903216
+    }
+  },
+  "world-221000": {
+    "src": "assets/players/world-221000-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.08376,
+      "y": -0.053059,
+      "width": 1.167352,
+      "height": 0.987759
+    }
+  },
+  "world-184271": {
+    "src": "assets/players/world-184271-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.027101,
+      "y": 0.036601,
+      "width": 1.038065,
+      "height": 0.878362
+    }
+  },
+  "world-215785": {
+    "src": "assets/players/world-215785-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.085277,
+      "y": -0.036605,
+      "width": 1.142711,
+      "height": 0.966909
+    }
+  },
+  "world-220131": {
+    "src": "assets/players/world-220131-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.063314,
+      "y": -0.010851,
+      "width": 1.059903,
+      "height": 0.896841
+    }
+  },
+  "world-199005": {
+    "src": "assets/players/world-199005-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.04247,
+      "y": 0.010688,
+      "width": 1.057764,
+      "height": 0.895031
+    }
+  },
+  "world-199000": {
+    "src": "assets/players/world-199000-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.072673,
+      "y": -0.053764,
+      "width": 1.143221,
+      "height": 0.967341
+    }
+  },
+  "world-181479": {
+    "src": "assets/players/world-181479-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.069448,
+      "y": -0.025742,
+      "width": 1.119721,
+      "height": 0.947456
+    }
+  },
+  "world-202678": {
+    "src": "assets/players/world-202678-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.026013,
+      "y": 0.014684,
+      "width": 1.033877,
+      "height": 0.874819
+    }
+  },
+  "world-202157": {
+    "src": "assets/players/world-202157-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.082919,
+      "y": -0.056022,
+      "width": 1.154201,
+      "height": 0.976631
+    }
+  },
+  "world-194958": {
+    "src": "assets/players/world-194958-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.05754,
+      "y": -0.045736,
+      "width": 1.115511,
+      "height": 0.943894
+    }
+  },
+  "world-207928": {
+    "src": "assets/players/world-207928-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.032164,
+      "y": 0.032424,
+      "width": 1.051371,
+      "height": 0.889622
+    }
+  },
+  "world-209359": {
+    "src": "assets/players/world-209359-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.081282,
+      "y": -0.045662,
+      "width": 1.144739,
+      "height": 0.968625
+    }
+  },
+  "world-195033": {
+    "src": "assets/players/world-195033-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.028379,
+      "y": 0.028828,
+      "width": 1.040414,
+      "height": 0.88035
+    }
+  },
+  "world-209888": {
+    "src": "assets/players/world-209888-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.084052,
+      "y": -0.048719,
+      "width": 1.145016,
+      "height": 0.968859
+    }
+  },
+  "world-228171": {
+    "src": "assets/players/world-228171-head.webp",
+    "type": "cutout",
+    "frame": {
+      "x": -0.092746,
+      "y": -0.051795,
+      "width": 1.169922,
+      "height": 0.989934
+    }
   }
 };

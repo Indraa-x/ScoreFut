@@ -1,9 +1,8 @@
 /*
  * ScoreFut — lote B: 13 clubes, 52 temporadas, 572 registros.
- * OVR e atributos são avaliações editoriais do jogo, não estatísticas oficiais:
- * ratings.js recalibra as notas de referência e preserva as lendas reconhecidas:
- * 90–99: elite excepcional; 80–89: grandes jogadores da temporada;
- * 70–79: apoio. Avalia-se a temporada indicada, não o auge da carreira inteira.
+ * Os OVRs com edição verificada são reproduzidos por ratings.js; os demais usam
+ * uma escala editorial. Atributos são parâmetros de simulação, não estatísticas.
+ * Avalia-se a temporada indicada, não o auge da carreira inteira.
  * A seleção editorial traz onze jogadores, incluindo o principal goleiro. Não é um ranking
  * oficial. Atributos seguem o mesmo perfil por posição para manter consistência.
  * Europa: ano final da temporada. América do Sul: ano da edição da competição.
@@ -11,7 +10,7 @@
  * Camisas desconhecidas ficam vazias; fontes e limites em fontes-b.md.
  */
 
-import { recalibratePlayer } from './ratings.js';
+import { recalibratePlayer } from './ratings.js?v=worldcup-20261020';
 
 const clamp = n => Math.max(1, Math.min(99, Math.round(n)));
 const slug = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')

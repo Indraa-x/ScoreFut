@@ -79,8 +79,8 @@ test('opponents match flexible roles, never duplicate people, and reject impossi
  assert.throws(()=>squadTeam({...squad,jogadores:same}),/únicos/);
 });
 
-test('all 148 real opponents have eleven unique compatible players and exactly one goalkeeper',()=>{
- assert.equal(allSquads.length,148);
+test('all 156 real opponents have eleven unique compatible players and exactly one goalkeeper',()=>{
+ assert.equal(allSquads.length,156);
  for(const squad of allSquads){
   assert.equal(squad.jogadores.length,11,squad.id);const team=squadTeam(squad);
   assert.equal(team.lineup.length,11,squad.id);assert.equal(new Set(team.lineup.map(p=>p.player.id)).size,11,squad.id);

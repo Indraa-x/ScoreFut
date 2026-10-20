@@ -4,7 +4,7 @@
  * OVR and attributes drive the bounded Poisson equation, with modest player assistance.
  */
 
-import { squadsForMode } from '../data/competitions.js';
+import { squadsForMode } from '../data/competitions.js?v=worldcup-20261020';
 
 export const POSITION_MAP = Object.freeze({
   GOL: 'GOL', ZAG: 'DEF', LD: 'DEF', LE: 'DEF', DEF: 'DEF',
@@ -351,6 +351,7 @@ export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, 
   // A caller-local, read-only Map can reuse deterministic roster selections
   // during a large audit. No module cache or input mutation is involved.
   const opponentTeam = squad => candidateTeams?.get(squad.id) || squadTeam(squad);
+  if(mode==='world-cup')return createWorldCup(user,shuffle(allSquads.filter(squad=>squad.id!==user.id&&squad.clubId!==user.clubId),rng),rng,seed,settings,opponentTeam);
   const eligible = shuffle(allSquads.filter(squad => !excluded.has(squad.id) && squad.id !== user.id), rng);
   if (mode === 'brasileirao') return createLeague(user, eligible, rng, seed, settings, opponentTeam);
   if (mode === 'copa-do-brasil') return createBrazilCup(user, eligible, rng, seed, settings, opponentTeam);
@@ -393,6 +394,31 @@ export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, 
   tournament.groups = standingsFor(tournament);
   tournament.campaign = campaignFor(tournament);
   return tournament;
+}
+
+
+/** ScoreFut's 20-participant format: four groups of five, then quarterfinals. */
+function createWorldCup(user,eligible,rng,seed,settings,opponentTeam){
+  const countries=[...new Map(eligible.map(squad=>[squad.clubId,squad])).values()];
+  if(countries.length<19)throw new Error('A Copa do Mundo precisa de 19 seleções adversárias.');
+  const teams=[user,...countries.slice(0,19).map(opponentTeam)];
+  const groups=Array.from({length:4},(_,i)=>({id:String.fromCharCode(65+i),name:'Grupo '+String.fromCharCode(65+i),teamIds:teams.slice(i*5,i*5+5).map(t=>t.id),standings:[]}));
+  const matches=[];
+  for(const group of groups){
+    // The first team plays rounds 1–4 and rests in round 5. In group A this
+    // keeps the user's opening match in round 1; the live flow handles the bye.
+    let order=[group.teamIds[0],null,...group.teamIds.slice(1)];
+    for(let round=1;round<=5;round++){
+      for(let i=0;i<3;i++){
+        let homeId=order[i],awayId=order[5-i];if(!homeId||!awayId)continue;
+        if(round%2===0)[homeId,awayId]=[awayId,homeId];
+        matches.push({id:'group-'+group.id+'-'+round+'-'+i,stage:'group',stageLabel:'Grupo '+group.id+' · rodada '+round,groupId:group.id,round,homeId,awayId,neutral:true,result:null});
+      }
+      order=[order[0],order.at(-1),...order.slice(1,-1)];
+    }
+  }
+  const t={mode:'world-cup',seed:hashSeed(seed),rngState:rng.getState(),settings:{...settings},userTeamId:user.id,teams,groups,matches,bracket:[],groupRounds:5,progressRound:0,userMatches:[],championId:null,complete:false};
+  t.groups=standingsFor(t);t.campaign=campaignFor(t);return t;
 }
 
 const BRAZIL_CUP_STAGES = ['round16', 'quarter', 'semi', 'final'];
@@ -541,7 +567,7 @@ function standingsFor(tournament) {
     // After points, goal difference, and goals scored, seeded drawing of lots
     // breaks a perfect tie. Club spelling and editorial strength give no edge.
     rows.sort((a, b) => b.points - a.points || (tournament.mode==='brasileirao'?b.wins-a.wins:0) || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor || hashSeed(`${tournament.seed}:${a.teamId}`) - hashSeed(`${tournament.seed}:${b.teamId}`));
-    if (tournament.mode!=='brasileirao' && rows.every(row => row.played === 3)) rows.forEach((row, index) => { row.qualified = index < 2; });
+    if (tournament.mode!=='brasileirao' && rows.every(row => row.played === group.teamIds.length-1)) rows.forEach((row, index) => { row.qualified = index < 2; });
     return { ...group, standings: rows };
   });
 }
@@ -570,7 +596,7 @@ function campaignFor(tournament) {
     });
   });
   const group = tournament.groups.find(group => group.teamIds.includes(tournament.userTeamId));
-  if (!league && group && group.standings.every(row => row.played === 3) && !group.standings.find(row => row.teamId === tournament.userTeamId).qualified) campaign.eliminated = true;
+  if (!league && group && group.standings.every(row => row.played === group.teamIds.length-1) && !group.standings.find(row => row.teamId === tournament.userTeamId).qualified) campaign.eliminated = true;
   campaign.topScorer = [...scorers.values()].sort((a, b) => b.goals - a.goals || a.nome.localeCompare(b.nome))[0] || null;
   campaign.stageLabel = STAGE_LABELS[campaign.stage];
   if (brazilCup) {
@@ -590,9 +616,10 @@ export function playNextRound(tournament) {
   const rng = mulberry32(next.rngState);
   const league = next.mode === 'brasileirao';
   const quick = next.mode === 'quick';
-  const groupRound = !league && !quick && next.progressRound < 3;
-  const knockoutStages = ['round16', 'quarter', 'semi', 'final'];
-  const knockoutIndex = next.progressRound - (quick ? 0 : 3);
+  const groupRounds=next.groupRounds||3;
+  const groupRound = !league && !quick && next.progressRound < groupRounds;
+  const knockoutStages = next.mode==='world-cup'?['quarter','semi','final']:['round16', 'quarter', 'semi', 'final'];
+  const knockoutIndex = next.progressRound - (quick ? 0 : groupRounds);
   const stage = league ? 'league' : groupRound ? 'group' : knockoutStages[knockoutIndex];
   const selected = next.matches.filter(match => !match.result && (league ? match.round === next.progressRound+1 : groupRound ? match.stage === 'group' && match.round === next.progressRound + 1 : match.stage === stage));
   if (!selected.length) throw new Error(`A rodada ${next.progressRound + 1} não possui partidas.`);
@@ -606,19 +633,19 @@ export function playNextRound(tournament) {
   next.groups = standingsFor(next);
   if (league) {
     if(next.progressRound===next.totalRounds){next.championId=next.groups[0].standings[0].teamId;next.complete=true;}
-  } else if (groupRound && next.progressRound === 3) {
+  } else if (groupRound && next.progressRound === groupRounds) {
     const fixtures = [];
     // Group winner and runner-up enter opposite bracket halves; a group
     // rematch can only happen in the final.
     for (let half = 0; half < 2; half += 1) {
-      for (let index = 0; index < 8; index += 2) {
+      for (let index = 0; index < next.groups.length; index += 2) {
         const first = next.groups[index].standings;
         const second = next.groups[index + 1].standings;
-        fixtures.push(stageFixture('round16', (half ? second : first)[0].teamId, (half ? first : second)[1].teamId, fixtures.length, 4));
+        fixtures.push(stageFixture(knockoutStages[0], (half ? second : first)[0].teamId, (half ? first : second)[1].teamId, fixtures.length, groupRounds+1));
       }
     }
     next.matches.push(...fixtures);
-    next.bracket.push({ stage: 'round16', label: STAGE_LABELS.round16, matches: fixtures });
+    next.bracket.push({ stage: knockoutStages[0], label: STAGE_LABELS[knockoutStages[0]], matches: fixtures });
   } else if (!groupRound) {
     next.bracket = next.bracket.map(item => item.stage === stage ? { ...item, matches: selected } : item);
     if (stage === 'final') {

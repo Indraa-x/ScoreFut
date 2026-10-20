@@ -1,4 +1,4 @@
-import {competitionName} from '../data/competitions.js';
+import {competitionName} from '../data/competitions.js?v=worldcup-20261020';
 
 const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
 

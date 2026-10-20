@@ -1,17 +1,15 @@
 /**
  * ScoreFut — 15 clubes europeus, 60 temporadas e 660 entradas de jogadores.
  * Ano = encerramento da temporada europeia (2017 significa 2016/17).
- * A seleção de dez atletas de linha por elenco e as notas são editoriais: consideram
- * rendimento naquela temporada, relevância esportiva e contribuição no elenco.
- * As notas de referência passam pela calibração de ratings.js: lendas preservadas,
- * elite excepcional acima de 90, bons titulares nos 80 e apoio nos 70.
- * OVR não é uma nota oficial de qualquer liga.
+ * A seleção de dez atletas de linha por elenco é editorial. Os OVRs conferidos
+ * em edições FIFA/FC são aplicados por ratings.js; os demais usam uma escala
+ * editorial calibrada. Atributos são parâmetros do jogo, não dados históricos.
  * Atributos são parâmetros do jogo, derivados de OVR/posição; não são estatísticas
  * históricas. IDs representam a pessoa, portanto não incluem clube ou ano.
  * Camisas incertas ficam vazias (a interface exibe “—”). Fontes em VERIFICACAO-A.md.
  */
 
-import { recalibratePlayer } from './ratings.js';
+import { recalibratePlayer } from './ratings.js?v=worldcup-20261020';
 
 const limite = valor => Math.max(15, Math.min(99, Math.round(valor)));
 const perfis = {

@@ -10,7 +10,7 @@ import {renderHome,renderSetup,renderMatch,renderBracket} from '../js/ui.js';
 const user={...squadTeam(allSquads[0]),id:'user',clubId:'user',name:'Meu time'};
 
 test('the categories include instant quick play and both local competition logos',()=>{
-  assert.deepEqual(MODES.map(mode=>mode.id),['quick','copa-do-brasil','champions','legends']);
+  assert.deepEqual(MODES.map(mode=>mode.id),['quick','copa-do-brasil','champions','world-cup']);
   const home=renderHome({clubs,stats:{titles:0,best:'—',streak:0,winRate:0}});
   for(const mode of ['copa-do-brasil','champions']){
     const setup=renderSetup({mode,formation:'4-3-3'});
@@ -19,7 +19,7 @@ test('the categories include instant quick play and both local competition logos
     assert.ok(setup.includes('assets/competitions/champions-league.png'));
   }
   assert.equal(squadsForMode(allSquads,'copa-do-brasil').length,60);
-  assert.equal(squadsForMode(allSquads,'champions').length,88);
+  assert.equal(squadsForMode(allSquads,'champions').length,96);
   assert.deepEqual(EUROPE_CLUB_IDS.slice(-4),['celtic','marseille','psv','roma']);
 });
 

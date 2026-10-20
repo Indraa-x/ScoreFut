@@ -1,20 +1,20 @@
-import {selectQuickTeam,simulateQuickGame} from './quick-game.js';
-import {filterQuickClubs} from './quick-catalog.js';
-import {filterHistory} from './history.js';
-import { clubs, allSquads, validateData } from '../data/clubs.js';
-import { squadsForMode, competitionName } from '../data/competitions.js';
-import { state, MODES } from './state.js';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js';
-import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js';
-import * as storage from './storage.js';
-import * as ui from './ui.js?v=headshots-20261016-2';
-import {downloadResult} from './share.js';
-import {initPlayerDrag} from './player-drag.js';
-import {preloadPlayerPortraits} from './player-portraits.js?v=headshots-20261016-2';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,MATCH_FLOW_VERSION} from './match-session.js';
-import {MATCH_SPEEDS} from './match-motion.js';
-import {initMatchPlayback} from './match-playback.js';
-import {initCelebration} from './celebration.js';
+import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=worldcup-20261020';
+import {filterQuickClubs} from './quick-catalog.js?v=worldcup-20261020';
+import {filterHistory} from './history.js?v=worldcup-20261020';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=worldcup-20261020';
+import { squadsForMode, competitionName } from '../data/competitions.js?v=worldcup-20261020';
+import { state, MODES } from './state.js?v=worldcup-20261020';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=worldcup-20261020';
+import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=worldcup-20261020';
+import * as storage from './storage.js?v=worldcup-20261020';
+import * as ui from './ui.js?v=worldcup-20261020';
+import {downloadResult} from './share.js?v=worldcup-20261020';
+import {initPlayerDrag} from './player-drag.js?v=worldcup-20261020';
+import {preloadPlayerPortraits} from './player-portraits.js?v=worldcup-20261020';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,MATCH_FLOW_VERSION} from './match-session.js?v=worldcup-20261020';
+import {MATCH_SPEEDS} from './match-motion.js?v=worldcup-20261020';
+import {initMatchPlayback} from './match-playback.js?v=worldcup-20261020';
+import {initCelebration} from './celebration.js?v=worldcup-20261020';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
 const historyFilters={search:'',mode:'all',titlesOnly:false};
@@ -31,7 +31,7 @@ function stopPlayback(){playback.stop();state.matchPlaying=false;}
 function navigate(screen){if(state.screen==='match'&&['home','history','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
 function render(){const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'history':html=ui.renderHistory(history,stats,historyFilters);break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
+  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
   if(state.screen==='draft'&&!state.rolling)preloadPlayerPortraits(state.draft?.currentSquad?.jogadores);
@@ -41,7 +41,7 @@ function restore(saved){
   const legacy={'2-1-1':'4-3-3','1-2-1':'4-3-3','1-1-2':'4-4-2'};
   const formation=legacy[saved?.formation]||saved?.formation;
   const mode=saved?.mode==='brasileirao'?'copa-do-brasil':saved?.mode==='daily'?'cup':saved?.mode;
-  if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||MODES.some(m=>m.id===mode)))return false;
+  if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||mode==='legends'||MODES.some(m=>m.id===mode)))return false;
   const upgrade=saved.rulesVersion!==2||!!legacy[saved.formation];
   Object.assign(state,saved);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=MATCH_SPEEDS.includes(saved.matchSpeed)?saved.matchSpeed:1;
   if (saved.mode === 'brasileirao') {

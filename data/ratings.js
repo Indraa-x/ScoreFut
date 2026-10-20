@@ -1,123 +1,263 @@
-/** Editorial OVR calibration. Awards define a ceiling, not each player's exact score. */
-export const RATINGS_VERSION = 2;
-export const MAX_OVR = 96;
-export const NON_WINNER_OVR_CAP = 94;
+/**
+ * Historical FIFA/EA SPORTS FC OVRs, with a conservative editorial fallback
+ * for seasons where an archived rating could not be verified.
+ */
+export const RATINGS_VERSION = 5;
+export const MAX_OVR = 99;
 
-// Award-winning peaks may reach 96; other elite players stop at 94.
-// Maradona's honorary Ballon d'Or is recognized alongside the annual winners.
-export const BALLON_DOR_WINNERS = new Set([
-  'lionel-messi','cristiano-ronaldo','ronaldo','zinedine-zidane','kaka',
-  'marco-van-basten','hristo-stoichkov','matthias-sammer','rivaldo','luis-figo',
-  'andriy-shevchenko','luka-modric','karim-benzema','rodri','ousmane-dembele',
-  'ronaldinho-gaucho','fabio-cannavaro','pavel-nedved','george-weah','michael-owen',
-  'diego-maradona',
-]);
+// OVRs are copied from the edition matching the season's ending year
+// (e.g. a 2010/11 season ending in 2011 uses FIFA 11).
+export const FIFA_RATING_SOURCES = Object.freeze({
+  'arsenal-2006': 'https://fifaindex.com/teams/1-arsenal/fifa06',
+  'barcelona-2009': 'https://fifaindex.com/teams/241-f-c-barcelona/fifa09',
+  'barcelona-2011': 'https://fifaindex.com/teams/241-fc-barcelona/fifa11',
+  'barcelona-2015': 'https://fifaindex.com/teams/241-fc-barcelona/fifa15',
+  'bayern-2010': 'https://fifaindex.com/teams/21-bayern-munchen/fifa10',
+  'bayern-2013': 'https://fifaindex.com/teams/21-bayern-munchen/fifa13',
+  'bayern-2020': 'https://fifaindex.com/teams/21-bayern-munchen/fifa20',
+  'chelsea-2005': 'https://fifaindex.com/teams/5-chelsea/fifa05',
+  'chelsea-2010': 'https://fifaindex.com/teams/5-chelsea/fifa10',
+  'chelsea-2012': 'https://fifaindex.com/teams/5-chelsea/fifa12',
+  'chelsea-2021': 'https://fifaindex.com/teams/5-chelsea/fifa21',
+  'juventus-2015': 'https://fifaindex.com/teams/45-juventus/fifa15',
+  'juventus-2017': 'https://fifaindex.com/teams/45-juventus/fifa17',
+  'liverpool-2005': 'https://fifaindex.com/teams/9-liverpool/fifa05',
+  'liverpool-2019': 'https://fifaindex.com/teams/9-liverpool/fifa19',
+  'liverpool-2020': 'https://fifaindex.com/teams/9-liverpool/fifa20',
+  'liverpool-2025': 'https://fifaindex.com/teams/9-liverpool/fc25',
+  'manchester-city-2018': 'https://fifaindex.com/teams/10-manchester-city/fifa18',
+  'manchester-city-2021': 'https://fifaindex.com/teams/10-manchester-city/fifa21',
+  'manchester-city-2023': 'https://fifaindex.com/teams/10-manchester-city/fifa23',
+  'manchester-city-2024': 'https://fifaindex.com/teams/10-manchester-city/fc24',
+  'manchester-united-2008': 'https://fifaindex.com/teams/11-manchester-united/fifa08',
+  'milan-2007': 'https://fifaindex.com/teams/47-ac-milan/fifa07',
+  'psg-2016': 'https://fifaindex.com/teams/73-paris-saint-germain/fifa16',
+  'real-madrid-2014': 'https://fifaindex.com/teams/243-real-madrid/fifa14',
+  'real-madrid-2017': 'https://fifaindex.com/teams/243-real-madrid/fifa17',
+  'real-madrid-2024': 'https://fifaindex.com/teams/243-real-madrid/fc24',
+  'tottenham-2017': 'https://fifaindex.com/teams/18-tottenham-hotspur/fifa17',
+});
 
-// Preserve the editorial seasonal ratings before applying the new elite ceilings.
-// IDs identify people: fame never removes seasonal differences already in the data.
-export const PROTECTED_PLAYERS = new Set([
-  'lionel-messi', 'cristiano-ronaldo', 'ronaldo', 'diego-maradona',
-  'zinedine-zidane', 'kaka', 'marco-van-basten', 'hristo-stoichkov',
-  'matthias-sammer', 'rivaldo', 'luis-figo', 'andriy-shevchenko',
-  'luka-modric', 'karim-benzema', 'rodri', 'ousmane-dembele',
-  'vinicius-junior', 'robert-lewandowski', 'romario', 'ronaldinho-gaucho',
-  'thierry-henry', 'luis-suarez', 'neymar', 'zlatan-ibrahimovic',
-  'raul', 'alessandro-del-piero', 'dennis-bergkamp', 'eric-cantona',
-  'arjen-robben', 'franck-ribery', 'didier-drogba', 'samuel-etoo',
-  'samuel-eto-o', 'eto-o', 'wayne-rooney',
-  'harry-kane', 'erling-haaland', 'kylian-mbappe', 'mbappe',
-  'mohamed-salah', 'antoine-griezmann', 'kevin-de-bruyne',
-  'xavi', 'andres-iniesta', 'andrea-pirlo', 'clarence-seedorf',
-  'toni-kroos', 'steven-gerrard', 'frank-lampard', 'paul-scholes',
-  'ryan-giggs', 'patrick-vieira', 'roy-keane', 'ngolo-kante',
-  'juan-roman-riquelme', 'enzo-francescoli', 'michael-laudrup',
-  'frank-rijkaard', 'wesley-sneijder', 'david-beckham', 'rai',
-  'paolo-maldini', 'franco-baresi', 'alessandro-nesta', 'marcel-desailly',
-  'cafu', 'roberto-carlos', 'javier-zanetti', 'philipp-lahm',
-  'dani-alves', 'marcelo', 'sergio-ramos', 'rio-ferdinand',
-  'nemanja-vidic', 'carles-puyol', 'thiago-silva', 'virgil-van-dijk',
-  'lucio', 'john-terry',
-  'gianluigi-buffon', 'manuel-neuer', 'oliver-kahn', 'iker-casillas',
-  'peter-schmeichel', 'edwin-van-der-sar', 'petr-cech',
-  'thibaut-courtois', 'alisson', 'dida', 'rogerio-ceni', 'marcos',
-]);
-
-// These players sit above the general scale without receiving a legend rating.
-// A fixed change per person keeps the original gap between their seasons.
-export const ELITE_ADJUSTMENTS = Object.freeze({
-  'jude-bellingham': -4, 'lautaro-martinez': -5, 'phil-foden': -6,
-  'sadio-mane': -4, 'victor-osimhen': -6, 'jan-oblak': -3,
-  'son-heung-min': -3, 'bernardo-silva': -4, 'david-silva': -2,
-  'david-villa': -4, 'deco': -4, 'diego-godin': -5,
-  'diego-milito': -5, 'carlos-tevez': -5, 'radamel-falcao': -4,
-  'thiago-alcantara': -5, 'sergio-aguero': -3,
-  'sergio-busquets': -2, 'casemiro': -3, 'xabi-alonso': -1,
-  'claude-makelele': -3, 'maicon': -3, 'julio-cesar': -3,
-  'ashley-cole': -3, 'robert-pires': -4, 'gareth-bale': -2,
-  'thomas-muller': -2, 'giorgio-chiellini': -3,
-  'bastian-schweinsteiger': -3, 'edgar-davids': -4,
-  'ruben-dias': -4, 'antonio-rudiger': -4, 'gianluigi-donnarumma': -3,
-  'joshua-kimmich': -5, 'ilkay-gundogan': -5,
-  'federico-valverde': -4, 'achraf-hakimi': -3,
-  'khvicha-kvaratskhelia': -5, 'marco-reus': -4,
-  'gonzalo-higuain': -6, 'hakan-calhanoglu': -5,
-  'alessandro-bastoni': -4, 'nicolo-barella': -4,
-  'paulo-dybala': -5, 'vitinha': -4,
-  'gregor-kobel': -2, 'mats-hummels': -2, 'julian-brandt': -3,
-  'marcel-sabitzer': -4, 'shinji-kagawa': -6, 'mario-gotze': -5,
-  'lukasz-piszczek': -5, 'sven-bender': -5, 'neven-subotic': -6,
-  'jan-vertonghen': -5, 'toby-alderweireld': -5,
-  'hugo-lloris': -3, 'mousa-dembele': -6,
-  'ederson': -3, 'yann-sommer': -3, 'keylor-navas': -2,
-  'alex-meret': -5, 'gianluca-pagliuca': -3, 'angelo-peruzzi': -4,
-  'david-seaman': -3, 'santiago-canizares': -4, 'vitor-baia': -5,
-  'victor-valdes': -4, 'jens-lehmann': -4, 'roman-weidenfeller': -3,
-  'fabien-barthez': -3, 'edouard-mendy': -4,
-  'fabinho': -5, 'rodrygo': -5, 'angel-di-maria': -4, 'di-maria': -4,
-  'jordi-alba': -3, 'andrew-robertson': -5, 'trent-alexander-arnold': -4,
-  'david-alaba': -4, 'gerard-pique': -2, 'leonardo-bonucci': -5,
-  'andrea-barzagli': -5, 'pepe': -1, 'ricardo-carvalho': -5,
-  'arturo-vidal': -5, 'paul-pogba': -5, 'cesc-fabregas': -3,
-  'michael-ballack': -3, 'michael-essien': -4, 'fernandinho': -5,
-  'thiago-motta': -5, 'claudio-marchisio': -6, 'jordan-henderson': -6,
-  'georginio-wijnaldum': -7, 'leon-goretzka': -7,
-  'frenkie-de-jong': -6, 'matthijs-de-ligt': -6, 'alphonso-davies': -6,
-  'roberto-firmino': -5, 'edinson-cavani': -4,
-  'dries-mertens': -5, 'diego-costa': -5, 'dusan-tadic': -6,
-  'patrick-kluivert': -5, 'hernan-crespo': -4, 'filippo-inzaghi': -4,
-  'gianluca-vialli': -5, 'jardel': -5, 'careca': -5,
-  'dejan-savicevic': -4, 'kalidou-koulibaly': -4,
-  'weverton': -4, 'marcelo-grohe': -6, 'franco-armani': -6,
-  'oscar-cordoba': -4, 'roberto-abbondanzieri': -5, 'zetti': -4,
-  'giorgian-de-arrascaeta': -5, 'hulk': -5, 'adriano': -4,
-  'alex-de-souza': -5, 'martin-palermo': -4, 'ariel-ortega': -3,
-  'pablo-aimar': -5, 'andres-d-alessandro': -6,
-  'damien-duff': -7, 'florent-malouda': -5,
+// Only player/season values checked against the matching FIFA Index edition.
+// Missing players keep the game's editorial fallback; no rating is guessed.
+export const FIFA_OVR_BY_SQUAD = Object.freeze({
+  'arsenal-2006': {
+    'thierry-henry': 92, 'jens-lehmann': 84, 'cesc-fabregas': 79,
+    'kolo-toure': 87, 'fredrik-ljungberg': 84, 'robert-pires': 87,
+    'ashley-cole': 85, 'gilberto-silva': 80, 'jose-antonio-reyes': 86,
+    'sol-campbell': 90,
+  },
+  'barcelona-2009': {
+    'lionel-messi': 90, 'carles-puyol': 88,
+    'xavi': 87, 'andres-iniesta': 86, 'dani-alves': 85,
+    'thierry-henry': 85, 'victor-valdes': 83, 'eric-abidal': 84,
+    'gerard-pique': 77, 'sergio-busquets': 60,
+    'samuel-etoo': 86,
+  },
+  'barcelona-2011': {
+    'lionel-messi': 90, 'andres-iniesta': 87, 'xavi': 87,
+    'gerard-pique': 85, 'david-villa': 88,
+    'carles-puyol': 87, 'dani-alves': 84, 'victor-valdes': 85,
+    'sergio-busquets': 81, 'pedro-rodriguez': 82, 'eric-abidal': 82,
+  },
+  'barcelona-2015': {
+    'lionel-messi': 93, 'luis-suarez': 89, 'neymar': 86,
+    'andres-iniesta': 89, 'sergio-busquets': 85, 'gerard-pique': 84,
+    'ivan-rakitic': 83, 'dani-alves': 83, 'jordi-alba': 81,
+    'javier-mascherano': 83, 'marc-andre-ter-stegen': 82,
+  },
+  'bayern-2010': {
+    'arjen-robben': 85, 'philipp-lahm': 86, 'franck-ribery': 88,
+    'bastian-schweinsteiger': 81, 'thomas-muller': 69,
+    'ivica-olic': 81, 'mark-van-bommel': 80, 'holger-badstuber': 69,
+    'daniel-van-buyten': 79, 'martin-demichelis': 81, 'hans-jorg-butt': 78,
+  },
+  'bayern-2013': {
+    'franck-ribery': 90, 'arjen-robben': 87,
+    'bastian-schweinsteiger': 87, 'philipp-lahm': 87,
+    'manuel-neuer': 86, 'thomas-muller': 84,
+    'mario-mandzukic': 83, 'javi-martinez': 83,
+    'david-alaba': 79, 'jerome-boateng': 79, 'dante': 84,
+  },
+  'bayern-2020': {
+    'robert-lewandowski': 91, 'manuel-neuer': 89,
+    'joshua-kimmich': 87, 'thomas-muller': 85,
+    'leon-goretzka': 84, 'serge-gnabry': 85, 'kingsley-coman': 84,
+    'thiago-alcantara': 86, 'alphonso-davies': 77,
+    'david-alaba': 83, 'jerome-boateng': 81,
+  },
+  'chelsea-2005': {
+    'petr-cech': 86, 'arjen-robben': 85,
+    'john-terry': 89, 'claude-makelele': 91,
+    'ricardo-carvalho': 88, 'william-gallas': 87,
+    'frank-lampard': 90, 'damien-duff': 86, 'didier-drogba': 88,
+    'paulo-ferreira': 84, 'tiago-mendes': 78,
+  },
+  'chelsea-2010': {
+    'didier-drogba': 85, 'frank-lampard': 87, 'john-terry': 87,
+    'nicolas-anelka': 85, 'michael-essien': 86, 'florent-malouda': 82,
+    'petr-cech': 85, 'ashley-cole': 83,
+    'branislav-ivanovic': 79, 'michael-ballack': 84,
+    'ricardo-carvalho': 84,
+  },
+  'chelsea-2012': {
+    'juan-mata': 86, 'ashley-cole': 85,
+    'petr-cech': 84, 'john-terry': 85, 'branislav-ivanovic': 83,
+    'fernando-torres': 84, 'frank-lampard': 84, 'ramires': 79,
+    'gary-cahill': 79, 'john-obi-mikel': 80, 'didier-drogba': 86,
+  },
+  'chelsea-2021': {
+    'ngolo-kante': 88, 'thiago-silva': 85, 'antonio-rudiger': 82,
+    'edouard-mendy': 80, 'jorginho-frello': 83, 'kai-havertz': 83,
+    'cesar-azpilicueta': 83, 'timo-werner': 84, 'mason-mount': 82,
+    'reece-james': 80, 'ben-chilwell': 82,
+  },
+  'juventus-2015': {
+    'carlos-tevez': 85, 'arturo-vidal': 85,
+    'giorgio-chiellini': 84, 'paul-pogba': 84,
+    'gianluigi-buffon': 83, 'claudio-marchisio': 83,
+    'andrea-pirlo': 83, 'leonardo-bonucci': 80,
+    'stephan-lichtsteiner': 77, 'patrice-evra': 79,
+    'alvaro-morata': 78,
+  },
+  'juventus-2017': {
+    'gianluigi-buffon': 88, 'giorgio-chiellini': 88,
+    'paulo-dybala': 86, 'gonzalo-higuain': 89,
+    'leonardo-bonucci': 87, 'dani-alves': 84,
+    'andrea-barzagli': 86, 'alex-sandro': 84,
+    'mario-mandzukic': 83, 'miralem-pjanic': 85,
+    'sami-khedira': 84,
+  },
+  'liverpool-2005': {
+    'steven-gerrard': 93, 'djibril-cisse': 90, 'jerzy-dudek': 83,
+    'xabi-alonso': 85, 'luis-garcia': 80, 'jamie-carragher': 84,
+    'john-arne-riise': 82, 'sami-hyypia': 86, 'dietmar-hamann': 85,
+    'steve-finnan': 77, 'milan-baros': 87,
+  },
+  'liverpool-2019': {
+    'virgil-van-dijk': 89, 'sadio-mane': 87, 'mohamed-salah': 89,
+    'alisson': 87, 'roberto-firmino': 86, 'fabinho': 85,
+    'andrew-robertson': 83, 'georginio-wijnaldum': 83,
+    'jordan-henderson': 82, 'trent-alexander-arnold': 80,
+    'joel-matip': 81,
+  },
+  'liverpool-2020': {
+    'virgil-van-dijk': 91, 'mohamed-salah': 90,
+    'alisson': 90, 'sadio-mane': 90, 'fabinho': 86,
+    'andrew-robertson': 86, 'jordan-henderson': 85,
+    'trent-alexander-arnold': 85, 'roberto-firmino': 88,
+    'georginio-wijnaldum': 85, 'joe-gomez': 82,
+  },
+  'liverpool-2025': {
+    'mohamed-salah': 91, 'virgil-van-dijk': 90, 'alisson': 89,
+    'ryan-gravenberch': 84, 'alexis-mac-allister': 86,
+    'ibrahima-konate': 85, 'cody-gakpo': 84, 'luis-diaz': 85,
+    'trent-alexander-arnold': 86, 'andrew-robertson': 82,
+    'dominik-szoboszlai': 82,
+  },
+  'manchester-city-2018': {
+    'kevin-de-bruyne': 91, 'david-silva': 90, 'sergio-aguero': 89,
+    'fernandinho': 85, 'raheem-sterling': 85, 'ederson': 85,
+    'leroy-sane': 85, 'kyle-walker': 84, 'vincent-kompany': 85,
+    'nicolas-otamendi': 85,
+  },
+  'manchester-city-2021': {
+    'kevin-de-bruyne': 91, 'ederson': 88, 'ruben-dias': 85,
+    'rodri': 86, 'riyad-mahrez': 85,
+    'ilkay-gundogan': 84, 'kyle-walker': 84, 'phil-foden': 83,
+    'gabriel-jesus': 83, 'john-stones': 82, 'oleksandr-zinchenko': 80,
+  },
+  'manchester-city-2023': {
+    'kevin-de-bruyne': 91, 'erling-haaland': 90, 'rodri': 87,
+    'ruben-dias': 88, 'ederson': 88, 'bernardo-silva': 88,
+    'ilkay-gundogan': 85, 'jack-grealish': 84, 'kyle-walker': 84,
+    'john-stones': 83, 'nathan-ake': 80,
+  },
+  'manchester-city-2024': {
+    'kevin-de-bruyne': 91, 'erling-haaland': 91, 'rodri': 90,
+    'ruben-dias': 89, 'ederson': 88, 'phil-foden': 87,
+    'bernardo-silva': 88, 'julian-alvarez': 83,
+    'josko-gvardiol': 82, 'kyle-walker': 84,
+    'manuel-akanji': 83,
+  },
+  'manchester-united-2008': {
+    'cristiano-ronaldo': 91, 'rio-ferdinand': 87, 'wayne-rooney': 90,
+    'nemanja-vidic': 85, 'paul-scholes': 84,
+    'edwin-van-der-sar': 84, 'carlos-tevez': 87, 'patrice-evra': 78,
+    'michael-carrick': 83, 'owen-hargreaves': 80, 'wes-brown': 79,
+  },
+  'milan-2007': {
+    'kaka': 87, 'andrea-pirlo': 86, 'clarence-seedorf': 79,
+    'alessandro-nesta': 91, 'filippo-inzaghi': 81,
+    'dida': 88, 'gennaro-gattuso': 81, 'paolo-maldini': 82,
+    'massimo-ambrosini': 79,
+  },
+  'psg-2016': {
+    'thiago-silva': 88, 'edinson-cavani': 85, 'angel-di-maria': 86,
+    'marco-verratti': 84, 'blaise-matuidi': 84,
+    'david-luiz': 83, 'zlatan-ibrahimovic': 89,
+    'maxwell': 79, 'thiago-motta': 82,
+  },
+  'real-madrid-2014': {
+    'cristiano-ronaldo': 92, 'sergio-ramos': 86,
+    'gareth-bale': 87, 'luka-modric': 86, 'karim-benzema': 85,
+    'iker-casillas': 86, 'pepe': 83, 'marcelo': 83,
+    'dani-carvajal': 77, 'angel-di-maria': 86, 'xabi-alonso': 85,
+  },
+  'real-madrid-2017': {
+    'cristiano-ronaldo': 94, 'sergio-ramos': 89, 'toni-kroos': 88,
+    'luka-modric': 89, 'marcelo': 86,
+    'isco': 85, 'casemiro': 84, 'karim-benzema': 86,
+    'keylor-navas': 85, 'raphael-varane': 84, 'dani-carvajal': 84,
+  },
+  'real-madrid-2024': {
+    'vinicius-junior': 89, 'jude-bellingham': 88,
+    'antonio-rudiger': 86, 'federico-valverde': 88,
+    'dani-carvajal': 84, 'toni-kroos': 88, 'rodrygo': 85,
+    'aurelien-tchouameni': 84, 'eduardo-camavinga': 83,
+    'ferland-mendy': 82, 'andriy-lunin': 80,
+  },
+  'tottenham-2017': {
+    'hugo-lloris': 88, 'christian-eriksen': 86, 'harry-kane': 85,
+    'jan-vertonghen': 83, 'toby-alderweireld': 85,
+    'mousa-dembele': 82, 'son-heung-min': 80,
+    'dele-alli': 82, 'kyle-walker': 82,
+    'victor-wanyama': 80,
+  },
 });
 
 const clamp = (value, min = 50) => Math.max(min, Math.min(99, Math.round(value)));
-const standardOVR = ovr => ovr <= 92 ? ovr - 10 : ovr <= 94 ? ovr - 8 : ovr <= 96 ? ovr - 7 : ovr - 6;
+// Fallback for seasons without a verifiable archived OVR. The curve removes
+// the old inflated 94–99 editorial values while keeping the ordering intact.
+const editorialFallback = ovr => ovr <= 92 ? ovr - 10 : ovr <= 94 ? ovr - 8 : ovr <= 96 ? ovr - 7 : ovr - 6;
 
-/** Apply the elite ceiling to already calibrated seasonal ratings. */
-export function capPlayerOvr(player, attributeFloor = 1) {
-  const cap = BALLON_DOR_WINNERS.has(player.id) ? MAX_OVR : NON_WINNER_OVR_CAP;
-  if (player.ovr <= cap) return player;
-  const delta = cap - player.ovr;
-  return { ...player, ovr: cap, atributos: Object.fromEntries(
-    Object.entries(player.atributos).map(([key, value]) => [key, clamp(value + delta, attributeFloor)])
-  ) };
+export function recalibratePlayer(player, attributeFloor = 1) {
+  const calibratedOvr = clamp(editorialFallback(player.ovr));
+  const delta = calibratedOvr - player.ovr;
+  return {
+    ...player,
+    ovr: calibratedOvr,
+    atributos: Object.fromEntries(Object.entries(player.atributos).map(
+      ([key, value]) => [key, clamp(value + delta, attributeFloor)]
+    )),
+  };
 }
 
-/** Rebalance OVR and the simulation attributes together, before roster sorting. */
-export function recalibratePlayer(player, attributeFloor = 1) {
-  const adjustment = ELITE_ADJUSTMENTS[player.id];
-  const calibratedOvr = PROTECTED_PLAYERS.has(player.id)
-    ? player.ovr
-    : clamp(adjustment === undefined ? standardOVR(player.ovr) : player.ovr + adjustment);
-  const calibrated = calibratedOvr === player.ovr ? player : { ...player, ovr: calibratedOvr };
-  const ratingDelta = calibratedOvr - player.ovr;
-  const withCalibratedAttributes = ratingDelta ? { ...calibrated, atributos: Object.fromEntries(
-    Object.entries(player.atributos).map(([key, value]) => [key, clamp(value + ratingDelta, attributeFloor)])
-  ) } : calibrated;
-  return capPlayerOvr(withCalibratedAttributes, attributeFloor);
+/** Replace the fallback with a verified rating from that exact historical squad. */
+export function applyHistoricalFifaRating(player, squadId) {
+  const rating = FIFA_OVR_BY_SQUAD[squadId]?.[player.id];
+  if (rating === undefined) return player;
+  const delta = rating - player.ovr;
+  return {
+    ...player,
+    ovr: rating,
+    ratingSource: FIFA_RATING_SOURCES[squadId],
+    ratingEdition: (() => {
+      const edition = Number(squadId.match(/-(\d{4})$/)?.[1]) % 100;
+      return edition <= 23 ? `FIFA ${String(edition).padStart(2, '0')}` : `FC ${edition}`;
+    })(),
+    atributos: Object.fromEntries(Object.entries(player.atributos).map(
+      ([key, value]) => [key, clamp(value + delta, 1)]
+    )),
+  };
 }

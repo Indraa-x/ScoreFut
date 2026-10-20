@@ -1,50 +1,21 @@
 # Notas dos jogadores
 
-As notas são uma avaliação editorial para o ScoreFut, não notas oficiais da FIFA, da UEFA ou de outro jogo. A escala foi revista em 10/10/2026 para separar jogadores de apoio, bons titulares, elite e lendas. Nenhum jogador foi removido.
+Quando a temporada do ScoreFut tem uma correspondência confirmada, o OVR vem da edição FIFA/EA SPORTS FC do mesmo ano em que a temporada terminou. Assim, Liverpool 2019 usa FIFA 19, Liverpool 2020 usa FIFA 20 e Real Madrid 2024 usa FC 24. A relação de fontes e os valores por jogador ficam em `ratings.js`.
 
-| Faixa | Uso no jogo |
-|---|---|
-| 70–79 | Apoio e titulares com menor impacto naquela edição |
-| 80–84 | Bons titulares |
-| 85–89 | Destaques e jogadores de alto nível |
-| 90–94 | Elite e grandes temporadas; teto dos jogadores sem Bola de Ouro |
-| 95–96 | Temporadas de auge de vencedores da Bola de Ouro |
+O arquivo consultado, FIFA Index, tem elencos arquivados desde FIFA 05. Não há uma série completa e consistente confirmada para FIFA 2000–04. Também faltam páginas ou correspondências individuais para parte das temporadas e dos atletas do ScoreFut; esses casos continuam com estimativa editorial e não devem ser apresentados como OVR oficial. Os atributos da simulação são derivados e não reproduzem os atributos históricos do jogo.
 
-O teto do jogo agora é 96, reservado aos vencedores da Bola de Ouro em suas temporadas de auge. Os demais jogadores, mesmo lendas e finalistas, chegam no máximo a 94. Diego Maradona também entra no grupo de 96 por ter recebido o troféu honorário da Bola de Ouro. As diferenças entre temporadas continuam preservadas abaixo desses limites.
+A base atual contém 1.716 entradas de jogadores em 156 elencos. Há 301 OVRs confirmados em 28 temporadas de clube (17,5% dos registros); os outros 1.415 seguem a estimativa editorial. A média é 79,57; 812 entradas estão abaixo de 80, 858 entre 80 e 89, 46 em 90 ou mais e 1 em 94 ou mais.
 
-Para os demais, `ratings.js` abre a escala das notas de referência: os antigos 83–92 passam a 73–82; 93–94 passam a 85–86; 95–96 passam a 88–89; 97–99 passam a 91–93. Os jogadores de elite listados em `ELITE_ADJUSTMENTS` recebem ajustes individuais que preservam a diferença entre suas temporadas. Esses critérios são decisões do jogo, não classificações deduzidas das premiações.
+Para registros sem fonte, `ratings.js` reduz o OVR editorial anterior pela mesma curva: até 92, menos 10 pontos; de 93 a 94, menos 8; de 95 a 96, menos 7; de 97 a 99, menos 6. O resultado fica entre 50 e 99. Quando há OVR arquivado para o atleta naquela temporada, o valor exato substitui a estimativa. Os atributos do ScoreFut são deslocados pelo mesmo delta, dentro dos limites, para manter a simulação coerente com a nota.
 
-OVR e atributos da simulação mudam juntos, preservando o perfil da posição e os limites de cada lote. Usar uma posição semelhante permitida continua sem penalidade de nota. A mesma calibração vale para as opções do draft e para os adversários.
+Alguns exemplos confirmados: Thierry Henry tinha 92 no Arsenal da FIFA 06; Messi tinha 90 no Barcelona da FIFA 11; Ribéry tinha 90 no Bayern da FIFA 13; Van Dijk tinha 89 no Liverpool da FIFA 19; Kanté tinha 88 no Chelsea da FIFA 21; De Bruyne tinha 91 no Manchester City da FIFA 21. As páginas históricas usadas nesses exemplos:
 
-| Edição | Jogador | Antes | Agora |
-|---|---|---:|---:|
-| Barcelona 2011 | Lionel Messi | 99 | 96 |
-| Real Madrid 2017 | Cristiano Ronaldo | 98 | 96 |
-| Inter 1998 | Ronaldo | 99 | 96 |
-| Arsenal 2004 | Thierry Henry | 99 | 94 |
-| Napoli 1990 | Diego Maradona | 98 | 96 |
-| Vasco 2000 | Romário | 98 | 94 |
-| Manchester City 2023 | Erling Haaland | 98 | 94 |
-| Liverpool 2025 | Mohamed Salah | 98 | 94 |
-| PSG 2025 | Ousmane Dembélé | 96 | 96 |
-| Chelsea 2012 | Frank Lampard | 93 | 93 |
-| Chelsea 2012 | Juan Mata | 94 | 86 |
-| Chelsea 2012 | Ramires | 91 | 81 |
-| Chelsea 2012 | Gary Cahill | 91 | 81 |
-| Inter 2024 | Lautaro Martínez | 96 | 91 |
-| Napoli 2025 | Scott McTominay | 94 | 86 |
-| Dortmund 2024 | Julian Brandt | 87 | 84 |
+- [Arsenal · FIFA 06](https://fifaindex.com/teams/1-arsenal/fifa06)
+- [Barcelona · FIFA 11](https://fifaindex.com/teams/241-fc-barcelona/fifa11)
+- [Bayern · FIFA 13](https://fifaindex.com/teams/21-bayern-munchen/fifa13)
+- [Liverpool · FIFA 19](https://fifaindex.com/teams/9-liverpool/fifa19)
+- [Chelsea · FIFA 21](https://fifaindex.com/teams/5-chelsea/fifa21)
+- [Manchester City · FIFA 21](https://fifaindex.com/teams/10-manchester-city/fifa21)
+- [Real Madrid · FC 24](https://fifaindex.com/teams/243-real-madrid/fc24)
 
-Na auditoria anterior à ampliação brasileira, a média caiu de 90,84 para 83,41. Dos 1.320 registros daquela versão, 430 estavam abaixo de 80, 637 entre 80 e 89 e 253 entre 90 e 99. Foram alteradas 1.131 edições de jogadores; as 189 edições dos nomes preservados ficaram iguais. Naquela auditoria, a base tinha 144 elencos de onze opções; a base atual tem 148. O lote C usa notas editoriais já calibradas na escala final, sem aplicar uma segunda redução.
-
-Um draft salvo ainda sem competição atualiza as notas dos atletas escolhidos pela mesma edição, preservando posições, sorteios, saldo e semente. Partidas e campanhas já iniciadas conservam seus valores; resultados concluídos não são reescritos.
-
-Referências consultadas para conferir premiações e reconhecimento, sem atribuir a elas os OVRs:
-
-- [FIFA: histórico dos vencedores dos prêmios de jogador do mundo](https://www.fifa.com/en/the-best-fifa-football-awards/2025/articles/all-award-winners-history).
-- [UEFA: todos os vencedores da Bola de Ouro](https://www.uefa.com/ballondor/news/0287-195e642735da-0594342b9554-1000--history-of-the-ballon-d-or-all-the-winners/).
-- [UEFA: Maradona e Pelé receberam troféus honorários](https://www.uefa.com/ballondor/news/0292-1c270550362a-8ed0eb6212eb-1000--2024-ballon-d-or-ceremony-when-and-where-all-the-nominees-h/).
-- [UEFA: seleção do ano de 2012](https://www.uefa.com/news-media/news/0205-0e82e5de00d7-2a587889375f-1000--uefa-com-team-of-the-year-2012-announced/).
-- [FIFA: Maradona e o gol do século](https://inside.fifa.com/tournaments/mens/worldcup/1986mexico/news/maradona-s-immortal-11-second-dash-2802747).
-
-As fontes dos vínculos e das temporadas continuam em `VERIFICACAO-A.md` e `fontes-b.md`.
+Ao abrir um draft salvo sem competição em andamento, o jogo atualiza as notas escolhidas com esses dados e preserva posições, sorteios, saldo e semente. Campanhas iniciadas e resultados concluídos não são reescritos.

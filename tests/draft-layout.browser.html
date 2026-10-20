@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ScoreFut · Geometria da seleção</title>
+  <style id="runner-style">
+    *{box-sizing:border-box}body{margin:0;padding:28px;font:14px/1.5 system-ui,sans-serif;background:#f4f7f5;color:#17352a}main{max-width:1100px;margin:auto}h1{margin:0 0 10px;font-size:28px}p{max-width:850px}button,a{font:inherit}button{padding:12px 20px;border:0;border-radius:8px;background:#146c49;color:#fff;font-weight:700;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.controls{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:24px 0}#progress{font-weight:700}table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #ccd9d0}th,td{text-align:left;padding:12px;border-bottom:1px solid #dce4de;vertical-align:top}th{background:#e7eee9}.pass{color:#12623f;font-weight:800}.fail{color:#b12828;font-weight:800}td ul{padding-left:20px;margin:8px 0}details{max-width:650px}a{color:#12623f}.fixture-frame{position:absolute;left:-20000px;top:0;border:0;visibility:hidden;pointer-events:none}#error{color:#b12828;font-weight:700}.fixtures{display:flex;gap:12px;flex-wrap:wrap}.fixtures a{background:#fff;border:1px solid #ccd9d0;padding:8px 12px;border-radius:6px}code{font-size:12px}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Geometria da seleção de jogadores</h1>
+    <p>Teste de integração com o renderer, os dados, as folhas, o cabeçalho e o rodapé atuais do site. Cada caso abre em um iframe com resolução própria. São verificados overflow horizontal, sobreposição dos painéis, conteúdo do cabeçalho, linhas de pelo menos 60 px e campo sem cortes.</p>
+    <p>Execute <code>npm run dev</code> na raiz do projeto e abra <code>http://127.0.0.1:4173/tests/draft-layout.browser.html</code>. A resolução 1093 × 540 representa o espaço CSS aproximado de uma tela 1366 × 768 com zoom de 125% e barras do navegador.</p>
+    <div class="controls"><button id="run" type="button">Testar todas as resoluções</button><span id="progress" role="status">Pronto para executar.</span></div>
+    <p id="error" role="alert"></p>
+    <div class="fixtures" id="fixtures" aria-label="Fixtures para inspeção visual"></div>
+    <p>Os links abrem a fixture em outra aba, permitindo redimensionar a janela ou tirar screenshots. Os detalhes dos casos que falharam mostram as medidas observadas.</p>
+    <table><thead><tr><th>Resolução</th><th>Estado / formação</th><th>Resultado</th><th>Detalhes</th></tr></thead><tbody id="results"></tbody></table>
+  </main>
+  <script type="module" src="./draft-layout.browser.js"></script>
+</body>
+</html>

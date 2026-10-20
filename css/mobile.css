@@ -77,32 +77,6 @@
  .quick-season-block select{max-width:100%}
  .quick-launch{padding:18px 12px}
  .quick-launch .btn-primary{min-height:54px;font-size:15px}
- /* The roster is beside the task, not below a whole screen of field. */
- #app[data-screen="draft"] .draft-layout{display:flex;flex-direction:column;gap:16px}
- #app[data-screen="draft"] .draw-card{order:1;display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;padding:16px;gap:10px 14px}
- #app[data-screen="draft"] .draw-card-top{grid-column:1;grid-row:1/3;align-items:flex-start}
- #app[data-screen="draft"] .draw-club{grid-column:2;grid-row:1}
- #app[data-screen="draft"] .season-award{grid-column:2;grid-row:2}
- #app[data-screen="draft"] .reroll-block,#app[data-screen="draft"] .draw-empty{grid-column:1/-1}
- #app[data-screen="draft"] .draw-club-info{grid-template-columns:64px minmax(0,1fr);column-gap:14px;row-gap:8px}
- #app[data-screen="draft"] .draw-card-top .eyebrow{font-size:8px;white-space:normal;letter-spacing:.6px}
- #app[data-screen="draft"] .season-year{font-size:27px}
- #app[data-screen="draft"] .draw-club{gap:10px}
- #app[data-screen="draft"] .draw-club .club-badge{width:42px;height:42px;flex:0 0 42px}
- #app[data-screen="draft"] .draw-club h2{font-size:22px;max-width:none}
- #app[data-screen="draft"] .season-award{font-size:12px}
- #app[data-screen="draft"] .reroll-block{width:100%;max-width:none;flex:auto;padding:12px 0 0;margin:0;border-top:1px solid var(--border)}
- #app[data-screen="draft"] .reroll-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- #app[data-screen="draft"] .reroll-buttons .btn{font-size:13px;min-height:52px;padding:10px 8px;gap:7px}
- #app[data-screen="draft"] .draft-left{display:contents}
- #app[data-screen="draft"] .players-panel{order:2}
- #app[data-screen="draft"] .draft-center{order:3}
- #app[data-screen="draft"] .draft-right{order:4}
- #app[data-screen="draft"] .roster-list{max-height:340px;overflow-y:auto;overscroll-behavior-y:contain}
- #app[data-screen="draft"] .player-select{min-height:72px;padding:12px;gap:10px}
- #app[data-screen="draft"] .player-name{font-size:15px;line-height:1.3}
- #app[data-screen="draft"] .player-ovr{font-size:26px}
- #app[data-screen="draft"] .player-details{font-size:11px}
  .mobile-pick-hint{display:none}
  #app[data-screen="draft"] .mobile-pick-hint{display:inline}
  #app[data-screen="draft"] .desktop-pick-hint{display:none}

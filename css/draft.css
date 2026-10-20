@@ -1,0 +1,63 @@
+/* Keep panel placement independent of viewport height and browser zoom. */
+body:has(#app[data-screen="draft"]){min-height:100dvh;height:auto;display:flex;flex-direction:column}
+#app[data-screen="draft"]{display:block;flex:1 0 auto;width:100%;max-width:1760px;min-height:0;padding:24px clamp(12px,2vw,32px) 36px}
+#app[data-screen="draft"] .draft-layout{display:grid;grid-template-areas:"draw draw draw" "players pitch team";grid-template-columns:clamp(280px,26vw,360px) minmax(0,1fr) clamp(230px,21vw,290px);grid-template-rows:auto auto;gap:16px;align-items:start;width:100%;max-width:none;margin:0}
+#app[data-screen="draft"] .draw-card{grid-area:draw}
+#app[data-screen="draft"] .draft-left{grid-area:players;display:block;min-width:0;min-height:0;width:100%}
+#app[data-screen="draft"] .players-panel{display:flex;flex-direction:column;width:100%;min-height:0;max-width:none}
+#app[data-screen="draft"] .players-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:16px;flex:0 0 auto}
+#app[data-screen="draft"] .players-heading h3{font-size:18px;line-height:1.3}
+#app[data-screen="draft"] .players-heading>span{font-size:12px;line-height:1.4}
+#app[data-screen="draft"] .roster-list{display:block;flex:0 1 auto;min-height:0;max-height:clamp(420px,calc(100dvh - 240px),780px);overflow-x:hidden;overflow-y:auto;scrollbar-gutter:stable;overscroll-behavior-y:contain}
+#app[data-screen="draft"] .player-row{display:block;min-height:0;flex:none}
+#app[data-screen="draft"] .player-select{width:100%;height:auto;min-height:76px;padding:12px 14px;gap:12px;align-items:center}
+#app[data-screen="draft"] .player-avatar{display:grid;width:38px;height:44px;flex:0 0 38px;font-size:15px}
+#app[data-screen="draft"] .player-info,#app[data-screen="draft"] .player-row.unavailable .player-info{display:block;flex:1;min-width:0}
+#app[data-screen="draft"] .player-name,#app[data-screen="draft"] .player-row.unavailable .player-name{font-size:15px;font-weight:700;line-height:1.3;white-space:normal;overflow-wrap:anywhere;overflow:visible;text-overflow:clip}
+#app[data-screen="draft"] .player-details,#app[data-screen="draft"] .player-row.unavailable .player-details{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:5px;font-size:11px}
+#app[data-screen="draft"] .position-chip{display:inline-block;font-size:10px;line-height:1.3;white-space:normal;padding:2px 4px}
+#app[data-screen="draft"] .player-status{display:block;margin-top:4px;font-size:10px;line-height:1.3}
+#app[data-screen="draft"] .player-ovr{flex-shrink:0;font-size:26px;line-height:1;padding:0;margin-left:auto}
+#app[data-screen="draft"] .player-ovr small{display:block;font-size:8px;line-height:1.3;margin-top:4px}
+#app[data-screen="draft"] .draft-center{grid-area:pitch;display:flex;flex-direction:column;align-self:start;min-width:0;min-height:0;width:100%;height:auto;max-width:none;padding:0;container-type:normal}
+#app[data-screen="draft"] .pitch-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;min-height:56px;padding:16px;flex:0 0 auto}
+#app[data-screen="draft"] .pitch-header h2{font-size:18px;line-height:1.3}
+#app[data-screen="draft"] .pitch-header>span{font-size:12px;line-height:1.3;flex-shrink:0}
+#app[data-screen="draft"] .draft-pitch{width:min(calc(100% - 24px),clamp(320px,45vh,480px));height:auto;max-width:none;max-height:none;aspect-ratio:2/3;margin:12px auto 16px;flex:none}
+#app[data-screen="draft"] .pitch-slot{width:20%;min-width:0;min-height:0;padding:0;gap:0}
+#app[data-screen="draft"] .slot-circle{width:55%;min-width:30px;max-width:54px;height:auto;aspect-ratio:1;font-size:clamp(12px,1vw,18px)}
+#app[data-screen="draft"] .pitch-slot small{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;max-width:100%;margin-top:3px;font-size:clamp(9px,.8vw,12px);line-height:1.15;white-space:normal;overflow-wrap:anywhere;overflow:hidden;text-overflow:ellipsis}
+#app[data-screen="draft"] .pitch-slot.empty small{font-size:clamp(8px,.75vw,11px)}
+#app[data-screen="draft"] .pitch-direction{top:5px;font-size:8px}
+#app[data-screen="draft"] .draft-right{grid-area:team;display:block;min-width:0;min-height:0;width:100%}
+#app[data-screen="draft"] .draft-box{display:flex;flex-direction:column;min-height:0;height:auto;padding:0}
+#app[data-screen="draft"] .box-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px;min-height:56px;flex:none}
+#app[data-screen="draft"] .box-title h3{font-size:17px;line-height:1.3}
+#app[data-screen="draft"] .box-title>span{font-size:20px;line-height:1.2}
+#app[data-screen="draft"] .strength-block{padding:12px 16px 16px;flex:none}
+#app[data-screen="draft"] .strength-label>span{font-size:12px}
+#app[data-screen="draft"] .strength-label strong{font-size:30px;line-height:1.2}
+#app[data-screen="draft"] .draft-box .box-row{display:flex;align-items:center;flex:none;flex-wrap:nowrap;gap:10px;min-height:60px;padding:12px 14px;border-right:0;grid-row:auto}
+#app[data-screen="draft"] .box-position{width:28px;flex-shrink:0;font-size:11px}
+#app[data-screen="draft"] .box-row>div{flex:1;min-width:0}
+#app[data-screen="draft"] .box-row b{font-size:12px;line-height:1.3;overflow-wrap:anywhere}
+#app[data-screen="draft"] .box-player-club{display:block;font-size:10px;line-height:1.4;margin-top:3px}
+#app[data-screen="draft"] .box-empty{font-size:12px}
+#app[data-screen="draft"] .box-row>strong{font-size:18px;flex-shrink:0}
+@media(max-width:1279px){
+ #app[data-screen="draft"] .draft-layout{grid-template-areas:"draw draw" "players pitch" "team team";grid-template-columns:minmax(280px,.85fr) minmax(0,1.15fr);gap:16px}
+ #app[data-screen="draft"] .draft-box{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+ #app[data-screen="draft"] .draft-box .box-title,#app[data-screen="draft"] .draft-box .strength-block{grid-column:1/-1;grid-row:auto}
+ #app[data-screen="draft"] .draft-box .box-row{min-height:66px;border-top:1px solid var(--border);border-right:1px solid var(--border)}
+}
+@media(max-width:760px){
+ #app[data-screen="draft"]{padding:20px 12px 32px}
+ #app[data-screen="draft"] .draft-layout{grid-template-areas:"draw" "players" "pitch" "team";grid-template-columns:minmax(0,1fr);gap:16px;max-width:600px;margin:0 auto}
+ #app[data-screen="draft"] .roster-list{max-height:380px}
+ #app[data-screen="draft"] .player-select{min-height:74px;padding:12px;gap:10px}
+ #app[data-screen="draft"] .player-avatar{width:34px;height:40px;flex-basis:34px}
+ #app[data-screen="draft"] .player-name{font-size:15px}
+ #app[data-screen="draft"] .draft-pitch{width:min(calc(100% - 20px),420px);margin:12px auto 16px}
+ #app[data-screen="draft"] .draft-box{display:block}
+ #app[data-screen="draft"] .draft-box .box-row{border-right:0}
+}

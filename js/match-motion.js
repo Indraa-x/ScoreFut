@@ -1,4 +1,4 @@
-import { hashSeed, mulberry32 } from './engine.js';
+import { hashSeed, mulberry32 } from './engine.js?v=worldcup-20261020';
 
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const mix = (a, b, progress) => a + (b - a) * progress;

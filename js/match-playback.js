@@ -1,6 +1,6 @@
-import { currentMatch } from './match-session.js';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, scoreAt } from './match-motion.js';
-import {goalsAt,renderMatchGoals} from './match-goals.js';
+import { currentMatch } from './match-session.js?v=worldcup-20261020';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, scoreAt } from './match-motion.js?v=worldcup-20261020';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=worldcup-20261020';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;

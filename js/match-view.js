@@ -1,7 +1,7 @@
-import {renderMatchGoals} from './match-goals.js';
-import { competitionName, competitionLogo } from '../data/competitions.js';
-import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js';
-import { formatMatchClock, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js';
+import {renderMatchGoals} from './match-goals.js?v=worldcup-20261020';
+import { competitionName, competitionLogo } from '../data/competitions.js?v=worldcup-20261020';
+import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=worldcup-20261020';
+import { formatMatchClock, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=worldcup-20261020';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {

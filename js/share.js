@@ -1,4 +1,4 @@
-import { competitionName } from '../data/competitions.js';
+import { competitionName } from '../data/competitions.js?v=worldcup-20261020';
 
 export function resultText(record) {
   return `⚽ ScoreFut · ${record.teamName}\n${record.champion?'🏆 Campeão!':record.stageLabel}\n${record.picks.length} jogadores · ${record.formation}\nForça ${Math.round(record.strength)} · ${record.goalsFor} gols marcados · ${record.goalsAgainst} sofridos\n${competitionName(record.mode)} · ${record.date}`;

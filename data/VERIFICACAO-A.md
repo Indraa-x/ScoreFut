@@ -49,7 +49,7 @@ Consulta realizada em 10 de outubro de 2026. Referências primárias usadas para
 
 Em 10/10/2026 foram acrescentados cinco jogadores reais a cada uma das 60 temporadas. Um script conferiu que os 300 objetos originais permanecem iguais, que as 300 novas camisas ficam vazias e que todos os elencos têm dez IDs distintos e exatamente um goleiro. Não foram usados atletas que só chegaram na temporada seguinte.
 
-A posição indica a função principal e, quando aplicável, uma função secundária habitual. Relatórios táticos, súmulas e arquivos oficiais de elenco sustentam o vínculo e a posição; as notas permanecem editoriais. A curadoria considera o rendimento naquele ano: Isco entra no Real 2017, Daniele Massaro no Milan 1990 e Mario Rui no Napoli 2018. Rui Costa completa o meio do Milan 2003; Cafu só chegou depois da campanha europeia de 2002/03 e, portanto, não foi incluído ali.
+A posição indica a função principal e, quando aplicável, uma função secundária habitual. Relatórios táticos, súmulas e arquivos oficiais de elenco sustentam o vínculo e a posição. Os OVRs com uma correspondência histórica verificada usam a edição FIFA/FC indicada em `ratings.js`; os demais são estimativas editoriais. A curadoria considera o rendimento naquele ano: Isco entra no Real 2017, Daniele Massaro no Milan 1990 e Mario Rui no Napoli 2018. Rui Costa completa o meio do Milan 2003; Cafu só chegou depois da campanha europeia de 2002/03 e, portanto, não foi incluído ali.
 
 Fontes complementares consultadas para os novos candidatos:
 

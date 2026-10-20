@@ -2,12 +2,14 @@
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ScoreFut · Verificação de imagens</title>
 <link rel="stylesheet" href="../css/player-drag.css">
 <style>*{box-sizing:border-box}body{font:14px/1.5 system-ui;background:#f4f7f5;color:#173b2a;margin:24px}main{max-width:1200px;margin:auto}h1{margin:0 0 8px}#status{font-weight:700}.pass{color:#13754b}.fail{color:#b42626}.logos{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:10px}.logo-card{border:1px solid #d8e3da;border-radius:10px;background:white;padding:12px;text-align:center}.logo-card img{display:block;margin:0 auto 6px;width:48px;height:48px;object-fit:contain}.logo-card small{display:block;color:#586f60}.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}.player-drag-card{width:140px}.drag-card-top .club-badge{display:block}.club-badge img{width:100%;height:100%;object-fit:contain}.club-badge:not(.image-badge){display:grid;place-items:center;border-radius:50%;background:#13754b;color:#fff;font-size:8px}select{font:inherit;padding:10px;border:1px solid #cad8ce;border-radius:8px}h2{font-size:20px;margin-top:28px}h3{font-size:15px}</style></head>
-<body><main><h1>Escudos e fotos das cartinhas</h1><p id="status" role="status">Verificando as imagens publicadas…</p><ul id="failures"></ul><h2>Escudos dos clubes</h2><div id="logos" class="logos"></div><h2>Cartinhas por clube e temporada</h2><label>Clube <select id="club"></select></label><div id="seasons"></div></main>
+<body><main><h1>Escudos e fotos das cartinhas</h1><p id="status" role="status">Verificando as imagens publicadas…</p><ul id="failures"></ul><h2>Escudos dos clubes e seleções</h2><div id="logos" class="logos"></div><h2>Cartinhas por clube e seleção</h2><label>Clube <select id="club"></select></label><div id="seasons"></div></main>
 <script type="module">
-import {clubs,allSquads} from '../data/clubs.js';
-import {CLUB_LOGOS} from '../data/club-logos.js?v=headshots-20261016-2';
-import {PLAYER_PORTRAITS} from '../data/player-portraits.js?v=headshots-20261016-2';
-import {renderPlayerDragCard} from '../js/ui.js?v=headshots-20261016-2';
+import {clubs as clubTeams,allSquads} from '../data/game-squads.js';
+import {nationalTeams} from '../data/national-teams.js';
+const clubs=[...clubTeams,...nationalTeams.map(team=>({...team,temporadas:[{ano:team.ano}]}))];
+import {CLUB_LOGOS} from '../data/club-logos.js?v=worldcup-20261020';
+import {PLAYER_PORTRAITS} from '../data/player-portraits.js?v=worldcup-20261020';
+import {renderPlayerDragCard} from '../js/ui.js?v=worldcup-20261020';
 const root=new URL('../',location.href);
 function logoCard(club){
  const el=document.createElement('div');el.className='logo-card';const image=document.createElement('img');image.src=new URL(CLUB_LOGOS[club.id],root);image.alt=club.nome;
