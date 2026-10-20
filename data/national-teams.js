@@ -92,7 +92,7 @@ export const nationalTeams = [
     [2001,'Campeã da Copa América · título invicto','GOL|Óscar Córdoba|91;LD|Iván López|85;ZAG|Mario Yepes|90;ZAG|Iván Ramiro Córdoba|92;LE|Gerardo Bedoya|87;VOL|Leonel Álvarez|89;MC|Freddy Rincón|92;MC|Giovanni Hernández|90;MEI|Víctor Aristizábal|93;CA|Jairo Castillo|88;PE|Eudalio Arriaga|86']
   ]),
   ...country('selecao-mexico','México','MEX',['#087a49','#f7f7f7'],[
-    [1986,'Quartas de final na Copa do Mundo · anfitrião','GOL|Pablo Larios|89;LD|Raúl Servín|85;ZAG|Fernando Quirarte|89;ZAG|Héctor Esparza|86;LE|Mario Trejo|85;VOL|Tomás Boy|91;MC|Manuel Negrete|92;MC|Javier Aguirre|87;MEI|Hugo Sánchez|96;CA|Luis Flores|90;PE|Francisco Javier Cruz|88'],
+    [1986,'Quartas de final na Copa do Mundo · anfitrião','GOL|Pablo Larios|89;LD|Raúl Servín|85;ZAG|Fernando Quirarte|89;ZAG|Héctor Esparza|86;LE|Mario Trejo|85;VOL|Tomás Boy|91;MEI|Manuel Negrete|92;MC|Javier Aguirre|87;CA|Hugo Sánchez|96;CA|Luis Flores|90;PE|Francisco Javier Cruz|88'],
     [1999,'Campeão da Copa das Confederações · geração de ouro','GOL|Óscar Pérez|87;LD|Salvador Carmona|86;ZAG|Rafael Márquez|91;ZAG|Claudio Suárez|90;LE|Ramón Ramírez|88;VOL|Pável Pardo|89;MC|Germán Villa|87;MEI|Cuauhtémoc Blanco|95;PE|Jesús Arellano|90;CA|Luis Hernández|93;CA|Francisco Palencia|89'],
     [2014,'Oitavas de final na Copa do Mundo · Brasil','GOL|Guillermo Ochoa|91;LD|Paul Aguilar|86;ZAG|Rafael Márquez|90;ZAG|Héctor Moreno|88;LE|Miguel Layún|87;VOL|José Juan Vázquez|86;MC|Héctor Herrera|89;MC|Andrés Guardado|89;MEI|Giovani dos Santos|90;PE|Oribe Peralta|89;CA|Javier Hernández|91']
   ]),
