@@ -1,4 +1,3 @@
-import {nationalSquads} from './national-teams.js?v=national-peaks-curated-20261020';
 export const BRAZIL_CLUB_IDS = Object.freeze([
   'flamengo','palmeiras','sao-paulo','corinthians','santos','gremio','internacional',
   'vasco','fluminense','botafogo','cruzeiro','atletico-mineiro','athletico-paranaense','bahia','fortaleza',
@@ -11,10 +10,8 @@ export const EUROPE_CLUB_IDS = Object.freeze([
   'borussia-dortmund','psg','porto','benfica','valencia','monaco','celtic','marseille','psv','roma',
 ]);
 export function squadsForMode(squads,mode){
-  if(mode==='world-cup')return nationalSquads;
-  squads=squads.filter(squad=>!squad.clubId.startsWith('selecao-'));
   const ids=mode==='copa-do-brasil'?BRAZIL_CUP_CLUB_IDS:mode==='brasileirao'?BRAZIL_CLUB_IDS:mode==='champions'?EUROPE_CLUB_IDS:null;
   return ids?squads.filter(squad=>ids.includes(squad.clubId)):squads;
 }
-export function competitionName(mode){return {'copa-do-brasil':'Copa do Brasil',brasileirao:'Brasileirão',champions:'Champions League','world-cup':'Copa do Mundo',legends:'Modo Lendas',quick:'Modo rápido'}[mode]||'Copa ScoreFut';}
-export function competitionLogo(mode){return {'world-cup':'assets/competitions/world-cup.png','copa-do-brasil':'assets/competitions/copa-do-brasil.png',brasileirao:'assets/competitions/brasileirao.png',champions:'assets/competitions/champions-league.png'}[mode]||null;}
+export function competitionName(mode){return {'copa-do-brasil':'Copa do Brasil',brasileirao:'Brasileirão',champions:'Champions League',legends:'Modo Lendas',quick:'Modo rápido'}[mode]||'Copa ScoreFut';}
+export function competitionLogo(mode){return {'copa-do-brasil':'assets/competitions/copa-do-brasil.png',brasileirao:'assets/competitions/brasileirao.png',champions:'assets/competitions/champions-league.png'}[mode]||null;}
