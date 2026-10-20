@@ -47,8 +47,8 @@ export const nationalTeams = [
     [1974,'Campeã da Copa do Mundo · Alemanha Ocidental','GOL|Sepp Maier|93;LD|Berti Vogts|90;ZAG|Franz Beckenbauer|96;ZAG|Hans-Georg Schwarzenbeck|88;LE|Rainer Bonhof|89;VOL|Uli Hoeneß|89;MC|Wolfgang Overath|91;MC|Paul Breitner|93;MEI|Günter Netzer|92;CA|Gerd Müller|96;CA|Jürgen Grabowski|88']
   ]),
   ...country('selecao-espanha','Espanha','ESP',['#d82635','#f6c445'],[
+    [2026,'Campeã da Copa do Mundo · bicampeã mundial','GOL|Unai Simón|92;LD|Pedro Porro|89;ZAG|Pau Cubarsí|90;ZAG|Aymeric Laporte|89;LE|Marc Cucurella|89;VOL|Rodri|96;MC|Pedri|94;MC|Fabián Ruiz|92;PD|Lamine Yamal|96;PE|Nico Williams|93;CA|Ferran Torres|91'],
     [2010,'Campeã da Copa do Mundo · campeã mundial','GOL|Iker Casillas|93;LD|Sergio Ramos|91;ZAG|Carles Puyol|91;ZAG|Gerard Piqué|89;LE|Joan Capdevila|86;VOL|Sergio Busquets|91;MC|Xabi Alonso|91;MC|Xavi Hernández|96;MEI|Andrés Iniesta|95;PE|David Villa|94;CA|Fernando Torres|90'],
-    [2008,'Campeã da Euro · início da era de ouro','GOL|Iker Casillas|93;LD|Sergio Ramos|89;ZAG|Carles Puyol|90;ZAG|Carlos Marchena|86;LE|Joan Capdevila|85;VOL|Marcos Senna|89;MC|Xavi Hernández|95;MC|Andrés Iniesta|92;MEI|Cesc Fàbregas|90;CA|Fernando Torres|93;CA|David Villa|93'],
     [2012,'Bicampeã da Euro · geração dominante','GOL|Iker Casillas|93;LD|Álvaro Arbeloa|86;ZAG|Sergio Ramos|92;ZAG|Gerard Piqué|90;LE|Jordi Alba|89;VOL|Sergio Busquets|92;MC|Xabi Alonso|91;MC|Xavi Hernández|95;MEI|Andrés Iniesta|95;PD|David Silva|91;CA|Fernando Torres|90']
   ]),
   ...country('selecao-italia','Itália','ITA',['#138b59','#ffffff'],[
@@ -59,12 +59,12 @@ export const nationalTeams = [
   ...country('selecao-inglaterra','Inglaterra','ENG',['#ffffff','#c8102e'],[
     [1966,'Campeã da Copa do Mundo · única estrela','GOL|Gordon Banks|95;LD|George Cohen|89;ZAG|Bobby Moore|96;ZAG|Jack Charlton|90;LE|Ray Wilson|88;VOL|Nobby Stiles|89;MC|Bobby Charlton|96;MC|Martin Peters|92;PD|Alan Ball|90;CA|Geoff Hurst|94;CA|Roger Hunt|92'],
     [1990,'Quarto lugar na Copa do Mundo · Itália','GOL|Peter Shilton|91;LD|Gary Stevens|86;ZAG|Terry Butcher|90;ZAG|Des Walker|91;LE|Stuart Pearce|90;VOL|Paul Gascoigne|94;MC|David Platt|92;MC|Chris Waddle|90;MEI|John Barnes|92;CA|Gary Lineker|95;CA|Peter Beardsley|90'],
-    [2018,'Quarto lugar na Copa do Mundo · nova geração','GOL|Jordan Pickford|85;LD|Kyle Walker|88;ZAG|John Stones|86;ZAG|Harry Maguire|86;LE|Ashley Young|84;VOL|Jordan Henderson|88;MC|Dele Alli|89;MC|Jesse Lingard|87;CA|Harry Kane|95;PD|Raheem Sterling|90;PE|Marcus Rashford|88']
+    [2026,'Terceiro lugar na Copa do Mundo · melhor campanha desde 1966','GOL|Jordan Pickford|89;LD|Reece James|89;ZAG|Ezri Konsa|88;ZAG|Marc Guéhi|89;LE|Nico O’Reilly|87;VOL|Declan Rice|94;MC|Elliot Anderson|90;MEI|Jude Bellingham|96;PD|Bukayo Saka|95;PE|Anthony Gordon|91;CA|Harry Kane|95']
   ]),
   ...country('selecao-portugal','Portugal','POR',['#08783e','#d62635'],[
     [2016,'Campeão da Euro · primeiro título','GOL|Rui Patrício|88;LD|Cédric Soares|84;ZAG|Pepe|91;ZAG|José Fonte|87;LE|Raphaël Guerreiro|86;VOL|William Carvalho|87;MC|João Moutinho|89;MC|Renato Sanches|87;MEI|André Gomes|86;PE|Cristiano Ronaldo|96;CA|Nani|90'],
     [1966,'Terceiro lugar na Copa do Mundo · estreia histórica','GOL|José Pereira|90;LD|Amândio|86;ZAG|Germano|91;ZAG|Vicente Lucas|91;LE|Hilário|87;VOL|Mário Coluna|94;MC|Jaime Graça|87;PE|Simões|90;PD|José Augusto|92;CA|Eusébio|96;CA|José Torres|92'],
-    [2006,'Quarto lugar na Copa do Mundo · Alemanha','GOL|Ricardo Pereira|89;LD|Miguel Monteiro|88;ZAG|Ricardo Carvalho|92;ZAG|Fernando Meira|87;LE|Nuno Valente|86;VOL|Costinha|88;MC|Maniche|91;MEI|Deco|94;PE|Cristiano Ronaldo|93;PD|Luís Figo|94;CA|Pauleta|91']
+    [2004,'Vice-campeão da Euro · geração de Figo e Cristiano Ronaldo','GOL|Ricardo Pereira|90;LD|Miguel Monteiro|88;ZAG|Ricardo Carvalho|93;ZAG|Jorge Andrade|90;LE|Nuno Valente|88;VOL|Costinha|90;MC|Maniche|92;MEI|Deco|94;PD|Luís Figo|95;PE|Cristiano Ronaldo|92;CA|Pauleta|92']
   ]),
   ...country('selecao-holanda','Países Baixos','NED',['#f47b20','#ffffff'],[
     [1974,'Vice-campeã da Copa do Mundo · futebol total','GOL|Jan Jongbloed|87;LD|Ruud Krol|92;ZAG|Arie Haan|91;ZAG|Wim Rijsbergen|87;LE|Wim Suurbier|89;VOL|Johan Neeskens|94;MC|Wim van Hanegem|94;MC|Wim Jansen|89;MEI|Johan Cruyff|96;CA|Johnny Rep|91;CA|Rob Rensenbrink|94'],
@@ -74,7 +74,7 @@ export const nationalTeams = [
   ...country('selecao-belgica','Bélgica','BEL',['#e6323b','#f2cb36'],[
     [2018,'Terceiro lugar na Copa do Mundo · geração de ouro','GOL|Thibaut Courtois|92;LD|Thomas Meunier|86;ZAG|Toby Alderweireld|88;ZAG|Vincent Kompany|91;LE|Jan Vertonghen|89;VOL|Axel Witsel|88;MC|Marouane Fellaini|86;MC|Kevin De Bruyne|96;PE|Eden Hazard|94;PD|Dries Mertens|90;CA|Romelu Lukaku|92'],
     [1986,'Quarto lugar na Copa do Mundo · México','GOL|Jean-Marie Pfaff|93;LD|Eric Gerets|90;ZAG|Michel Renquin|86;ZAG|Georges Grün|87;LE|Franky Van der Elst|88;VOL|René Vandereycken|87;MC|Jan Ceulemans|93;MC|Frank Vercauteren|91;MEI|Enzo Scifo|94;CA|Nico Claesen|88;CA|Erwin Vandenbergh|90'],
-    [2014,'Quartas de final · geração de ouro','GOL|Thibaut Courtois|90;LD|Toby Alderweireld|87;ZAG|Vincent Kompany|90;ZAG|Daniel Van Buyten|86;LE|Jan Vertonghen|88;VOL|Axel Witsel|88;MC|Marouane Fellaini|86;MEI|Kevin De Bruyne|91;PE|Eden Hazard|93;PD|Dries Mertens|88;CA|Romelu Lukaku|89']
+    [1980,'Vice-campeã da Euro · primeira grande geração belga','GOL|Jean-Marie Pfaff|93;LD|Eric Gerets|91;ZAG|Walter Meeuws|89;ZAG|Luc Millecamps|87;LE|Michel Renquin|88;VOL|Wilfried Van Moer|92;MC|Julien Cools|89;MC|René Vandereycken|90;MEI|Jan Ceulemans|94;PD|François Van der Elst|90;CA|Erwin Vandenbergh|92']
   ]),
   ...country('selecao-croacia','Croácia','CRO',['#e53946','#1643a1'],[
     [2018,'Vice-campeã da Copa do Mundo · Rússia','GOL|Danijel Subašić|89;LD|Šime Vrsaljko|86;ZAG|Dejan Lovren|88;ZAG|Domagoj Vida|87;LE|Ivan Strinić|85;VOL|Marcelo Brozović|90;MC|Ivan Rakitić|93;MC|Luka Modrić|96;MEI|Ivan Perišić|91;CA|Mario Mandžukić|91;MEI|Ante Rebić|87'],
@@ -94,7 +94,7 @@ export const nationalTeams = [
   ...country('selecao-mexico','México','MEX',['#087a49','#f7f7f7'],[
     [1986,'Quartas de final na Copa do Mundo · anfitrião','GOL|Pablo Larios|89;LD|Raúl Servín|85;ZAG|Fernando Quirarte|89;ZAG|Héctor Esparza|86;LE|Mario Trejo|85;VOL|Tomás Boy|91;MEI|Manuel Negrete|92;MC|Javier Aguirre|87;CA|Hugo Sánchez|96;CA|Luis Flores|90;PE|Francisco Javier Cruz|88'],
     [1999,'Campeão da Copa das Confederações · geração de ouro','GOL|Óscar Pérez|87;LD|Salvador Carmona|86;ZAG|Rafael Márquez|91;ZAG|Claudio Suárez|90;LE|Ramón Ramírez|88;VOL|Pável Pardo|89;MC|Germán Villa|87;MEI|Cuauhtémoc Blanco|95;PE|Jesús Arellano|90;CA|Luis Hernández|93;CA|Francisco Palencia|89'],
-    [2014,'Oitavas de final na Copa do Mundo · Brasil','GOL|Guillermo Ochoa|91;LD|Paul Aguilar|86;ZAG|Rafael Márquez|90;ZAG|Héctor Moreno|88;LE|Miguel Layún|87;VOL|José Juan Vázquez|86;MC|Héctor Herrera|89;MC|Andrés Guardado|89;MEI|Giovani dos Santos|90;PE|Oribe Peralta|89;CA|Javier Hernández|91']
+    [1970,'Quartas de final na Copa do Mundo · anfitrião','GOL|Ignacio Calderón|89;LD|José Vantolrá|85;ZAG|Gustavo Peña|91;ZAG|Javier Guzmán|88;LE|Mario Pérez|87;VOL|Guillermo Hernández|86;MC|Héctor Pulido|89;MC|Mario Velarde|88;MEI|Javier Valdivia|90;PD|Javier Fragoso|90;CA|Horacio López Salgado|88']
   ]),
   ...country('selecao-estados-unidos','Estados Unidos','USA',['#1b3d7c','#d52b35'],[
     [2002,'Quartas de final na Copa do Mundo · Coreia/Japão','GOL|Brad Friedel|92;LD|Steve Cherundolo|87;ZAG|Eddie Pope|89;ZAG|Gregg Berhalter|86;LE|Eddie Lewis|87;VOL|Claudio Reyna|91;MC|John O’Brien|89;MC|Pablo Mastroeni|86;MEI|Landon Donovan|94;CA|Brian McBride|91;PE|DaMarcus Beasley|89'],
@@ -114,7 +114,7 @@ export const nationalTeams = [
   ...country('selecao-marrocos','Marrocos','MAR',['#c12740','#168447'],[
     [2022,'Quarto lugar na Copa do Mundo · melhor campanha africana','GOL|Yassine Bounou|91;LD|Achraf Hakimi|93;ZAG|Romain Saïss|87;ZAG|Nayef Aguerd|88;LE|Noussair Mazraoui|87;VOL|Sofyan Amrabat|90;MC|Azzedine Ounahi|88;MC|Selim Amallah|86;MEI|Hakim Ziyech|91;PE|Sofiane Boufal|88;CA|Youssef En-Nesyri|88'],
     [1986,'Oitavas de final na Copa do Mundo · primeira seleção africana líder de grupo','GOL|Badou Zaki|93;LD|Abdelmajid Lamriss|86;ZAG|Noureddine Naybet|89;ZAG|Mustapha El Haddaoui|87;LE|Abderrazak Khairi|90;VOL|Fathi Jamal|86;MC|Mohamed Timoumi|93;MC|Aziz Bouderbala|91;MEI|Merry Krimau|88;CA|Abdelkrim Merry|87;PE|Mustapha Merry|86'],
-    [1998,'Fase de grupos na Copa do Mundo · geração técnica','GOL|Driss Benzekri|85;LD|Rachid Azzouzi|85;ZAG|Noureddine Naybet|91;ZAG|Abdelilah Fahmi|86;LE|Mustapha Hadji|92;VOL|Salaheddine Bassir|88;MC|Youssef Chippo|87;MC|Hassan Kachloul|87;MEI|Abdeljalil Hadda|89;CA|Mokhtari|85;PE|Hassan Nader|88']
+    [2026,'Quartas de final na Copa do Mundo · segunda melhor campanha','GOL|Yassine Bounou|92;LD|Achraf Hakimi|94;ZAG|Chadi Riad|88;ZAG|Issa Diop|89;LE|Noussair Mazraoui|90;VOL|Neil El Aynaoui|89;MC|Azzedine Ounahi|90;MC|Bilal El Khannouss|89;MEI|Ismaël Saibari|90;PE|Brahim Díaz|93;CA|Soufiane Rahimi|90']
   ]),
   ...country('selecao-senegal','Senegal','SEN',['#138c4d','#f1c52c'],[
     [2002,'Quartas de final na Copa do Mundo · estreia histórica','GOL|Tony Sylva|88;LD|Omar Daf|86;ZAG|Habib Beye|88;ZAG|Pape Malick Diop|86;LE|Lamine Diatta|87;VOL|Amdy Faye|87;MC|Papa Bouba Diop|93;MC|Salif Diao|89;MEI|Khalilou Fadiga|91;PE|El Hadji Diouf|94;CA|Henri Camara|92'],
@@ -129,4 +129,3 @@ export const nationalTeams = [
 ];
 
 export const nationalSquads = nationalTeams.map(team=>({...team,id:`${team.id}-${team.ano}`,clubId:team.id}));
-

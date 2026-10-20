@@ -1,4 +1,4 @@
-import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=national-peaks-v2-20261020';
+import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=national-peaks-curated-20261020';
 export const DEFAULT_REROLLS = 3;
 export function createDraft(seed,date,mode) {return {seed:hashSeed(seed),rngState:hashSeed(seed),date,mode,rerolls:mode==='daily'?0:DEFAULT_REROLLS,seen:[],picks:[],currentSquadId:null,selectedId:null};}
 export function availableSlots(draft,formation,player) {return FORMATIONS[formation].slots.filter(slot=>!draft.picks.some(p=>p.slot.id===slot.id)&&positionFit(player,slot)!==null);}

@@ -1,15 +1,15 @@
-import { MODES } from './state.js?v=national-peaks-v2-20261020';
-import { CLUB_LOGOS } from '../data/club-logos.js?v=national-peaks-v2-20261020';
-import { clubs, allSquads } from '../data/game-squads.js?v=national-peaks-v2-20261020';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=national-peaks-v2-20261020';
-import {filterHistory,formatHistoryDate} from './history.js?v=national-peaks-v2-20261020';
-import { playerPortrait } from './player-portraits.js?v=national-peaks-v2-20261020';
-import { competitionName, competitionLogo } from '../data/competitions.js?v=national-peaks-v2-20261020';
-import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=national-peaks-v2-20261020';
-import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=national-peaks-v2-20261020';
-import { renderMatchView } from './match-view.js?v=national-peaks-v2-20261020';
-import { renderBrazilCupBracket } from './brazil-cup-view.js?v=national-peaks-v2-20261020';
-import { championDecoration, championConfetti } from './celebration.js?v=national-peaks-v2-20261020';
+import { MODES } from './state.js?v=national-peaks-curated-20261020';
+import { CLUB_LOGOS } from '../data/club-logos.js?v=national-peaks-curated-20261020';
+import { clubs, allSquads } from '../data/game-squads.js?v=national-peaks-curated-20261020';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=national-peaks-curated-20261020';
+import {filterHistory,formatHistoryDate} from './history.js?v=national-peaks-curated-20261020';
+import { playerPortrait } from './player-portraits.js?v=national-peaks-curated-20261020';
+import { competitionName, competitionLogo } from '../data/competitions.js?v=national-peaks-curated-20261020';
+import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=national-peaks-curated-20261020';
+import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=national-peaks-curated-20261020';
+import { renderMatchView } from './match-view.js?v=national-peaks-curated-20261020';
+import { renderBrazilCupBracket } from './brazil-cup-view.js?v=national-peaks-curated-20261020';
+import { championDecoration, championConfetti } from './celebration.js?v=national-peaks-curated-20261020';
 export const esc = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const paths={arrow:'M5 12h14m-5-5 5 5-5 5',back:'M19 12H5m5-5-5 5 5 5',trophy:'M8 3h8v6a4 4 0 0 1-8 0V3Zm0 2H4v3a4 4 0 0 0 5 4m7-7h4v3a4 4 0 0 1-5 4m-3 1v7m-5 1h10',calendar:'M5 5h14v15H5zm3-3v6m8-6v6M5 10h14m-10 4h2m2 0h2m-6 3h2',bolt:'m13 2-8 12h6l-1 8 9-13h-7l1-7Z',star:'m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z',sun:'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-6v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5',moon:'M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z',ball:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5 4 3-1.5 4h-5L8 11Zm0-5v5m9 2-5 1m1.5 8L14.5 15m-8 4L9.5 15M3 10l5 1',check:'m5 12 4 4L19 6',shield:'m12 3 8 3v5c0 5-4 9-8 11-4-2-8-6-8-11V6Zm-4 9 3 3 5-6',refresh:'M20 7v5h-5M4 17v-5h5m-5 0a8 8 0 0 1 14-6l2 2M4 16l2 2a8 8 0 0 0 14-6',dice:'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2 4h.01M17 7h.01M12 12h.01M7 17h.01M17 17h.01',info:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 7v6m0-9h.01',close:'m6 6 12 12M6 18 18 6',clock:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3 2',users:'M9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM3 20v-3a6 6 0 0 1 12 0v3m1-16a3 3 0 0 1 0 6m2 10v-3a6 6 0 0 0-3-5',flame:'M12 2c1 6-5 6-5 10 0 2 1 3 2 4-1-4 3-4 3-7 5 3 8 6 6 10-1 2-3 3-6 3-5 0-9-4-9-9 0-4 4-6 9-11Z',play:'m8 4 12 8-12 8Z',pause:'M8 4v16M16 4v16',skip:'m4 5 9 7-9 7ZM18 5v14',chart:'M4 19V9m5 10V5m5 14v-7m5 7V3',share:'M18 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-9.5-4 7-4m-7 6 7 4',download:'M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5',card:'M7 3h10v18H7Z',corner:'M5 21V3h12v8H5m0 10h14',subs:'M3 8h17m-4-4 4 4-4 4M21 16H4m4-4-4 4 4 4',bracket:'M4 3v6h5V3m-5 12v6h5v-6M9 6h5v12H9m5-6h6',copy:'M8 8h12v13H8ZM4 16V3h12'};
 export function icon(name, extra=''){return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}><path d="${name==='search'?'M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm5 12 6 6':paths[name]||paths.ball}"/></svg>`;}

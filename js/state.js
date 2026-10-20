@@ -1,4 +1,4 @@
-import {BRAZIL_CUP_CLUB_IDS,EUROPE_CLUB_IDS} from '../data/competitions.js?v=national-peaks-v2-20261020';
+import {BRAZIL_CUP_CLUB_IDS,EUROPE_CLUB_IDS} from '../data/competitions.js?v=national-peaks-curated-20261020';
 export const state = {screen:'home',mode:'quick',formation:'4-3-3',teamName:'Meu time',quickSquadId:null,quickStep:'formation',quickSearch:'',quickRegion:'all',draft:null,tournament:null,pendingRound:null,matchFlowVersion:1,userMatchIndex:0,matchUnlockedIndex:0,matchMinute:0,matchSpeed:1,matchPlaying:false,returnScreen:'match',resultRecord:null,rolling:false};
 export const MODES = [
   {id:'quick',name:'Modo rápido',tag:'SIMULAÇÃO COMPLETA',icon:'bolt',description:'Escolha a formação e o clube, confira o elenco e simule a campanha inteira de uma vez.',detail:'16 times · Até 4 jogos'},

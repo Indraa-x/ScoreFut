@@ -16,13 +16,24 @@ import {CLUB_LOGOS} from '../data/club-logos.js';
 
 const user={...squadTeam(nationalSquads[0]),id:'user',clubId:'user',name:'Meu time'};
 test('World Cup has three historical XIs for each of twenty countries and stays isolated from club modes',()=>{
+  const bestEras={
+    'selecao-brasil':[2002,1994,1970],'selecao-argentina':[2022,1986,1978],'selecao-franca':[2018,1998,2006],
+    'selecao-alemanha':[2014,1990,1974],'selecao-espanha':[2026,2010,2012],'selecao-italia':[2006,1982,1990],
+    'selecao-inglaterra':[1966,1990,2026],'selecao-portugal':[2016,1966,2004],'selecao-holanda':[1974,1978,2010],
+    'selecao-belgica':[2018,1986,1980],'selecao-croacia':[2018,1998,2022],'selecao-uruguai':[1950,1930,2010],
+    'selecao-colombia':[2014,1990,2001],'selecao-mexico':[1986,1999,1970],'selecao-estados-unidos':[2002,1994,1930],
+    'selecao-japao':[2022,2002,2010],'selecao-coreia-do-sul':[2002,2010,2022],'selecao-marrocos':[2022,1986,2026],
+    'selecao-senegal':[2002,2021,2022],'selecao-australia':[2006,2015,2022]
+  };
   assert.equal(nationalTeams.length,60);
   assert.equal(new Set(nationalTeams.map(t=>t.id)).size,20);
+  assert.deepEqual(Object.keys(bestEras).sort(),[...new Set(nationalTeams.map(t=>t.id))].sort());
   assert.equal(nationalSquads.reduce((n,s)=>n+s.jogadores.length,0),660);
   for(const id of new Set(nationalTeams.map(t=>t.id))){
     const eras=nationalTeams.filter(team=>team.id===id);
     assert.equal(eras.length,3,id);
     assert.equal(new Set(eras.map(team=>team.ano)).size,3,id);
+    assert.deepEqual(eras.map(team=>team.ano),bestEras[id],`${id} must expose its three curated peak phases in order`);
   }
   assert.ok(!MODES.some(m=>m.id==='legends'));
   assert.equal(competitionName('world-cup'),'Copa do Mundo');
@@ -149,4 +160,3 @@ test('live World Cup handles group byes, saves, and elimination without skipping
   assert.equal(watched,session.tournament.userMatches.length);
   assert.ok(watched>=4&&watched<=7);
 });
-
