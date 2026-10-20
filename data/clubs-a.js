@@ -9,7 +9,7 @@
  * Camisas incertas ficam vazias (a interface exibe “—”). Fontes em VERIFICACAO-A.md.
  */
 
-import { recalibratePlayer } from './ratings.js?v=worldcup-20261020';
+import { recalibratePlayer } from './ratings.js?v=club-only-cleanup-20261020';
 
 const limite = valor => Math.max(15, Math.min(99, Math.round(valor)));
 const perfis = {

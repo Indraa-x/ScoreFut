@@ -1,20 +1,20 @@
-import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=national-peaks-curated-20261020';
-import {filterQuickClubs} from './quick-catalog.js?v=national-peaks-curated-20261020';
-import {filterHistory} from './history.js?v=national-peaks-curated-20261020';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=national-peaks-curated-20261020';
-import { squadsForMode, competitionName } from '../data/competitions.js?v=national-peaks-curated-20261020';
-import { state, MODES } from './state.js?v=national-peaks-curated-20261020';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=national-peaks-curated-20261020';
-import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=national-peaks-curated-20261020';
-import * as storage from './storage.js?v=national-peaks-curated-20261020';
-import * as ui from './ui.js?v=national-peaks-curated-20261020';
-import {downloadResult} from './share.js?v=national-peaks-curated-20261020';
-import {initPlayerDrag} from './player-drag.js?v=national-peaks-curated-20261020';
-import {preloadPlayerPortraits} from './player-portraits.js?v=national-peaks-curated-20261020';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,MATCH_FLOW_VERSION} from './match-session.js?v=national-peaks-curated-20261020';
-import {MATCH_SPEEDS} from './match-motion.js?v=national-peaks-curated-20261020';
-import {initMatchPlayback} from './match-playback.js?v=national-peaks-curated-20261020';
-import {initCelebration} from './celebration.js?v=national-peaks-curated-20261020';
+import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=club-only-cleanup-20261020';
+import {filterQuickClubs} from './quick-catalog.js?v=club-only-cleanup-20261020';
+import {filterHistory} from './history.js?v=club-only-cleanup-20261020';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=club-only-cleanup-20261020';
+import { squadsForMode, competitionName } from '../data/competitions.js?v=club-only-cleanup-20261020';
+import { state, MODES } from './state.js?v=club-only-cleanup-20261020';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=club-only-cleanup-20261020';
+import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=club-only-cleanup-20261020';
+import * as storage from './storage.js?v=club-only-cleanup-20261020';
+import * as ui from './ui.js?v=hero-play-single-20261020';
+import {downloadResult} from './share.js?v=club-only-cleanup-20261020';
+import {initPlayerDrag} from './player-drag.js?v=club-only-cleanup-20261020';
+import {preloadPlayerPortraits} from './player-portraits.js?v=club-only-cleanup-20261020';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,MATCH_FLOW_VERSION} from './match-session.js?v=club-only-cleanup-20261020';
+import {MATCH_SPEEDS} from './match-motion.js?v=club-only-cleanup-20261020';
+import {initMatchPlayback} from './match-playback.js?v=club-only-cleanup-20261020';
+import {initCelebration} from './celebration.js?v=club-only-cleanup-20261020';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
 const historyFilters={search:'',mode:'all',titlesOnly:false};
@@ -29,7 +29,7 @@ function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){dele
 function persist(){if(!state.draft)return;const saved=snapshot();const ok=storage.write('active',saved);if(!ok&&!storageWarning){storageWarning=true;toast('Este navegador não permite salvar o progresso. Você pode continuar jogando.');}}
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
 function navigate(screen){if(state.screen==='match'&&['home','history','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
-function render(){const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
+function render(){const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup'),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'history':html=ui.renderHistory(history,stats,historyFilters);break;default:html=ui.renderHome({stats,clubs});}
   app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
@@ -78,7 +78,7 @@ function updateQuickSearch(search){
 }
 function updateHistoryList(){
   if(state.screen!=='history')return;
-  const history=storage.read('history',[]),filtered=filterHistory(history,historyFilters);
+  const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup'),filtered=filterHistory(history,historyFilters);
   const list=app.querySelector('#history-entries'),count=app.querySelector('[data-history-count]');
   if(list)list.innerHTML=ui.renderHistoryEntries(filtered,Boolean(history.length));
   if(count)count.textContent=`${filtered.length} de ${history.length} campanhas`;

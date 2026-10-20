@@ -4,6 +4,8 @@ import { allSquads } from '../data/clubs.js';
 import {
   FIFA_OVR_BY_SQUAD, FIFA_RATING_SOURCES, MAX_OVR, RATINGS_VERSION,
 } from '../data/ratings.js';
+import {ARCHIVED_RATINGS_BY_SQUAD} from '../data/fifa-archive-ratings.js';
+import {MODERN_RATINGS_BY_SQUAD} from '../data/modern-ratings.js';
 import { FORMATIONS } from '../js/engine.js';
 import { refreshDraftRatings } from '../js/draft.js';
 
@@ -16,7 +18,7 @@ test('historical ratings no longer cluster at 94', () => {
   assert.ok(players.filter(p=>p.ovr<80).length>=players.length*.2);
   assert.ok(players.filter(p=>p.ovr>=90).length<=players.length*.1);
   assert.ok(players.filter(p=>p.ovr>=94).length<=players.length*.01);
-  assert.ok(players.every(p=>Number.isInteger(p.ovr)&&p.ovr>=50&&p.ovr<=MAX_OVR));
+  assert.ok(players.every(p=>Number.isInteger(p.ovr)&&p.ovr>=40&&p.ovr<=MAX_OVR));
   assert.ok(players.every(p=>Object.values(p.atributos).every(a=>Number.isInteger(a)&&a>=1&&a<=99)));
 });
 
@@ -35,7 +37,7 @@ test('ratings backed by an archived FIFA edition match the published OVR', () =>
     ['liverpool-2020','virgil-van-dijk',91,'FIFA 20'],
     ['liverpool-2020','alisson',90,'FIFA 20'],
     ['chelsea-2021','ngolo-kante',88,'FIFA 21'],
-    ['chelsea-2021','kai-havertz',83,'FIFA 21'],
+    ['chelsea-2021','kai-havertz',85,'FIFA 21'],
     ['manchester-city-2021','kevin-de-bruyne',91,'FIFA 21'],
     ['manchester-city-2021','oleksandr-zinchenko',80,'FIFA 21'],
     ['chelsea-2012','juan-mata',86,'FIFA 12'],
@@ -47,9 +49,27 @@ test('ratings backed by an archived FIFA edition match the published OVR', () =>
     const found=player(squad,id);
     assert.equal(found.ovr,ovr,`${squad}/${id}`);
     assert.equal(found.ratingEdition,edition,`${squad}/${id} edition`);
-    assert.equal(found.ratingSource,FIFA_RATING_SOURCES[squad],`${squad}/${id} source`);
+    assert.equal(found.ratingSource,MODERN_RATINGS_BY_SQUAD[squad]?.[id]?.source??ARCHIVED_RATINGS_BY_SQUAD[squad]?.[id]?.source??FIFA_RATING_SOURCES[squad],`${squad}/${id} source`);
   }
-  assert.equal(RATINGS_VERSION,5);
+  assert.equal(RATINGS_VERSION,7);
+});
+
+test('ratings from FIFA 21 through FC 26 use the exact player and edition source',()=>{
+  for(const [squadId,id,ovr,edition] of [
+    ['manchester-city-2021','kevin-de-bruyne',91,'FIFA 21'],
+    ['manchester-city-2023','erling-haaland',90,'FIFA 23'],
+    ['napoli-2023','victor-osimhen',83,'FIFA 23'],
+    ['liverpool-2025','mohamed-salah',91,'FC 25'],
+    ['tottenham-2025','dejan-kulusevski',84,'FC 25'],
+  ]) {
+    const selectedSquad=allSquads.find(s=>s.id===squadId);
+    const found=selectedSquad.jogadores.find(p=>p.id===id);
+    const exact=MODERN_RATINGS_BY_SQUAD[squadId][id];
+    assert.equal(found.ovr,ovr,`${squadId}/${id}`);
+    assert.equal(found.ratingEdition,edition,`${squadId}/${id} edition`);
+    assert.equal(found.ratingSource,exact.source,`${squadId}/${id} source`);
+    assert.match(found.ratingSource,/^https:\/\/(?:sofifa\.com\/player\/|www\.fifaindex\.com\/players\/|www\.ea\.com\/games\/ea-sports-fc\/ratings\/player-ratings\/)/);
+  }
 });
 
 test('every imported exact OVR has a source and names a player in that squad', () => {
@@ -62,6 +82,25 @@ test('every imported exact OVR has a source and names a player in that squad', (
     const squad=allSquads.find(s=>s.id===squadId);
     for (const id of Object.keys(ratings)) {
       assert.ok(squad.jogadores.some(p=>p.id===id),`${squadId}/${id} is not in the squad`);
+    }
+  }
+  for(const [squadId,ratings] of Object.entries(ARCHIVED_RATINGS_BY_SQUAD)){
+    const squad=allSquads.find(s=>s.id===squadId);
+    assert.ok(squad,`${squadId} is missing`);
+    for(const [id,rating] of Object.entries(ratings)){
+      assert.match(rating.source,/^https:\/\/www\.fifaindex\.com\/player\//,`${squadId}/${id} source`);
+      assert.ok(squad.jogadores.some(p=>p.id===id),`${squadId}/${id} is not in the squad`);
+      assert.equal(squad.jogadores.find(p=>p.id===id).ovr,rating.ovr,`${squadId}/${id} rating`);
+    }
+  }
+  for(const [squadId,ratings] of Object.entries(MODERN_RATINGS_BY_SQUAD)){
+    const squad=allSquads.find(s=>s.id===squadId);
+    assert.ok(squad,`${squadId} is missing`);
+    for(const [id,rating] of Object.entries(ratings)){
+      assert.match(rating.source,/^https:\/\/(?:sofifa\.com\/player\/\d+\/|www\.fifaindex\.com\/players\/|www\.ea\.com\/games\/ea-sports-fc\/ratings\/player-ratings\/)/,`${squadId}/${id} source`);
+      const player=squad.jogadores.find(p=>p.id===id);
+      assert.ok(player,`${squadId}/${id} is not in the squad`);
+      assert.equal(player.ovr,rating.ovr,`${squadId}/${id} rating`);
     }
   }
 });

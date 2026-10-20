@@ -1,6 +1,5 @@
 import {renderDraft} from '../js/ui.js';
 import {allSquads} from '../data/clubs.js';
-import {nationalSquads} from '../data/national-teams.js?v=worldcup-20261020';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {createDraft} from '../js/draft.js';
 
@@ -10,7 +9,6 @@ const cases=[
   {id:'rolling',label:'Sorteando',formation:'4-3-3'},
   ...Object.keys(FORMATIONS).map(formation=>({id:'players',label:'Jogadores e indisponíveis',formation})),
   {id:'legends',label:'Lendas e indisponíveis',formation:'4-3-3'},
-  {id:'world-cup',label:'Copa do Mundo e posições',formation:'4-3-3'},
   {id:'long-header',label:'Olympique de Marseille 1993',formation:'4-3-3'}
 ];
 const sizes=[[320,568],[360,640],[768,1024],[1024,600],[1093,540],[1280,720],[1366,768],[1440,900],[1920,1080],[1024,639],[1024,640],[1366,639],[1366,640]];
@@ -23,10 +21,10 @@ const fixtureURL=fixture=>{
 };
 
 function fixtureState(id,formation){
-  const squad=id==='world-cup'?nationalSquads.find(s=>s.clubId==='selecao-coreia-do-sul'):allSquads.find(s=>s.id===(id==='long-header'?'marseille-1993':'bayern-2020'))||allSquads[0];
+  const squad=allSquads.find(s=>s.id===(id==='long-header'?'marseille-1993':'bayern-2020'))||allSquads[0];
   const draft=createDraft(62137,'2026-10-16',id==='legends'?'legends':'champions');
   const picks=[];
-  if(id==='players'||id==='legends'||id==='long-header'||id==='world-cup'){
+  if(id==='players'||id==='legends'||id==='long-header'){
     // Real roster entries are retained, including long names and multirole tags.
     for(const slot of FORMATIONS[formation].slots){
       const player=squad.jogadores.find(p=>!picks.some(pick=>pick.player.id===p.id)&&positionFit(p,slot)!==null);
@@ -35,7 +33,7 @@ function fixtureState(id,formation){
     }
     Object.assign(draft,{picks,currentSquad:squad,currentSquadId:squad.id,otherSeasonAvailable:true});
   }
-  return {screen:'draft',mode:id==='world-cup'?'world-cup':id==='legends'?'legends':'champions',formation,teamName:'Meu time',draft,rolling:id==='rolling'};
+  return {screen:'draft',mode:id==='legends'?'legends':'champions',formation,teamName:'Meu time',draft,rolling:id==='rolling'};
 }
 
 async function renderFixture(){
@@ -162,7 +160,7 @@ function inspectGeometry(){
       fail(!collides,`Labels “${labels[i].textContent.trim()}” e “${labels[j].textContent.trim()}” sobrepostos no campo.`);
     }
   }
-  if(['players','legends','long-header','world-cup'].includes(query.get('fixture'))){
+  if(['players','legends','long-header'].includes(query.get('fixture'))){
     fail(buttons.length===11,`Fixture deveria conter 11 jogadores; há ${buttons.length}.`);
     fail(Boolean(document.querySelector('.player-row.unavailable')),'Fixture não exercita jogadores indisponíveis.');
     fail(Boolean(document.querySelector('.pitch-slot.picked')),'Fixture não exercita jogadores escalados.');

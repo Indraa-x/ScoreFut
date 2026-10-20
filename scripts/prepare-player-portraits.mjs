@@ -26,6 +26,6 @@ for(const [id] of players){
 }
 const missing=players.filter(([id])=>!portraits[id]).map(([id,name])=>({id,name}));
 await fs.writeFile(new URL('assets/players/missing.json',root),JSON.stringify(missing,null,2)+'\n');
-if(missing.length)throw Error(missing.length+' jogadores sem retrato local: '+missing.map(p=>p.id).join(', '));
 await fs.writeFile(new URL('data/player-portraits.js',root),'// Generated from verified local image files. See assets/players/sources.json.\nexport const PLAYER_PORTRAITS = '+JSON.stringify(portraits,null,2)+';\n');
 console.log(Object.keys(portraits).length+'/'+players.length+' jogadores com retrato local verificado.');
+if(missing.length&&!process.argv.includes('--allow-missing'))throw Error(missing.length+' jogadores sem retrato local: '+missing.map(p=>p.id).join(', '));

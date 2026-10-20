@@ -4,7 +4,7 @@
  * OVR and attributes drive the bounded Poisson equation, with modest player assistance.
  */
 
-import { squadsForMode } from '../data/competitions.js?v=national-peaks-curated-20261020';
+import { squadsForMode } from '../data/competitions.js?v=club-only-cleanup-20261020';
 
 export const POSITION_MAP = Object.freeze({
   GOL: 'GOL', ZAG: 'DEF', LD: 'DEF', LE: 'DEF', DEF: 'DEF',
@@ -351,7 +351,6 @@ export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, 
   // A caller-local, read-only Map can reuse deterministic roster selections
   // during a large audit. No module cache or input mutation is involved.
   const opponentTeam = squad => candidateTeams?.get(squad.id) || squadTeam(squad);
-  if(mode==='world-cup')return createWorldCup(user,shuffle(allSquads.filter(squad=>squad.id!==user.id&&squad.clubId!==user.clubId),rng),rng,seed,settings,opponentTeam);
   const eligible = shuffle(allSquads.filter(squad => !excluded.has(squad.id) && squad.id !== user.id), rng);
   if (mode === 'brasileirao') return createLeague(user, eligible, rng, seed, settings, opponentTeam);
   if (mode === 'copa-do-brasil') return createBrazilCup(user, eligible, rng, seed, settings, opponentTeam);
@@ -396,30 +395,6 @@ export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, 
   return tournament;
 }
 
-
-/** ScoreFut's 20-participant format: four groups of five, then quarterfinals. */
-function createWorldCup(user,eligible,rng,seed,settings,opponentTeam){
-  const countries=[...new Map(eligible.map(squad=>[squad.clubId,squad])).values()];
-  if(countries.length<19)throw new Error('A Copa do Mundo precisa de 19 seleções adversárias.');
-  const teams=[user,...countries.slice(0,19).map(opponentTeam)];
-  const groups=Array.from({length:4},(_,i)=>({id:String.fromCharCode(65+i),name:'Grupo '+String.fromCharCode(65+i),teamIds:teams.slice(i*5,i*5+5).map(t=>t.id),standings:[]}));
-  const matches=[];
-  for(const group of groups){
-    // The first team plays rounds 1–4 and rests in round 5. In group A this
-    // keeps the user's opening match in round 1; the live flow handles the bye.
-    let order=[group.teamIds[0],null,...group.teamIds.slice(1)];
-    for(let round=1;round<=5;round++){
-      for(let i=0;i<3;i++){
-        let homeId=order[i],awayId=order[5-i];if(!homeId||!awayId)continue;
-        if(round%2===0)[homeId,awayId]=[awayId,homeId];
-        matches.push({id:'group-'+group.id+'-'+round+'-'+i,stage:'group',stageLabel:'Grupo '+group.id+' · rodada '+round,groupId:group.id,round,homeId,awayId,neutral:true,result:null});
-      }
-      order=[order[0],order.at(-1),...order.slice(1,-1)];
-    }
-  }
-  const t={mode:'world-cup',seed:hashSeed(seed),rngState:rng.getState(),settings:{...settings},userTeamId:user.id,teams,groups,matches,bracket:[],groupRounds:5,progressRound:0,userMatches:[],championId:null,complete:false};
-  t.groups=standingsFor(t);t.campaign=campaignFor(t);return t;
-}
 
 const BRAZIL_CUP_STAGES = ['round16', 'quarter', 'semi', 'final'];
 
@@ -618,7 +593,7 @@ export function playNextRound(tournament) {
   const quick = next.mode === 'quick';
   const groupRounds=next.groupRounds||3;
   const groupRound = !league && !quick && next.progressRound < groupRounds;
-  const knockoutStages = next.mode==='world-cup'?['quarter','semi','final']:['round16', 'quarter', 'semi', 'final'];
+  const knockoutStages = ['round16', 'quarter', 'semi', 'final'];
   const knockoutIndex = next.progressRound - (quick ? 0 : groupRounds);
   const stage = league ? 'league' : groupRound ? 'group' : knockoutStages[knockoutIndex];
   const selected = next.matches.filter(match => !match.result && (league ? match.round === next.progressRound+1 : groupRound ? match.stage === 'group' && match.round === next.progressRound + 1 : match.stage === stage));

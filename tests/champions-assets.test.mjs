@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {clubs,allSquads} from '../data/clubs.js';
+import {allSquads as gameSquads} from '../data/game-squads.js';
 import {CLUB_LOGOS} from '../data/club-logos.js';
 import {PLAYER_PORTRAITS} from '../data/player-portraits.js';
 import {playerPortrait} from '../js/player-portraits.js';
@@ -14,6 +15,7 @@ const logoSources=JSON.parse(fs.readFileSync(new URL('assets/logos/sources.json'
 const missing=JSON.parse(fs.readFileSync(new URL('assets/players/missing.json',root),'utf8'));
 const framing=JSON.parse(fs.readFileSync(new URL('assets/players/framing.json',root),'utf8'));
 const players=[...new Map(allSquads.flatMap(s=>s.jogadores.map(p=>[p.id,p]))).values()];
+const allPlayers=[...new Map(gameSquads.flatMap(s=>s.jogadores.map(p=>[p.id,p]))).values()];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 function assertImage(file){
  assert.match(file,/^assets\/(?:players|logos)\/[^/]+\.(?:png|jpe?g|webp)$/);
@@ -33,9 +35,12 @@ test('os 40 clubes têm escudos locais válidos e a fonte registrada',()=>{
   if(source.sha256)assert.equal(hash(bytes),source.sha256,club.id);
  }
 });
-test('todas as pessoas têm uma foto local íntegra, sem depender de URL externa ou fallback',()=>{
- assert.deepEqual(missing,[]);
+test('os elencos dos clubes têm retrato em todas as cartas',()=>{
+ assert.deepEqual(Object.keys(PLAYER_PORTRAITS).sort(),[...new Set(allPlayers.map(player=>player.id))].sort());
+ const expectedMissing=allPlayers.filter(player=>!PLAYER_PORTRAITS[player.id]).map(player=>({id:player.id,name:player.nome})).sort((a,b)=>a.id.localeCompare(b.id));
+ assert.deepEqual([...missing].sort((a,b)=>a.id.localeCompare(b.id)),expectedMissing);
  for(const player of players)assert.ok(playerPortrait(player.id),player.id);
+ assert.equal(players.filter(player=>!playerPortrait(player.id)).length,0);
  for(const [id,portrait] of Object.entries(PLAYER_PORTRAITS)){
   const source=sources.players[id];assert.ok(source?.source,id);
   assert.equal(portrait.src,source.file,id);

@@ -10,8 +10,9 @@ import {renderHome,renderSetup,renderMatch,renderBracket} from '../js/ui.js';
 const user={...squadTeam(allSquads[0]),id:'user',clubId:'user',name:'Meu time'};
 
 test('the categories include instant quick play and both local competition logos',()=>{
-  assert.deepEqual(MODES.map(mode=>mode.id),['quick','copa-do-brasil','champions','world-cup']);
+  assert.deepEqual(MODES.map(mode=>mode.id),['quick','copa-do-brasil','champions']);
   const home=renderHome({clubs,stats:{titles:0,best:'—',streak:0,winRate:0}});
+  assert.ok(!home.includes('Copa do Mundo')&&!home.includes('SELEÇÕES DO MUNDO'));
   for(const mode of ['copa-do-brasil','champions']){
     const setup=renderSetup({mode,formation:'4-3-3'});
     assert.ok(!/Desafio diário|Mata-mata rápido/.test(home+setup));

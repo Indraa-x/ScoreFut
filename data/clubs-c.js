@@ -4,7 +4,7 @@
  * Onze destaques por temporada com cobertura de posições; não é um ranking oficial.
  * Camisas desconhecidas ficam vazias. Vínculos e conquistas: fontes-c.md.
  */
-import { recalibratePlayer } from './ratings.js?v=worldcup-20261020';
+import { recalibratePlayer } from './ratings.js?v=club-only-cleanup-20261020';
 
 const slug = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

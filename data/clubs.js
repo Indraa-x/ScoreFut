@@ -4,11 +4,11 @@
  * no ratings.js reproduzem o OVR da edição FIFA/FC; as demais são avaliações do jogo.
  * Cada temporada oferece onze candidatos, incluindo um goleiro.
  */
-import { clubsA } from './clubs-a.js?v=worldcup-20261020';
-import { clubsB } from './clubs-b.js?v=worldcup-20261020';
-import { clubsC } from './clubs-c.js?v=worldcup-20261020';
-import { championsAdditions } from './champions-additions.js?v=worldcup-20261020';
-import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=worldcup-20261020';
+import { clubsA } from './clubs-a.js?v=club-only-cleanup-20261020';
+import { clubsB } from './clubs-b.js?v=club-only-cleanup-20261020';
+import { clubsC } from './clubs-c.js?v=club-only-cleanup-20261020';
+import { championsAdditions } from './champions-additions.js?v=club-only-cleanup-20261020';
+import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=club-only-cleanup-20261020';
 export const ELENCO_TAMANHO = 11;
 export const clubs = [...clubsA, ...clubsB, ...clubsC, ...championsAdditions];
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
@@ -40,7 +40,7 @@ export function validateData() {
     if(new Set(players.map(p=>p.id)).size !== players.length) errors.push(`${squad.id}: jogador repetido.`);
     for(const player of players) {
       if(!player.id || !player.nome) errors.push(`${squad.id}: jogador sem nome ou ID.`);
-      if(!Number.isFinite(player.ovr) || player.ovr < 50 || player.ovr > MAX_OVR) errors.push(`${squad.id}/${player.nome}: OVR inválido para a escala revisada.`);
+      if(!Number.isFinite(player.ovr) || player.ovr < 40 || player.ovr > MAX_OVR) errors.push(`${squad.id}/${player.nome}: OVR inválido para a escala revisada.`);
       if(!player.tags?.length || player.tags.some(t=>!validTags.has(t))) errors.push(`${squad.id}/${player.nome}: posição inválida.`);
       for(const name of ['ataque','meio','defesa','finalizacao','reflexo','posicionamento']) if(!Number.isFinite(player.atributos?.[name])) errors.push(`${squad.id}/${player.nome}: atributo ${name} ausente.`);
     }

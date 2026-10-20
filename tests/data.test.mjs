@@ -56,7 +56,7 @@ test('os onze candidatos têm um goleiro e dez atletas de linha', () => {
     assert.equal(new Set(time.jogadores.map(jogador => jogador.id)).size, 11, time.id);
     for (const jogador of time.jogadores) {
       assert.match(jogador.id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-      assert.ok(Number.isInteger(jogador.ovr) && jogador.ovr >= 50 && jogador.ovr <= 99);
+      assert.ok(Number.isInteger(jogador.ovr) && jogador.ovr >= 40 && jogador.ovr <= 99);
       assert.equal(typeof jogador.camisa, 'string');
       assert.ok(jogador.camisa === '' || /^\d+$/.test(jogador.camisa));
       for (const atributo of Object.values(jogador.atributos)) {

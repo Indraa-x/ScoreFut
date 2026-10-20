@@ -1,8 +1,11 @@
+import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js';
+import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js';
+
 /**
  * Historical FIFA/EA SPORTS FC OVRs, with a conservative editorial fallback
  * for seasons where an archived rating could not be verified.
  */
-export const RATINGS_VERSION = 5;
+export const RATINGS_VERSION = 7;
 export const MAX_OVR = 99;
 
 // OVRs are copied from the edition matching the season's ending year
@@ -38,7 +41,8 @@ export const FIFA_RATING_SOURCES = Object.freeze({
   'tottenham-2017': 'https://fifaindex.com/teams/18-tottenham-hotspur/fifa17',
 });
 
-// Only player/season values checked against the matching FIFA Index edition.
+// Older curated player/season values checked against the matching FIFA Index edition.
+// Where the expanded player archive has a verified value, that record takes precedence.
 // Missing players keep the game's editorial fallback; no rating is guessed.
 export const FIFA_OVR_BY_SQUAD = Object.freeze({
   'arsenal-2006': {
@@ -245,13 +249,15 @@ export function recalibratePlayer(player, attributeFloor = 1) {
 
 /** Replace the fallback with a verified rating from that exact historical squad. */
 export function applyHistoricalFifaRating(player, squadId) {
-  const rating = FIFA_OVR_BY_SQUAD[squadId]?.[player.id];
+  const editionRating = MODERN_RATINGS_BY_SQUAD[squadId]?.[player.id]
+    ?? ARCHIVED_RATINGS_BY_SQUAD[squadId]?.[player.id];
+  const rating = editionRating?.ovr ?? FIFA_OVR_BY_SQUAD[squadId]?.[player.id];
   if (rating === undefined) return player;
   const delta = rating - player.ovr;
   return {
     ...player,
     ovr: rating,
-    ratingSource: FIFA_RATING_SOURCES[squadId],
+    ratingSource: editionRating?.source ?? FIFA_RATING_SOURCES[squadId],
     ratingEdition: (() => {
       const edition = Number(squadId.match(/-(\d{4})$/)?.[1]) % 100;
       return edition <= 23 ? `FIFA ${String(edition).padStart(2, '0')}` : `FC ${edition}`;

@@ -1,4 +1,4 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS } from './engine.js?v=worldcup-20261020';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS } from './engine.js?v=club-only-cleanup-20261020';
 
 export const MATCH_FLOW_VERSION = 1;
 

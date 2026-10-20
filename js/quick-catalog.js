@@ -1,6 +1,6 @@
-import {clubs, allSquads} from '../data/clubs.js?v=worldcup-20261020';
-import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=worldcup-20261020';
-import {squadTeam,FORMATIONS} from './engine.js?v=worldcup-20261020';
+import {clubs, allSquads} from '../data/clubs.js?v=club-only-cleanup-20261020';
+import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=club-only-cleanup-20261020';
+import {squadTeam,FORMATIONS} from './engine.js?v=club-only-cleanup-20261020';
 
 const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 

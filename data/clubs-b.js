@@ -10,7 +10,7 @@
  * Camisas desconhecidas ficam vazias; fontes e limites em fontes-b.md.
  */
 
-import { recalibratePlayer } from './ratings.js?v=worldcup-20261020';
+import { recalibratePlayer } from './ratings.js?v=club-only-cleanup-20261020';
 
 const clamp = n => Math.max(1, Math.min(99, Math.round(n)));
 const slug = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
