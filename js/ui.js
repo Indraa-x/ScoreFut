@@ -39,9 +39,9 @@ function homePlayers(squadCount){
       {name:'Ronaldinho Gaúcho',src:'ronaldinho.png',head:{x:341,y:188,height:260}},
     ]},
     {className:'next',players:[
-      {name:'Michael Olise',src:'group-3-player-1.png?v=larger-home-torsos-20261021',width:649,height:900,head:{x:344,y:190,height:242}},
+      {name:'Jamal Musiala',src:'group-3-player-1.png?v=correct-olise-slot-20261021',width:485,height:673,head:{x:266,y:146,height:181}},
       {name:'Jogador com uniforme azul',src:'group-3-player-2.png',width:649,height:900,head:{x:327,y:168,height:231}},
-      {name:'Jogador com uniforme branco',src:'group-3-player-3.png',width:644,height:900,head:{x:336,y:135,height:241}},
+      {name:'Michael Olise',src:'group-3-player-3.png?v=correct-olise-slot-20261021',width:649,height:900,head:{x:344,y:190,height:242}},
       {name:'Jogador com uniforme azul e vermelho',src:'group-3-player-4.png',width:649,height:900,head:{x:351,y:208,height:206}},
     ]},
   ];
