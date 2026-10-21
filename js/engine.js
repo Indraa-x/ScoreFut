@@ -271,15 +271,24 @@ function shootout(home, away, rng) {
 }
 
 /** No RNG or team mutation. All events needed for the live replay are returned. */
-export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllowed = true, settings = SIMULATION_SETTINGS } = {}) {
+export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllowed = true, stoppageTimeAllowed = false, extraTimeTrigger = null, settings = SIMULATION_SETTINGS } = {}) {
   const xG = [expectedGoals(home, away, settings), expectedGoals(away, home, settings)];
   const regulationGoals = [poisson(xG[0], rng), poisson(xG[1], rng)];
   const extraGoals = [0, 0];
-  const extraTime = knockout && extraTimeAllowed && regulationGoals[0] === regulationGoals[1];
+  const regulationDrawNeedsExtraTime = typeof extraTimeTrigger === 'function'
+    ? extraTimeTrigger(regulationGoals)
+    : knockout && regulationGoals[0] === regulationGoals[1];
+  const extraTime = extraTimeAllowed && regulationDrawNeedsExtraTime;
   if (extraTime) {
     extraGoals[0] = poisson(xG[0] / 3, rng);
     extraGoals[1] = poisson(xG[1] / 3, rng);
   }
+  const regulationStoppageTime = stoppageTimeAllowed ? 1 + Math.floor(rng() * 9) : 0;
+  const extraTimeStoppageTime = extraTime && stoppageTimeAllowed ? 1 + Math.floor(rng() * 9) : 0;
+  const regulationEnd = 90 + regulationStoppageTime;
+  const extraTimeStart = extraTime ? regulationEnd : null;
+  const extraTimeEnd = extraTime ? regulationEnd + 30 : null;
+  const duration = extraTime ? extraTimeEnd + extraTimeStoppageTime : regulationEnd;
   const homeGoals = regulationGoals[0] + extraGoals[0];
   const awayGoals = regulationGoals[1] + extraGoals[1];
   const events = [];
@@ -287,13 +296,14 @@ export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllo
   [home, away].forEach((team, index) => {
     const side = index ? 'away' : 'home';
     for (let goal = 0; goal < regulationGoals[index] + extraGoals[index]; goal += 1) {
-      const minute = goal < regulationGoals[index] ? 1 + Math.floor(rng() * 90) : 91 + Math.floor(rng() * 30);
+      const minute = goal < regulationGoals[index]
+        ? 1 + Math.floor(rng() * regulationEnd)
+        : extraTimeStart + 1 + Math.floor(rng() * (30 + extraTimeStoppageTime));
       const player = weightedPlayer(team, rng);
       const coordinates = point(side, true);
       if (rng() < 0.12) events.push({ minute, type: 'penalty', team: side, player, ...coordinates, converted: true, shootout: false });
       events.push({ minute, type: 'goal', team: side, player, ...coordinates });
     }
-    const duration = extraTime ? 120 : 90;
     const incident = (type, count) => {
       const outfieldOnly = type === 'corner' || type === 'substitution';
       const eligible = outfieldOnly ? team.lineup.filter(entry => entry.slot.position !== 'GOL') : team.lineup;
@@ -316,7 +326,7 @@ export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllo
   if (knockout && homeGoals === awayGoals) {
     const result = shootout(home, away, rng);
     penalties = result.score;
-    events.push(...result.events.map(event => ({ ...event, minute: extraTime ? 120 : 90 })));
+    events.push(...result.events.map(event => ({ ...event, minute: duration })));
     winnerId = penalties[0] > penalties[1] ? home.id : away.id;
   }
   events.sort((a, b) => a.minute - b.minute);
@@ -327,7 +337,9 @@ export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllo
     existing.goals += 1;
     scorerMap.set(key, existing);
   });
-  return { homeGoals, awayGoals, winnerId, extraTime, penalties, regulationGoals, duration: extraTime ? 120 : 90, events, scorers: [...scorerMap.values()], xG: xG.map(rounded) };
+  return { homeGoals, awayGoals, winnerId, extraTime, penalties, regulationGoals,
+    regulationStoppageTime, extraTimeStoppageTime, extraTimeStart, extraTimeEnd, duration,
+    events, scorers: [...scorerMap.values()], xG: xG.map(rounded) };
 }
 
 const shuffle = (items, rng) => {
@@ -450,12 +462,12 @@ export function resolveKnockoutTie(first, second, home, away, rng) {
   const aggregate = [first.result.awayGoals + second.result.homeGoals,
     first.result.homeGoals + second.result.awayGoals];
   let winnerId = aggregate[0] > aggregate[1] ? home.id : aggregate[1] > aggregate[0] ? away.id : null;
-  let result = {...second.result};
+  let result = {...second.result, winnerId};
   if (!winnerId) {
     const penalties = shootout(home, away, rng);
     winnerId = penalties.score[0] > penalties.score[1] ? home.id : away.id;
-    result = {...result, penalties:penalties.score,
-      events:[...result.events, ...penalties.events.map(event => ({...event, minute:90}))]};
+    result = {...result, winnerId, penalties:penalties.score,
+      events:[...result.events, ...penalties.events.map(event => ({...event, minute:result.duration}))]};
   }
   return {aggregate, winnerId, result};
 }
@@ -498,14 +510,18 @@ function playCupRound(tournament) {
   for (const match of selected) {
     const home = next.teams.find(team => team.id === match.homeId);
     const away = next.teams.find(team => team.id === match.awayId);
-    match.result = simulateMatch(home, away, rng, {knockout:match.stage === 'final',
-      extraTimeAllowed:false, settings:next.settings});
     const tie = stage.ties.find(tie => tie.id === match.tieId);
+    const first = match.leg === 2 ? next.matches.find(fixture => fixture.id === tie?.matchIds[0]) : null;
+    const aggregateDrawNeedsExtraTime = first
+      ? scores => first.result.awayGoals + scores[0] === first.result.homeGoals + scores[1]
+      : null;
+    match.result = simulateMatch(home, away, rng, {knockout:match.stage === 'final',
+      extraTimeAllowed:match.stage === 'final' || match.leg === 2,
+      stoppageTimeAllowed:true, extraTimeTrigger:aggregateDrawNeedsExtraTime, settings:next.settings});
     if (match.stage === 'final') {
       tie.winnerId = match.result.winnerId;
       tie.aggregate = [match.result.homeGoals, match.result.awayGoals];
     } else if (match.leg === 2) {
-      const first = next.matches.find(fixture => fixture.id === tie.matchIds[0]);
       const resolved = resolveKnockoutTie(first, match, home, away, rng);
       match.result = resolved.result;
       tie.winnerId = resolved.winnerId;
@@ -634,7 +650,8 @@ export function playNextRound(tournament) {
   selected.forEach(match => {
     const home = next.teams.find(team => team.id === match.homeId);
     const away = next.teams.find(team => team.id === match.awayId);
-    match.result = simulateMatch(home, away, rng, { knockout: !league && !groupRound, settings: next.settings });
+    match.result = simulateMatch(home, away, rng, { knockout: !league && !groupRound,
+      stoppageTimeAllowed:next.mode === 'champions', settings: next.settings });
   });
   next.progressRound += 1;
   next.rngState = rng.getState();

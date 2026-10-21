@@ -1,5 +1,5 @@
-import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=champions-two-legs-20261020';
-import {createDraft} from './draft.js?v=champions-two-legs-20261020';
+import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=cup-stoppage-20261021';
+import {createDraft} from './draft.js?v=cup-stoppage-20261021';
 
 /** Select one historical club's complete lineup; simulation is a separate action. */
 export function selectQuickTeam({squadId,seed,date,squads,formation=null}){

@@ -1,6 +1,6 @@
-import { currentMatch } from './match-session.js?v=champions-two-legs-20261020';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, scoreAt } from './match-motion.js?v=champions-two-legs-20261020';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=club-only-cleanup-20261020';
+import { currentMatch } from './match-session.js?v=cup-stoppage-20261021';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=cup-stoppage-20261021';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=cup-stoppage-20261021';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;
@@ -31,16 +31,16 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     if (nodes.aggregate) nodes.aggregate.textContent = `${Number(nodes.aggregate.dataset.home)+score[0]} – ${Number(nodes.aggregate.dataset.away)+score[1]}`;
     const clock = formatMatchClock(state.matchMinute);
     if (nodes.clock.textContent !== clock) nodes.clock.textContent = clock;
-    const phase = state.matchMinute >= match.result.duration ? 'Fim de jogo' : state.matchMinute >= 90 ? 'Prorrogação' : state.matchMinute >= 45 ? '2º tempo' : '1º tempo';
+    const phase = matchPhase(match.result,state.matchMinute);
     if (nodes.phase.textContent !== phase) nodes.phase.textContent = phase;
-    nodes.endTime.textContent = state.matchMinute >= 90 && match.result.duration > 90 ? '120′' : '90′';
+    nodes.endTime.textContent = matchEndLabel(match.result);
     if (nodes.progress && document.activeElement !== nodes.progress) nodes.progress.value = state.matchMinute;
     nodes.progress?.style.setProperty('--progress', `${state.matchMinute / match.result.duration * 100}%`);
     const goal = match.result.events.filter(event => event.type === 'goal' && event.minute <= state.matchMinute).at(-1);
     const showGoal = goal && state.matchMinute - goal.minute < 1.4 * (state.matchSpeed || 1) && state.matchMinute < match.result.duration;
     nodes.goal.classList.toggle('visible', !!showGoal);
     if (showGoal) {
-      const text = `${goal.minute}′ · ${goal.player.nome}`;
+      const text = `${formatMatchEventMinute(match.result,goal.minute)}′ · ${goal.player.nome}`;
       if (nodes.goalName.textContent !== text) nodes.goalName.textContent = text;
     }
   }

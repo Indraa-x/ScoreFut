@@ -1,3 +1,5 @@
+import { formatMatchEventMinute } from './match-motion.js?v=cup-stoppage-20261021';
+
 const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const color=(value,fallback)=>/^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(value||'')?value:fallback;
 
@@ -14,7 +16,7 @@ export function renderMatchGoals(result,minute,names={},colors={}){
     for(const goal of goals.filter(goal=>goal.team===side)){
       const key=goal.player.id||goal.player.nome;
       if(!players.has(key))players.set(key,{name:goal.player.nome,minutes:[]});
-      players.get(key).minutes.push(goal.minute);
+      players.get(key).minutes.push(formatMatchEventMinute(result,goal.minute));
     }
     const palette=colors[side]||[];
     const title=names[side]?`<h3 class="scorer-team-name" style="--team-color-1:${color(palette[0],'#13754b')};--team-color-2:${color(palette[1],'#174b2e')}">${escape(names[side])}</h3>`:'';

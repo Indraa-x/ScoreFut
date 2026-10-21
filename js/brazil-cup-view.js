@@ -12,6 +12,7 @@ export function renderCupStages(t, {esc, icon, badge}) {
       ${tie.teamIds.map(id=>`<div class="bracket-team ${tie.winnerId===id?'winner':''}">${badge({...team(id),nome:team(id).name})}<span class="bracket-team-name">${esc(team(id).name)}</span><strong>${games.some(game=>game.result)?score(id):'—'}</strong></div>`).join('')}
       ${games.map(game=>`<div class="cup-leg"><span>${game.neutral?'Campo neutro':game.leg===1?'Ida':'Volta'}${game.neutral?'':` · ${esc(team(game.homeId).sigla || team(game.homeId).name)}`}</span><b>${game.result?`${game.result.homeGoals}–${game.result.awayGoals}`:'—'}</b></div>`).join('')}
       ${penaltyScore?`<small>Pênaltis: ${penaltyScore.join('–')}</small>`:''}
+      ${last?.result?.extraTime&&!penalties?'<small>Após prorrogação</small>':''}
       ${tie.winnerId?`<small class="cup-qualified">${icon('check')} ${stageId==='final'?'Campeão':'Classificado'}: ${esc(team(tie.winnerId).name)}</small>`:''}
     </article>`;
   };
@@ -23,7 +24,7 @@ export function renderCupStages(t, {esc, icon, badge}) {
 
 export function renderBrazilCupBracket(s, {esc, icon, badge, btn, competitionMark}) {
   return `<div class="screen-title match-page-title"><div>${competitionMark('copa-do-brasil')}<div><span class="eyebrow accent">COPA DO BRASIL</span><h1>Chaveamento</h1><p>Ida e volta até a semifinal. Final em jogo único.</p></div></div>${btn(icon('back')+' Voltar ao jogo','back-match')}</div>
-    <p class="bracket-note">Avança quem marcar mais gols no agregado. Empate: pênaltis, sem prorrogação e sem vantagem de gol fora.</p>
+    <p class="bracket-note">Cada partida pode ter de 1 a 9 minutos de acréscimo. Empate no agregado vai à prorrogação e, se necessário, aos pênaltis.</p>
     ${renderCupStages(s.tournament,{esc,icon,badge})}
     <p class="mode-note">Edição histórica com até 16 equipes: seu time e os clubes participantes disponíveis na base. Confrontos e mandos sorteados nas oitavas e quartas; semifinais seguem o chaveamento das quartas.</p>`;
 }

@@ -1,4 +1,4 @@
-import { hashSeed, mulberry32 } from './engine.js?v=champions-two-legs-20261020';
+import { hashSeed, mulberry32 } from './engine.js?v=cup-stoppage-20261021';
 
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const mix = (a, b, progress) => a + (b - a) * progress;
@@ -13,6 +13,36 @@ export function advanceMatchMinute(minute, milliseconds, speed, duration) {
 export function formatMatchClock(minute) {
   const seconds = Math.floor(Math.max(0, minute) * 60 + .00001);
   return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+}
+
+export function formatMatchEventMinute(result, minute) {
+  const value = Math.max(0, Number(minute) || 0);
+  if (result?.extraTime) {
+    const extraStart = Number.isFinite(result.extraTimeStart) ? result.extraTimeStart : 90;
+    const extraEnd = Number.isFinite(result.extraTimeEnd) ? result.extraTimeEnd : 120;
+    if (value > extraEnd) return `120+${Math.ceil(value - extraEnd)}`;
+    if (value > extraStart) return String(90 + Math.floor(value - extraStart));
+    if (value > 90) return `90+${Math.ceil(value - 90)}`;
+  } else if (value > 90) return `90+${Math.ceil(value - 90)}`;
+  return String(Math.floor(value));
+}
+
+export function matchPhase(result, minute) {
+  if (minute >= result.duration) return 'Fim de jogo';
+  if (result.extraTime) {
+    const extraStart = Number.isFinite(result.extraTimeStart) ? result.extraTimeStart : 90;
+    const extraEnd = Number.isFinite(result.extraTimeEnd) ? result.extraTimeEnd : 120;
+    if (minute > extraEnd) return 'Acréscimos da prorrogação';
+    if (minute > extraStart) return 'Prorrogação';
+    if (minute > 90) return 'Acréscimos';
+  } else if (minute > 90) return 'Acréscimos';
+  return minute >= 45 ? '2º tempo' : '1º tempo';
+}
+
+export function matchEndLabel(result) {
+  const base = result.extraTime ? 120 : 90;
+  const added = result.extraTime ? result.extraTimeStoppageTime : result.regulationStoppageTime;
+  return added ? `${base}+${added}′` : `${base}′`;
 }
 
 export function scoreAt(result, minute) {
