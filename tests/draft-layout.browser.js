@@ -8,10 +8,13 @@ const cases=[
   {id:'empty',label:'Sem sorteio',formation:'4-3-3'},
   {id:'rolling',label:'Sorteando',formation:'4-3-3'},
   ...Object.keys(FORMATIONS).map(formation=>({id:'players',label:'Jogadores e indisponíveis',formation})),
+  ...Object.keys(FORMATIONS).map(formation=>({id:'full-lineup',label:'Onze jogadores e nomes longos',formation})),
   {id:'legends',label:'Lendas e indisponíveis',formation:'4-3-3'},
   {id:'long-header',label:'Olympique de Marseille 1993',formation:'4-3-3'}
-];
-const sizes=[[320,568],[360,640],[768,1024],[1024,600],[1093,540],[1280,720],[1366,768],[1440,900],[1920,1080],[1024,639],[1024,640],[1366,639],[1366,640]];
+].filter(fixture=>query.get('suite')!=='markers'||['empty','full-lineup'].includes(fixture.id));
+const sizes=query.get('suite')==='markers'
+  ? [[320,568],[360,640],[768,1024],[1024,600],[1366,768],[1920,1080]]
+  : [[320,568],[360,640],[768,1024],[1024,600],[1093,540],[1280,720],[1366,768],[1440,900],[1920,1080],[1024,639],[1024,640],[1366,639],[1366,640]];
 const epsilon=1.2;
 const fixtureURL=fixture=>{
   const url=new URL(location.pathname,location.href);
@@ -24,12 +27,16 @@ function fixtureState(id,formation){
   const squad=allSquads.find(s=>s.id===(id==='long-header'?'marseille-1993':'bayern-2020'))||allSquads[0];
   const draft=createDraft(62137,'2026-10-16',id==='legends'?'legends':'champions');
   const picks=[];
-  if(id==='players'||id==='legends'||id==='long-header'){
+  if(['players','legends','long-header','full-lineup'].includes(id)){
+    const labelLength=player=>(player.nome.length>17?player.nome.split(' ').at(-1):player.nome).length;
+    const candidates=id==='full-lineup'
+      ? allSquads.flatMap(team=>team.jogadores.map(player=>({player,squad:team}))).sort((a,b)=>labelLength(b.player)-labelLength(a.player))
+      : squad.jogadores.map(player=>({player,squad}));
     // Real roster entries are retained, including long names and multirole tags.
     for(const slot of FORMATIONS[formation].slots){
-      const player=squad.jogadores.find(p=>!picks.some(pick=>pick.player.id===p.id)&&positionFit(p,slot)!==null);
-      if(player)picks.push({player,slot,squadId:squad.id,clubId:squad.clubId,clubName:squad.nome,ano:squad.ano});
-      if(picks.length===8)break;
+      const entry=candidates.find(({player})=>!picks.some(pick=>pick.player.id===player.id)&&positionFit(player,slot)!==null);
+      if(entry){const {player,squad:team}=entry;picks.push({player,slot,squadId:team.id,clubId:team.clubId,clubName:team.nome,ano:team.ano});}
+      if(id!=='full-lineup'&&picks.length===8)break;
     }
     Object.assign(draft,{picks,currentSquad:squad,currentSquadId:squad.id,otherSeasonAvailable:true});
   }
@@ -138,8 +145,16 @@ function inspectGeometry(){
     fail(contains(center.getBoundingClientRect(),pitchRect),`Campo cortado pelo painel: campo ${coords(pitch)}, painel ${coords(center)}.`);
     if(header)fail(!overlaps(header.getBoundingClientRect(),pitchRect),'Cabeçalho da escalação sobrepõe o campo.');
     const circles=[...pitch.querySelectorAll('.slot-circle')].filter(visible);
+    metrics.minimumCircleSize=Math.min(...circles.map(circle=>circle.getBoundingClientRect().width));
     fail(circles.length===11,`Campo exibe ${circles.length} círculos; esperado 11.`);
-    for(const circle of circles)fail(contains(pitchRect,circle.getBoundingClientRect()),`Círculo ${circle.textContent.trim()} cortado: ${coords(circle)}; campo ${coords(pitch)}.`);
+    for(const circle of circles){
+      const rect=circle.getBoundingClientRect();
+      fail(contains(pitchRect,rect),`Círculo ${circle.textContent.trim()} cortado: ${coords(circle)}; campo ${coords(pitch)}.`);
+      fail(rect.width>=40-epsilon,`Círculo pequeno: ${rect.width.toFixed(1)}px.`);
+      fail(Math.abs(rect.width-rect.height)<=epsilon,'Marcador deixou de ser circular.');
+      const range=document.createRange();range.selectNodeContents(circle);
+      for(const glyph of range.getClientRects())fail(contains(rect,glyph),`OVR ou posição ${circle.textContent.trim()} excede o círculo.`);
+    }
     for(let i=0;i<circles.length;i++)for(let j=i+1;j<circles.length;j++)fail(!overlaps(circles[i].getBoundingClientRect(),circles[j].getBoundingClientRect()),`Círculos ${i+1} e ${j+1} sobrepostos no campo.`);
     const labels=[...pitch.querySelectorAll('.pitch-slot small')].filter(visible);
     for(const label of labels){
