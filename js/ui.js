@@ -40,7 +40,7 @@ function homePlayers(squadCount){
     ]},
     {className:'next',players:[
       {name:'Jamal Musiala',src:'group-3-player-1.png?v=correct-olise-slot-20261021',width:485,height:673,head:{x:266,y:146,height:181}},
-      {name:'Jogador com uniforme azul',src:'group-3-player-2.png',width:649,height:900,head:{x:327,y:168,height:231}},
+      {name:'Désiré Doué',src:'group-3-player-2.png',width:649,height:900,offsetX:-60,head:{x:327,y:168,height:231}},
       {name:'Michael Olise',src:'group-3-player-3.png?v=correct-olise-slot-20261021',width:649,height:900,head:{x:344,y:190,height:242}},
       {name:'Jogador com uniforme azul e vermelho',src:'group-3-player-4.png',width:649,height:900,head:{x:351,y:208,height:206}},
     ]},
@@ -49,9 +49,10 @@ function homePlayers(squadCount){
   const portraits=groups.map(group=>`<div class="home-stars-group home-stars-group--${group.className}">${group.players.map(player=>{
     // Keep hairlines aligned while allowing individual scale and fade adjustments.
     const visibleHeight=player.head.height/(.48*(player.zoom??1)),width=player.width??group.width,height=player.height??group.height;
+    const portraitCenter=(player.head.x-(player.offsetX??0))/width*100;
     const fadeAt=fraction=>(player.head.y+visibleHeight*fraction)/height*100;
     const fade=`linear-gradient(to bottom,${(player.fadeStops??fadeStops).map(([fraction,opacity])=>`rgba(0,0,0,${opacity}) ${fadeAt(fraction)}%`).join(',')})`;
-    return `<figure class="home-star"><div class="home-star-portrait"><img src="assets/home/${player.src}" width="${width}" height="${height}" alt="${esc(player.name)}" style="--portrait-center:${player.head.x/width*100}%;--portrait-height:${height/visibleHeight*100}%;--portrait-top:${-player.head.y/visibleHeight*100}%;--portrait-fade:${fade}" decoding="async" draggable="false"></div></figure>`;
+    return `<figure class="home-star"><div class="home-star-portrait"><img src="assets/home/${player.src}" width="${width}" height="${height}" alt="${esc(player.name)}" style="--portrait-center:${portraitCenter}%;--portrait-height:${height/visibleHeight*100}%;--portrait-top:${-player.head.y/visibleHeight*100}%;--portrait-fade:${fade}" decoding="async" draggable="false"></div></figure>`;
   }).join('')}</div>`).join('');
   return `<section class="home-stars" aria-label="Craques do futebol"><svg class="home-portrait-filters" aria-hidden="true" focusable="false"><defs><filter id="home-portrait-solid" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncA type="linear" slope="8"/></feComponentTransfer></filter></defs></svg><div class="home-stars-heading"><span>CRAQUES DO FUTEBOL</span><span>${squadCount} elencos históricos</span></div><div class="home-stars-lineup">${portraits}</div><div class="home-stars-footer"><span>${icon('users')} Onze jogadores. Um só time.</span><span>${icon('bolt')} Modo rápido</span></div></section>`;
 }
