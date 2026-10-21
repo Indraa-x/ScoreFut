@@ -51,7 +51,7 @@ test('ratings backed by an archived FIFA edition match the published OVR', () =>
     assert.equal(found.ratingEdition,edition,`${squad}/${id} edition`);
     assert.equal(found.ratingSource,MODERN_RATINGS_BY_SQUAD[squad]?.[id]?.source??ARCHIVED_RATINGS_BY_SQUAD[squad]?.[id]?.source??FIFA_RATING_SOURCES[squad],`${squad}/${id} source`);
   }
-  assert.equal(RATINGS_VERSION,8);
+  assert.equal(RATINGS_VERSION,9);
 });
 
 test('ratings from FIFA 21 through FC 26 use the exact player and edition source',()=>{
@@ -122,6 +122,17 @@ test('exceptional seasons use the reviewed OVR while keeping original EA ratings
     ['inter-2010','wesley-sneijder',91],
     ['bayern-2010','thomas-muller',84],
     ['barcelona-2009','sergio-busquets',82],
+    ['psg-2025','ousmane-dembele',90],
+    ['psg-2025','vitinha',89],
+    ['psg-2025','achraf-hakimi',89],
+    ['psg-2025','gianluigi-donnarumma',89],
+    ['psg-2025','nuno-mendes',88],
+    ['psg-2025','desire-doue',88],
+    ['psg-2025','khvicha-kvaratskhelia',87],
+    ['psg-2025','joao-neves',87],
+    ['psg-2025','fabian-ruiz',85],
+    ['psg-2025','marquinhos',88],
+    ['psg-2025','willian-pacho',86],
   ]) assert.equal(player(squadId,id).ovr,ovr,`${squadId}/${id}`);
 
   for (const [squadId,ratings] of Object.entries(SEASON_RATINGS_BY_SQUAD)) {
@@ -133,7 +144,7 @@ test('exceptional seasons use the reviewed OVR while keeping original EA ratings
       assert.equal(found.ratingSource,review.source);
       assert.equal(found.ratingReason,review.reason);
       assert.equal(found.ratingEdition,undefined,'Editorial OVR must not be labelled as an official EA rating');
-      assert.match(review.source,/^https:\/\/(?:www\.santosfc\.com\.br|www\.uefa\.com|inside\.fifa\.com)\//);
+      assert.match(review.source,/^https:\/\/(?:www\.santosfc\.com\.br|www\.uefa\.com|inside\.fifa\.com|www\.psg\.fr|en\.news\.psg\.fr)\//);
       assert.ok(review.reason.length>30);
       assert.ok(Number.isInteger(review.ovr)&&review.ovr<=96);
       const archive=MODERN_RATINGS_BY_SQUAD[squadId]?.[id]??ARCHIVED_RATINGS_BY_SQUAD[squadId]?.[id];
@@ -167,6 +178,7 @@ test('old draft picks receive the revised star ratings without changing skips or
     ['santos-2010','neymar',73,86],
     ['barcelona-2011','lionel-messi',90,96],
     ['manchester-united-2008','cristiano-ronaldo',91,94],
+    ['psg-2025','ousmane-dembele',87,90],
   ]) {
     const latest=player(squadId,id);
     const slot=FORMATIONS['4-3-3'].slots.find(s=>positionFit(latest,s)!==null);

@@ -7,6 +7,8 @@ const review = (source, reason, ratings) => Object.freeze(Object.fromEntries(
   Object.entries(ratings).map(([id, ovr]) => [id, Object.freeze({ovr, source, reason})])
 ));
 const worldAwards = 'https://inside.fifa.com/en/news/a-brief-history-of-the-best';
+const psgBallonDor = 'https://www.psg.fr/en/content/ballon-d-or-2025-a-historic-ceremony-for-paris-saint-germain-ousmane-dembele-named-the-world-s-best-player';
+const psgUnfp = 'https://en.news.psg.fr/press-releases/club/paris-saint-germain-shines-at-the-unfp-2025-awards-with-14-awards';
 
 export const SEASON_RATINGS_BY_SQUAD = Object.freeze({
   'milan-2007': review(
@@ -71,4 +73,26 @@ export const SEASON_RATINGS_BY_SQUAD = Object.freeze({
     'Tríplice coroa de 2009/10, com Sneijder no auge e Milito decisivo na final europeia.',
     {'wesley-sneijder':91, 'diego-milito':90}
   ),
+  'psg-2025': Object.freeze({
+    ...review(
+      psgBallonDor,
+      'Temporada 2024/25: Dembélé ganhou a Bola de Ouro; Vitinha ficou em 3º, Hakimi em 6º, Donnarumma em 9º e Nuno Mendes em 10º. Doué e João Neves também foram finalistas do Troféu Kopa.',
+      {
+        'ousmane-dembele':90,
+        'vitinha':89,
+        'achraf-hakimi':89,
+        'gianluigi-donnarumma':89,
+        'nuno-mendes':88,
+        'desire-doue':88,
+        'khvicha-kvaratskhelia':87,
+        'joao-neves':87,
+        'fabian-ruiz':85,
+      }
+    ),
+    ...review(
+      psgUnfp,
+      'Marquinhos e Willian Pacho foram selecionados para a equipe ideal da Ligue 1 em 2024/25.',
+      {'marquinhos':88, 'willian-pacho':86}
+    ),
+  }),
 });

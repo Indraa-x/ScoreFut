@@ -1,7 +1,7 @@
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=cup-stoppage-20261021';
 import {filterQuickClubs} from './quick-catalog.js?v=cup-stoppage-20261021';
 import {filterHistory} from './history.js?v=club-only-cleanup-20261020';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=season-ovr-20261021';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=psg-awards-ovr-20261021';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=club-only-cleanup-20261020';
 import { state, MODES } from './state.js?v=cup-stoppage-20261021';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=cup-stoppage-20261021';
