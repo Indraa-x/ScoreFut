@@ -15,6 +15,17 @@ export function formatMatchClock(minute) {
   return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
+export function matchAddedMinutes(result, minute) {
+  const regulationAdded = Math.max(0, Number(result.regulationStoppageTime) || 0);
+  if (result.extraTime) {
+    const extraStart = Number.isFinite(result.extraTimeStart) ? result.extraTimeStart : 90 + regulationAdded;
+    const extraEnd = Number.isFinite(result.extraTimeEnd) ? result.extraTimeEnd : extraStart + 30;
+    if (minute >= extraEnd) return Math.max(0, Number(result.extraTimeStoppageTime) || 0);
+    if (minute >= extraStart) return 0;
+  }
+  return minute >= 90 ? regulationAdded : 0;
+}
+
 export function formatMatchEventMinute(result, minute) {
   const value = Math.max(0, Number(minute) || 0);
   if (result?.extraTime) {

@@ -60,6 +60,25 @@ test('fractional minutes show seconds and reveal only goals already reached',()=
   assert.ok(!goals.includes(home.lineup[0].player.nome));
 });
 
+test('a compact added-time badge precedes the clock, including after the final whistle',()=>{
+  const state=view(),match=currentMatch(state);
+  Object.assign(match.result,{duration:95,extraTime:false,regulationStoppageTime:5});
+  for(const minute of [89,90,95]){
+    state.matchMinute=minute;
+    const html=renderMatch(state),badge=html.match(/<span class="match-added-time"[^>]*>(.*?)<\/span>/);
+    assert.ok(badge);
+    assert.equal(badge[0].includes(' hidden'),minute<90);
+    if(minute>=90){assert.equal(badge[1],'+5');assert.ok(badge[0].includes('aria-label="5 minutos de acréscimo"'));}
+    assert.ok(html.indexOf(badge[0])<html.indexOf('class="score-clock"'));
+  }
+  Object.assign(match.result,{extraTime:true,extraTimeStart:95,extraTimeEnd:125,extraTimeStoppageTime:7,duration:132});
+  for(const [minute,hidden,label] of [[95,true,'+0'],[125,false,'+7'],[132,false,'+7']]){
+    state.matchMinute=minute;
+    const badge=renderMatch(state).match(/<span class="match-added-time"[^>]*>(.*?)<\/span>/);
+    assert.equal(badge[0].includes(' hidden'),hidden);assert.equal(badge[1],label);
+  }
+});
+
 test('the result clearly reports victory, draw or defeat from the user perspective, even when playing away',()=>{
   for(const winning of ['user','opponent',null]){
     const state=view({matchMinute:90}),match=currentMatch(state);

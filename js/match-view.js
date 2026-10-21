@@ -1,7 +1,7 @@
-import {renderMatchGoals} from './match-goals.js?v=live-match-motion-20261021';
+import {renderMatchGoals} from './match-goals.js?v=added-time-badge-20261021';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=club-only-cleanup-20261020';
 import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=cup-stoppage-20261021';
-import { formatMatchClock, matchPhase, matchEndLabel, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=live-match-motion-20261021';
+import { formatMatchClock, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=added-time-badge-20261021';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {
@@ -37,6 +37,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
     return `<article class="upcoming-game"><div class="fixture-round"><span>${esc(fixture.stageLabel)}</span><small>${isHome ? 'Casa' : 'Fora'}</small></div><div class="fixture-opponent">${badge(opponent)}<div><strong>${esc(displayName(opponent))}</strong><span>Temporada ${esc(opponent.ano || '')}</span></div>${icon('arrow')}</div></article>`;
   });
   const phase = matchPhase(result,s.matchMinute);
+  const addedMinutes = matchAddedMinutes(result,s.matchMinute);
   const morePlayed = s.userMatchIndex < t.userMatches.length - 1;
   const nextFixture = morePlayed ? t.userMatches[s.userMatchIndex+1] : upcoming[0];
   const nextLabel = morePlayed ? 'Rever próximo jogo' : twoLegged && match.leg===1 && match.stage!=='final' ? 'Jogar a volta' : match.stage==='final' ? 'Ver resultado' : s.pendingRound || canContinueTournament(t)
@@ -56,7 +57,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const statusLabel=ended ? tie&&match.stage!=='final' ? outcome==='victory'?'Classificado':'Eliminado' : outcome==='victory'?'Vitória':outcome==='defeat'?'Derrota':'Empate' : 'Em jogo';
   const speedLabels={1:'Normal',4:'Rápido',8:'Muito rápido'};
   return `<div class="screen-title match-page-title"><div>${logo ? `<img class="competition-logo" src="${logo}" width="256" height="256" alt="">` : icon('trophy')}<div><h1>${esc(competitionName(s.mode))}</h1><span>${esc(match.stageLabel)}</span></div></div>${btn(nextLabel+' '+icon('arrow'),'next-match',true,`class="match-next" ${ended?'':'disabled title="Disponível quando a partida terminar"'}`)}</div>
-<div class="match-layout"><section class="match-card panel" aria-label="Placar e campo"><div class="live-scoreboard">${teamInfo(home, 'home', homeKit)}<div class="score-center"><span class="match-status ${outcome}"><i></i>${statusLabel}</span><div class="score-numbers" aria-label="Placar"><span>${scores[0]}</span><i>–</i><span>${scores[1]}</span></div><div class="match-clock-row"><span class="score-clock">${formatMatchClock(s.matchMinute)}</span><small data-match-phase>${ended ? 'Fim de jogo' : phase}</small></div>${aggregateScore}${penaltyScore}${cupStatus}</div>${teamInfo(away, 'away', awayKit)}</div>
+<div class="match-layout"><section class="match-card panel" aria-label="Placar e campo"><div class="live-scoreboard">${teamInfo(home, 'home', homeKit)}<div class="score-center"><span class="match-status ${outcome}"><i></i>${statusLabel}</span><div class="score-numbers" aria-label="Placar"><span>${scores[0]}</span><i>–</i><span>${scores[1]}</span></div><div class="match-clock-row"><span class="match-clock-time"><span class="match-added-time" data-match-added-time aria-label="${addedMinutes} minutos de acréscimo"${addedMinutes ? "" : " hidden"}>+${addedMinutes}</span><span class="score-clock">${formatMatchClock(s.matchMinute)}</span></span><small data-match-phase>${ended ? 'Fim de jogo' : phase}</small></div>${aggregateScore}${penaltyScore}${cupStatus}</div>${teamInfo(away, 'away', awayKit)}</div>
 <div class="live-field-wrap"><div class="live-pitch-area"><div class="live-pitch" data-live-pitch aria-label="Simulação das duas escalações em campo">${pitchLines(false)}${(home.lineup || []).map((entry, index) => player(entry, index, home, 'home')).join('')}${(away.lineup || []).map((entry, index) => player(entry, index, away, 'away')).join('')}<span class="match-ball" data-match-ball>${icon('ball')}</span><div class="goal-notice" data-goal-notice>${icon('ball')}<strong>Gol!</strong><span data-goal-name></span></div></div></div></div>
 <div class="match-field-legend" aria-label="Cores dos times no campo"><span><i style="background:${esc(homeKit)}"></i>${esc(displayName(home))} →</span><span>← ${esc(displayName(away))}<i style="background:${esc(awayKit)}"></i></span></div>
 <div class="live-progress"><input id="match-timeline" type="range" min="0" max="${result.duration}" step="0.01" value="${s.matchMinute}" style="--progress:${s.matchMinute / result.duration * 100}%" aria-label="Progresso da partida" disabled><span>0′</span><span data-match-end-time>${matchEndLabel(result)}</span></div>

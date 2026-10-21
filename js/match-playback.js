@@ -1,6 +1,6 @@
 import { currentMatch } from './match-session.js?v=cup-stoppage-20261021';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=live-match-motion-20261021';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=live-match-motion-20261021';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=added-time-badge-20261021';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=added-time-badge-20261021';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;
@@ -31,6 +31,14 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     if (nodes.aggregate) nodes.aggregate.textContent = `${Number(nodes.aggregate.dataset.home)+score[0]} – ${Number(nodes.aggregate.dataset.away)+score[1]}`;
     const clock = formatMatchClock(state.matchMinute);
     if (nodes.clock.textContent !== clock) nodes.clock.textContent = clock;
+    if (nodes.addedTime) {
+      const added = matchAddedMinutes(match.result, state.matchMinute), label = `+${added}`;
+      nodes.addedTime.hidden = !added;
+      if (nodes.addedTime.textContent !== label) {
+        nodes.addedTime.textContent = label;
+        nodes.addedTime.setAttribute('aria-label', `${added} minutos de acréscimo`);
+      }
+    }
     const phase = matchPhase(match.result,state.matchMinute);
     if (nodes.phase.textContent !== phase) nodes.phase.textContent = phase;
     nodes.endTime.textContent = matchEndLabel(match.result);
@@ -59,6 +67,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
       scores: [...app.querySelectorAll('.score-numbers>span')], clock: app.querySelector('.score-clock'),
       progress: app.querySelector('#match-timeline'), goal: app.querySelector('[data-goal-notice]'), goalName: app.querySelector('[data-goal-name]'),
       phase: app.querySelector('[data-match-phase]'), endTime: app.querySelector('[data-match-end-time]'),
+      addedTime: app.querySelector('[data-match-added-time]'),
       aggregate: app.querySelector('[data-match-aggregate]'),
       goals: app.querySelector('[data-match-goals]'), goalCount:-1,
       activeOwner: -1,

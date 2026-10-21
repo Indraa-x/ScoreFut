@@ -12,6 +12,10 @@
 .match-card .score-numbers{font-size:60px;gap:15px;letter-spacing:-1px;margin:5px 0 9px}
 .match-card .score-numbers i{font-size:30px}
 .match-card .score-clock{font-size:20px;font-weight:800}
+.match-clock-time{display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.match-added-time{display:inline-grid;place-items:center;width:26px;height:26px;flex-shrink:0;border:1px solid #bed9ca;border-radius:5px;background:#edf6f0;color:var(--green);font-size:12px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.match-added-time[hidden]{display:none}
+@media(max-width:600px){.match-added-time{width:22px;height:22px;font-size:11px}}
 .match-clock-row>small{font-size:12px;font-weight:600}
 .match-status{font-size:12px;font-weight:800;border-radius:5px;padding:4px 9px;background:#13754b0e}
 .match-status.victory{color:var(--green);background:#13754b14}

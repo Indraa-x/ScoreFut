@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { allSquads } from '../data/clubs.js';
 import { FORMATIONS, squadTeam, simulateMatch, mulberry32 } from '../js/engine.js';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, scoreAt } from '../js/match-motion.js';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, matchAddedMinutes, scoreAt } from '../js/match-motion.js';
 import { initMatchPlayback } from '../js/match-playback.js';
 import {renderMatch} from '../js/ui.js';
 
@@ -18,6 +18,15 @@ test('continuous clock supports 1x, 4x and 8x without jumping by minutes',()=>{
   assert.equal(formatMatchClock(15.5),'15:30');
   assert.equal(formatMatchClock(120),'120:00');
   assert.deepEqual(scoreAt(match.result,match.result.duration),[match.result.homeGoals,match.result.awayGoals]);
+});
+
+test('added minutes appear for the active period and remain at the final whistle',()=>{
+  const regular={duration:95,regulationStoppageTime:5,extraTime:false};
+  for(const [minute,expected] of [[89.99,0],[90,5],[94,5],[95,5]])assert.equal(matchAddedMinutes(regular,minute),expected);
+  const extra={...regular,extraTime:true,extraTimeStart:95,extraTimeEnd:125,extraTimeStoppageTime:7,duration:132};
+  for(const [minute,expected] of [[89,0],[90,5],[94.99,5],[95,0],[120,0],[124.99,0],[125,7],[132,7]])assert.equal(matchAddedMinutes(extra,minute),expected);
+  assert.equal(matchAddedMinutes({duration:90},90),0);
+  assert.equal(matchAddedMinutes({duration:120,extraTime:true},120),0);
 });
 
 test('all formations retain 22 distinct shirts in bounds and move smoothly between pass keyframes',()=>{
@@ -71,11 +80,12 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
   globalThis.cancelAnimationFrame=id=>callbacks.delete(id);
   globalThis.ResizeObserver=class{observe(){}disconnect(){}};
   globalThis.document={activeElement:null};
-  const node=()=>({style:{setProperty(){}},textContent:'',classList:{toggle(){}},value:0});
+  const node=()=>({style:{setProperty(){}},textContent:'',classList:{toggle(){}},value:0,setAttribute(name,value){this[name]=value;}});
   const players=Array.from({length:22},node),ball=node(),clock=node(),scores=[node(),node()];
   const pitch={clientWidth:900,clientHeight:486,querySelectorAll:()=>players,querySelector:()=>ball};
   const elements={'[data-live-pitch]':pitch,'.score-clock':clock,'#match-timeline':node(),'[data-goal-notice]':node(),'[data-goal-name]':node(),'[data-match-phase]':node(),'[data-match-end-time]':node()};
   const scorers=node();elements['[data-match-goals]']=scorers;
+  const addedTime=node();elements['[data-match-added-time]']=addedTime;
   const app={querySelector:selector=>elements[selector],querySelectorAll:()=>scores};
   const liveMatch={...match,result:{...match.result,homeGoals:1,awayGoals:0,events:[{type:'goal',minute:.5,team:'home',player:home.lineup[10].player,x:.5,y:.2}]}};
   const state={screen:'match',mode:'champions',formation:home.formation,matchMinute:0,matchSpeed:1,matchPlaying:false,userMatchIndex:0,tournament:{seed:39,mode:'champions',userTeamId:'user',teams:[home,away],userMatches:[liveMatch],matches:[liveMatch],bracket:[]}};
@@ -87,6 +97,7 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
     const playback=initMatchPlayback({app,state,onFinish:()=>finish++,onSave:()=>saves++});
     playback.attach();assert.equal(state.matchPlaying,true);playback.start();tick(0);tick(100);
     assert.equal(state.matchMinute,.1);assert.equal(clock.textContent,'00:06');
+    assert.equal(addedTime.hidden,true);
     assert.ok(scorers.innerHTML.includes('Nenhum gol marcado'));
     const before=players[5].style.transform;
     tick(200);assert.notEqual(players[5].style.transform,before);
@@ -96,8 +107,13 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
     assert.ok(scorers.innerHTML.includes(home.lineup[10].player.nome));
     assert.ok(scorers.innerHTML.includes('--team-color-1:#2bb777;--team-color-2:#174b2e'));
     assert.ok(scorers.innerHTML.includes(`--team-color-1:${away.cores[0]};--team-color-2:${away.cores[1]}`));
-    state.matchMinute=match.result.duration-.1;tick(500);
-    assert.equal(state.matchMinute,match.result.duration);assert.equal(finish,1);assert.equal(callbacks.size,0);
+    Object.assign(liveMatch.result,{duration:95,extraTime:false,regulationStoppageTime:5});
+    state.matchMinute=90;tick(500);
+    assert.equal(addedTime.hidden,false);assert.equal(addedTime.textContent,'+5');
+    assert.equal(addedTime['aria-label'],'5 minutos de acréscimo');
+    state.matchMinute=94.9;tick(600);
+    assert.equal(state.matchMinute,95);assert.equal(finish,1);assert.equal(callbacks.size,0);
+    assert.equal(addedTime.hidden,false);assert.equal(addedTime.textContent,'+5');
     assert.equal(state.matchPlaying,false);assert.equal(saves,0);
     assert.ok(scorers.innerHTML.includes(`--team-color-1:${away.cores[0]};--team-color-2:${away.cores[1]}`));
     playback.attach();assert.equal(state.matchPlaying,false);playback.start();assert.equal(callbacks.size,0);
