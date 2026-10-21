@@ -30,7 +30,7 @@ function homePlayers(squadCount){
       {name:'Kylian Mbappé',src:'mbappe.png',head:{x:303,y:0,height:220}},
       {name:'Cristiano Ronaldo',src:'cristiano-ronaldo.png?v=home-portraits-20261021',width:649,height:900,head:{x:326,y:200,height:208}},
       {name:'Neymar Jr.',src:'neymar.png',head:{x:309,y:21,height:200}},
-      {name:'Lionel Messi',src:'messi.png?v=equal-home-portraits-20261021',head:{x:312,y:21,height:217}},
+      {name:'Lionel Messi',src:'messi.png?v=equal-home-portraits-20261021',zoom:1.18,fadeStops:[[.9,1],[.97,.8],[1,0]],head:{x:312,y:21,height:217}},
     ]},
     {className:'legends',width:649,height:900,players:[
       {name:'Gianluigi Buffon',src:'buffon.png',head:{x:339,y:196,height:251}},
@@ -47,10 +47,10 @@ function homePlayers(squadCount){
   ];
   const fadeStops=[[.78,1],[.88,.9],[.96,.45],[1,0]];
   const portraits=groups.map(group=>`<div class="home-stars-group home-stars-group--${group.className}">${group.players.map(player=>{
-    // Match head size and hairline, independent of transparent margins and torso length.
-    const visibleHeight=player.head.height/.48,width=player.width??group.width,height=player.height??group.height;
+    // Keep hairlines aligned while allowing individual scale and fade adjustments.
+    const visibleHeight=player.head.height/(.48*(player.zoom??1)),width=player.width??group.width,height=player.height??group.height;
     const fadeAt=fraction=>(player.head.y+visibleHeight*fraction)/height*100;
-    const fade=`linear-gradient(to bottom,${fadeStops.map(([fraction,opacity])=>`rgba(0,0,0,${opacity}) ${fadeAt(fraction)}%`).join(',')})`;
+    const fade=`linear-gradient(to bottom,${(player.fadeStops??fadeStops).map(([fraction,opacity])=>`rgba(0,0,0,${opacity}) ${fadeAt(fraction)}%`).join(',')})`;
     return `<figure class="home-star"><div class="home-star-portrait"><img src="assets/home/${player.src}" width="${width}" height="${height}" alt="${esc(player.name)}" style="--portrait-center:${player.head.x/width*100}%;--portrait-height:${height/visibleHeight*100}%;--portrait-top:${-player.head.y/visibleHeight*100}%;--portrait-fade:${fade}" decoding="async" draggable="false"></div></figure>`;
   }).join('')}</div>`).join('');
   return `<section class="home-stars" aria-label="Craques do futebol"><svg class="home-portrait-filters" aria-hidden="true" focusable="false"><defs><filter id="home-portrait-solid" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncA type="linear" slope="8"/></feComponentTransfer></filter></defs></svg><div class="home-stars-heading"><span>CRAQUES DO FUTEBOL</span><span>${squadCount} elencos históricos</span></div><div class="home-stars-lineup">${portraits}</div><div class="home-stars-footer"><span>${icon('users')} Onze jogadores. Um só time.</span><span>${icon('bolt')} Modo rápido</span></div></section>`;
