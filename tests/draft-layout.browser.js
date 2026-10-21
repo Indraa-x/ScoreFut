@@ -1,4 +1,5 @@
-import {renderDraft} from '../js/ui.js?v=larger-draft-circles-spaced-20261021';
+import {renderDraft} from '../js/ui.js?v=skip-feedback-20261021';
+import {initSkipFeedback} from '../js/skip-feedback.js?v=skip-feedback-20261021';
 import {allSquads} from '../data/clubs.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {createDraft} from '../js/draft.js';
@@ -7,6 +8,7 @@ const query=new URLSearchParams(location.search);
 const cases=[
   {id:'empty',label:'Sem sorteio',formation:'4-3-3'},
   {id:'rolling',label:'Sorteando',formation:'4-3-3'},
+  {id:'skips-exhausted',label:'Sem skips · feedback ao clicar',formation:'4-3-3'},
   ...Object.keys(FORMATIONS).map(formation=>({id:'players',label:'Jogadores e indisponíveis',formation})),
   ...Object.keys(FORMATIONS).map(formation=>({id:'full-lineup',label:'Onze jogadores e nomes longos',formation})),
   {id:'legends',label:'Lendas e indisponíveis',formation:'4-3-3'},
@@ -28,7 +30,7 @@ function fixtureState(id,formation){
   const squad=allSquads.find(s=>s.id===(id==='long-header'?'marseille-1993':'bayern-2020'))||allSquads[0];
   const draft=createDraft(62137,'2026-10-16',id==='legends'?'legends':'champions');
   const picks=[];
-  if(['players','legends','long-header','full-lineup'].includes(id)){
+  if(['players','legends','long-header','full-lineup','skips-exhausted'].includes(id)){
     const labelLength=player=>(player.nome.length>17?player.nome.split(' ').at(-1):player.nome).length;
     const candidates=id==='full-lineup'
       ? allSquads.flatMap(team=>team.jogadores.map(player=>({player,squad:team}))).sort((a,b)=>labelLength(b.player)-labelLength(a.player))
@@ -40,6 +42,7 @@ function fixtureState(id,formation){
       if(id!=='full-lineup'&&picks.length===8)break;
     }
     Object.assign(draft,{picks,currentSquad:squad,currentSquadId:squad.id,otherSeasonAvailable:true});
+    if(id==='skips-exhausted')draft.rerolls=0;
   }
   return {screen:'draft',mode:id==='legends'?'legends':'champions',formation,teamName:'Meu time',draft,rolling:id==='rolling'};
 }
@@ -74,6 +77,7 @@ async function renderFixture(){
   app.dataset.screen='draft';
   const state=fixtureState(id,formation);
   app.innerHTML=renderDraft(state);
+  initSkipFeedback({app,getDraft:()=>state.draft});
   // Badge URLs emitted by renderDraft are relative to the real site root.
   for(const image of app.querySelectorAll('img[src]'))image.src=new URL(image.getAttribute('src'),root).href;
   await Promise.all(pending);

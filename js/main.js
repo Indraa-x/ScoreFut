@@ -7,9 +7,10 @@ import { state, MODES } from './state.js?v=champions-two-legs-20261020';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=champions-two-legs-20261020';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=champions-two-legs-20261020';
 import * as storage from './storage.js?v=club-only-cleanup-20261020';
-import * as ui from './ui.js?v=white-play-ball-20261021';
+import * as ui from './ui.js?v=skip-feedback-20261021';
 import {downloadResult} from './share.js?v=club-only-cleanup-20261020';
 import {initPlayerDrag} from './player-drag.js?v=club-only-cleanup-20261020';
+import {initSkipFeedback} from './skip-feedback.js?v=skip-feedback-20261021';
 import {preloadPlayerPortraits} from './player-portraits.js?v=club-only-cleanup-20261020';
 import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=champions-two-legs-20261020';
 import {MATCH_SPEEDS} from './match-motion.js?v=champions-two-legs-20261020';
@@ -20,6 +21,7 @@ let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
 const historyFilters={search:'',mode:'all',titlesOnly:false};
 const playback=initMatchPlayback({app,state,onFinish:finishCurrentMatch,onSave:persist});
 const celebration=initCelebration({app,getRecord:()=>state.resultRecord,getScreen:()=>state.screen});
+initSkipFeedback({app,getDraft:()=>state.screen==='draft'&&!state.rolling?state.draft:null});
 const validation=validateData();
 if(!validation.valid) console.error('Base ScoreFut inválida',validation.errors);
 function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3400);}
@@ -89,7 +91,7 @@ function startDraft(){state.quickSquadId=null;state.teamName='Meu time';const da
   const seed=crypto.getRandomValues(new Uint32Array(1))[0];state.draft=createDraft(seed,date,state.mode);state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=1;navigate('draft');
 }
 async function roll(kind='new'){
-  if(state.rolling)return;
+  if(state.rolling||(kind!=='new'&&state.draft?.rerolls<=0))return;
   const draftAtStart=state.draft;
   let drawn=false;
   state.rolling=true;render();
