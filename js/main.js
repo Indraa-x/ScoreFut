@@ -7,7 +7,7 @@ import { state, MODES } from './state.js?v=cup-stoppage-20261021';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=cup-stoppage-20261021';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=cup-stoppage-20261021';
 import * as storage from './storage.js?v=club-only-cleanup-20261020';
-import * as ui from './ui.js?v=added-time-badge-20261021';
+import * as ui from './ui.js?v=champions-hub-20261021';
 import {downloadResult} from './share.js?v=club-only-cleanup-20261020';
 import {initPlayerDrag} from './player-drag.js?v=club-only-cleanup-20261020';
 import {initSkipFeedback} from './skip-feedback.js?v=skip-feedback-20261021';
@@ -245,6 +245,10 @@ case'quick-clear':state.quickSearch='';state.quickRegion='all';render();app.quer
 case'next-match':nextMatch();break;
 case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();}break;}
 case'bracket':state.returnScreen=state.screen;navigate('bracket');break;case'back-match':navigate(state.returnScreen==='result'?'result':'match');break;
+case'champions-view':{if(state.tournament?.mode!=='champions')break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
+case'champions-group':if(state.screen==='bracket'&&state.tournament?.mode==='champions'&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;
+case'champions-round':if(state.screen==='bracket'&&state.tournament?.mode==='champions'&&['round16','quarter','semi','final'].includes(value)){state.championsRound=value;render();}break;
+case'champions-tie':{if(state.tournament?.mode!=='champions')break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
 case'match-index':{const i=Number(value);if(!state.pendingRound&&Number.isInteger(i)&&i>=0&&i<state.tournament.userMatches.length){stopPlayback();state.userMatchIndex=i;state.matchMinute=state.tournament.userMatches[i].result.duration;persist();render();}break;}
 case'result-lineup':if(state.screen==='result'&&state.resultRecord){document.getElementById('modal-content').innerHTML=ui.renderResultLineup(state.resultRecord);modal.showModal();}break;case'download':downloadResult(state.resultRecord);toast('Seu resultado em PNG está pronto.');break;
 case'history-outcome':historyFilters.titlesOnly=value==='titles';updateHistoryList();break;
