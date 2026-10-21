@@ -27,30 +27,31 @@ function shirt(n,gk=false){return `<svg class="shirt" viewBox="0 0 48 50"><path 
 function homePlayers(squadCount){
   const groups=[
     {className:'current',width:485,height:567,players:[
-      {name:'Kylian Mbappé',src:'mbappe.png',center:57.73,top:0,bottom:527},
-      {name:'Cristiano Ronaldo',src:'cristiano-ronaldo.png?v=home-portraits-20261021',width:649,height:900,center:50.23,top:200,bottom:833},
-      {name:'Neymar Jr.',src:'neymar.png',center:63.61,top:5,bottom:488},
-      {name:'Lionel Messi',src:'messi.png?v=home-messi-kiss-20261021',width:649,height:900,center:49,top:199,bottom:835},
+      {name:'Kylian Mbappé',src:'mbappe.png',head:{x:303,y:0,height:220}},
+      {name:'Cristiano Ronaldo',src:'cristiano-ronaldo.png?v=home-portraits-20261021',width:649,height:900,head:{x:326,y:200,height:208}},
+      {name:'Neymar Jr.',src:'neymar.png',head:{x:309,y:21,height:200}},
+      {name:'Lionel Messi',src:'messi.png?v=equal-home-portraits-20261021',head:{x:312,y:21,height:217}},
     ]},
     {className:'legends',width:649,height:900,players:[
-      {name:'Gianluigi Buffon',src:'buffon.png',center:50.85,top:196,bottom:813},
-      {name:'Zinedine Zidane',src:'zidane.png',center:50.08,top:203,bottom:795},
-      {name:'Ronaldo Nazário',src:'ronaldo-nazario.png',center:51.93,top:207,bottom:790},
-      {name:'Ronaldinho Gaúcho',src:'ronaldinho.png',center:53.16,top:188,bottom:803},
+      {name:'Gianluigi Buffon',src:'buffon.png',head:{x:339,y:196,height:251}},
+      {name:'Zinedine Zidane',src:'zidane.png',head:{x:322,y:203,height:263}},
+      {name:'Ronaldo Nazário',src:'ronaldo-nazario.png',head:{x:342,y:207,height:227}},
+      {name:'Ronaldinho Gaúcho',src:'ronaldinho.png',head:{x:341,y:188,height:260}},
     ]},
     {className:'next',players:[
-      {name:'Jogador com uniforme vermelho',src:'group-3-player-1.png',width:485,height:673,center:53.61,top:146,bottom:619},
-      {name:'Jogador com uniforme azul',src:'group-3-player-2.png',width:649,height:900,center:50.08,top:168,bottom:827},
-      {name:'Jogador com uniforme branco',src:'group-3-player-3.png',width:644,height:900,center:52.02,top:135,bottom:725},
-      {name:'Jogador com uniforme azul e vermelho',src:'group-3-player-4.png',width:649,height:900,center:54.24,top:208,bottom:828},
+      {name:'Jogador com uniforme vermelho',src:'group-3-player-1.png',width:485,height:673,head:{x:266,y:146,height:181}},
+      {name:'Jogador com uniforme azul',src:'group-3-player-2.png',width:649,height:900,head:{x:327,y:168,height:231}},
+      {name:'Jogador com uniforme branco',src:'group-3-player-3.png',width:644,height:900,head:{x:336,y:135,height:241}},
+      {name:'Jogador com uniforme azul e vermelho',src:'group-3-player-4.png',width:649,height:900,head:{x:351,y:208,height:206}},
     ]},
   ];
   const fadeStops=[[.68,1],[.78,.9],[.91,.45],[1,0]];
   const portraits=groups.map(group=>`<div class="home-stars-group home-stars-group--${group.className}">${group.players.map(player=>{
-    const visibleHeight=player.bottom-player.top,width=player.width??group.width,height=player.height??group.height;
-    const fadeAt=fraction=>(player.top+visibleHeight*fraction)/height*100;
+    // Match head size and hairline, independent of transparent margins and torso length.
+    const visibleHeight=player.head.height/.42,width=player.width??group.width,height=player.height??group.height;
+    const fadeAt=fraction=>(player.head.y+visibleHeight*fraction)/height*100;
     const fade=`linear-gradient(to bottom,${fadeStops.map(([fraction,opacity])=>`rgba(0,0,0,${opacity}) ${fadeAt(fraction)}%`).join(',')})`;
-    return `<figure class="home-star"><div class="home-star-portrait"><img src="assets/home/${player.src}" width="${width}" height="${height}" alt="${esc(player.name)}" style="--portrait-center:${player.center}%;--portrait-height:${height/visibleHeight*100}%;--portrait-top:${-player.top/visibleHeight*100}%;--portrait-fade:${fade}" decoding="async" draggable="false"></div></figure>`;
+    return `<figure class="home-star"><div class="home-star-portrait"><img src="assets/home/${player.src}" width="${width}" height="${height}" alt="${esc(player.name)}" style="--portrait-center:${player.head.x/width*100}%;--portrait-height:${height/visibleHeight*100}%;--portrait-top:${-player.head.y/visibleHeight*100}%;--portrait-fade:${fade}" decoding="async" draggable="false"></div></figure>`;
   }).join('')}</div>`).join('');
   return `<section class="home-stars" aria-label="Craques do futebol"><svg class="home-portrait-filters" aria-hidden="true" focusable="false"><defs><filter id="home-portrait-solid" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncA type="linear" slope="8"/></feComponentTransfer></filter></defs></svg><div class="home-stars-heading"><span>CRAQUES DO FUTEBOL</span><span>${squadCount} elencos históricos</span></div><div class="home-stars-lineup">${portraits}</div><div class="home-stars-footer"><span>${icon('users')} Onze jogadores. Um só time.</span><span>${icon('bolt')} Modo rápido</span></div></section>`;
 }
