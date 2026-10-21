@@ -1,14 +1,38 @@
-/* Club-color bands with enough contrast to identify the player's club. */
+/* The club crest identifies each pick; only the image is translucent. */
 .draft-pitch .pitch-slot.picked .slot-circle{
-  background:linear-gradient(#ffffff38,#ffffff38),
-    linear-gradient(to bottom,
-      var(--stripe-1) 0 33.333%,
-      var(--stripe-2) 33.333% 66.667%,
-      var(--stripe-3) 66.667% 100%);
-  color:#102b34;
-  font-weight:750;
-  text-shadow:0 0 3px #ffffff,0 1px 2px #ffffff;
-  border:2px solid #ffffffb3;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:#f8fbf9;
+  color:#102b25;
+  font-weight:800;
+  text-shadow:none;
+  border:2px solid #ffffffeb;
+}
+.draft-pitch .slot-club-crest{
+  position:absolute;
+  inset:5%;
+  width:90%;
+  height:90%;
+  object-fit:contain;
+  opacity:.58;
+  pointer-events:none;
+  user-select:none;
+}
+.draft-pitch .slot-ovr{
+  position:relative;
+  z-index:1;
+  display:block;
+  min-width:1.65em;
+  padding:.08em .18em;
+  border-radius:.3em;
+  background:#ffffffed;
+  color:#102b25;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+  line-height:1.1;
+  box-shadow:0 1px 3px #102b2524;
+  pointer-events:none;
 }
 .draft-pitch .pitch-slot.picked{cursor:grab;touch-action:manipulation}
 .draft-pitch .pitch-slot.picked:active{cursor:grabbing}

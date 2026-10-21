@@ -1,4 +1,4 @@
-import {renderDraft} from '../js/ui.js?v=skip-feedback-20261021';
+import {renderDraft} from '../js/ui.js?v=pitch-club-crests-20261021';
 import {initSkipFeedback} from '../js/skip-feedback.js?v=skip-feedback-20261021';
 import {allSquads} from '../data/clubs.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';

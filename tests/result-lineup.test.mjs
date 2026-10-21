@@ -24,7 +24,10 @@ test('result lineup opens as a read-only pitch using the saved players and posit
       assert.ok(pitch.includes(`left:${pick.slot.x}%;top:${pick.slot.y}%`));
       assert.ok(pitch.includes(`${pick.slot.label}: ${pick.player.nome} · São Paulo · 2005 · OVR ${pick.player.ovr}`));
     }
-    assert.equal((pitch.match(/--stripe-1:/g)||[]).length,11);
+    assert.equal((pitch.match(/class="slot-club-crest"/g)||[]).length,11);
+    assert.equal((pitch.match(/class="slot-ovr"/g)||[]).length,11);
+    assert.equal((pitch.match(/src="assets\/logos\/sao-paulo.png"/g)||[]).length,11);
+    assert.ok(!pitch.includes('--stripe-'));
     assert.deepEqual(record,before);
   }
 });
