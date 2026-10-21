@@ -39,16 +39,16 @@ function homePlayers(squadCount){
       {name:'Ronaldinho Gaúcho',src:'ronaldinho.png',head:{x:341,y:188,height:260}},
     ]},
     {className:'next',players:[
-      {name:'Jogador com uniforme vermelho',src:'group-3-player-1.png',width:485,height:673,head:{x:266,y:146,height:181}},
+      {name:'Michael Olise',src:'group-3-player-1.png?v=larger-home-torsos-20261021',width:649,height:900,head:{x:344,y:190,height:242}},
       {name:'Jogador com uniforme azul',src:'group-3-player-2.png',width:649,height:900,head:{x:327,y:168,height:231}},
       {name:'Jogador com uniforme branco',src:'group-3-player-3.png',width:644,height:900,head:{x:336,y:135,height:241}},
       {name:'Jogador com uniforme azul e vermelho',src:'group-3-player-4.png',width:649,height:900,head:{x:351,y:208,height:206}},
     ]},
   ];
-  const fadeStops=[[.55,1],[.65,.9],[.8,.45],[.88,0]];
+  const fadeStops=[[.78,1],[.88,.9],[.96,.45],[1,0]];
   const portraits=groups.map(group=>`<div class="home-stars-group home-stars-group--${group.className}">${group.players.map(player=>{
     // Match head size and hairline, independent of transparent margins and torso length.
-    const visibleHeight=player.head.height/.42,width=player.width??group.width,height=player.height??group.height;
+    const visibleHeight=player.head.height/.48,width=player.width??group.width,height=player.height??group.height;
     const fadeAt=fraction=>(player.head.y+visibleHeight*fraction)/height*100;
     const fade=`linear-gradient(to bottom,${fadeStops.map(([fraction,opacity])=>`rgba(0,0,0,${opacity}) ${fadeAt(fraction)}%`).join(',')})`;
     return `<figure class="home-star"><div class="home-star-portrait"><img src="assets/home/${player.src}" width="${width}" height="${height}" alt="${esc(player.name)}" style="--portrait-center:${player.head.x/width*100}%;--portrait-height:${height/visibleHeight*100}%;--portrait-top:${-player.head.y/visibleHeight*100}%;--portrait-fade:${fade}" decoding="async" draggable="false"></div></figure>`;
