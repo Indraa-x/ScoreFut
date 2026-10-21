@@ -108,12 +108,12 @@ function draftPitch(s,summary=false){
   const moving=s.draft.picks.find(p=>p.player.id===s.draft.selectedPickId);
   const selected=moving?.player||s.draft.currentSquad?.jogadores.find(p=>p.id===s.draft.selectedId);
   const destinations=moving?movableSlots(s.draft,s.formation,moving.player.id).map(slot=>slot.id):[];
-  return `<div class="draft-pitch"><span class="pitch-direction">↑ ATAQUE</span>${pitchLines()}${FORMATIONS[s.formation].slots.map(slot=>{
+  return `<div class="draft-pitch" data-formation="${esc(s.formation)}"><span class="pitch-direction">↑ ATAQUE</span>${pitchLines()}${FORMATIONS[s.formation].slots.map(slot=>{
     const pick=s.draft.picks.find(p=>p.slot.id===slot.id);
     const legal=!s.rolling&&(moving?destinations.includes(slot.id):selected&&!pick&&positionFit(selected,slot)!==null&&!summary);
     const origin=moving?.slot.id===slot.id;
     const label=legal?`${pick?'Trocar':'Colocar'} ${selected.nome} como ${slot.label}${pick?' com '+pick.player.nome:''}`:pick?slot.label+': '+pick.player.nome+' · '+pick.clubName+'. Arraste ou selecione para mudar de posição.':'Vaga '+slot.label;
-    return `<button class="pitch-slot ${pick?'picked':'empty'} ${legal?'compatible':''} ${origin?'move-origin':''} ${selected&&!legal&&!origin?'incompatible':''}" style="left:${slot.x}%;top:${slot.y}%" data-action="slot" data-value="${slot.id}" data-slot-label="${slot.label}" ${pick?`data-lineup-player="${esc(pick.player.id)}" draggable="false" aria-pressed="${origin}"`:''} ${!s.rolling&&(legal||pick)?'':'disabled'} aria-label="${esc(label)}"><span class="slot-circle ${slot.position==='GOL'?'goalkeeper':''}" ${clubStripeStyle(pick)}>${pick?hidden?'??':esc(pick.player.ovr):slot.label}</span>${pick?`<small>${esc(short(pick.player.nome))}</small>`:`<small>${legal?'Coloque aqui':slot.position==='GOL'?'Goleiro':'Livre'}</small>`}</button>`;
+    return `<button class="pitch-slot ${pick?'picked':'empty'} ${legal?'compatible':''} ${origin?'move-origin':''} ${selected&&!legal&&!origin?'incompatible':''}" style="left:${slot.x}%;top:var(--draft-slot-y,${slot.y}%)" data-action="slot" data-value="${slot.id}" data-slot-label="${slot.label}" ${pick?`data-lineup-player="${esc(pick.player.id)}" draggable="false" aria-pressed="${origin}"`:''} ${!s.rolling&&(legal||pick)?'':'disabled'} aria-label="${esc(label)}"><span class="slot-circle ${slot.position==='GOL'?'goalkeeper':''}" ${clubStripeStyle(pick)}>${pick?hidden?'??':esc(pick.player.ovr):slot.label}</span>${pick?`<small>${esc(short(pick.player.nome))}</small>`:`<small>${legal?'Coloque aqui':slot.position==='GOL'?'Goleiro':'Livre'}</small>`}</button>`;
   }).join('')}</div>`;
 }
 function portraitFrameStyle(portrait){

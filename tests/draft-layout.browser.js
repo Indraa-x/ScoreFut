@@ -1,4 +1,4 @@
-import {renderDraft} from '../js/ui.js';
+import {renderDraft} from '../js/ui.js?v=larger-draft-circles-spaced-20261021';
 import {allSquads} from '../data/clubs.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {createDraft} from '../js/draft.js';

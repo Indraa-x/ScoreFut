@@ -29,6 +29,14 @@ body:has(#app[data-screen="draft"]){min-height:100dvh;height:auto;display:flex;f
 #app[data-screen="draft"] .pitch-slot small{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;max-width:100%;margin-top:5px;font-size:11px;font-size:clamp(10px,3cqw,13px);font-weight:600;line-height:1.2;white-space:normal;overflow-wrap:anywhere;overflow:hidden;text-overflow:ellipsis}
 #app[data-screen="draft"] .pitch-slot.empty small{font-size:10px;font-size:clamp(9px,2.7cqw,12px)}
 #app[data-screen="draft"] .pitch-slot[data-slot-label="GOL"]{transform:translate(-50%,-58%)}
+/* Reserve room for two-line names between the larger markers. */
+#app[data-screen="draft"] .pitch-slot[data-slot-label="ZAG"]{--draft-slot-y:72%}
+#app[data-screen="draft"] .draft-pitch:is([data-formation="4-3-3"],[data-formation="4-2-3-1"],[data-formation="3-5-2"],[data-formation="5-3-2"],[data-formation="4-5-1"]) .pitch-slot[data-slot-label="VOL"]{--draft-slot-y:53%}
+#app[data-screen="draft"] .draft-pitch[data-formation="4-2-3-1"] .pitch-slot[data-slot-label="MEI"]{--draft-slot-y:33%}
+#app[data-screen="draft"] .draft-pitch[data-formation="4-2-3-1"] .pitch-slot[data-slot-label="CA"]{--draft-slot-y:14%}
+#app[data-screen="draft"] .draft-pitch:is([data-formation="3-5-2"],[data-formation="4-5-1"]) .pitch-slot[data-slot-label="MC"]{--draft-slot-y:34%}
+#app[data-screen="draft"] .draft-pitch:is([data-formation="3-5-2"],[data-formation="4-5-1"]) .pitch-slot[data-slot-label="CA"]{--draft-slot-y:15%}
+#app[data-screen="draft"] .draft-pitch[data-formation="5-3-2"] .pitch-slot:is([data-slot-label="LD"],[data-slot-label="LE"]){--draft-slot-y:54%}
 #app[data-screen="draft"] .pitch-direction{top:5px;font-size:8px}
 #app[data-screen="draft"] .draft-right{grid-area:team;display:block;min-width:0;min-height:0;width:100%}
 #app[data-screen="draft"] .draft-box{display:flex;flex-direction:column;min-height:0;height:auto;padding:0}
