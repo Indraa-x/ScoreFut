@@ -7,7 +7,7 @@ import { playerPortrait } from './player-portraits.js?v=club-only-cleanup-202610
 import { competitionName, competitionLogo } from '../data/competitions.js?v=club-only-cleanup-20261020';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=cup-stoppage-20261021';
 import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=cup-stoppage-20261021';
-import { renderMatchView } from './match-view.js?v=cup-stoppage-20261021';
+import { renderMatchView } from './match-view.js?v=live-match-motion-20261021';
 import { renderBrazilCupBracket, renderCupStages } from './brazil-cup-view.js?v=cup-stoppage-20261021';
 import { championDecoration, championConfetti } from './celebration.js?v=club-only-cleanup-20261020';
 export const esc = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

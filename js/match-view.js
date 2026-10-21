@@ -1,7 +1,7 @@
-import {renderMatchGoals} from './match-goals.js?v=cup-stoppage-20261021';
+import {renderMatchGoals} from './match-goals.js?v=live-match-motion-20261021';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=club-only-cleanup-20261020';
 import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=cup-stoppage-20261021';
-import { formatMatchClock, matchPhase, matchEndLabel, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=cup-stoppage-20261021';
+import { formatMatchClock, matchPhase, matchEndLabel, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=live-match-motion-20261021';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {

@@ -45,6 +45,16 @@ test('all formations retain 22 distinct shirts in bounds and move smoothly betwe
   }
 });
 
+test('possessions vary their style and each player follows a distinct run path',()=>{
+  const motion=createMatchMotion(home,away,match);
+  const styles=new Set(motion.frames.map(frame=>frame.style).filter(Boolean));
+  const actions=new Set(motion.frames.map(frame=>frame.kind));
+  assert.ok(styles.size>=3,`Expected varied possession styles, got ${[...styles]}`);
+  assert.ok(actions.size>=4,`Expected varied actions, got ${[...actions]}`);
+  const paths=motion.anchors.map((_,index)=>motion.frames.map(frame=>`${Math.round(frame.players[index].x)},${Math.round(frame.players[index].y)}`).join('|'));
+  assert.ok(new Set(paths).size>=20,'Most players should follow distinct paths instead of repeating the same movement');
+});
+
 test('a goal at the final whistle still reaches the goal mouth',()=>{
   const lastGoal={minute:90,type:'goal',team:'home',player:home.lineup[10].player,x:.5,y:.2};
   const final={...match,result:{...match.result,duration:90,events:[lastGoal],homeGoals:1,awayGoals:0}};

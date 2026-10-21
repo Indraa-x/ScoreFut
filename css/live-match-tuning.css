@@ -1,0 +1,3 @@
+#app[data-screen="match"] .live-pitch{width:min(100cqw,calc(100cqh * 1.85),720px)}
+@media(max-width:900px){#app[data-screen="match"] .live-pitch{width:min(96%,720px)}}
+@media(max-width:600px){#app[data-screen="match"] .live-pitch{width:min(96%,640px)}}

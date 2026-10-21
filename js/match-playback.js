@@ -1,6 +1,6 @@
 import { currentMatch } from './match-session.js?v=cup-stoppage-20261021';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=cup-stoppage-20261021';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=cup-stoppage-20261021';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=live-match-motion-20261021';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=live-match-motion-20261021';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;
