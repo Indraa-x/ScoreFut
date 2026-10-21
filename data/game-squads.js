@@ -1,3 +1,3 @@
-import {allSquads} from './clubs.js?v=club-only-cleanup-20261020';
-export {clubs,validateData} from './clubs.js?v=club-only-cleanup-20261020';
+import {allSquads} from './clubs.js?v=season-ovr-20261021';
+export {clubs,validateData} from './clubs.js?v=season-ovr-20261021';
 export {allSquads};

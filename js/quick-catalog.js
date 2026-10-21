@@ -1,4 +1,4 @@
-import {clubs, allSquads} from '../data/clubs.js?v=club-only-cleanup-20261020';
+import {clubs, allSquads} from '../data/clubs.js?v=season-ovr-20261021';
 import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=club-only-cleanup-20261020';
 import {squadTeam,FORMATIONS} from './engine.js?v=champions-two-legs-20261020';
 

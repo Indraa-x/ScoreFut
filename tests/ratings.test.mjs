@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import { allSquads } from '../data/clubs.js';
 import {
   FIFA_OVR_BY_SQUAD, FIFA_RATING_SOURCES, MAX_OVR, RATINGS_VERSION,
+  SEASON_RATINGS_BY_SQUAD, applyHistoricalFifaRating,
 } from '../data/ratings.js';
 import {ARCHIVED_RATINGS_BY_SQUAD} from '../data/fifa-archive-ratings.js';
 import {MODERN_RATINGS_BY_SQUAD} from '../data/modern-ratings.js';
-import { FORMATIONS } from '../js/engine.js';
+import { FORMATIONS, positionFit } from '../js/engine.js';
 import { refreshDraftRatings } from '../js/draft.js';
 
 const players = allSquads.flatMap(s => s.jogadores);
@@ -25,9 +26,8 @@ test('historical ratings no longer cluster at 94', () => {
 test('ratings backed by an archived FIFA edition match the published OVR', () => {
   for (const [squad,id,ovr,edition] of [
     ['arsenal-2006','thierry-henry',92,'FIFA 06'],
-    ['bayern-2013','franck-ribery',90,'FIFA 13'],
-    ['barcelona-2011','lionel-messi',90,'FIFA 11'],
-    ['barcelona-2011','xavi',87,'FIFA 11'],
+    ['bayern-2013','philipp-lahm',87,'FIFA 13'],
+    ['barcelona-2011','david-villa',88,'FIFA 11'],
     ['real-madrid-2017','cristiano-ronaldo',94,'FIFA 17'],
     ['real-madrid-2017','toni-kroos',88,'FIFA 17'],
     ['real-madrid-2017','luka-modric',89,'FIFA 17'],
@@ -51,7 +51,7 @@ test('ratings backed by an archived FIFA edition match the published OVR', () =>
     assert.equal(found.ratingEdition,edition,`${squad}/${id} edition`);
     assert.equal(found.ratingSource,MODERN_RATINGS_BY_SQUAD[squad]?.[id]?.source??ARCHIVED_RATINGS_BY_SQUAD[squad]?.[id]?.source??FIFA_RATING_SOURCES[squad],`${squad}/${id} source`);
   }
-  assert.equal(RATINGS_VERSION,7);
+  assert.equal(RATINGS_VERSION,8);
 });
 
 test('ratings from FIFA 21 through FC 26 use the exact player and edition source',()=>{
@@ -90,7 +90,8 @@ test('every imported exact OVR has a source and names a player in that squad', (
     for(const [id,rating] of Object.entries(ratings)){
       assert.match(rating.source,/^https:\/\/www\.fifaindex\.com\/player\//,`${squadId}/${id} source`);
       assert.ok(squad.jogadores.some(p=>p.id===id),`${squadId}/${id} is not in the squad`);
-      assert.equal(squad.jogadores.find(p=>p.id===id).ovr,rating.ovr,`${squadId}/${id} rating`);
+      const found=squad.jogadores.find(p=>p.id===id);
+      assert.equal(SEASON_RATINGS_BY_SQUAD[squadId]?.[id] ? found.archivedRating.ovr : found.ovr,rating.ovr,`${squadId}/${id} archived rating`);
     }
   }
   for(const [squadId,ratings] of Object.entries(MODERN_RATINGS_BY_SQUAD)){
@@ -100,8 +101,81 @@ test('every imported exact OVR has a source and names a player in that squad', (
       assert.match(rating.source,/^https:\/\/(?:sofifa\.com\/player\/\d+\/|www\.fifaindex\.com\/players\/|www\.ea\.com\/games\/ea-sports-fc\/ratings\/player-ratings\/)/,`${squadId}/${id} source`);
       const player=squad.jogadores.find(p=>p.id===id);
       assert.ok(player,`${squadId}/${id} is not in the squad`);
-      assert.equal(player.ovr,rating.ovr,`${squadId}/${id} rating`);
+      assert.equal(SEASON_RATINGS_BY_SQUAD[squadId]?.[id] ? player.archivedRating.ovr : player.ovr,rating.ovr,`${squadId}/${id} archived rating`);
     }
+  }
+});
+
+test('exceptional seasons use the reviewed OVR while keeping original EA ratings separate', () => {
+  for (const [squadId,id,ovr] of [
+    ['milan-2007','kaka',92],
+    ['santos-2010','neymar',86],
+    ['santos-2011','neymar',88],
+    ['barcelona-2015','neymar',92],
+    ['barcelona-2009','lionel-messi',94],
+    ['barcelona-2011','lionel-messi',96],
+    ['barcelona-2015','lionel-messi',95],
+    ['manchester-united-2008','cristiano-ronaldo',94],
+    ['manchester-united-2009','cristiano-ronaldo',94],
+    ['real-madrid-2014','cristiano-ronaldo',95],
+    ['real-madrid-2017','cristiano-ronaldo',94],
+    ['inter-2010','wesley-sneijder',91],
+    ['bayern-2010','thomas-muller',84],
+    ['barcelona-2009','sergio-busquets',82],
+  ]) assert.equal(player(squadId,id).ovr,ovr,`${squadId}/${id}`);
+
+  for (const [squadId,ratings] of Object.entries(SEASON_RATINGS_BY_SQUAD)) {
+    for (const [id,review] of Object.entries(ratings)) {
+      const found=player(squadId,id);
+      assert.ok(found,`${squadId}/${id} exists`);
+      assert.equal(found.ovr,review.ovr,`${squadId}/${id} reviewed OVR`);
+      assert.equal(found.ratingKind,'season-review');
+      assert.equal(found.ratingSource,review.source);
+      assert.equal(found.ratingReason,review.reason);
+      assert.equal(found.ratingEdition,undefined,'Editorial OVR must not be labelled as an official EA rating');
+      assert.match(review.source,/^https:\/\/(?:www\.santosfc\.com\.br|www\.uefa\.com|inside\.fifa\.com)\//);
+      assert.ok(review.reason.length>30);
+      assert.ok(Number.isInteger(review.ovr)&&review.ovr<=96);
+      const archive=MODERN_RATINGS_BY_SQUAD[squadId]?.[id]??ARCHIVED_RATINGS_BY_SQUAD[squadId]?.[id];
+      const originalOvr=archive?.ovr??FIFA_OVR_BY_SQUAD[squadId]?.[id];
+      if(originalOvr!==undefined) {
+        assert.equal(found.archivedRating.ovr,originalOvr);
+        assert.equal(found.archivedRating.source,archive?.source??FIFA_RATING_SOURCES[squadId]);
+        assert.match(found.archivedRating.edition,/^(?:FIFA|FC) \d{2}$/);
+      }
+    }
+  }
+});
+
+test('a season correction updates simulation attributes without mutating the input', () => {
+  const base={id:'kaka',ovr:80,atributos:{ataque:81,meio:82,defesa:49,finalizacao:74,reflexo:15,posicionamento:77}};
+  const original=structuredClone(base);
+  const corrected=applyHistoricalFifaRating(base,'milan-2007');
+  assert.equal(corrected.ovr,92);
+  assert.deepEqual(corrected.atributos,{ataque:93,meio:94,defesa:61,finalizacao:86,reflexo:27,posicionamento:89});
+  assert.deepEqual(base,original);
+  const previouslyArchived=applyHistoricalFifaRating({...base,ratingEdition:'FIFA 07'},'milan-2007');
+  assert.equal(previouslyArchived.ratingEdition,undefined);
+  assert.deepEqual(applyHistoricalFifaRating(corrected,'milan-2007'),corrected,'Reapplying does not double the attribute increase');
+  const otherSeason=applyHistoricalFifaRating(base,'milan-2003');
+  assert.equal(otherSeason,base,'No career-wide bonus is applied to other seasons');
+});
+
+test('old draft picks receive the revised star ratings without changing skips or positions', () => {
+  for (const [squadId,id,oldOvr,expected] of [
+    ['milan-2007','kaka',87,92],
+    ['santos-2010','neymar',73,86],
+    ['barcelona-2011','lionel-messi',90,96],
+    ['manchester-united-2008','cristiano-ronaldo',91,94],
+  ]) {
+    const latest=player(squadId,id);
+    const slot=FORMATIONS['4-3-3'].slots.find(s=>positionFit(latest,s)!==null);
+    const draft={seed:42,rngState:70,rerolls:2,seen:[squadId],currentSquadId:squadId,picks:[{player:{...latest,ovr:oldOvr},slot,squadId}]};
+    const original=structuredClone(draft),updated=refreshDraftRatings(draft,allSquads);
+    assert.equal(updated.picks[0].player.ovr,expected,`${squadId}/${id}`);
+    assert.deepEqual({...updated,picks:[]},{...draft,picks:[]});
+    assert.equal(updated.picks[0].slot,slot);
+    assert.deepEqual(draft,original);
   }
 });
 

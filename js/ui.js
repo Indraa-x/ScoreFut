@@ -1,7 +1,7 @@
 import { MODES } from './state.js?v=champions-two-legs-20261020';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=club-only-cleanup-20261020';
-import { clubs, allSquads } from '../data/game-squads.js?v=club-only-cleanup-20261020';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=champions-two-legs-20261020';
+import { clubs, allSquads } from '../data/game-squads.js?v=season-ovr-20261021';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=season-ovr-20261021';
 import {filterHistory,formatHistoryDate} from './history.js?v=club-only-cleanup-20261020';
 import { playerPortrait } from './player-portraits.js?v=club-only-cleanup-20261020';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=club-only-cleanup-20261020';
