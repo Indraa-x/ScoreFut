@@ -3,7 +3,7 @@
 .club-badge.club-logo{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;overflow:visible}
 .club-badge.club-logo::after{display:none}
 .club-logo img{display:block;width:100%;height:100%;object-fit:contain}
-#app[data-screen="draft"] .season-year{display:inline-block;font-size:26px;font-weight:800;line-height:1.1;letter-spacing:.3px;background:linear-gradient(115deg,var(--year-color-1),var(--year-color-2));background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:0;text-shadow:none;font-variant-numeric:tabular-nums}
+#app[data-screen="draft"] .season-year{display:inline-block;font-size:26px;font-weight:800;line-height:1.1;letter-spacing:.3px;background:linear-gradient(115deg,color-mix(in srgb,var(--year-color-1) 52%,#17352c),color-mix(in srgb,var(--year-color-2) 52%,#17352c));background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:0;text-shadow:none;font-variant-numeric:tabular-nums}
 .competition-logo{display:block;width:48px;height:48px;object-fit:contain;flex:0 0 auto;background:#fff;border-radius:6px;padding:4px}
 .mode-icon:has(.competition-logo){background:transparent}
 .mode-icon .competition-logo{width:100%;height:100%}
