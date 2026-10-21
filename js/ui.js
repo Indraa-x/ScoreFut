@@ -45,7 +45,7 @@ function homePlayers(squadCount){
       {name:'Jogador com uniforme azul e vermelho',src:'group-3-player-4.png',width:649,height:900,head:{x:351,y:208,height:206}},
     ]},
   ];
-  const fadeStops=[[.68,1],[.78,.9],[.91,.45],[1,0]];
+  const fadeStops=[[.55,1],[.65,.9],[.8,.45],[.88,0]];
   const portraits=groups.map(group=>`<div class="home-stars-group home-stars-group--${group.className}">${group.players.map(player=>{
     // Match head size and hairline, independent of transparent margins and torso length.
     const visibleHeight=player.head.height/.42,width=player.width??group.width,height=player.height??group.height;
