@@ -7,11 +7,13 @@ import {
 } from '../data/ratings.js';
 import {ARCHIVED_RATINGS_BY_SQUAD} from '../data/fifa-archive-ratings.js';
 import {MODERN_RATINGS_BY_SQUAD} from '../data/modern-ratings.js';
+import {CREATOR_RATINGS_BY_SQUAD} from '../data/creator-ratings.js';
 import { FORMATIONS, positionFit } from '../js/engine.js';
 import { refreshDraftRatings } from '../js/draft.js';
 
 const players = allSquads.flatMap(s => s.jogadores);
 const player = (squadId, id) => allSquads.find(s=>s.id===squadId).jogadores.find(p=>p.id===id);
+const reviewed = (squadId,id) => SEASON_RATINGS_BY_SQUAD[squadId]?.[id] || CREATOR_RATINGS_BY_SQUAD[squadId]?.[id];
 
 test('historical ratings no longer cluster at 94', () => {
   const mean = players.reduce((sum,p)=>sum+p.ovr,0)/players.length;
@@ -51,7 +53,7 @@ test('ratings backed by an archived FIFA edition match the published OVR', () =>
     assert.equal(found.ratingEdition,edition,`${squad}/${id} edition`);
     assert.equal(found.ratingSource,MODERN_RATINGS_BY_SQUAD[squad]?.[id]?.source??ARCHIVED_RATINGS_BY_SQUAD[squad]?.[id]?.source??FIFA_RATING_SOURCES[squad],`${squad}/${id} source`);
   }
-  assert.equal(RATINGS_VERSION,9);
+  assert.equal(RATINGS_VERSION,11);
 });
 
 test('ratings from FIFA 21 through FC 26 use the exact player and edition source',()=>{
@@ -91,7 +93,7 @@ test('every imported exact OVR has a source and names a player in that squad', (
       assert.match(rating.source,/^https:\/\/www\.fifaindex\.com\/player\//,`${squadId}/${id} source`);
       assert.ok(squad.jogadores.some(p=>p.id===id),`${squadId}/${id} is not in the squad`);
       const found=squad.jogadores.find(p=>p.id===id);
-      assert.equal(SEASON_RATINGS_BY_SQUAD[squadId]?.[id] ? found.archivedRating.ovr : found.ovr,rating.ovr,`${squadId}/${id} archived rating`);
+      assert.equal(reviewed(squadId,id) ? found.archivedRating.ovr : found.ovr,rating.ovr,`${squadId}/${id} archived rating`);
     }
   }
   for(const [squadId,ratings] of Object.entries(MODERN_RATINGS_BY_SQUAD)){
@@ -101,16 +103,17 @@ test('every imported exact OVR has a source and names a player in that squad', (
       assert.match(rating.source,/^https:\/\/(?:sofifa\.com\/player\/\d+\/|www\.fifaindex\.com\/players\/|www\.ea\.com\/games\/ea-sports-fc\/ratings\/player-ratings\/)/,`${squadId}/${id} source`);
       const player=squad.jogadores.find(p=>p.id===id);
       assert.ok(player,`${squadId}/${id} is not in the squad`);
-      assert.equal(SEASON_RATINGS_BY_SQUAD[squadId]?.[id] ? player.archivedRating.ovr : player.ovr,rating.ovr,`${squadId}/${id} archived rating`);
+      assert.equal(reviewed(squadId,id) ? player.archivedRating.ovr : player.ovr,rating.ovr,`${squadId}/${id} archived rating`);
     }
   }
 });
 
 test('exceptional seasons use the reviewed OVR while keeping original EA ratings separate', () => {
   for (const [squadId,id,ovr] of [
+    ['juventus-1998','zinedine-zidane',93],
     ['milan-2007','kaka',92],
     ['santos-2010','neymar',86],
-    ['santos-2011','neymar',88],
+    ['santos-2011','neymar',89],
     ['barcelona-2015','neymar',92],
     ['barcelona-2009','lionel-messi',94],
     ['barcelona-2011','lionel-messi',96],
@@ -138,11 +141,13 @@ test('exceptional seasons use the reviewed OVR while keeping original EA ratings
   for (const [squadId,ratings] of Object.entries(SEASON_RATINGS_BY_SQUAD)) {
     for (const [id,review] of Object.entries(ratings)) {
       const found=player(squadId,id);
+      const currentReview=CREATOR_RATINGS_BY_SQUAD[squadId]?.[id] || review;
       assert.ok(found,`${squadId}/${id} exists`);
-      assert.equal(found.ovr,review.ovr,`${squadId}/${id} reviewed OVR`);
-      assert.equal(found.ratingKind,'season-review');
-      assert.equal(found.ratingSource,review.source);
-      assert.equal(found.ratingReason,review.reason);
+      assert.equal(found.ovr,currentReview.ovr,`${squadId}/${id} reviewed OVR`);
+      assert.equal(found.ratingKind,currentReview===review?'season-review':'creator-review');
+      assert.equal(found.ratingSource,currentReview.source);
+      assert.equal(found.ratingReason,currentReview.reason);
+      if(currentReview!==review)assert.deepEqual(found.priorSeasonReview,review);
       assert.equal(found.ratingEdition,undefined,'Editorial OVR must not be labelled as an official EA rating');
       assert.match(review.source,/^https:\/\/(?:www\.santosfc\.com\.br|www\.uefa\.com|inside\.fifa\.com|www\.psg\.fr|en\.news\.psg\.fr)\//);
       assert.ok(review.reason.length>30);
@@ -200,10 +205,7 @@ test('each archived edition uses the same year as its ScoreFut season', () => {
   assert.equal(FIFA_RATING_SOURCES['arsenal-2004'],undefined);
 });
 
-test('unarchived seasons use an explicit editorial fallback, without the old 94 ceiling', () => {
-  const unarchived=player('real-madrid-2002','zinedine-zidane');
-  assert.equal(unarchived.ovr,91);
-  assert.equal(unarchived.ratingSource,undefined);
+test('unarchived and unreviewed seasons keep their editorial fallback', () => {
   const recentUnarchived=player('inter-2024','lautaro-martinez');
   assert.equal(recentUnarchived.ratingSource,undefined);
 });

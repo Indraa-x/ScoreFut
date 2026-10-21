@@ -1,13 +1,13 @@
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=cup-stoppage-20261021';
-import {filterQuickClubs} from './quick-catalog.js?v=cup-stoppage-20261021';
+import {filterQuickClubs} from './quick-catalog.js?v=creator-ovr-20261021';
 import {filterHistory} from './history.js?v=club-only-cleanup-20261020';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=psg-awards-ovr-20261021';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=creator-ovr-20261021';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=club-only-cleanup-20261020';
 import { state, MODES } from './state.js?v=cup-stoppage-20261021';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=cup-stoppage-20261021';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=cup-stoppage-20261021';
 import * as storage from './storage.js?v=club-only-cleanup-20261020';
-import * as ui from './ui.js?v=champions-hub-20261021';
+import * as ui from './ui.js?v=creator-ovr-20261021';
 import {downloadResult} from './share.js?v=club-only-cleanup-20261020';
 import {initPlayerDrag} from './player-drag.js?v=club-only-cleanup-20261020';
 import {initSkipFeedback} from './skip-feedback.js?v=skip-feedback-20261021';

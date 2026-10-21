@@ -1,15 +1,15 @@
 /**
  * Fonte central de dados do ScoreFut. Edite os elencos nos lotes importados
  * abaixo, ou inclua novos objetos diretamente em clubs. Notas com fonte histórica
- * no ratings.js usam a edição FIFA/FC como base. Revisões explícitas por temporada
- * corrigem auges subestimados; os demais valores são avaliações do jogo.
+ * no ratings.js usam a edição FIFA/FC como base. Revisões por temporada e ajustes
+ * explícitos do criador têm prioridade; os demais valores são avaliações do jogo.
  * Cada temporada oferece onze candidatos, incluindo um goleiro.
  */
 import { clubsA } from './clubs-a.js?v=club-only-cleanup-20261020';
 import { clubsB } from './clubs-b.js?v=club-only-cleanup-20261020';
 import { clubsC } from './clubs-c.js?v=club-only-cleanup-20261020';
 import { championsAdditions } from './champions-additions.js?v=club-only-cleanup-20261020';
-import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=psg-awards-ovr-20261021';
+import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=creator-ovr-20261021';
 export const ELENCO_TAMANHO = 11;
 export const clubs = [...clubsA, ...clubsB, ...clubsC, ...championsAdditions];
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);

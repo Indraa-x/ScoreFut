@@ -11,6 +11,10 @@ const psgBallonDor = 'https://www.psg.fr/en/content/ballon-d-or-2025-a-historic-
 const psgUnfp = 'https://en.news.psg.fr/press-releases/club/paris-saint-germain-shines-at-the-unfp-2025-awards-with-14-awards';
 
 export const SEASON_RATINGS_BY_SQUAD = Object.freeze({
+  'juventus-1998': review(worldAwards,
+    'Revisão editorial solicitada pelo criador do ScoreFut: Zidane na Juventus de 1998 passa a OVR 93.',
+    {'zinedine-zidane':93}
+  ),
   'milan-2007': review(
     'https://www.uefa.com/uefasupercup/news/0250-0c50f2622044-e9cb8111e628-1000--kaka-the-cream-of-europe-s-finest/',
     'Campanha campeã europeia de 2006/07: Kaká, Bola de Ouro; Maldini e Seedorf também premiados pela UEFA.',

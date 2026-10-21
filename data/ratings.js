@@ -1,13 +1,14 @@
 import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js';
 import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js';
-import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=psg-awards-ovr-20261021';
+import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=creator-ovr-20261021';
+import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=creator-ovr-20261021';
 export { SEASON_RATINGS_BY_SQUAD };
 
 /**
  * Historical FIFA/EA SPORTS FC OVRs, with explicit reviews for exceptional
  * seasons and a conservative fallback where no archived rating is available.
  */
-export const RATINGS_VERSION = 9;
+export const RATINGS_VERSION = 11;
 export const MAX_OVR = 99;
 
 // OVRs are copied from the edition matching the season's ending year
@@ -249,30 +250,39 @@ export function recalibratePlayer(player, attributeFloor = 1) {
   };
 }
 
-/** Season reviews take precedence; the original EA record remains traceable. */
+/** Creator edits take precedence over season reviews; original EA records remain traceable. */
 export function applyHistoricalFifaRating(player, squadId) {
   const editionRating = MODERN_RATINGS_BY_SQUAD[squadId]?.[player.id]
     ?? ARCHIVED_RATINGS_BY_SQUAD[squadId]?.[player.id];
   const archivedOvr = editionRating?.ovr ?? FIFA_OVR_BY_SQUAD[squadId]?.[player.id];
-  const review = SEASON_RATINGS_BY_SQUAD[squadId]?.[player.id];
+  const seasonReview = SEASON_RATINGS_BY_SQUAD[squadId]?.[player.id];
+  const creatorReview = CREATOR_RATINGS_BY_SQUAD[squadId]?.[player.id];
+  const review = creatorReview ?? seasonReview;
   const rating = review?.ovr ?? archivedOvr;
   if (rating === undefined) return player;
   const edition = Number(squadId.match(/-(\d{4})$/)?.[1]) % 100;
   const ratingEdition = edition <= 23 ? `FIFA ${String(edition).padStart(2, '0')}` : `FC ${edition}`;
   const ratingSource = editionRating?.source ?? FIFA_RATING_SOURCES[squadId];
   const delta = rating - player.ovr;
-  return {
+  const updated = {
     ...player,
     ovr: rating,
     ...(review ? {
-      ratingKind: 'season-review',
+      ratingKind: creatorReview ? 'creator-review' : 'season-review',
       ratingSource: review.source,
       ratingEdition: undefined,
       ratingReason: review.reason,
+      ...(creatorReview ? {creatorReview, priorSeasonReview:seasonReview} : {}),
       archivedRating: archivedOvr === undefined ? undefined : {ovr:archivedOvr, source:ratingSource, edition:ratingEdition},
     } : {ratingSource, ratingEdition}),
     atributos: Object.fromEntries(Object.entries(player.atributos).map(
       ([key, value]) => [key, clamp(value + delta, 1)]
     )),
   };
+  if (review) {
+    delete updated.ratingEdition;
+    if (archivedOvr === undefined) delete updated.archivedRating;
+    if (creatorReview && !seasonReview) delete updated.priorSeasonReview;
+  }
+  return updated;
 }

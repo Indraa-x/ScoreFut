@@ -1,7 +1,7 @@
 import { MODES } from './state.js?v=cup-stoppage-20261021';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=club-only-cleanup-20261020';
-import { clubs, allSquads } from '../data/game-squads.js?v=psg-awards-ovr-20261021';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=cup-stoppage-20261021';
+import { clubs, allSquads } from '../data/game-squads.js?v=creator-ovr-20261021';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=creator-ovr-20261021';
 import {filterHistory,formatHistoryDate} from './history.js?v=club-only-cleanup-20261020';
 import { playerPortrait } from './player-portraits.js?v=club-only-cleanup-20261020';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=club-only-cleanup-20261020';
