@@ -28,9 +28,9 @@ function homePlayers(squadCount){
   const groups=[
     {className:'current',width:485,height:567,players:[
       {name:'Kylian Mbappé',src:'mbappe.png',center:57.73,top:0,bottom:527},
-      {name:'Cristiano Ronaldo',src:'cristiano-ronaldo.png',center:58.87,top:2,bottom:533},
+      {name:'Cristiano Ronaldo',src:'cristiano-ronaldo.png?v=home-portraits-20261021',width:649,height:900,center:50.23,top:200,bottom:833},
       {name:'Neymar Jr.',src:'neymar.png',center:63.61,top:5,bottom:488},
-      {name:'Lionel Messi',src:'messi.png',center:57.01,top:23,bottom:464},
+      {name:'Lionel Messi',src:'messi.png?v=home-portraits-20261021',width:649,height:900,center:46.69,top:178,bottom:835},
     ]},
     {className:'legends',width:649,height:900,players:[
       {name:'Gianluigi Buffon',src:'buffon.png',center:50.85,top:196,bottom:813},
