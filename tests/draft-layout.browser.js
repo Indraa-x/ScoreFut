@@ -20,6 +20,7 @@ const fixtureURL=fixture=>{
   const url=new URL(location.pathname,location.href);
   url.searchParams.set('fixture',fixture.id);
   url.searchParams.set('formation',fixture.formation);
+  url.searchParams.set('v',query.get('v')||'larger-draft-circles-spaced-20261021');
   return url;
 };
 
