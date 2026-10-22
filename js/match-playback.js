@@ -1,5 +1,5 @@
 import { currentMatch } from './match-session.js?v=five-eras-20261022';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=two-match-speeds-20261022';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=two-match-speeds-20261022';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=five-eras-20261022';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
@@ -41,9 +41,6 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     }
     const phase = matchPhase(match.result,state.matchMinute);
     if (nodes.phase.textContent !== phase) nodes.phase.textContent = phase;
-    nodes.endTime.textContent = matchEndLabel(match.result);
-    if (nodes.progress && document.activeElement !== nodes.progress) nodes.progress.value = state.matchMinute;
-    nodes.progress?.style.setProperty('--progress', `${state.matchMinute / match.result.duration * 100}%`);
     const goal = match.result.events.filter(event => event.type === 'goal' && event.minute <= state.matchMinute).at(-1);
     const showGoal = goal && state.matchMinute - goal.minute < 1.4 * normalizeMatchSpeed(state.matchSpeed) && state.matchMinute < match.result.duration;
     nodes.goal.classList.toggle('visible', !!showGoal);
@@ -66,8 +63,8 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     nodes = {
       players: [...pitch.querySelectorAll('[data-match-player]')], ball: pitch.querySelector('[data-match-ball]'),
       scores: [...app.querySelectorAll('.score-numbers>span')], clock: app.querySelector('.score-clock'),
-      progress: app.querySelector('#match-timeline'), goal: app.querySelector('[data-goal-notice]'), goalName: app.querySelector('[data-goal-name]'),
-      phase: app.querySelector('[data-match-phase]'), endTime: app.querySelector('[data-match-end-time]'),
+      goal: app.querySelector('[data-goal-notice]'), goalName: app.querySelector('[data-goal-name]'),
+      phase: app.querySelector('[data-match-phase]'),
       addedTime: app.querySelector('[data-match-added-time]'),
       aggregate: app.querySelector('[data-match-aggregate]'),
       goals: app.querySelector('[data-match-goals]'), goalCount:-1,

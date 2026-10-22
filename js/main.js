@@ -8,13 +8,13 @@ import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, si
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=uniform-draw-20261022';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
-import * as ui from './ui.js?v=two-match-speeds-20261022';
+import * as ui from './ui.js?v=group-footer-clean-20261022';
 import {downloadResult} from './share.js?v=five-eras-20261022';
-import {initPlayerDrag} from './player-drag.js?v=five-eras-20261022';
+import {initPlayerDrag} from './player-drag.js?v=field-circle-drag-20261022';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
 import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=five-eras-20261022';
 import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=two-match-speeds-20261022';
-import {initMatchPlayback} from './match-playback.js?v=two-match-speeds-20261022';
+import {initMatchPlayback} from './match-playback.js?v=match-group-clean-20261022';
 import {initCelebration} from './celebration.js?v=five-eras-20261022';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
@@ -265,7 +265,7 @@ initPlayerDrag({
     const player=selectedPlayer(id);
     const pick=state.draft?.picks.find(pick=>pick.player.id===id);
     const squad=pick?allSquads.find(squad=>squad.id===pick.squadId):state.draft?.currentSquad;
-    return player&&squad&&playerDestinations(id).length?{player,squad,hidden:state.mode==='legends'&&state.screen==='draft'}:null;
+    return player&&squad&&playerDestinations(id).length?{player,squad,slot:pick?.slot,hidden:state.mode==='legends'&&state.screen==='draft'}:null;
   },
   onStart:highlightDrag,
   onPlace:addPlayer,

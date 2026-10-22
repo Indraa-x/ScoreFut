@@ -1,4 +1,4 @@
-/** Mouse/pen dragging with a compact text preview; no portrait or player card assets. */
+/** Mouse/pen dragging uses the field's circular club/OVR marker. */
 export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPreview}) {
   let gesture=null,ignoreClickUntil=0;
   const reducedMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -17,10 +17,10 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
     return {target:nearest&&!nearest.disabled&&nearest.classList.contains('compatible')?nearest:null,inField:true};
   }
 
-  function positionCard(g) {
+  function positionPreview(g) {
     const {width,height}=g.card.getBoundingClientRect();
-    const x=Math.max(12,Math.min(innerWidth-width-12,g.x-width/2));
-    const y=Math.max(12,Math.min(innerHeight-height-12,g.y-height/2));
+    const x=Math.max(8,Math.min(innerWidth-width-8,g.x-g.grabX));
+    const y=Math.max(8,Math.min(innerHeight-height-8,g.y-g.grabY));
     g.card.style.transform=`translate3d(${x}px,${y}px,0)`;
     const {target,inField}=dropTarget(g.x,g.y);
     slots().forEach(slot=>slot.classList.toggle('drop-target',slot===target));
@@ -33,6 +33,12 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
     if(g!==gesture||g.active)return;
     const player=getPlayer(g.id);
     if(!player||!onStart(g.id)){finish(false);return;}
+    const originCircle=g.source.querySelector('.slot-circle');
+    const circle=originCircle||slots().find(slot=>slot.classList.contains('compatible'))?.querySelector('.slot-circle');
+    const rect=circle?.getBoundingClientRect(),size=rect?.width||58;
+    const grabbedCircle=originCircle&&g.startX>=rect.left&&g.startX<=rect.right&&g.startY>=rect.top&&g.startY<=rect.bottom;
+    g.grabX=grabbedCircle?g.startX-rect.left:size/2;
+    g.grabY=grabbedCircle?g.startY-rect.top:size/2;
     g.active=true;
     clearTimeout(g.holdTimer);
     g.source.classList.add('dragging');
@@ -40,10 +46,12 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
     document.body.classList.add('player-dragging');
     g.card=document.createElement('div');
     g.card.className='player-drag';
+    g.card.style.setProperty('--drag-circle-size',`${size}px`);
+    g.card.style.setProperty('--drag-ovr-size',circle?getComputedStyle(circle).fontSize:'18px');
     g.card.setAttribute('aria-hidden','true');
     g.card.innerHTML=renderPreview(player);
     document.body.append(g.card);
-    positionCard(g);
+    positionPreview(g);
     if(!reducedMotion())g.card.firstElementChild.animate(
       [{opacity:0,transform:'scale(.94) translateY(5px)'},{opacity:1,transform:'scale(1) translateY(0)'}],
       {duration:180,easing:'cubic-bezier(.2,.7,.3,1)'}
@@ -66,7 +74,7 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
 
   function finish(place,event) {
     const g=gesture;if(!g)return;
-    if(place&&g.active){g.x=event.clientX;g.y=event.clientY;positionCard(g);}
+    if(place&&g.active){g.x=event.clientX;g.y=event.clientY;positionPreview(g);}
     gesture=null;clearTimeout(g.holdTimer);cancelAnimationFrame(g.frame);
     if(g.source.hasPointerCapture?.(g.pointerId))g.source.releasePointerCapture(g.pointerId);
     if(!g.active)return;
@@ -79,7 +87,9 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
     slots().forEach(slot=>slot.classList.remove('drop-target'));
     const placed=!!target&&onPlace(g.id,slotId);
     if(!placed)onCancel();
-    const destination=placed?slots().find(slot=>slot.dataset.value===slotId)?.querySelector('.slot-circle'):g.source.isConnected?g.source:null;
+    const destination=placed?slots().find(slot=>slot.dataset.value===slotId)?.querySelector('.slot-circle')
+      :slots().find(slot=>slot.dataset.lineupPlayer===g.id)?.querySelector('.slot-circle')
+        ||(g.source.isConnected?g.source.querySelector('.player-avatar')||g.source:null);
     animateAway(g.card,destination?.getBoundingClientRect(),placed);
     if(placed&&destination&&!reducedMotion())destination.animate(
       [{transform:'scale(.88)',opacity:.2},{transform:'scale(1.04)',opacity:1,offset:.75},{transform:'scale(1)',opacity:1}],
@@ -105,7 +115,7 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
     if(!g.active)return;
     event.preventDefault();
     cancelAnimationFrame(g.frame);
-    g.frame=requestAnimationFrame(()=>{if(gesture===g)positionCard(g);});
+    g.frame=requestAnimationFrame(()=>{if(gesture===g)positionPreview(g);});
   },{passive:false});
   document.addEventListener('pointerup',event=>{
     if(gesture&&event.pointerId===gesture.pointerId)finish(true,event);

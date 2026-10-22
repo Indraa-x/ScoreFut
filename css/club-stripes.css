@@ -1,5 +1,5 @@
 /* The club crest identifies each pick; only the image is translucent. */
-.draft-pitch .pitch-slot.picked .slot-circle{
+.draft-pitch .pitch-slot.picked .slot-circle,.player-drag .slot-circle{
   position:relative;
   isolation:isolate;
   overflow:hidden;
@@ -9,7 +9,7 @@
   text-shadow:none;
   border:2px solid #ffffffeb;
 }
-.draft-pitch .slot-club-crest{
+.draft-pitch .slot-club-crest,.player-drag .slot-club-crest{
   position:absolute;
   inset:5%;
   width:90%;
@@ -19,7 +19,7 @@
   pointer-events:none;
   user-select:none;
 }
-.draft-pitch .slot-ovr{
+.draft-pitch .slot-ovr,.player-drag .slot-ovr{
   position:relative;
   z-index:1;
   display:block;
@@ -38,4 +38,4 @@
 .draft-pitch .pitch-slot.picked:active{cursor:grabbing}
 .draft-pitch .pitch-slot.move-origin .slot-circle{box-shadow:0 0 0 4px #ffffff66}
 .draft-pitch .pitch-slot.picked.compatible .slot-circle{box-shadow:0 0 0 4px #c3f4d9aa;border-color:#fff}
-.draft-pitch .pitch-slot.dragging{opacity:.4}
+.draft-pitch .pitch-slot.dragging .slot-circle{opacity:0}

@@ -43,13 +43,7 @@
 .goal-notice.visible{opacity:1;transform:translate(-50%,0)}
 .goal-notice>svg{width:18px;height:18px;flex:0 0 18px}
 .goal-notice>strong{font-size:14px}.goal-notice>span{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.live-progress{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px;padding:4px 24px 6px;background:#f0f2f4;font-size:9px;color:var(--muted);flex:0 0 auto}
-#match-timeline{flex:0 0 100%;width:100%;height:14px;margin:0;appearance:none;background:transparent;cursor:pointer;accent-color:var(--green)}
-#match-timeline::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(to right,var(--green) var(--progress),#cbd2d8 var(--progress))}
-#match-timeline::-webkit-slider-thumb{appearance:none;width:10px;height:10px;background:var(--green);border:2px solid #f0f2f4;border-radius:50%;margin-top:-3.5px;box-shadow:0 0 0 1px var(--green)}
-#match-timeline::-moz-range-track{height:3px;border-radius:3px;background:#cbd2d8}
-#match-timeline::-moz-range-progress{height:3px;background:var(--green)}
-#match-timeline::-moz-range-thumb{width:8px;height:8px;background:var(--green);border:2px solid #f0f2f4;border-radius:50%}
+
 .live-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;border-top:1px solid var(--border);background:var(--soft);flex:0 0 auto}
 .live-play-actions{display:flex;align-items:center;gap:9px}
 .live-controls .btn{font-size:12px;min-height:38px;padding:9px 14px;border-radius:6px}
@@ -118,7 +112,7 @@
  .live-scoreboard{padding:14px 18px;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);gap:10px}
  .match-team{gap:9px}.match-team>.club-badge{width:36px;height:36px;flex-basis:36px}
  .match-card .score-numbers{font-size:38px}.match-team h2{font-size:17px}
- .live-field-wrap{padding:14px 14px 6px}.live-progress{padding-left:14px;padding-right:14px}
+ .live-field-wrap{padding:14px 14px 6px}
  .live-controls{padding:10px 14px}.match-speed>span{display:none}
 }
 @media(min-width:901px) and (max-height:740px){
@@ -154,7 +148,7 @@
  .match-player>svg{width:20px;height:22px}.match-player>b{top:8px;font-size:7px}.match-player small{top:24px;font-size:9px}
  .match-ball,.match-ball>svg{width:10px;height:10px}
  .goal-notice{padding:7px 10px;gap:5px;bottom:8px}.goal-notice>strong{font-size:12px}.goal-notice>span{font-size:9px}
- .live-progress{padding-left:12px;padding-right:12px}
+
  .live-controls{flex-wrap:wrap;padding:10px 12px;gap:10px}
  .live-play-actions{width:100%;justify-content:space-between}.live-controls .btn{font-size:11px;padding:9px 10px}
  .match-speed{width:100%;justify-content:space-between}.match-speed>span{display:block}
@@ -190,9 +184,7 @@
 .match-calendar .recent-game>b{font-size:18px;font-weight:800}
 .live-controls .match-end-label,.match-speed>span{font-size:12px;font-weight:700}
 .match-speed button{font-size:13px;font-weight:800;padding:7px 10px}
-#match-timeline:disabled{cursor:default;opacity:1;pointer-events:none}
-#match-timeline:disabled::-webkit-slider-thumb{visibility:hidden}
-#match-timeline:disabled::-moz-range-thumb{visibility:hidden}
+
 @media(min-width:901px) and (max-width:1200px){#app[data-screen="match"] .match-layout{grid-template-columns:minmax(0,1fr) 320px;gap:14px}}
 @media(max-width:900px){#app[data-screen="match"] .match-layout{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){#app[data-screen="match"] .match-page-title{align-items:center;flex-wrap:wrap;gap:12px}#app[data-screen="match"] .match-page-title .match-next{min-height:46px;min-width:0;font-size:13px;padding:12px 16px;margin-left:auto}.match-calendar .calendar-heading{padding:16px}.match-calendar .fixture-list{padding:12px}}

@@ -25,3 +25,41 @@
 .champions-group-picker,.champions-round-picker{scrollbar-width:none}.champions-group-picker::-webkit-scrollbar,.champions-round-picker::-webkit-scrollbar{display:none}
 @media(max-width:650px){.champions-round-picker button{min-width:68px}}
 @media(prefers-reduced-motion:reduce){.champions-tie,.champions-phase-picker button{transition:none}.champions-tie:hover:not(:disabled){transform:none}.champions-tree-center>.champions-tie:hover:not(:disabled){transform:translateY(-50%)}}
+
+/* Give the match sidebar the same readable scale as the rest of the site. */
+.champions-sidebar-group{border-color:#d8e1dc;border-radius:14px;box-shadow:0 4px 18px #173b2a05}
+.champions-sidebar-group .calendar-heading{padding:19px 18px;background:var(--surface);border-bottom:1px solid #e4ebe7;gap:12px}
+.champions-sidebar-group .calendar-heading>div{gap:10px;min-width:0}
+.champions-sidebar-group .calendar-heading h2{font-size:18px;font-weight:800;letter-spacing:-.35px}
+.champions-sidebar-group .calendar-heading svg{width:20px;height:20px;flex-shrink:0;color:var(--green)}
+.champions-sidebar-group .calendar-heading>span{flex-shrink:0;padding:6px 8px;border:1px solid #dce8df;border-radius:6px;background:#f1f7f3;color:var(--green);font-size:11px;font-weight:700}
+.champions-sidebar-group .champions-table.compact{font-size:13px}
+.champions-sidebar-group .champions-table.compact th,.champions-sidebar-group .champions-table.compact td{padding:13px 6px;border-top-color:#e9eeeb}
+.champions-sidebar-group .champions-table.compact thead th{padding:11px 6px;font-size:10px;letter-spacing:.25px;border-top:0;border-bottom:1px solid #e4ebe7;background:#f7f9f8}
+.champions-sidebar-group .champions-table.compact th:nth-child(1){width:34px}
+.champions-sidebar-group .champions-table.compact th:nth-child(3){width:30px}
+.champions-sidebar-group .champions-table.compact th:nth-child(4){width:34px}
+.champions-sidebar-group .champions-table.compact th:nth-child(5){width:44px;padding-right:12px}
+.champions-sidebar-group .champions-table.compact tbody tr{height:68px}
+.champions-sidebar-group .champions-table.compact .position{width:34px;border-left:3px solid transparent;font-size:12px;padding-inline:4px}
+.champions-sidebar-group .champions-rank{display:grid;place-items:center;width:23px;height:25px;margin:auto;border-radius:6px;color:var(--muted);font-weight:700}
+.champions-sidebar-group .qualification-zone .champions-rank{color:var(--green);background:#e5f2e9}
+.champions-sidebar-group .champions-table tr.is-user{--champions-row-bg:#edf7f0}
+.champions-sidebar-group .champions-table tr.is-user .position{border-left-color:var(--green)}
+.champions-sidebar-group .champions-table.compact .champions-team-name{gap:10px}
+.champions-sidebar-group .champions-table.compact .champions-team-name b{font-size:14px;font-weight:700;line-height:1.35;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+.champions-sidebar-group .champions-team-name small{font-size:10px;line-height:1.4;margin-top:4px;white-space:normal}
+.champions-sidebar-group .is-user .champions-team-name small{color:var(--green)}
+.champions-sidebar-group .champions-table.compact .club-badge{width:34px;height:36px;min-width:34px;max-width:34px;min-height:36px;max-height:36px;flex:0 0 34px;font-size:10px}
+.champions-sidebar-group .champions-table.compact .club-badge img{width:32px;height:34px;max-width:32px;max-height:34px;object-fit:contain}
+.champions-sidebar-group .champions-table.compact .points{font-size:16px;font-weight:800;padding-right:12px}
+.champions-sidebar-group .champions-sidebar-footer{padding:17px 16px 16px;border-top:1px solid #e4ebe7}
+.champions-sidebar-group .champions-sidebar-footer>p{font-size:11px;line-height:1.5;gap:7px;margin-bottom:13px}
+.champions-sidebar-group .champions-sidebar-footer>p i{width:6px;height:6px;flex-shrink:0}
+.champions-sidebar-group .champions-sidebar-footer>button{min-height:44px;padding:11px 13px;border-color:#dce8df;border-radius:8px;background:#f0f7f2;font-size:12px;font-weight:700}
+.champions-sidebar-group .champions-sidebar-footer>button:hover{background:#e5f2e9}
+.champions-sidebar-group .champions-sidebar-footer>button:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.champions-sidebar-group .champions-sidebar-footer>button svg{width:17px;height:17px}
+@media(max-width:900px){.match-calendar .champions-sidebar-group{grid-column:1/-1}}
+@media(max-width:380px){.champions-sidebar-group .calendar-heading{padding:17px 14px}.champions-sidebar-group .champions-table.compact .champions-team-name{gap:8px}.champions-sidebar-group .champions-table.compact .champions-team-name b{font-size:13px}.champions-sidebar-group .champions-table.compact .club-badge{width:30px;min-width:30px;max-width:30px;flex-basis:30px}.champions-sidebar-group .champions-table.compact .club-badge img{width:29px;max-width:29px}}
+@media(max-width:380px){.champions-sidebar-group .champions-table.compact th,.champions-sidebar-group .champions-table.compact td{padding-inline:4px}.champions-sidebar-group .champions-table.compact th:nth-child(1){width:30px}.champions-sidebar-group .champions-table.compact th:nth-child(3){width:26px}.champions-sidebar-group .champions-table.compact th:nth-child(4){width:30px}.champions-sidebar-group .champions-table.compact th:nth-child(5){width:38px;padding-right:8px}.champions-sidebar-group .champions-table.compact .position{width:30px;padding-inline:2px}.champions-sidebar-group .champions-table.compact .points{padding-right:8px}.champions-sidebar-group .champions-team-name small{font-size:9px}}

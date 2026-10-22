@@ -41,7 +41,7 @@ test('the match screen shows 22 numbered circles, a real calendar and speed cont
   const advance=html.match(/<button[^>]*data-action="next-match"[^>]*>/)[0];
   assert.ok(advance.includes('disabled'));
   assert.ok(html.indexOf(advance)<html.indexOf('class="match-layout"'));
-  assert.ok(html.match(/<input id="match-timeline"[^>]*>/)[0].includes('disabled'));
+  assert.ok(!/match-timeline|live-progress|data-match-end-time|Progresso da partida/.test(html));
   assert.ok(!renderBracket(state).includes('resultados ainda não reproduzidos'));
   assert.equal(state.tournament.groups[0].standings[0].played,0);
 });

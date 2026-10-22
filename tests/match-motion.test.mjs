@@ -87,7 +87,7 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
   const node=()=>({style:{setProperty(){}},textContent:'',classList:{toggle(){}},value:0,setAttribute(name,value){this[name]=value;}});
   const players=Array.from({length:22},node),ball=node(),clock=node(),scores=[node(),node()];
   const pitch={clientWidth:900,clientHeight:486,querySelectorAll:()=>players,querySelector:()=>ball};
-  const elements={'[data-live-pitch]':pitch,'.score-clock':clock,'#match-timeline':node(),'[data-goal-notice]':node(),'[data-goal-name]':node(),'[data-match-phase]':node(),'[data-match-end-time]':node()};
+  const elements={'[data-live-pitch]':pitch,'.score-clock':clock,'[data-goal-notice]':node(),'[data-goal-name]':node(),'[data-match-phase]':node()};
   const scorers=node();elements['[data-match-goals]']=scorers;
   const addedTime=node();elements['[data-match-added-time]']=addedTime;
   const app={querySelector:selector=>elements[selector],querySelectorAll:()=>scores};

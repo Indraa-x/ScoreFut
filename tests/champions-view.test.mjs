@@ -38,6 +38,17 @@ test('the match sidebar opens the group table and never reveals pending round re
   assert.equal(championsGroup(session.tournament).standings.reduce((sum,row)=>sum+row.played,0),0);
   const html=renderMatch(session);
   assert.ok(html.includes('Seu grupo na Champions'));assert.ok(html.includes('Ver classificação completa'));
+  assert.ok(html.includes('champions-sidebar-group'));
+  const table=html.match(/<table class="champions-table compact"[\s\S]*?<\/table>/)[0];
+  assert.equal((table.match(/scope="row"/g)||[]).length,4);
+  assert.equal((table.match(/class="champions-rank"/g)||[]).length,4);
+  assert.equal((table.match(/<small>/g)||[]).length,4);
+  assert.ok(table.includes('title="Pontos">PTS'));
+  assert.ok(table.includes('<small>Seu time</small>'));
+  for(const id of championsGroup(session.tournament).teamIds.filter(id=>id!=='user')){
+    const team=session.tournament.teams.find(team=>team.id===id);
+    assert.ok(table.includes('<small>Temporada '+team.ano+'</small>'));
+  }
   assert.ok(html.includes('data-action="champions-view" data-value="groups"'));
   assert.ok(!html.includes('champions-sidebar-tie'));
   assert.ok(championsBracket(session.tournament).flat().every(node=>node.entries.every(entry=>!entry.id)&&node.scores.every(score=>score===null)));
