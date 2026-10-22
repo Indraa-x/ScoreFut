@@ -6,7 +6,7 @@ Não se usa o ano da capa como se fosse o ano de lançamento.
 
 ## Prioridade
 
-1. Os **68 ajustes do criador** sempre prevalecem: os 67 importados dos JSONs de 21 e 22/10 e o pedido direto de **Kaká, Milan 2007, OVR 92**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial. Pedidos diretos ficam separados dos arquivos importados em `CREATOR_DIRECT_RATING_REVIEWS`.
+1. Os **72 ajustes do criador** sempre prevalecem: os 67 importados dos JSONs de 21 e 22/10 e cinco pedidos diretos: **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial. Pedidos diretos ficam separados dos arquivos importados em `CREATOR_DIRECT_RATING_REVIEWS`.
 2. OVR verificável da edição seguinte ao ano da época, por pessoa e elenco, em `release-ratings.js` (`release-rating`). Uma transferência não muda a identidade: por exemplo, Donnarumma do PSG 2025 pode ter a nota do Manchester City no FC 26.
 3. Na ausência de registro verificável nessa edição, revisão editorial explícita (`season-review`) ou estimativa histórica (`editorial-estimate`). Não se copia uma nota de outra edição, de um homônimo ou de um jogador genérico sem licença.
 
@@ -14,7 +14,7 @@ As antigas notas da edição de mesmo ano foram mantidas somente como histórico
 
 ## Cobertura conferida
 
-Há **1.069 registros jogador/época verificados**, dos quais 29 também têm ajuste pessoal. Na base ativa de 2.365 registros: 1.040 usam a nota verificada, 68 usam os ajustes pessoais e 1.257 continuam editoriais: 273 revisões explícitas e 984 estimativas anteriores. A auditoria completa está em [release-rating-audit.json](release-rating-audit.json), com uma linha para cada jogador/época. A nota 90 do Kaká no FIFA 08 continua como fonte em `releaseRating`, mas a nota aplicada no jogo é 92 por decisão do criador.
+Há **1.069 registros jogador/época verificados**, dos quais 33 também têm ajuste pessoal. Na base ativa de 2.365 registros: 1.036 usam a nota verificada, 72 usam os ajustes pessoais e 1.257 continuam editoriais: 273 revisões explícitas e 984 estimativas anteriores. A auditoria completa está em [release-rating-audit.json](release-rating-audit.json), com uma linha para cada jogador/época. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo.
 
 A [revisão de 1970–1989](VINTAGE-RATINGS.md) confere 275 registros e reduz 250 notas exageradas, preservando os grandes craques e os 67 ajustes pessoais. Os valores continuam identificados como editoriais: não existia uma edição FIFA/FC da EA lançada nessas décadas. As decisões são individuais por jogador e temporada, sem desconto automático por idade ou época.
 

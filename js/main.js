@@ -1,14 +1,14 @@
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=five-eras-20261022';
-import {filterQuickClubs} from './quick-catalog.js?v=kaka-92-20261022';
+import {filterQuickClubs} from './quick-catalog.js?v=creator-ovr-corrections-20261022';
 import {filterHistory} from './history.js?v=five-eras-20261022';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=kaka-92-20261022';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=creator-ovr-corrections-20261022';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=five-eras-20261022';
 import { state, MODES } from './state.js?v=two-match-speeds-20261022';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=five-eras-20261022';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=uniform-draw-20261022';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
-import * as ui from './ui.js?v=group-footer-clean-20261022';
+import * as ui from './ui.js?v=next-game-clean-20261022';
 import {downloadResult} from './share.js?v=five-eras-20261022';
 import {initPlayerDrag} from './player-drag.js?v=field-circle-drag-20261022';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';

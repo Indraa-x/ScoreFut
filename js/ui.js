@@ -1,12 +1,12 @@
 import { MODES } from './state.js?v=five-eras-20261022';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=five-eras-20261022';
-import { clubs, allSquads } from '../data/game-squads.js?v=kaka-92-20261022';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=kaka-92-20261022';
+import { clubs, allSquads } from '../data/game-squads.js?v=creator-ovr-corrections-20261022';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=creator-ovr-corrections-20261022';
 import {filterHistory,formatHistoryDate} from './history.js?v=five-eras-20261022';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=five-eras-20261022';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=five-eras-20261022';
 import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=five-eras-20261022';
-import { renderMatchView } from './match-view.js?v=group-footer-clean-20261022';
+import { renderMatchView } from './match-view.js?v=next-game-clean-20261022';
 import { renderChampionsCompetition, renderChampionsTieDetails } from './champions-view.js?v=group-footer-clean-20261022';
 import { renderBrazilCupBracket, renderCupStages } from './brazil-cup-view.js?v=five-eras-20261022';
 import { championDecoration, championConfetti } from './celebration.js?v=five-eras-20261022';

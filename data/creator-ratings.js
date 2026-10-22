@@ -703,6 +703,26 @@ export const CREATOR_DIRECT_RATING_REVIEWS = Object.freeze([
     reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
     reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Kaká do Milan 2007 deve permanecer com OVR 92, acima da nota do FIFA.',
   }),
+  Object.freeze({
+    squadId:'arsenal-2004', playerId:'thierry-henry', nome:'Thierry Henry', ovr:93, previousOvr:97,
+    reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
+    reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Thierry Henry do Arsenal 2004 passa de OVR 97 para 93.',
+  }),
+  Object.freeze({
+    squadId:'chelsea-2005', playerId:'petr-cech', nome:'Petr Čech', ovr:92, previousOvr:94,
+    reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
+    reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Petr Čech do Chelsea 2005 passa de OVR 94 para 92.',
+  }),
+  Object.freeze({
+    squadId:'arsenal-2004', playerId:'patrick-vieira', nome:'Patrick Vieira', ovr:91, previousOvr:94,
+    reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
+    reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Patrick Vieira do Arsenal 2004 passa de OVR 94 para 91.',
+  }),
+  Object.freeze({
+    squadId:'arsenal-2004', playerId:'sol-campbell', nome:'Sol Campbell', ovr:90, previousOvr:93,
+    reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
+    reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Sol Campbell do Arsenal 2004 passa de OVR 93 para 90.',
+  }),
 ]);
 
 // Keep each import's provenance; the latest edit wins for the same player/season.

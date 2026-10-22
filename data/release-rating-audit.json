@@ -4,7 +4,7 @@
   "squads": 215,
   "players": 2365,
   "verifiedReleaseRecords": 1069,
-  "creatorOverrides": 68,
+  "creatorOverrides": 72,
   "rows": [
     {
       "squadId": "real-madrid-2002",
@@ -4030,7 +4030,7 @@
       "name": "Thierry Henry",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 97,
       "source": "https://fifaindex.com/teams/1-arsenal/fifa05"
     },
@@ -4040,7 +4040,7 @@
       "name": "Patrick Vieira",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 94,
       "source": "https://fifaindex.com/teams/1-arsenal/fifa05"
     },
@@ -4050,7 +4050,7 @@
       "name": "Sol Campbell",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 93,
       "source": "https://www.fifaindex.com/player/388/sol-campbell/fifa06/"
     },
@@ -4382,7 +4382,7 @@
       "name": "Petr Čech",
       "year": 2005,
       "expectedEdition": "FIFA 06",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 94,
       "source": "https://fifaindex.com/teams/5-chelsea/fifa06"
     },

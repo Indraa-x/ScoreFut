@@ -24,7 +24,7 @@ test('ratings retain a varied scale and valid simulation attributes',()=>{
   assert.ok(Object.values(p.atributos).every(a=>Number.isInteger(a)&&a>=1&&a<=99),p.id);
   assert.deepEqual(JSON.parse(JSON.stringify(p)),p);
  }
- assert.equal(RATINGS_VERSION,15);
+ assert.equal(RATINGS_VERSION,16);
 });
 
 test('each verified rating identifies its exact player, source and following edition',()=>{
@@ -122,9 +122,9 @@ test('saved draft selections adopt the new edition while retaining skips, positi
  }
 });
 
-test('the audit accounts for every player and the 68 creator overrides',()=>{
+test('the audit accounts for every player and the 72 creator overrides',()=>{
  const audit=JSON.parse(fs.readFileSync(new URL('../data/release-rating-audit.json',import.meta.url),'utf8'));
- assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,68);
+ assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,72);
  assert.equal(audit.verifiedReleaseRecords,RELEASE_RATING_POLICY.verifiedRecords);
  assert.equal(new Set(audit.rows.map(row=>row.squadId+'/'+row.playerId)).size,2365);
  for(const row of audit.rows){const p=player(row.squadId,row.playerId);assert.ok(p);

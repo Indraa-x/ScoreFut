@@ -10,7 +10,7 @@ const player=(squadId,id)=>allSquads.find(squad=>squad.id===squadId)?.jogadores.
 
 test('the direct request locks Kaka 2007 at 92 above FIFA 08 and survives saved draft reloads',()=>{
   const kaka=player('milan-2007','kaka');
-  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,1);
+  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,5);
   assert.equal(kaka.ovr,92);
   assert.equal(kaka.ratingKind,'creator-review');
   assert.deepEqual(kaka.creatorReview,CREATOR_DIRECT_RATING_REVIEWS[0]);
@@ -38,7 +38,7 @@ test('all 45 new OVR edits and 22 earlier edits reach their exact player and sea
   assert.equal(CREATOR_RATING_REVIEW.changes.length,45);
   const changes=CREATOR_RATING_REVIEWS.flatMap(review=>review.changes);
   assert.equal(new Set(changes.map(change=>`${change.squadId}/${change.playerId}`)).size,67);
-  assert.equal(Object.keys(CREATOR_RATINGS_BY_SQUAD).length,new Set(changes.map(change=>change.squadId)).size);
+  assert.equal(Object.keys(CREATOR_RATINGS_BY_SQUAD).length,new Set([...changes,...CREATOR_DIRECT_RATING_REVIEWS].map(change=>change.squadId)).size);
   for(const review of CREATOR_RATING_REVIEWS)for(const change of review.changes){
     const found=player(change.squadId,change.playerId);
     assert.ok(found,`${change.squadId}/${change.playerId}`);
