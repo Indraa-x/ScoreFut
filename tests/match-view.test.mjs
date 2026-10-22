@@ -20,7 +20,7 @@ test('the match screen shows 22 numbered circles, a real calendar and speed cont
   assert.ok(html.includes('data-match-goals'));
   assert.ok(html.includes('Próximo jogo'));
   assert.ok(html.includes('Gols da partida'));
-  assert.ok(html.includes('match-field-legend'));
+  assert.ok(!html.includes('match-field-legend'));
   assert.ok(!html.includes('Ver próximos jogos'));
   for(const label of ['Normal','Rápido'])assert.ok(html.includes(label));
   assert.ok(!/Muito rápido|Ritmo da partida|<small>[148]×<\/small>/.test(html));

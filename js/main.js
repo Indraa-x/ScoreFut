@@ -8,7 +8,7 @@ import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, si
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=uniform-draw-20261022';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
-import * as ui from './ui.js?v=group-card-clean-20261022';
+import * as ui from './ui.js?v=no-field-legend-20261022';
 import {downloadResult} from './share.js?v=five-eras-20261022';
 import {initPlayerDrag} from './player-drag.js?v=field-circle-drag-20261022';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
