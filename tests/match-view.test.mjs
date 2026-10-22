@@ -18,7 +18,8 @@ test('the match screen shows 22 numbered circles, a real calendar and speed cont
   assert.equal((html.match(/data-match-player /g)||[]).length,22);
   for(const marker of html.matchAll(/<span class="match-player [^>]+>(.*?)<\/span>/g))assert.ok(!/<svg|<small/.test(marker[1]));
   assert.ok(html.includes('data-match-goals'));
-  assert.ok(html.includes('Próximo jogo'));
+  assert.ok(html.includes('Seu grupo na Champions'));
+  assert.ok(!html.includes('Próximo jogo'));
   assert.ok(html.includes('Gols da partida'));
   assert.ok(!html.includes('match-field-legend'));
   assert.ok(!html.includes('Ver próximos jogos'));

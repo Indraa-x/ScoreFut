@@ -27,7 +27,7 @@
 @media(prefers-reduced-motion:reduce){.champions-tie,.champions-phase-picker button{transition:none}.champions-tie:hover:not(:disabled){transform:none}.champions-tree-center>.champions-tie:hover:not(:disabled){transform:translateY(-50%)}}
 
 /* Give the match sidebar the same readable scale as the rest of the site. */
-.match-calendar .champions-sidebar-group{border:1px solid #cbd8d0;border-radius:16px;box-shadow:0 2px 10px #173b2a08;overflow:hidden}
+.match-calendar .champions-sidebar-group,.match-calendar .champions-next-game{border:1px solid #cbd8d0;border-radius:16px;box-shadow:0 2px 10px #173b2a08;overflow:hidden}
 .champions-sidebar-group .calendar-heading{padding:19px 18px;background:var(--surface);border-bottom:1px solid #e4ebe7;gap:12px}
 .champions-sidebar-group .calendar-heading>div{gap:10px;min-width:0}
 .champions-sidebar-group .calendar-heading h2{font-size:18px;font-weight:800;letter-spacing:-.35px}
@@ -60,6 +60,6 @@
 .champions-sidebar-group .champions-sidebar-footer>button:hover{background:#e5f2e9}
 .champions-sidebar-group .champions-sidebar-footer>button:focus-visible{outline:2px solid var(--green);outline-offset:3px}
 .champions-sidebar-group .champions-sidebar-footer>button svg{width:17px;height:17px}
-@media(max-width:900px){.match-calendar .champions-sidebar-group{grid-column:1/-1}}
+@media(max-width:900px){.match-calendar .champions-sidebar-group,.match-calendar .champions-next-game{grid-column:1/-1}}
 @media(max-width:380px){.champions-sidebar-group .calendar-heading{padding:17px 14px}.champions-sidebar-group .champions-table.compact .champions-team-name{gap:8px}.champions-sidebar-group .champions-table.compact .champions-team-name b{font-size:13px}.champions-sidebar-group .champions-table.compact .club-badge{width:30px;min-width:30px;max-width:30px;flex-basis:30px}.champions-sidebar-group .champions-table.compact .club-badge img{width:29px;max-width:29px}}
 @media(max-width:380px){.champions-sidebar-group .champions-table.compact th,.champions-sidebar-group .champions-table.compact td{padding-inline:4px}.champions-sidebar-group .champions-table.compact th:nth-child(1){width:30px}.champions-sidebar-group .champions-table.compact th:nth-child(3){width:26px}.champions-sidebar-group .champions-table.compact th:nth-child(4){width:30px}.champions-sidebar-group .champions-table.compact th:nth-child(5){width:38px;padding-right:8px}.champions-sidebar-group .champions-table.compact .position{width:30px;padding-inline:2px}.champions-sidebar-group .champions-table.compact .points{padding-right:8px}.champions-sidebar-group .champions-team-name small{font-size:9px}}

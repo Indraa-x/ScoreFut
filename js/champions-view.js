@@ -64,12 +64,9 @@ function renderTie(t,node,{esc,badge},mobile=false) {
 
 export function renderChampionsSidebar(t,helpers) {
   if(t.mode!=='champions')return '';
-  const {esc,icon}=helpers,group=championsGroup(t),own=group?.standings.find(row=>row.teamId===t.userTeamId);
-  if(!group)return '';
-  const inKnockout=t.bracket.length>0 && own?.qualified;
-  const tie=inKnockout?championsBracket(t).flat().filter(node=>node.entries.some(entry=>entry.id===t.userTeamId)).at(-1):null;
-  const footer=inKnockout?`<div class="champions-sidebar-footer"><button data-action="champions-view" data-value="knockout">Ver chaveamento ${icon('arrow')}</button><button class="champions-group-return" data-action="champions-view" data-value="groups">${esc(group.name)} · classificação final</button></div>`:'';
-  return `<section class="champions-sidebar panel ${inKnockout?'':'champions-sidebar-group'}" aria-label="${inKnockout?'Mata-mata da Champions':'Seu grupo na Champions'}"><div class="calendar-heading"><div>${icon(inKnockout?'bracket':'trophy')}<h2>${inKnockout?'Mata-mata':'Seu grupo'}</h2></div><span>${inKnockout?esc(tie?.label || 'Champions'):esc(group.name)}</span></div>${inKnockout?`<div class="champions-sidebar-tie">${tie?renderTie(t,tie,helpers):''}<p>Ida e volta até a semifinal. Final em jogo único.</p></div>`:groupTable(t,group,helpers,true)}${footer}</section>`;
+  const {esc,icon}=helpers,group=championsGroup(t);
+  if(!group||group.complete)return '';
+  return `<section class="champions-sidebar panel champions-sidebar-group" aria-label="Seu grupo na Champions"><div class="calendar-heading"><div>${icon('trophy')}<h2>Seu grupo</h2></div><span>${esc(group.name)}</span></div>${groupTable(t,group,helpers,true)}</section>`;
 }
 
 function renderGroups(s,helpers) {

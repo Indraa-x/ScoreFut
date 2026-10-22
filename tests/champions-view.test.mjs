@@ -94,13 +94,29 @@ test('finished ties show oriented aggregate scores, the correct qualifier and th
   assert.deepEqual(t,before);
 });
 
-test('knockout sidebar replaces the group preview after qualification and other modes stay unchanged',()=>{
-  let t;
-  for(let seed=1;seed<=20;seed++){const candidate=advance(make(seed),3);if(!candidate.campaign.eliminated){t=candidate;break;}}
-  assert.ok(t);
-  const s={...stateFor(t),...prepareUserRound(t)},html=renderMatch(s);
-  assert.ok(html.includes('Mata-mata da Champions'));assert.ok(html.includes('Ver chaveamento'));
-  assert.ok(html.includes('Grupo A · classificação final'));
-  const other=renderMatch({...s,mode:'cup',tournament:{...t,mode:'cup'}});
+test('the next game replaces the group card only after the last group result is committed',()=>{
+  let qualifiedSeed;
+  for(let seed=1;seed<=20;seed++){if(!advance(make(seed),3).campaign.eliminated){qualifiedSeed=seed;break;}}
+  assert.ok(qualifiedSeed);
+  const t=advance(make(qualifiedSeed),2),s={...stateFor(t),...prepareUserRound(t)};
+  assert.equal(currentMatch(s).stage,'group');
+  const before=renderMatch(s);
+  assert.ok(before.includes('champions-sidebar-group'));
+  assert.ok(!before.includes('Próximo jogo'));
+  s.matchMinute=currentMatch(s).result.duration;
+  assert.equal(commitUserRound(s),true);
+  const finishedGroups=renderMatch(s);
+  assert.ok(!finishedGroups.includes('champions-sidebar'));
+  assert.ok(finishedGroups.includes('champions-next-game'));
+  assert.equal((finishedGroups.match(/aria-label="Próximo jogo"/g)||[]).length,1);
+  assert.equal((finishedGroups.match(/class="upcoming-game"/g)||[]).length,1);
+  assert.ok(finishedGroups.indexOf('champions-next-game')<finishedGroups.indexOf('data-match-goals'));
+  Object.assign(s,prepareUserRound(s.tournament),{matchMinute:0});
+  assert.equal(currentMatch(s).stage,'round16');
+  const knockout=renderMatch(s);
+  assert.ok(knockout.includes('champions-next-game'));
+  assert.ok(!/Mata-mata da Champions|Ver chaveamento|classificação final|champions-sidebar/.test(knockout));
+  const other=renderMatch({...s,mode:'cup',tournament:{...s.tournament,mode:'cup'}});
   assert.ok(!other.includes('champions-sidebar'));
+  assert.ok(other.includes('Próximo jogo'));
 });
