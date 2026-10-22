@@ -5,7 +5,8 @@ import { clubs, allSquads, validateData } from '../data/game-squads.js?v=five-er
 import { squadsForMode, competitionName } from '../data/competitions.js?v=five-eras-20261022';
 import { state, MODES } from './state.js?v=five-eras-20261022';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=five-eras-20261022';
-import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=five-eras-20261022';
+import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=uniform-draw-20261022';
+import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
 import * as ui from './ui.js?v=five-eras-20261022';
 import {downloadResult} from './share.js?v=five-eras-20261022';
@@ -95,7 +96,7 @@ async function roll(kind='new'){
   state.rolling=true;render();
   await new Promise(r=>setTimeout(r,1500));
   if(state.screen!=='draft'||state.draft!==draftAtStart){state.rolling=false;return;}
-  try{state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind,state.mode);drawn=true;persist();}
+  try{state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind,state.mode,cryptoRandomIndex);drawn=true;persist();}
   catch(error){toast(error.message);}
   finally{
     state.rolling=false;render();

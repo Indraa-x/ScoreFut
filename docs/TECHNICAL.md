@@ -26,6 +26,8 @@ Abra [http://127.0.0.1:4173](http://127.0.0.1:4173). Não é necessário executa
 
 Nos modos de draft, o nome do time é “Meu time”, sem campo de edição. No Modo rápido, ele corresponde ao clube e à temporada escolhidos. Um draft salvo da versão anterior é adaptado para as novas formações, preservando o máximo de escolhas compatíveis. Histórico concluído anteriormente permanece disponível.
 
+Os sorteios de clubes são livres e uniformes: cada clube com jogadores compatíveis tem a mesma chance, independentemente do OVR, de quantas épocas ainda tem disponíveis ou de quantas vezes já apareceu. Depois de escolher o clube, cada época elegível dele também tem a mesma chance. Um clube pode voltar em outra época por acaso; o mesmo elenco já visto não volta. “Outro clube” exclui o atual, e “Outra temporada” mantém o clube. Não há o antigo peso de dificuldade na Champions. Cada clique usa novos valores de Web Crypto, com rejeição do excedente para evitar viés na conversão para índices. Os geradores por semente continuam no motor de partidas e nos drafts diários antigos; escolhas salvas permanecem preservadas.
+
 ## Seleção leve de jogadores
 
 A lista mostra posição, nome e OVR. Ao arrastar, aparece uma prévia compacta com esses dados, o clube e a temporada. Não há fotos, cartinhas ou pré-carregamento de retratos; um novo atleta exige somente dados de elenco. As posições e o escudo do clube continuam no campo. O catálogo antigo em `assets/players/` é um arquivo de pesquisa e não é importado pelo jogo. As doze imagens da página inicial permanecem.

@@ -30,29 +30,30 @@ test('daily draws are deterministic and never allow rerolls',()=>{
  assert.deepEqual(run(),run());assert.equal(d.picks.length,0);assert.equal(d.rngState,hashSeed('ScoreFut:2026-10-10'));
  const drawn=drawSquad(d,squads,formation);assert.throws(()=>drawSquad(drawn,squads,formation,'club'),/todos os re-sorteios/);assert.throws(()=>drawSquad(drawn,squads,formation,'season'),/todos os re-sorteios/);
 });
-test('Champions keeps strong clubs attainable while making them slightly less common',()=>{
- const pool=squadsForMode(allSquads,'champions');
- const averages=new Map();
- for(const squad of pool){
-  const record=averages.get(squad.clubId)||{total:0,count:0};
-  for(const player of squad.jogadores){record.total+=player.ovr;record.count++;}
-  averages.set(squad.clubId,record);
+test('each eligible club owns one equal interval regardless of OVR or number of eras',()=>{
+ const pool=squads.slice(0,8).map((s,i)=>({...s,jogadores:s.jogadores.map(p=>({...p,ovr:i<4?99:50}))}));
+ pool.splice(4,3); // Four eras of one club and one era of the other.
+ for(const clubIndex of [0,1]){
+  const bounds=[],initial=createDraft(12,'date','champions');
+  const drawn=drawSquad(initial,pool,formation,'new','champions',length=>{bounds.push(length);return bounds.length===1?clubIndex:length-1;});
+  assert.deepEqual(bounds,[2,clubIndex===0?4:1]);
+  assert.equal(drawn.currentSquadId,clubIndex===0?pool[3].id:pool[4].id);
+  assert.equal(initial.seen.length,0);assert.notEqual(drawn.rngState,initial.rngState);
  }
- const strong=new Set([...averages].filter(([,record])=>record.total/record.count>=85).map(([id])=>id));
- let weightedStrong=0,uniformStrong=0,weightedSamples=0;
- for(let seed=0;seed<1000;seed++){
+ const changedRatings=pool.map(s=>({...s,jogadores:s.jogadores.map(p=>({...p,ovr:99-p.ovr+40}))}));
+ for(let seed=0;seed<50;seed++){
   const initial=createDraft(seed,'date','champions');
-  const weighted=drawSquad(initial,pool,formation,'new','champions');
-  const uniform=drawSquad(initial,pool,formation,'new','quick');
-  const weightedClub=pool.find(squad=>squad.id===weighted.currentSquadId).clubId;
-  const uniformClub=pool.find(squad=>squad.id===uniform.currentSquadId).clubId;
-  if(strong.has(weightedClub))weightedStrong++;
-  if(strong.has(uniformClub))uniformStrong++;
-  if(weightedClub==='real-madrid')weightedSamples++;
+  assert.equal(drawSquad(initial,pool,formation).currentSquadId,drawSquad(initial,changedRatings,formation).currentSquadId);
  }
- assert.ok(weightedStrong<uniformStrong*.92,`${weightedStrong} vs ${uniformStrong}`);
- assert.ok(weightedStrong>uniformStrong*.7,'os clubes fortes continuam acessíveis na nova escala de notas');
- assert.ok(weightedSamples>0,'Real Madrid continua podendo ser sorteado');
+});
+test('a free draw can revisit a club in a different unseen era, including after restoring the draft',()=>{
+ let d=createDraft(12,'date','champions');
+ for(const slotId of ['gol','ld','zag-1']){
+  d=drawSquad(d,squads,formation,'new','champions',()=>0);
+  assert.equal(squads.find(s=>s.id===d.currentSquadId).clubId,'club-0');
+  d=JSON.parse(JSON.stringify(pick(d,slotId)));
+ }
+ assert.equal(new Set(d.seen).size,3);assert.equal(d.rerolls,4);
 });
 test('the same person cannot be selected twice across seasons',()=>{
  const person=player('same-person','MC'),current={...squads[0],jogadores:[person,...squads[0].jogadores]};
