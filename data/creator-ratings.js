@@ -723,6 +723,11 @@ export const CREATOR_DIRECT_RATING_REVIEWS = Object.freeze([
     reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
     reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Sol Campbell do Arsenal 2004 passa de OVR 93 para 90.',
   }),
+  Object.freeze({
+    squadId:'roma-1983', playerId:'paulo-roberto-falcao', nome:'Falcão', ovr:90, previousOvr:92,
+    reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
+    reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Falcão da Roma 1983 passa de OVR 92 para 90.',
+  }),
 ]);
 
 // Keep each import's provenance; the latest edit wins for the same player/season.

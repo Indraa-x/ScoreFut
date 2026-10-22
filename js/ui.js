@@ -1,7 +1,7 @@
 import { MODES } from './state.js?v=five-eras-20261022';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=five-eras-20261022';
-import { clubs, allSquads } from '../data/game-squads.js?v=creator-ovr-corrections-20261022';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=creator-ovr-corrections-20261022';
+import { clubs, allSquads } from '../data/game-squads.js?v=falcao-90-20261022';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=falcao-90-20261022';
 import {filterHistory,formatHistoryDate} from './history.js?v=five-eras-20261022';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=five-eras-20261022';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=five-eras-20261022';

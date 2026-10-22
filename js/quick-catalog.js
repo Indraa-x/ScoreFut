@@ -1,4 +1,4 @@
-import {clubs, allSquads} from '../data/clubs.js?v=creator-ovr-corrections-20261022';
+import {clubs, allSquads} from '../data/clubs.js?v=falcao-90-20261022';
 import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=five-eras-20261022';
 import {squadTeam,FORMATIONS} from './engine.js?v=five-eras-20261022';
 

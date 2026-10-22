@@ -19,8 +19,8 @@ test('the vintage review covers the exact 275 players without affecting other er
     assert.equal(Object.keys(reviewed).length,11);
     assert.deepEqual(new Set(Object.keys(reviewed)),new Set(s.jogadores.map(p=>p.id)));
     for(const p of s.jogadores){
-      assert.equal(p.ovr,reviewed[p.id].ovr);
       const personal=CREATOR_RATINGS_BY_SQUAD[s.id]?.[p.id];
+      assert.equal(p.ovr,personal?.ovr??reviewed[p.id].ovr);
       assert.equal(p.ratingKind,personal?'creator-review':'season-review');
       assert.equal(p.ratingSource,personal?'data/creator-ratings.js':'data/VINTAGE-RATINGS.md');
       assert.equal(p.ratingEdition,undefined);
@@ -47,7 +47,7 @@ test('world greats stay exceptional while regular starters use a lower, varied s
   assert.ok(new Set(players.map(p=>p.ovr)).size>20);
   // Falcão is reviewed for each season, rather than receiving his career peak everywhere.
   assert.equal(player('internacional-1976','paulo-roberto-falcao').ovr,89);
-  assert.equal(player('roma-1983','paulo-roberto-falcao').ovr,92);
+  assert.equal(player('roma-1983','paulo-roberto-falcao').ovr,90);
   // Already modestly rated players are not subjected to another decade-wide reduction.
   assert.equal(player('psv-1988','edward-linskens').ovr,70);
 });
@@ -59,7 +59,7 @@ test('the before/after audit has 250 reductions, no increases and all personal e
   assert.equal(rows.filter(row=>row.currentOvr<row.previousOvr).length,250);
   for(const row of rows){
     assert.ok(row.currentOvr<=row.previousOvr);
-    assert.equal(player(row.squadId,row.playerId).ovr,row.currentOvr);
+    assert.equal(player(row.squadId,row.playerId).ovr,row.creatorOvr??row.currentOvr);
     assert.ok(row.year>=1970&&row.year<1990);
   }
   let personal=0;
@@ -67,7 +67,7 @@ test('the before/after audit has 250 reductions, no increases and all personal e
     personal++;assert.equal(player(squad,id).ovr,review.ovr);
     assert.equal(player(squad,id).ratingKind,'creator-review');
   }
-  assert.equal(personal,72);
+  assert.equal(personal,73);
 });
 
 test('lowered vintage ratings update simulation attributes and saved picks without losing progress',()=>{

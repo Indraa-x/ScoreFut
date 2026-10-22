@@ -4,7 +4,7 @@
   "squads": 215,
   "players": 2365,
   "verifiedReleaseRecords": 1069,
-  "creatorOverrides": 72,
+  "creatorOverrides": 73,
   "rows": [
     {
       "squadId": "real-madrid-2002",
@@ -21305,10 +21305,11 @@
       "name": "Falcão",
       "year": 1983,
       "expectedEdition": "FIFA 84",
-      "status": "editorial",
-      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "status": "creator",
+      "note": "A revisão editorial histórica de 1970–1989 atribuiu 92; o ajuste posterior do criador tem prioridade e aplica OVR 90.",
       "previousOvr": 92,
       "currentOvr": 92,
+      "creatorOvr": 90,
       "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
