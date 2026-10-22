@@ -1,0 +1,90 @@
+/* Explicit, persistent themes. Football pitches, kits and competition colors keep their identity. */
+:root[data-theme="light"] {
+  color-scheme:only light;
+  --bg:#f4f5f6;--surface:#fff;--elevated:#dce1e7;--text:#24272d;--muted:#505966;
+  --green:#13754b;--gold:#94700a;--cyan:#007488;--red:#b64d4d;--orange:#a65310;
+  --border:#c5ccd4;--soft:#e0e4e9;--shadow:0 16px 55px #24272d0b;
+  --blocked-bg:#f4b8b8;--blocked-border:#d76969;--blocked-text:#821f26;
+}
+:root[data-theme="dark"] {
+  color-scheme:only dark;
+  --bg:#101513;--surface:#19211d;--elevated:#26322b;--text:#edf4ef;--muted:#a7b7ad;
+  --green:#68d6a1;--gold:#e4bc61;--cyan:#7acdd9;--red:#f28b8b;--orange:#efad76;
+  --border:#35443b;--soft:#222e27;--shadow:0 16px 55px #0003;
+  --blocked-bg:#44282b;--blocked-border:#94565c;--blocked-text:#ffb6bb;
+  --quick-accent:#efbd70;--quick-soft:#30291c;--quick-border:#7a6038;
+  --legends-gradient:linear-gradient(120deg,#293536,#35372d 55%,#403b24);
+  --legends-ink:#f5efd8;--legends-accent:#dfca80;--legends-border:#625e42;
+}
+html,body{background:var(--bg);color:var(--text)}
+input,select,textarea,dialog{color-scheme:inherit}
+.header-inner nav{align-items:center;margin-left:clamp(28px,4vw,56px);gap:22px}
+.theme-toggle{display:grid;place-items:center;position:relative;width:42px;height:42px;flex:0 0 42px;padding:0;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);box-shadow:0 2px 5px #102b2510;transition:background .2s,border-color .2s,transform .2s}
+.theme-toggle:hover{background:var(--soft);border-color:var(--muted)}
+.theme-toggle:active{transform:scale(.94)}
+.theme-toggle:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.theme-toggle svg{grid-area:1/1;width:20px;height:20px;transition:opacity .25s,transform .35s cubic-bezier(.2,.8,.2,1)}
+[data-theme="dark"] .theme-toggle .theme-moon,[data-theme="light"] .theme-toggle .theme-sun{opacity:0;transform:rotate(-70deg) scale(.5)}
+[data-theme="dark"] .theme-toggle .theme-sun,[data-theme="light"] .theme-toggle .theme-moon{opacity:1;transform:rotate(0) scale(1)}
+html[data-theme="dark"] .brand-logo{content:url('../assets/scorefut-logo-dark.svg')}
+html[data-theme="dark"] :is(.site-header,footer,.panel,.btn-outline,.personal-stats,.setup-main,.setup-side,.summary-pitch,.summary-info,.team-overview>*,.history-summary,.history-search,.history-entry,.history-empty,.champions-group-panel,.champions-knockout-panel,.champions-tie,.champions-detail-leg,.quick-ready-title){background:var(--surface);border-color:var(--border);color:var(--text)}
+html[data-theme="dark"] :is(.calendar-heading,.match-card .live-scoreboard,.match-card .live-controls,.players-heading,.pitch-header,.players-panel,.pitch-toolbar,.box-widget,.box-row,.summary-team,.summary-stat,.league-standings thead th){background:var(--surface);border-color:var(--border)}
+html[data-theme="dark"] :is(.nav-link,.edition){color:var(--muted)}
+html[data-theme="dark"] .nav-link.active{color:var(--green);background:var(--soft)}
+html[data-theme="dark"] :is(.btn-primary,.hero-actions .hero-play-cta,.formation-option.selected){background:#19764e;color:#fff;border-color:#2c9567}
+html[data-theme="dark"] #app .hero-copy h1>span{background-image:linear-gradient(110deg,#75dfae,#7fd4cd 65%,#8cbbf1)}
+html[data-theme="dark"] #app .hero-actions .hero-play-cta{background:#19764e;border-color:#2c9567;color:#fff}
+html[data-theme="dark"] #app .hero-actions .hero-play-cta:hover:not(:disabled){background:#20895b;border-color:#38ac79}
+html[data-theme="dark"] #app .formation-option.selected{background:#19764e;color:#fff;border-color:#2c9567}
+html[data-theme="dark"] .home-stars-heading>span:first-child{color:var(--muted)}
+html[data-theme="dark"] .home-stars{background:linear-gradient(180deg,#27342f,#19231e);border-color:var(--border)}
+html[data-theme="dark"] .home-stars-footer{background:var(--soft);border-color:var(--border)}
+html[data-theme="dark"] :is(.formation-option,.mode-tag,.stat-icon,.position-chip,.player-status,.player-avatar,.help-step>span,.history-summary-icon,.history-team-crest,.history-outcome-filter,.quick-regions,.quick-ready-rating,.champions-group-picker button,.champions-phase-picker,.champions-unknown,.champions-bracket-pending,.match-added-time,.match-calendar .upcoming-game,.match-calendar .recent-game,.resume-banner){background:var(--soft);border-color:var(--border);color:var(--muted)}
+html[data-theme="dark"] :is(.history-outcome-filter button[aria-pressed="true"],.quick-regions button[aria-pressed="true"],.champions-phase-picker button[aria-pressed="true"],.champions-group-picker button[aria-pressed="true"]){background:var(--elevated);color:var(--green);border-color:var(--border)}
+html[data-theme="dark"] .mode-card[data-value="legends"] :is(p,.mode-card-bottom){color:#d0cdb9}
+html[data-theme="dark"] .mode-card[data-value="legends"] :is(.mode-icon,.mode-tag){background:#ffffff0d;color:var(--legends-accent)}
+html[data-theme="dark"] :is(.history-open,.history-outcome){background:var(--soft);border-color:var(--border);color:var(--text)}
+html[data-theme="dark"] .history-open{color:var(--green)}
+html[data-theme="dark"] .history-outcome.champion{background:#3c3420;color:var(--gold);border-color:#6d5a32}
+html[data-theme="dark"] #app[data-screen="summary"] .quick-ready-layout .summary-pitch{background:var(--surface)}
+html[data-theme="dark"] :is(.quick-launch,.quick-season-block select){background:var(--soft);color:var(--text);border-color:var(--border)}
+html[data-theme="dark"] .quick-attribute-track{background:var(--quick-soft)}
+html[data-theme="dark"] .quick-launch .btn-primary{background:var(--quick-gradient);color:var(--quick-ink);border-color:var(--quick-border)}
+html[data-theme="dark"] .mode-card[data-value="legends"],html[data-theme="dark"] .setup-mode-option[data-value="legends"]{background:var(--legends-gradient);color:var(--legends-ink)}
+html[data-theme="dark"] .result-hero[data-mode="legends"]{background:var(--legends-gradient);border-color:var(--legends-border)}
+html[data-theme="dark"] .result-hero[data-mode="legends"] .result-stats>div{background:#ffffff08}
+html[data-theme="dark"] .player-select{background:transparent;color:var(--text)}
+html[data-theme="dark"] .player-row{border-color:var(--border)}
+html[data-theme="dark"] #app .player-row:not(.unavailable){background:var(--surface);border-color:var(--border)}
+html[data-theme="dark"] #app .player-row:nth-child(even):not(.unavailable){background:#1e2822}
+html[data-theme="dark"] #app :is(.box-title,.strength-block){background:var(--soft);border-color:var(--border);color:var(--text)}
+html[data-theme="dark"] .player-select:hover,html[data-theme="dark"] .player-row.selected .player-select{background:var(--soft)}
+html[data-theme="dark"] :is(.player-info small,.player-details,.player-status,.season-award,.quick-card-season,.box-row>span,.history-entry-meta,.history-storage-note){color:var(--muted)}
+html[data-theme="dark"] #app .draft-skip-status,html[data-theme="dark"] #app .draft-skip-status strong{color:var(--green)}
+html[data-theme="dark"] #app .draft-skip-status small{color:var(--muted)}
+html[data-theme="dark"] #app .reroll-buttons .btn:disabled{background:var(--soft);border-color:var(--border);color:var(--muted)}
+html[data-theme="dark"] #app .season-year{background-image:linear-gradient(115deg,color-mix(in srgb,var(--year-color-1) 65%,#b1dfc9),color-mix(in srgb,var(--year-color-2) 65%,#b1dfc9))}
+html[data-theme="dark"] :is(.champions-sidebar-group,.champions-next-game,.champions-tie,.champions-detail-leg,.champions-table th,.champions-table td,.champions-sidebar-group .calendar-heading,.champions-table.compact thead th){border-color:var(--border)}
+html[data-theme="dark"] .champions-table thead th{background:var(--soft);color:var(--muted)}
+html[data-theme="dark"] .champions-sidebar-group .champions-table.compact thead th{background:var(--soft);color:var(--muted)}
+html[data-theme="dark"] .champions-table tbody tr{--champions-row-bg:var(--surface)}
+html[data-theme="dark"] .champions-table tbody tr:hover{--champions-row-bg:#24372c}
+html[data-theme="dark"] .champions-table tr.is-user{--champions-row-bg:#1d382a}
+html[data-theme="dark"] :is(.champions-rank,.champions-sidebar-group .calendar-heading>span){background:var(--soft);border-color:var(--border);color:var(--green)}
+html[data-theme="dark"] .champions-sidebar-group .qualification-zone .champions-rank{background:#254532;color:var(--green)}
+html[data-theme="dark"] .champions-tie.pending:disabled{background:var(--soft);color:var(--muted);border-color:var(--border)}
+html[data-theme="dark"] .champions-tie.user-tie{background:#1d382a;border-color:#409d6c}
+html[data-theme="dark"] .champions-tree-lines{stroke:#4a5e51}
+html[data-theme="dark"] .champions-tie-team.eliminated :is(.tree-team-label b,strong){color:#9aaba0}
+html[data-theme="dark"] #app .match-speed>div{background:var(--soft);border-color:var(--border)}
+html[data-theme="dark"] #app .match-speed-normal[aria-pressed="true"]{background:#19764e;color:#fff}
+html[data-theme="dark"] :is(.live-field-wrap,.live-pitch-area){background:var(--surface)}
+html[data-theme="dark"] .match-goals-panel .match-scorers .scorer-team-name{background:none;color:var(--text);-webkit-text-fill-color:var(--text);-webkit-text-stroke:0}
+html[data-theme="dark"] .goal-notice{background:#1d382af7;border-color:var(--border);color:var(--text)}
+html[data-theme="dark"] .goal-notice strong{color:var(--green)}
+html[data-theme="dark"] :is(.scorer-minute,.match-aggregate,.match-penalties){background:var(--soft);color:var(--text);border-color:var(--border)}
+html[data-theme="dark"] dialog::backdrop{background:#000a}
+@media(max-width:760px){.header-inner{flex-wrap:nowrap;gap:10px}.header-inner nav{margin-left:auto;gap:6px}.header-inner .nav-link{padding-inline:9px}.header-inner .nav-link[data-action="help"]{display:none}}
+@media(max-width:420px){.header-inner{padding-inline:12px;gap:8px}.brand .brand-logo{width:140px}.header-inner nav{gap:4px}.header-inner .nav-link{font-size:11px;padding-inline:8px}.theme-toggle{width:38px;height:40px;flex-basis:38px;border-radius:10px}.theme-toggle svg{width:18px;height:18px}}
+@media(max-width:360px){.brand .brand-logo{width:118px}.header-inner .nav-link{padding-inline:6px}}
+@media(prefers-reduced-motion:reduce){.theme-toggle,.theme-toggle svg{transition:none}}

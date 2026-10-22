@@ -162,7 +162,7 @@ Progresso, histórico e estatísticas ficam no `localStorage` do navegador. O ar
 
 O desafio diário usa o fuso **America/Sao_Paulo** e uma semente baseada na data. A versão de onze jogadores tem chaves próprias de progresso e resultado diário, preservando os registros antigos. A restrição diária é local; apagar os dados do navegador remove esse registro.
 
-A interface usa branco e cinza claro, com vermelho suave nos jogadores sem vaga compatível disponível. Permite navegação por teclado, foco visível e movimento reduzido. Projeto independente de fãs, sem vínculo com clubes, ligas ou jogadores.
+A interface oferece temas claro e escuro, com o escuro como padrão inicial. O botão de sol/lua à direita de Histórico alterna sem recarregar a partida; a escolha fica em `scorefut.theme`, separada dos jogos salvos. `js/theme.js` restaura a preferência antes das folhas de estilo; `css/theme.css` adapta superfícies, textos e controles, preservando campos, uniformes e cores das competições. A escolha explícita prevalece sobre o tema do dispositivo. Permite navegação por teclado, foco visível e movimento reduzido. Projeto independente de fãs, sem vínculo com clubes, ligas ou jogadores.
 
 As doze imagens da página inicial em `assets/home/` foram fornecidas pelo usuário e preservadas sem alterações. O alinhamento dos jogadores considera as margens transparentes e as dimensões de cada PNG. Três grupos de quatro jogadores alternam a cada 3,5 segundos: 2,5 segundos de exibição e um segundo de fade. A animação pausa ao passar o mouse sobre o painel e respeita a preferência por movimento reduzido.
 

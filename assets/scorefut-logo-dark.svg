@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 64" fill="none" role="img" aria-labelledby="title">
+  <title id="title">ScoreFut</title>
+  <defs>
+    <linearGradient id="turf" x1="4" y1="4" x2="61" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#149464"/><stop offset="1" stop-color="#075139"/></linearGradient>
+    <linearGradient id="word" x1="0%" y1="0%" x2="100%" y2="65%"><stop stop-color="#68d6a1"/><stop offset="1" stop-color="#79d6c6"/></linearGradient>
+  </defs>
+  <path d="M17 2H52a10 10 0 0 1 10 10v35L47 62H12A10 10 0 0 1 2 52V17Z" fill="url(#turf)"/>
+  <path d="M18 4H52a8 8 0 0 1 8 8v34L46 60H12a8 8 0 0 1-8-8V18Z" stroke="#fff" stroke-opacity=".16"/>
+  <path d="M9 23h12M7 32h11M9 41h12" stroke="#a7e4c0" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="37" cy="32" r="18" fill="#fff"/>
+  <path d="m37 23 8 6-3 9H32l-3-9 8-6Zm-1-9h2v9h-2Zm19 12v2l-10 2-.4-2ZM48 46l-1.6 1.2-6.2-9 1.6-1.2ZM25 46l1.6 1.2 6.2-9-1.6-1.2ZM19 26v2l10 2 .4-2Z" fill="#08734e"/>
+  <path d="m37 14-5 4h10Zm18 14-4-3 1 9Zm-7 18-1-6-6 7Zm-22 0 1-6 6 7Zm-7-18 4-3-1 9Z" fill="#08734e"/>
+  <!-- Lettering drawn as outlines: the logo never depends on a loaded font. -->
+  <g transform="translate(79 17) scale(.79 1) skewX(-9)" fill="#edf4ef" fill-rule="evenodd">
+    <path d="M24 0H8C2 0 0 4 0 9s4 8 10 8h6v5H0v8h18c6 0 9-4 9-9s-4-9-10-9H9V8h15Z"/>
+    <path transform="translate(32)" d="M25 0H10C3 0 0 5 0 12v6c0 7 3 12 10 12h15v-8H11c-2 0-3-1-3-4v-6c0-3 1-4 3-4h14Z"/>
+    <path transform="translate(63)" d="M10 0h8c7 0 10 4 10 10v10c0 6-3 10-10 10h-8C3 30 0 26 0 20V10C0 4 3 0 10 0Zm1 8c-2 0-3 1-3 4v6c0 3 1 4 3 4h6c2 0 3-1 3-4v-6c0-3-1-4-3-4Z"/>
+    <path transform="translate(97)" d="M0 0h18c6 0 9 4 9 9v2c0 4-2 6-7 8l9 11H19l-8-10H8v10H0Zm8 8v5h9c2 0 2-1 2-2.5S19 8 17 8Z"/>
+    <path transform="translate(132)" d="M0 0h24v8H8v3h13v8H8v3h16v8H0Z"/>
+    <g fill="url(#word)">
+      <path transform="translate(166)" d="M0 0h24v8H8v4h13v8H8v10H0Z"/>
+      <path transform="translate(195)" d="M0 0h8v19c0 2 1 3 4 3h3c3 0 4-1 4-3V0h8v20c0 7-3 10-10 10h-7C3 30 0 27 0 20Z"/>
+      <path transform="translate(228)" d="M0 0h28v8H18v22h-8V8H0Z"/>
+    </g>
+  </g>
+</svg>
