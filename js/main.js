@@ -164,10 +164,7 @@ function addPlayer(id,slotId){
   try{
     const moving=state.draft?.picks.find(pick=>pick.player.id===id);
     if(moving){
-      const occupant=state.draft.picks.find(pick=>pick.slot.id===slotId);
       state.draft=movePick(state.draft,state.formation,id,slotId);persist();render();
-      const destination=state.draft.picks.find(pick=>pick.player.id===id).slot.label;
-      toast(occupant?moving.player.nome+' trocou de posição com '+occupant.player.nome+'.':moving.player.nome+' agora joga como '+destination+'.');
       return true;
     }
     if(state.screen!=='draft'||!state.draft?.currentSquadId)return;
