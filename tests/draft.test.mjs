@@ -10,12 +10,12 @@ const squads=Array.from({length:80},(_,i)=>({id:`club-${Math.floor(i/4)}-${2000+
 const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.freeze(v);Object.values(v).forEach(freeze)}return v};
 const pick=(d,id)=>{const s=squads.find(s=>s.id===d.currentSquadId),slot=slots.find(s=>s.id===id);const p=s.jogadores.find(p=>p.tags.includes(slot.label)&&!d.picks.some(e=>e.player.id===p.id));return confirmPick(d,squads,formation,p.id)};
 const field=count=>slots.filter(s=>s.position!=='GOL').slice(0,count).map((slot,i)=>({slot,player:player('previous-'+i,slot.label),squadId:'picked-'+i,clubId:'picked-club-'+i}));
-test('three rerolls are shared across all eleven rounds and discarded squads never return',()=>{
+test('four rerolls are shared across all eleven rounds and discarded squads never return',()=>{
  for(let seed=0;seed<25;seed++){
   let d=createDraft(seed,'2026-10-10','cup');d=drawSquad(d,squads,formation);d=drawSquad(d,squads,formation,'season');d=drawSquad(d,squads,formation,'club');
-  d=pick(d,'gol');d=drawSquad(d,squads,formation);d=drawSquad(d,squads,formation,'season');d=pick(d,'ld');
+  d=pick(d,'gol');d=drawSquad(d,squads,formation);d=drawSquad(d,squads,formation,'season');d=drawSquad(d,squads,formation,'club');d=pick(d,'ld');
   for(const slot of slots.filter(s=>!['gol','ld'].includes(s.id))){d=drawSquad(d,squads,formation);d=pick(d,slot.id)}
-  assert.equal(d.picks.length,TEAM_SIZE);assert.equal(d.seen.length,14);assert.equal(new Set(d.seen).size,14);assert.equal(d.rerolls,0);
+  assert.equal(d.picks.length,TEAM_SIZE);assert.equal(d.seen.length,15);assert.equal(new Set(d.seen).size,15);assert.equal(d.rerolls,0);
  }
 });
 test('other season keeps the club and changes year; other club changes club',()=>{
@@ -51,7 +51,7 @@ test('Champions keeps strong clubs attainable while making them slightly less co
   if(weightedClub==='real-madrid')weightedSamples++;
  }
  assert.ok(weightedStrong<uniformStrong*.92,`${weightedStrong} vs ${uniformStrong}`);
- assert.ok(weightedStrong>100,'os clubes fortes continuam aparecendo com frequência');
+ assert.ok(weightedStrong>uniformStrong*.7,'os clubes fortes continuam acessíveis na nova escala de notas');
  assert.ok(weightedSamples>0,'Real Madrid continua podendo ser sorteado');
 });
 test('the same person cannot be selected twice across seasons',()=>{
@@ -96,7 +96,7 @@ test('automatic placement prefers natural roles, then nearby roles without chang
 test('the eleventh round forces an unused goalkeeper without spending rerolls',()=>{
  const d={...createDraft(9,'date','cup'),picks:field(10)};
  const pool=squads.map((s,i)=>({...s,jogadores:s.jogadores.map(p=>p.tags.includes('GOL')&&i!==7?player(p.id,'CA'):p)}));
- const drawn=drawSquad(d,pool,formation);assert.equal(drawn.currentSquadId,pool[7].id);assert.equal(drawn.rerolls,3);
+ const drawn=drawSquad(d,pool,formation);assert.equal(drawn.currentSquadId,pool[7].id);assert.equal(drawn.rerolls,4);
  const compatible=pool[7].jogadores.filter(p=>availableSlots(drawn,formation,p).length);assert.equal(compatible.length,1);assert.ok(compatible[0].tags.includes('GOL'));
 });
 test('dropping into a chosen compatible position respects that destination and keeps full ratings',()=>{
@@ -117,7 +117,7 @@ test('a drop rejects incompatible, occupied and nonexistent positions without co
  }
  const filled=freeze({...d,picks:[{slot:slots.find(s=>s.id==='le'),player:player('existing-left-back','LE')}]});
  assert.throws(()=>confirmPick(filled,squads,formation,squad.jogadores.find(p=>p.tags.includes('LD')).id,'le'),/posição livre destacada/);
- assert.equal(d.currentSquadId,squad.id);assert.equal(d.picks.length,0);assert.equal(d.rerolls,3);
+ assert.equal(d.currentSquadId,squad.id);assert.equal(d.picks.length,0);assert.equal(d.rerolls,4);
 });
 test('completed eleven-player drafts forbid further draws and confirmations',()=>{
  const d={...createDraft(3,'date','cup'),picks:slots.map((slot,i)=>({slot,player:player('full-'+i,slot.label)}))};

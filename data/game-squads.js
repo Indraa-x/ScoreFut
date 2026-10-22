@@ -1,3 +1,3 @@
-import {allSquads} from './clubs.js?v=creator-ovr-20261021';
-export {clubs,validateData} from './clubs.js?v=creator-ovr-20261021';
+import {allSquads} from './clubs.js?v=five-eras-20261022';
+export {clubs,validateData} from './clubs.js?v=five-eras-20261022';
 export {allSquads};

@@ -1,29 +1,52 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/clubs.js';
-import {CREATOR_RATING_REVIEW,CREATOR_RATINGS_BY_SQUAD} from '../data/creator-ratings.js';
+import {CREATOR_RATING_REVIEW,CREATOR_RATING_REVIEWS,CREATOR_RATINGS_BY_SQUAD} from '../data/creator-ratings.js';
 import {applyHistoricalFifaRating} from '../data/ratings.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {refreshDraftRatings} from '../js/draft.js';
 
 const player=(squadId,id)=>allSquads.find(squad=>squad.id===squadId)?.jogadores.find(player=>player.id===id);
 
-test('all 22 requested OVR edits reach the exact player and season, without an official EA label',()=>{
-  assert.equal(CREATOR_RATING_REVIEW.changes.length,22);
-  assert.equal(new Set(CREATOR_RATING_REVIEW.changes.map(change=>`${change.squadId}/${change.playerId}`)).size,22);
-  assert.equal(Object.keys(CREATOR_RATINGS_BY_SQUAD).length,18);
-  for(const change of CREATOR_RATING_REVIEW.changes){
+test('all 45 new OVR edits and 22 earlier edits reach their exact player and season',()=>{
+  assert.equal(CREATOR_RATING_REVIEWS.length,2);
+  assert.equal(CREATOR_RATING_REVIEWS[0].changes.length,22);
+  assert.equal(CREATOR_RATING_REVIEW,CREATOR_RATING_REVIEWS[1]);
+  assert.equal(CREATOR_RATING_REVIEW.sourceFile,'scorefut-overs-2026-10-22.json');
+  assert.equal(CREATOR_RATING_REVIEW.changes.length,45);
+  const changes=CREATOR_RATING_REVIEWS.flatMap(review=>review.changes);
+  assert.equal(new Set(changes.map(change=>`${change.squadId}/${change.playerId}`)).size,67);
+  assert.equal(Object.keys(CREATOR_RATINGS_BY_SQUAD).length,new Set(changes.map(change=>change.squadId)).size);
+  for(const review of CREATOR_RATING_REVIEWS)for(const change of review.changes){
     const found=player(change.squadId,change.playerId);
     assert.ok(found,`${change.squadId}/${change.playerId}`);
     assert.equal(found.ovr,change.toOvr,`${change.squadId}/${change.playerId} OVR`);
     assert.equal(found.ratingKind,'creator-review');assert.equal(found.ratingEdition,undefined);
     assert.equal(found.creatorReview.previousOvr,change.fromOvr);
-    assert.equal(found.creatorReview.exportedAt,CREATOR_RATING_REVIEW.exportedAt);
+    assert.equal(found.creatorReview.exportedAt,review.exportedAt);
+    assert.ok(found.ratingReason.includes(review.sourceFile));
     assert.equal(found.ratingSource,'data/creator-ratings.js');
     assert.equal(found.nome,change.nome);
     assert.deepEqual(JSON.parse(JSON.stringify(found)),found,'Imported metadata must survive saving and restoring a match');
     assert.ok(Object.values(found.atributos).every(value=>Number.isInteger(value)&&value>=1&&value<=99));
   }
+});
+
+test('new increases and decreases affect only the specified seasons',()=>{
+  assert.equal(player('barcelona-2009','lionel-messi').ovr,93);
+  assert.equal(player('barcelona-2011','lionel-messi').ovr,95);
+  assert.equal(player('barcelona-2015','lionel-messi').ovr,94);
+  assert.equal(player('real-madrid-2017','cristiano-ronaldo').ovr,93);
+  assert.equal(player('manchester-united-2009','cristiano-ronaldo').ovr,93);
+  assert.equal(player('manchester-united-2008','cristiano-ronaldo').ovr,91);
+  assert.equal(player('real-madrid-2014','cristiano-ronaldo').ovr,92);
+  assert.equal(player('corinthians-2012','cassio').ovr,78);
+  assert.equal(player('corinthians-2015','cassio').ovr,78);
+  assert.equal(player('fluminense-2023','german-cano').ovr,86);
+  assert.equal(player('celtic-2003','henrik-larsson').ovr,85);
+  const messi=player('barcelona-2011','lionel-messi');
+  assert.equal(messi.priorSeasonReview.ovr,96);
+  assert.equal(messi.archivedRating.ovr,90);
 });
 
 test('creator adjustments override season reviews while keeping the earlier review and EA archive',()=>{
@@ -33,8 +56,8 @@ test('creator adjustments override season reviews while keeping the earlier revi
   const drogba=player('chelsea-2012','didier-drogba');
   assert.equal(drogba.ovr,88);assert.equal(drogba.archivedRating.ovr,86);
   assert.ok(drogba.archivedRating.source.startsWith('https://'));
-  assert.equal(player('santos-2010','neymar').ovr,86);
-  assert.equal(player('barcelona-2015','neymar').ovr,92);
+  assert.equal(player('santos-2010','neymar').ovr,78);
+  assert.equal(player('barcelona-2015','neymar').ovr,88);
   assert.equal(player('juventus-1998','zinedine-zidane').ovr,93);
   assert.equal(player('real-madrid-2002','zinedine-zidane').ovr,92);
 });
@@ -46,11 +69,22 @@ test('an imported OVR updates simulation attributes immutably and is safe to rea
   assert.deepEqual(updated.atributos,{ataque:92,meio:81,defesa:59,finalizacao:92,reflexo:22,posicionamento:81});
   assert.deepEqual(base,original);
   assert.deepEqual(applyHistoricalFifaRating(updated,'atletico-mineiro-2024'),updated);
-  assert.equal(applyHistoricalFifaRating(base,'atletico-mineiro-1999'),base);
+  const unrelated=applyHistoricalFifaRating(base,'atletico-mineiro-1999');
+  assert.equal(unrelated.ovr,base.ovr);assert.deepEqual(unrelated.atributos,base.atributos);
+  assert.equal(unrelated.ratingKind,'editorial-estimate');
+});
+
+test('lowered OVRs reduce simulation attributes and remain safe to reapply',()=>{
+  const base={id:'kevin-de-bruyne',ovr:91,atributos:{ataque:90,meio:95,defesa:60,finalizacao:82,reflexo:1,posicionamento:89}};
+  const original=structuredClone(base),updated=applyHistoricalFifaRating(base,'manchester-city-2024');
+  assert.equal(updated.ovr,89);
+  assert.deepEqual(updated.atributos,{ataque:88,meio:93,defesa:58,finalizacao:80,reflexo:1,posicionamento:87});
+  assert.deepEqual(base,original);
+  assert.deepEqual(applyHistoricalFifaRating(updated,'manchester-city-2024'),updated);
 });
 
 test('existing draft picks receive every imported rating without losing positions, skips or state',()=>{
-  for(const change of CREATOR_RATING_REVIEW.changes){
+  for(const review of CREATOR_RATING_REVIEWS)for(const change of review.changes){
     const latest=player(change.squadId,change.playerId),slot=FORMATIONS['4-3-3'].slots.find(slot=>positionFit(latest,slot)!==null);
     const draft={seed:42,rngState:90,rerolls:2,seen:[change.squadId],currentSquadId:change.squadId,picks:[{player:{...latest,ovr:change.fromOvr},squadId:change.squadId,slot}]};
     const original=structuredClone(draft),refreshed=refreshDraftRatings(draft,allSquads);

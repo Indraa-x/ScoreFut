@@ -4,7 +4,7 @@ import {allSquads} from '../data/clubs.js';
 import {squadsForMode} from '../data/competitions.js';
 import {squadTeam,createTournament,playNextRound,simulateTournament,upgradeChampionsTournament} from '../js/engine.js';
 import {prepareUserRound,currentMatch,commitUserRound,upcomingFixtures,migrateChampionsFormat} from '../js/match-session.js';
-import {renderMatch,renderBracket} from '../js/ui.js';
+import {renderMatch,renderBracket,renderChampionsTie} from '../js/ui.js';
 
 const user={...squadTeam(allSquads[0]),id:'user',clubId:'user',name:'Meu time'};
 const make=seed=>createTournament(user,allSquads,{mode:'champions',seed});
@@ -39,7 +39,7 @@ test('Champions keeps its groups and seeded halves, then plays two legs through 
   assert.equal(t.matches.filter(match=>match.stage==='group').length,48);
   assert.deepEqual(t.bracket.map(stage=>stage.matches.length),[16,8,4,1]);
   assert.deepEqual(t.bracket.map(stage=>stage.ties.length),[8,4,2,1]);
-  assert.ok(t.matches.every(match=>match.result.duration===90&&!match.result.extraTime));
+  assert.ok(t.matches.every(({result:r})=>r.duration===90+r.regulationStoppageTime+(r.extraTime?30+r.extraTimeStoppageTime:0)));
   assert.equal(t.matches.at(-1).neutral,true);
   assert.equal(t.championId,t.bracket.at(-1).ties[0].winnerId);
   assert.ok(t.userMatches.length>=3&&t.userMatches.length<=10);
@@ -70,7 +70,7 @@ test('Champions qualifies by aggregate, allows a return-leg defeat and settles e
         shootout=true;
         assert.ok(last.result.penalties);
         assert.equal(tie.winnerId,last.result.penalties[0]>last.result.penalties[1]?last.homeId:last.awayId);
-        assert.ok(last.result.events.filter(event=>event.shootout).every(event=>event.minute===90));
+        assert.ok(last.result.events.filter(event=>event.shootout).every(event=>event.minute===last.result.duration));
       }else{
         assert.equal(last.result.penalties,null);
         assert.equal(tie.winnerId,totals[0]>totals[1]?first.homeId:first.awayId);
@@ -99,7 +99,7 @@ test('the live Champions keeps a losing first leg alive, schedules its return an
   assert.ok(!renderMatch(state).includes('Classificado:'));
   assert.ok(state.pendingRound.bracket[0].ties.every(tie=>tie.winnerId===null));
   assert.equal(commitUserRound(state),false);
-  state.matchMinute=90;
+  state.matchMinute=currentMatch(state).result.duration;
   assert.equal(commitUserRound(state),true);
   assert.equal(state.tournament.campaign.eliminated,false);
   Object.assign(state,prepareUserRound(state.tournament),{matchMinute:0});
@@ -109,19 +109,22 @@ test('the live Champions keeps a losing first leg alive, schedules its return an
   assert.ok(!html.includes('Classificado:')&&!html.includes('Pênaltis <b>'));
   const resumed=JSON.parse(JSON.stringify(state));
   assert.deepEqual(currentMatch(resumed),currentMatch(state));
-  state.matchMinute=90;commitUserRound(state);
+  state.matchMinute=currentMatch(state).result.duration;commitUserRound(state);
   const tie=state.tournament.bracket[0].ties.find(tie=>tie.teamIds.includes('user'));
   assert.equal(state.tournament.campaign.eliminated,tie.winnerId!=='user');
   assert.ok(renderMatch(state).includes('Classificado:'));
   const bracket=renderBracket(state);
   assert.ok(bracket.includes('CHAMPIONS LEAGUE')&&bracket.includes('Placar agregado'));
-  assert.ok(bracket.includes('Ida ·')&&bracket.includes('Volta ·'));
+  const details=renderChampionsTie(state.tournament,tie.id);
+  assert.ok(details.includes('Ida')&&details.includes('Volta'));
   assert.ok(!bracket.includes('COPA DO BRASIL')&&!bracket.includes('Sorteio entre os classificados'));
   assert.deepEqual(t,before);
 });
 
 test('active single-leg Champions saves retain completed scores and opponents while upgrading only future ties',()=>{
-  const original=legacy(83),pending=playNextRound(original);
+  let seed=1;while(seed<500&&legacy(seed,4).campaign.eliminated)seed++;
+  assert.ok(seed<500,'a qualifying legacy campaign exists');
+  const original=legacy(seed),pending=playNextRound(original);
   original.mode='champions';pending.mode='champions';
   const before=structuredClone(original);
   const state={tournament:original,pendingRound:pending,userMatchIndex:original.userMatches.length,matchMinute:37};
@@ -134,7 +137,7 @@ test('active single-leg Champions saves retain completed scores and opponents wh
   assert.equal(currentMatch(migrated).leg,1);
   assert.equal(migrated.matchMinute,0);
   assert.deepEqual(original,before);
-  const later=legacy(83,4);later.mode='champions';
+  const later=legacy(seed,4);later.mode='champions';
   const upgraded=upgradeChampionsTournament(later);
   assert.deepEqual(upgraded.matches.filter(match=>match.result),later.matches.filter(match=>match.result));
   assert.ok(upgraded.bracket[0].ties.every(tie=>tie.matchIds.length===1&&tie.winnerId));

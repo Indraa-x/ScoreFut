@@ -1,17 +1,18 @@
 /**
  * Fonte central de dados do ScoreFut. Edite os elencos nos lotes importados
  * abaixo, ou inclua novos objetos diretamente em clubs. Notas com fonte histórica
- * no ratings.js usam a edição FIFA/FC como base. Revisões por temporada e ajustes
- * explícitos do criador têm prioridade; os demais valores são avaliações do jogo.
+ * no ratings.js usam a edição FIFA/FC lançada no ano da época (2015 -> FIFA 16).
+ * Ajustes do criador têm prioridade; lacunas usam estimativas identificadas.
  * Cada temporada oferece onze candidatos, incluindo um goleiro.
  */
-import { clubsA } from './clubs-a.js?v=club-only-cleanup-20261020';
-import { clubsB } from './clubs-b.js?v=club-only-cleanup-20261020';
-import { clubsC } from './clubs-c.js?v=club-only-cleanup-20261020';
-import { championsAdditions } from './champions-additions.js?v=club-only-cleanup-20261020';
-import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=creator-ovr-20261021';
+import { clubsA } from './clubs-a.js?v=five-eras-20261022';
+import { clubsB } from './clubs-b.js?v=five-eras-20261022';
+import { clubsC } from './clubs-c.js?v=five-eras-20261022';
+import { championsAdditions } from './champions-additions.js?v=five-eras-20261022';
+import { expandClubSeasons } from './season-expansion.js?v=five-eras-20261022';
+import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=five-eras-20261022';
 export const ELENCO_TAMANHO = 11;
-export const clubs = [...clubsA, ...clubsB, ...clubsC, ...championsAdditions];
+export const clubs = expandClubSeasons([...clubsA, ...clubsB, ...clubsC, ...championsAdditions]);
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
 // Uma pessoa conserva o mesmo ID mesmo quando o nome de exibição muda.
 const aliases = {'mancini':'amantino-mancini','di-maria':'angel-di-maria','jorginho':'jorginho-frello','falcao':'radamel-falcao','mbappe':'kylian-mbappe','gundogan':'ilkay-gundogan','thiago':'thiago-alcantara','eto-o':'samuel-etoo','samuel-eto-o':'samuel-etoo','luis-suarez':'luis-suarez','luis-figo':'luis-figo'};
@@ -29,10 +30,10 @@ function roster(season) {
 export const allSquads = clubs.flatMap(club => club.temporadas.map(season => ({id:`${club.id}-${season.ano}`,clubId:club.id,nome:club.nome,monograma:club.monograma,cores:club.cores,ano:season.ano,conquistas:season.conquistas,jogadores:roster(season)})));
 export function validateData() {
   const errors = [];
-  if(clubs.length !== 40) errors.push(`Esperados 40 clubes, encontrados ${clubs.length}.`);
+  if(clubs.length !== 43) errors.push(`Esperados 43 clubes, encontrados ${clubs.length}.`);
   if(new Set(clubs.map(c=>c.id)).size !== clubs.length) errors.push('IDs de clube repetidos.');
   for(const club of clubs) {
-    if(club.temporadas.length < 3 || new Set(club.temporadas.map(s=>s.ano)).size !== club.temporadas.length) errors.push(`${club.nome}: são necessárias ao menos três temporadas únicas.`);
+    if(club.temporadas.length !== 5 || new Set(club.temporadas.map(s=>s.ano)).size !== 5) errors.push(`${club.nome}: são necessárias cinco temporadas únicas.`);
   }
   for(const squad of allSquads) {
     const players = squad.jogadores;

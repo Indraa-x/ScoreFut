@@ -8,6 +8,7 @@ export const EUROPE_CLUB_IDS = Object.freeze([
   'real-madrid','barcelona','bayern','milan','manchester-united','liverpool','manchester-city',
   'arsenal','chelsea','inter','juventus','ajax','napoli','tottenham','atletico-madrid',
   'borussia-dortmund','psg','porto','benfica','valencia','monaco','celtic','marseille','psv','roma',
+  'galatasaray','fenerbahce','rb-leipzig',
 ]);
 export function squadsForMode(squads,mode){
   const ids=mode==='copa-do-brasil'?BRAZIL_CUP_CLUB_IDS:mode==='brasileirao'?BRAZIL_CLUB_IDS:mode==='champions'?EUROPE_CLUB_IDS:null;

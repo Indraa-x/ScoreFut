@@ -1,8 +1,8 @@
-import {renderMatchGoals} from './match-goals.js?v=added-time-badge-20261021';
-import {renderChampionsSidebar} from './champions-view.js?v=champions-hub-20261021';
-import { competitionName, competitionLogo } from '../data/competitions.js?v=club-only-cleanup-20261020';
-import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=cup-stoppage-20261021';
-import { formatMatchClock, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=added-time-badge-20261021';
+import {renderMatchGoals} from './match-goals.js?v=five-eras-20261022';
+import {renderChampionsSidebar} from './champions-view.js?v=five-eras-20261022';
+import { competitionName, competitionLogo } from '../data/competitions.js?v=five-eras-20261022';
+import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=five-eras-20261022';
+import { formatMatchClock, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt, lineupAnchors, MATCH_SPEEDS } from './match-motion.js?v=five-eras-20261022';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {

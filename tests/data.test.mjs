@@ -8,42 +8,322 @@ const porNome = nome => entradas.filter(jogador => jogador.nome === nome);
 const porId = id => entradas.filter(jogador => jogador.id === id);
 const elenco = (clube, ano) => allSquads.find(time => time.clubId === clube && time.ano === ano);
 
-test('a base completa contém os 40 clubes, 156 elencos e 1716 entradas válidas', () => {
+test('a base completa contém os 43 clubes, 215 elencos e 2365 entradas válidas', () => {
   assert.equal(ELENCO_TAMANHO, 11);
   assert.deepEqual(validateData(), {
-    valid: true, errors: [], clubs: 40, squads: 156, players: 1716
+    valid: true, errors: [], clubs: 43, squads: 215, players: 2365
   });
-  assert.equal(entradas.length, 1716);
-  assert.equal(new Set(allSquads.map(time => time.id)).size, 156);
+  assert.equal(entradas.length, 2365);
+  assert.equal(new Set(allSquads.map(time => time.id)).size, 215);
 });
 
 test('cada clube mantém as temporadas históricas declaradas', () => {
   const esperados = {
-    'real-madrid': [2002, 2014, 2017, 2024], barcelona: [1992, 2009, 2011, 2015],
-    bayern: [2001, 2010, 2013, 2020], milan: [1990, 1994, 2003, 2007],
-    'manchester-united': [1994, 1999, 2008, 2009], liverpool: [2005, 2019, 2020, 2025],
-    'manchester-city': [2018, 2021, 2023, 2024], arsenal: [1998, 2002, 2004, 2006],
-    chelsea: [2005, 2010, 2012, 2021], inter: [1998, 2007, 2010, 2024],
-    juventus: [1996, 1998, 2015, 2017], ajax: [1992, 1995, 1996, 2019],
-    napoli: [1990, 2018, 2023, 2025], tottenham: [2016, 2017, 2019, 2025],
-    'atletico-madrid': [1996, 2014, 2016, 2021],
-    'borussia-dortmund': [1997, 2012, 2013, 2024], psg: [1996, 2016, 2020, 2025],
-    porto: [1996, 2003, 2004, 2011], benfica: [1990, 2010, 2014, 2022],
-    valencia: [2000, 2001, 2002, 2004], monaco: [1997, 2000, 2004, 2017],
-    flamengo: [2009, 2019, 2022, 2025], palmeiras: [1996, 1999, 2020, 2021],
-    'sao-paulo': [1992, 1993, 2005, 2006], corinthians: [1999, 2000, 2012, 2015],
-    santos: [2002, 2004, 2010, 2011], gremio: [1995, 1996, 2001, 2017],
-    internacional: [2006, 2007, 2008, 2010], vasco: [1997, 1998, 2000, 2011],
-    fluminense: [2007, 2010, 2012, 2023], botafogo: [1995, 2007, 2023, 2024],
-    cruzeiro: [1997, 2003, 2013, 2014], 'atletico-mineiro': [1999, 2013, 2021, 2024],
-    'athletico-paranaense': [2001, 2005, 2018, 2021], bahia: [2001, 2017, 2021, 2025],
-    fortaleza: [2018, 2019, 2022, 2023],
-    celtic: [1967, 1970, 2003], marseille: [1991, 1993, 2010],
-    psv: [1988, 2005, 2007], roma: [2001, 2007, 2018]
-  };
+  "real-madrid": [
+    2002,
+    2014,
+    2017,
+    2022,
+    2024
+  ],
+  "barcelona": [
+    1992,
+    2006,
+    2009,
+    2011,
+    2015
+  ],
+  "bayern": [
+    1974,
+    2001,
+    2010,
+    2013,
+    2020
+  ],
+  "milan": [
+    1989,
+    1990,
+    1994,
+    2003,
+    2007
+  ],
+  "manchester-united": [
+    1968,
+    1994,
+    1999,
+    2008,
+    2009
+  ],
+  "liverpool": [
+    1984,
+    2005,
+    2019,
+    2020,
+    2025
+  ],
+  "manchester-city": [
+    2012,
+    2018,
+    2021,
+    2023,
+    2024
+  ],
+  "arsenal": [
+    1971,
+    1998,
+    2002,
+    2004,
+    2006
+  ],
+  "chelsea": [
+    2005,
+    2010,
+    2012,
+    2017,
+    2021
+  ],
+  "inter": [
+    1965,
+    1998,
+    2007,
+    2010,
+    2024
+  ],
+  "juventus": [
+    1985,
+    1996,
+    1998,
+    2015,
+    2017
+  ],
+  "ajax": [
+    1972,
+    1992,
+    1995,
+    1996,
+    2019
+  ],
+  "napoli": [
+    1987,
+    1990,
+    2018,
+    2023,
+    2025
+  ],
+  "tottenham": [
+    1961,
+    2016,
+    2017,
+    2019,
+    2025
+  ],
+  "atletico-madrid": [
+    1996,
+    2014,
+    2016,
+    2018,
+    2021
+  ],
+  "borussia-dortmund": [
+    1997,
+    2002,
+    2012,
+    2013,
+    2024
+  ],
+  "psg": [
+    1994,
+    1996,
+    2016,
+    2020,
+    2025
+  ],
+  "porto": [
+    1987,
+    1996,
+    2003,
+    2004,
+    2011
+  ],
+  "benfica": [
+    1962,
+    1990,
+    2010,
+    2014,
+    2022
+  ],
+  "valencia": [
+    1980,
+    2000,
+    2001,
+    2002,
+    2004
+  ],
+  "monaco": [
+    1988,
+    1997,
+    2000,
+    2004,
+    2017
+  ],
+  "flamengo": [
+    1981,
+    2009,
+    2019,
+    2022,
+    2025
+  ],
+  "palmeiras": [
+    1993,
+    1996,
+    1999,
+    2020,
+    2021
+  ],
+  "sao-paulo": [
+    1992,
+    1993,
+    2005,
+    2006,
+    2008
+  ],
+  "corinthians": [
+    1999,
+    2000,
+    2012,
+    2015,
+    2017
+  ],
+  "santos": [
+    1963,
+    2002,
+    2004,
+    2010,
+    2011
+  ],
+  "gremio": [
+    1983,
+    1995,
+    1996,
+    2001,
+    2017
+  ],
+  "internacional": [
+    1976,
+    1979,
+    2006,
+    2008,
+    2010
+  ],
+  "vasco": [
+    1989,
+    1997,
+    1998,
+    2000,
+    2011
+  ],
+  "fluminense": [
+    1984,
+    2007,
+    2010,
+    2012,
+    2023
+  ],
+  "botafogo": [
+    1962,
+    1968,
+    1995,
+    2007,
+    2024
+  ],
+  "cruzeiro": [
+    1976,
+    1997,
+    2003,
+    2013,
+    2014
+  ],
+  "atletico-mineiro": [
+    1971,
+    2013,
+    2014,
+    2021,
+    2024
+  ],
+  "athletico-paranaense": [
+    2001,
+    2005,
+    2018,
+    2019,
+    2021
+  ],
+  "bahia": [
+    1959,
+    1988,
+    2001,
+    2017,
+    2025
+  ],
+  "fortaleza": [
+    2018,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "celtic": [
+    1967,
+    1970,
+    2001,
+    2003,
+    2017
+  ],
+  "marseille": [
+    1989,
+    1991,
+    1993,
+    2010,
+    2018
+  ],
+  "psv": [
+    1978,
+    1988,
+    2005,
+    2007,
+    2024
+  ],
+  "roma": [
+    1983,
+    2001,
+    2007,
+    2018,
+    2022
+  ],
+  "galatasaray": [
+    1989,
+    2000,
+    2013,
+    2024,
+    2025
+  ],
+  "fenerbahce": [
+    2008,
+    2011,
+    2013,
+    2014,
+    2024
+  ],
+  "rb-leipzig": [
+    2017,
+    2020,
+    2021,
+    2022,
+    2023
+  ]
+};
   assert.deepEqual(new Set(clubs.map(clube => clube.id)), new Set(Object.keys(esperados)));
   for (const clube of clubs) {
-    assert.ok(clube.temporadas.length>=3,clube.id);
+    assert.ok(clube.temporadas.length===5,clube.id);
     assert.deepEqual(clube.temporadas.map(temporada => temporada.ano).sort((a, b) => a - b),
       esperados[clube.id], clube.id);
   }

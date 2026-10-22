@@ -1,18 +1,20 @@
-import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js';
-import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js';
-import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=creator-ovr-20261021';
-import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=creator-ovr-20261021';
+import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js?v=five-eras-20261022';
+import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js?v=five-eras-20261022';
+import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=five-eras-20261022';
+export {RELEASE_RATINGS_BY_SQUAD};
+import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=five-eras-20261022';
+import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=five-eras-20261022';
 export { SEASON_RATINGS_BY_SQUAD };
 
 /**
  * Historical FIFA/EA SPORTS FC OVRs, with explicit reviews for exceptional
  * seasons and a conservative fallback where no archived rating is available.
  */
-export const RATINGS_VERSION = 11;
+export const RATINGS_VERSION = 13;
 export const MAX_OVR = 99;
 
-// OVRs are copied from the edition matching the season's ending year
-// (e.g. a 2010/11 season ending in 2011 uses FIFA 11).
+// Legacy same-year records are retained only as provenance. Active ratings
+// use RELEASE_RATINGS_BY_SQUAD and the following edition (2015 -> FIFA 16).
 export const FIFA_RATING_SOURCES = Object.freeze({
   'arsenal-2006': 'https://fifaindex.com/teams/1-arsenal/fifa06',
   'barcelona-2009': 'https://fifaindex.com/teams/241-f-c-barcelona/fifa09',
@@ -250,39 +252,46 @@ export function recalibratePlayer(player, attributeFloor = 1) {
   };
 }
 
-/** Creator edits take precedence over season reviews; original EA records remain traceable. */
+/** Creator JSON edits > verified following edition > editorial season review. */
 export function applyHistoricalFifaRating(player, squadId) {
   const editionRating = MODERN_RATINGS_BY_SQUAD[squadId]?.[player.id]
     ?? ARCHIVED_RATINGS_BY_SQUAD[squadId]?.[player.id];
   const archivedOvr = editionRating?.ovr ?? FIFA_OVR_BY_SQUAD[squadId]?.[player.id];
   const seasonReview = SEASON_RATINGS_BY_SQUAD[squadId]?.[player.id];
   const creatorReview = CREATOR_RATINGS_BY_SQUAD[squadId]?.[player.id];
-  const review = creatorReview ?? seasonReview;
-  const rating = review?.ovr ?? archivedOvr;
-  if (rating === undefined) return player;
-  const edition = Number(squadId.match(/-(\d{4})$/)?.[1]) % 100;
-  const ratingEdition = edition <= 23 ? `FIFA ${String(edition).padStart(2, '0')}` : `FC ${edition}`;
-  const ratingSource = editionRating?.source ?? FIFA_RATING_SOURCES[squadId];
+  const releaseRating = RELEASE_RATINGS_BY_SQUAD[squadId]?.[player.id];
+  const review = creatorReview ?? (releaseRating ? undefined : seasonReview);
+  const rating = review?.ovr ?? releaseRating?.ovr ?? player.ovr;
+  const year = Number(squadId.match(/-(\d{4})$/)?.[1]);
+  const editionName = year => `${year <= 2023 ? 'FIFA' : 'FC'} ${String(year).slice(-2)}`;
   const delta = rating - player.ovr;
   const updated = {
     ...player,
     ovr: rating,
-    ...(review ? {
-      ratingKind: creatorReview ? 'creator-review' : 'season-review',
-      ratingSource: review.source,
-      ratingEdition: undefined,
-      ratingReason: review.reason,
-      ...(creatorReview ? {creatorReview, priorSeasonReview:seasonReview} : {}),
-      archivedRating: archivedOvr === undefined ? undefined : {ovr:archivedOvr, source:ratingSource, edition:ratingEdition},
-    } : {ratingSource, ratingEdition}),
     atributos: Object.fromEntries(Object.entries(player.atributos).map(
       ([key, value]) => [key, clamp(value + delta, 1)]
     )),
   };
+  for (const key of ['ratingKind','ratingSource','ratingEdition','ratingReason','ratingExpectedEdition',
+    'creatorReview','priorSeasonReview','archivedRating','releaseRating']) delete updated[key];
+  if (Number.isFinite(year)) updated.ratingExpectedEdition = editionName(year + 1);
+  if (archivedOvr !== undefined) updated.archivedRating = {
+    ovr:archivedOvr, source:editionRating?.source ?? FIFA_RATING_SOURCES[squadId], edition:editionName(year),
+  };
+  if (releaseRating) updated.releaseRating = releaseRating;
+  if (seasonReview && (creatorReview || releaseRating)) updated.priorSeasonReview = seasonReview;
   if (review) {
-    delete updated.ratingEdition;
-    if (archivedOvr === undefined) delete updated.archivedRating;
-    if (creatorReview && !seasonReview) delete updated.priorSeasonReview;
+    updated.ratingKind = creatorReview ? 'creator-review' : 'season-review';
+    updated.ratingSource = review.source;
+    updated.ratingReason = review.reason;
+    if (creatorReview) updated.creatorReview = creatorReview;
+  } else if (releaseRating) {
+    updated.ratingKind = 'release-rating';
+    updated.ratingSource = releaseRating.source;
+    updated.ratingEdition = releaseRating.edition;
+  } else {
+    updated.ratingKind = 'editorial-estimate';
+    updated.ratingReason = `Estimativa histórica: sem OVR verificável na edição ${editionName(year + 1)}.`;
   }
   return updated;
 }

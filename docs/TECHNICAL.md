@@ -2,7 +2,7 @@
 
 Jogo de draft e simulação de futebol em português do Brasil. Monte uma escalação de **11 jogadores — um goleiro e dez de linha**. Cada sorteio oferece onze destaques de um clube em uma temporada histórica; escolha um atleta por rodada e dispute a competição. O Modo rápido usa os onze titulares de um clube na formação escolhida.
 
-São 40 clubes e 148 elencos históricos; os 36 clubes originais têm quatro temporadas, e quatro clubes europeus têm uma edição de destaque cada. O projeto usa HTML, CSS e JavaScript com módulos ES, sem framework ou dependências de execução. Notas e atributos são avaliações editoriais. Os 36 escudos originais foram baixados do [Football Logos](https://football-logos.cc/) em PNG transparente de 256×256 e ficam em `assets/logos/`, com as URLs de origem em `sources.json`. Os quatro novos clubes usam monogramas até que seus escudos sejam incluídos. Sorteios, partidas, campanhas e chaveamento usam esses arquivos locais. “Meu time” conserva seu símbolo genérico.
+São 43 clubes, com cinco épocas distintas por clube: 215 elencos e 2.365 registros. A Champions oferece 28 clubes europeus; a Copa do Brasil, 15 brasileiros. Todos os escudos são arquivos locais com fontes e hashes em `assets/logos/sources.json`. O projeto usa módulos JavaScript, HTML e CSS, sem dependências de execução. OVRs seguem a [política de edição e prioridades](../data/RATING-SOURCES.md). “Meu time” conserva seu símbolo genérico.
 
 A Copa do Brasil oferece Flamengo, Palmeiras, São Paulo, Corinthians, Santos, Grêmio, Internacional, Vasco, Fluminense, Botafogo, Cruzeiro, Atlético-MG, Athletico-PR, Bahia e Fortaleza. Boca Juniors e River Plate foram removidos da base ativa.
 
@@ -21,18 +21,14 @@ Abra [http://127.0.0.1:4173](http://127.0.0.1:4173). Não é necessário executa
 1. Escolha o modo e clique em uma das oito formações. O botão selecionado fica destacado e a prévia do campo muda imediatamente.
 2. Sorteie um clube e uma temporada. Arraste o jogador com o mouse para uma vaga livre destacada no campo. Também é possível clicar no jogador e depois na vaga.
 3. Ao soltar o jogador ou clicar na vaga, a escolha entra diretamente no time, sem botão de confirmação. São **onze rodadas**, em qualquer ordem. O mesmo jogador não pode entrar duas vezes, mesmo em temporadas diferentes.
-4. Os três re-sorteios valem para o draft inteiro. “Outro clube” e “Outra temporada” usam o mesmo saldo. Elencos sorteados ou descartados não voltam.
+4. Os quatro re-sorteios valem para o draft inteiro. “Outro clube” e “Outra temporada” usam o mesmo saldo. Elencos sorteados ou descartados não voltam.
 5. Complete as onze vagas e entre na competição. Acompanhe a partida automática, avance pelo botão no topo ao fim de cada jogo e baixe o resultado como PNG.
 
 Nos modos de draft, o nome do time é “Meu time”, sem campo de edição. No Modo rápido, ele corresponde ao clube e à temporada escolhidos. Um draft salvo da versão anterior é adaptado para as novas formações, preservando o máximo de escolhas compatíveis. Histórico concluído anteriormente permanece disponível.
 
-## Fotos nas cartinhas
+## Seleção leve de jogadores
 
-Ao segurar um jogador com o mouse, a cartinha mostra seu retrato, nome e OVR. A foto tem espaço reservado e é pré-carregada para o elenco atual, preservando o cartão centralizado no cursor e a animação de encaixe no campo. No Modo Lendas, o OVR continua oculto. Quando não há foto identificada ou o arquivo falha, aparecem as iniciais.
-
-Os 1.083 jogadores têm retratos reais locais em `assets/players/`, em PNG. Recortes transparentes têm prioridade; fotografias com fundo usam uma moldura discreta. Cada foto tem um enquadramento próprio para mostrar a cabeça inteira e um pouco do pescoço, com margem para o cabelo. Os limites de exibição ficam em `assets/players/framing.json`, associados à imagem pelo hash; os PNGs originais são preservados. `assets/players/sources.json` registra a fonte, a identidade conferida e os créditos disponíveis de cada imagem. `assets/players/missing.json` lista eventuais lacunas e está vazio nesta versão. A base usa um mesmo retrato para as várias temporadas de cada jogador; as fotos podem mostrar outra época da carreira.
-
-`data/player-portraits.js` contém os caminhos locais e os enquadramentos usados pela interface. Para regenerar esse índice após atualizar os arquivos, suas fontes e os enquadramentos, execute `node scripts/prepare-player-portraits.mjs`. Uma foto substituída usa a imagem inteira até receber um enquadramento correspondente ao novo hash. O jogo carrega os PNGs do projeto, sem consultar catálogos externos durante o draft.
+A lista mostra posição, nome e OVR. Ao arrastar, aparece uma prévia compacta com esses dados, o clube e a temporada. Não há fotos, cartinhas ou pré-carregamento de retratos; um novo atleta exige somente dados de elenco. As posições e o escudo do clube continuam no campo. O catálogo antigo em `assets/players/` é um arquivo de pesquisa e não é importado pelo jogo. As doze imagens da página inicial permanecem.
 
 ## Partidas
 
@@ -71,10 +67,10 @@ A força geral é a média do OVR dos jogadores escalados. Clube e temporada nã
 |---|---|
 | Modo rápido | Escolha a formação e o clube, confira o elenco e clique em Pular para simulação; mata-mata com 16 times e até quatro partidas |
 | Copa do Brasil | Até 16 equipes, uma temporada por clube brasileiro e Meu time; oitavas, quartas e semifinais em ida e volta; final em jogo único |
-| Champions League | 25 clubes europeus históricos da base; 32 elencos no formato clássico de grupos e mata-mata |
+| Champions League | 28 clubes europeus históricos da base; 32 elencos no formato clássico de grupos e mata-mata |
 | Modo Lendas | Copa com as notas ocultas durante o draft |
 
-Modo rápido: substitui a Copa ScoreFut na página inicial e na seleção de modos, com gradiente amarelo, âmbar e laranja. A mesma identidade aparece nos botões, etapas, filtros, atributos, resultado e PNG da campanha rápida. Primeiro escolha uma das oito formações e clique em Escolher time. Depois escolha um dos 40 clubes; a temporada mais recente compatível com a formação escolhida aparece pronta no campinho. A formação não é substituída automaticamente. Clubes sem uma temporada compatível ficam identificados e desabilitados; use Alterar formação para escolher outro esquema. Essa escolha não inicia a simulação. Na prévia, é possível trocar entre temporadas compatíveis do clube ou voltar para escolher outro time mantendo a formação. Somente **Pular para simulação** calcula a campanha inteira, usando o motor por OVR e atributos com a ajuda leve de dificuldade. Escudo, nome do clube e jogadores são preservados no resultado e no histórico.
+Modo rápido: substitui a Copa ScoreFut na página inicial e na seleção de modos, com gradiente amarelo, âmbar e laranja. A mesma identidade aparece nos botões, etapas, filtros, atributos, resultado e PNG da campanha rápida. Primeiro escolha uma das oito formações e clique em Escolher time. Depois escolha um dos 43 clubes; a temporada mais recente compatível com a formação escolhida aparece pronta no campinho. A formação não é substituída automaticamente. Clubes sem uma temporada compatível ficam identificados e desabilitados; use Alterar formação para escolher outro esquema. Essa escolha não inicia a simulação. Na prévia, é possível trocar entre temporadas compatíveis do clube ou voltar para escolher outro time mantendo a formação. Somente **Pular para simulação** calcula a campanha inteira, usando o motor por OVR e atributos com a ajuda leve de dificuldade. Escudo, nome do clube e jogadores são preservados no resultado e no histórico.
 
 A biblioteca do Modo rápido tem busca sem distinção de acentos ou maiúsculas, filtros Brasil/Europa e cards com temporada e OVR do mesmo elenco que será escolhido. A prévia mostra os titulares no campo, os quatro atributos do time, as conquistas da temporada e uma única ação principal para simular. O estado da busca é mantido ao voltar para escolher outro clube. As telas inicial, de revisão, de partida e de resultado compartilham superfícies claras, títulos fortes e divisores discretos em `css/design-system.css`; o fluxo rápido fica em `css/quick-game.css`.
 
@@ -111,13 +107,15 @@ O helper de cada lote gera atributos por perfil. Um jogador exportado contém:
 
 Mantenha o mesmo ID para a mesma pessoa em todos os clubes e anos; use IDs distintos para homônimos. Deixe a camisa vazia quando desconhecida. Notas de 90–99 representam elite excepcional; 80–89, bons titulares e grandes jogadores; 70–79, jogadores de apoio. A seleção dos onze é uma curadoria com cobertura de posições, não um ranking oficial nem necessariamente os titulares de uma única partida.
 
-`data/ratings.js` calibra as notas de referência dos lotes A/B e os atributos antes de ordenar cada elenco. O lote C já contém notas na escala final. Vencedores dos principais prêmios mundiais e lendas reconhecidas conservam as notas da temporada; outros grandes jogadores têm ajustes individuais. Na auditoria anterior à ampliação brasileira, a média dos 1.320 registros era 83,41, com 430 abaixo de 80, 637 entre 80 e 89 e 253 a partir de 90. Critérios, exemplos e referências estão em [NOTAS-OVR.md](../data/NOTAS-OVR.md). Drafts em andamento atualizam os atletas pela mesma temporada ao serem retomados; competições já iniciadas e histórico conservam a versão em que foram jogados.
+`data/season-expansion.js` amplia e revisa o catálogo para cinco épocas por clube. `data/ratings.js` aplica, nessa ordem, os ajustes do criador, o OVR verificado da edição lançada naquele ano e a estimativa editorial. `data/release-ratings.js` registra edição e fonte por jogador/época. Notas legadas da edição de mesmo ano ficam apenas como histórico em `archivedRating`, sem substituir a regra atual. OVRs alteram os seis atributos pela diferença assinada da nota, com limites de 1–99; reaplicar a correção não acumula bônus.
+
+Ao retomar um draft, as notas são atualizadas pela mesma temporada. O limite passa para quatro skips, conservando quantos já foram usados e sem conceder saldo repetidamente. Competições iniciadas e resultados concluídos mantêm suas escalações e notas salvas.
 
 Na Europa, o ano indica o encerramento da temporada: 2024 significa 2023/24. Na América do Sul, segue a edição da competição; a edição 2020 da Libertadores terminou em 2021.
 
 As referências de vínculo, posição e conquistas estão em [VERIFICACAO-A.md](../data/VERIFICACAO-A.md) , [fontes-b.md](../data/fontes-b.md) e [fontes-c.md](../data/fontes-c.md).
 
-A validação confere 40 clubes, temporadas únicas, 148 elencos, **1.628 registros**, onze jogadores únicos por elenco, exatamente um goleiro, tags válidas, OVR e atributos obrigatórios. No console:
+A validação confere 43 clubes, cinco temporadas únicas por clube, 215 elencos, **2.365 registros**, onze jogadores únicos por elenco, exatamente um goleiro, tags válidas, OVR e atributos obrigatórios. No console:
 
 ```js
 const { validateData } = await import('./data/clubs.js');
@@ -142,7 +140,7 @@ npm run check
 node tests/calibrate.mjs 1000
 ```
 
-Os testes cobrem onze escolhas, três re-sorteios compartilhados, impedimento de duplicatas, posições exatas, migração de saves antigos, as 148 escalações adversárias, simulação por semente, xG, eventos, pênaltis, grupos e chaveamento. Também verificam o avanço por rodada, a ausência de resultados futuros, continuidade das 22 bolinhas e da bola, relógio, velocidades e pausa da animação.
+Os testes cobrem onze escolhas, quatro re-sorteios compartilhados, impedimento de duplicatas, posições exatas, migração de saves antigos, as 215 escalações adversárias, simulação por semente, xG, eventos, pênaltis, grupos e chaveamento. Também verificam o avanço por rodada, a ausência de resultados futuros, continuidade das 22 bolinhas e da bola, relógio, velocidades e pausa da animação.
 
 ## Arquivos e persistência
 
@@ -186,7 +184,7 @@ O histórico mostra escudo do time, cores da competição, resultado, formação
 
 O Modo Lendas usa gradiente discreto de cinza claro para amarelo suave no card, na seleção, no histórico e no resultado. Os textos permanecem escuros para manter a legibilidade; a identidade está em `css/legends.css`.
 
-No draft, os botões Outro clube e Outra temporada compartilham 3 skips por campanha. O contador ao lado deles acompanha o saldo real (3, 2, 1, 0), e as duas ações ficam desabilitadas ao esgotar o saldo. Cada troca consome um skip; o sorteio inicial não consome.
+No draft, os botões Outro clube e Outra temporada compartilham 4 skips por campanha. O contador acompanha o saldo real (4, 3, 2, 1, 0). Ao esgotar, uma tentativa provoca feedback vermelho e uma breve tremida, sem sortear de novo. Cada troca consome um skip; o sorteio inicial não consome.
 
 ## Site publicado
 

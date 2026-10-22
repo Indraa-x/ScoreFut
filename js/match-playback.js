@@ -1,6 +1,6 @@
-import { currentMatch } from './match-session.js?v=cup-stoppage-20261021';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=added-time-badge-20261021';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=added-time-badge-20261021';
+import { currentMatch } from './match-session.js?v=five-eras-20261022';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=five-eras-20261022';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=five-eras-20261022';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;

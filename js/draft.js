@@ -1,6 +1,13 @@
-import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=cup-stoppage-20261021';
-export const DEFAULT_REROLLS = 3;
-export function createDraft(seed,date,mode) {return {seed:hashSeed(seed),rngState:hashSeed(seed),date,mode,rerolls:mode==='daily'?0:DEFAULT_REROLLS,seen:[],picks:[],currentSquadId:null,selectedId:null};}
+import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=five-eras-20261022';
+export const DEFAULT_REROLLS = 4;
+export function createDraft(seed,date,mode) {return {seed:hashSeed(seed),rngState:hashSeed(seed),date,mode,rerollLimit:mode==='daily'?0:DEFAULT_REROLLS,rerolls:mode==='daily'?0:DEFAULT_REROLLS,seen:[],picks:[],currentSquadId:null,selectedId:null};}
+/** Upgrade the budget once, preserving the number of skips already spent. */
+export function refreshDraftSkips(draft) {
+  if(draft.mode==='daily')return {...draft,rerollLimit:0,rerolls:0};
+  const oldLimit=Number.isInteger(draft.rerollLimit)?draft.rerollLimit:3;
+  const spent=Math.max(0,oldLimit-(Number.isInteger(draft.rerolls)?draft.rerolls:oldLimit));
+  return {...draft,rerollLimit:DEFAULT_REROLLS,rerolls:Math.max(0,DEFAULT_REROLLS-spent)};
+}
 export function availableSlots(draft,formation,player) {return FORMATIONS[formation].slots.filter(slot=>!draft.picks.some(p=>p.slot.id===slot.id)&&positionFit(player,slot)!==null);}
 /** A filled destination permits a swap only when both players fit their new roles. */
 export function movableSlots(draft,formation,playerId) {

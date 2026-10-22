@@ -212,6 +212,27 @@
       "source": "https://en.wikipedia.org/wiki/AS_Roma",
       "url": "https://thumb.wikimedia.org/wikipedia/en/thumb/f/f7/AS_Roma_logo_%282017%29.svg/330px-AS_Roma_logo_%282017%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "sha256": "46212ef2b781c39c95be533bdab26612f6c75e5870e808235d98d524df9e2a90"
+    },
+    {
+      "clubId": "galatasaray",
+      "file": "galatasaray.png",
+      "source": "https://en.wikipedia.org/wiki/Galatasaray_S.K._(football)",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Galatasaray_S.K._Logo_2026_5-stars.svg/330px-Galatasaray_S.K._Logo_2026_5-stars.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "sha256": "5ede8dad727bc9f59bbd0f0ffbf2551f3b7b0c7bdb40952bb7f1df38f4c1876f"
+    },
+    {
+      "clubId": "fenerbahce",
+      "file": "fenerbahce.png",
+      "source": "https://en.wikipedia.org/wiki/Fenerbah%C3%A7e_S.K._(football)",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/en/thumb/3/39/Fenerbah%C3%A7e.svg/330px-Fenerbah%C3%A7e.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "sha256": "08a44b115dbe4b655e51822f9a45a9c7faa8dc722f0c617bfc592ec430fd7c80"
+    },
+    {
+      "clubId": "rb-leipzig",
+      "file": "rb-leipzig.png",
+      "source": "https://en.wikipedia.org/wiki/RB_Leipzig",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/en/thumb/0/04/RB_Leipzig_2014_logo.svg/330px-RB_Leipzig_2014_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "sha256": "13574690a397e5d34774db6530726a412d31213f64bcfed84f6a8531d5e3f68a"
     }
   ]
 }

@@ -37,7 +37,7 @@ test('Brazil cup has unique participating clubs, two legs through semis and one 
   assert.deepEqual(initial,before);
   assert.deepEqual(t,simulateTournament(initial));
   assert.equal(t.matches.length,29);
-  assert.ok(t.matches.every(match=>match.result.duration===90&&!match.result.extraTime));
+  assert.ok(t.matches.every(({result:r})=>r.duration===90+r.regulationStoppageTime+(r.extraTime?30+r.extraTimeStoppageTime:0)));
   assert.equal(t.matches.filter(match=>match.stage==='final').length,1);
   assert.ok(t.matches.at(-1).neutral);
   assert.equal(t.championId,t.bracket.at(-1).ties[0].winnerId);
@@ -77,7 +77,7 @@ test('losing the first leg allows a return match; results and qualifiers stay pr
   assert.ok(renderBracket(s).includes('Confrontos a definir'));
   assert.ok(!renderBracket(s).includes('PONTOS CORRIDOS'));
   assert.equal(commitUserRound(s),false);
-  s.matchMinute=90;assert.equal(commitUserRound(s),true);
+  s.matchMinute=currentMatch(s).result.duration;assert.equal(commitUserRound(s),true);
   assert.equal(canContinueTournament(s.tournament),true);
   Object.assign(s,prepareUserRound(s.tournament));s.matchMinute=0;
   assert.equal(currentMatch(s).leg,2);
@@ -85,7 +85,7 @@ test('losing the first leg allows a return match; results and qualifiers stay pr
   assert.ok(!renderMatch(s).includes('Classificado:'));
   const resumed=JSON.parse(JSON.stringify(s));
   assert.deepEqual(currentMatch(resumed).result,currentMatch(s).result);
-  s.matchMinute=90;assert.equal(commitUserRound(s),true);
+  s.matchMinute=currentMatch(s).result.duration;assert.equal(commitUserRound(s),true);
   const tie=s.tournament.bracket[0].ties.find(tie=>tie.teamIds.includes('user'));
   assert.equal(s.tournament.campaign.eliminated,tie.winnerId!=='user');
   assert.ok(renderMatch(s).includes('Classificado:'));
@@ -104,18 +104,17 @@ test('excluded seasons stay excluded and missing clubs get byes without duplicat
   assert.ok(t.matches.every(match=>match.homeId&&match.awayId&&match.result));
 });
 
-test('a tied neutral final is settled by a shootout at 90 minutes',()=>{
+test('a tied neutral final is settled by a shootout after the complete match clock',()=>{
   let found=false;
   for(let seed=1;seed<=100&&!found;seed++){
     const t=simulateTournament(make(seed)),final=t.matches.at(-1);
     if(final.result.homeGoals!==final.result.awayGoals)continue;
     found=true;
     assert.ok(final.neutral);
-    assert.equal(final.result.duration,90);
-    assert.equal(final.result.extraTime,false);
+    assert.equal(final.result.duration,90+final.result.regulationStoppageTime+(final.result.extraTime?30+final.result.extraTimeStoppageTime:0));
     assert.ok(final.result.penalties);
     assert.equal(t.championId,final.result.penalties[0]>final.result.penalties[1]?final.homeId:final.awayId);
-    assert.ok(final.result.events.filter(event=>event.shootout).every(event=>event.minute===90));
+    assert.ok(final.result.events.filter(event=>event.shootout).every(event=>event.minute===final.result.duration));
   }
   assert.ok(found);
 });

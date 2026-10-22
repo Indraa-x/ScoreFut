@@ -1,21 +1,20 @@
-import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=cup-stoppage-20261021';
-import {filterQuickClubs} from './quick-catalog.js?v=creator-ovr-20261021';
-import {filterHistory} from './history.js?v=club-only-cleanup-20261020';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=creator-ovr-20261021';
-import { squadsForMode, competitionName } from '../data/competitions.js?v=club-only-cleanup-20261020';
-import { state, MODES } from './state.js?v=cup-stoppage-20261021';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=cup-stoppage-20261021';
-import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings } from './draft.js?v=cup-stoppage-20261021';
-import * as storage from './storage.js?v=club-only-cleanup-20261020';
-import * as ui from './ui.js?v=creator-ovr-20261021';
-import {downloadResult} from './share.js?v=club-only-cleanup-20261020';
-import {initPlayerDrag} from './player-drag.js?v=club-only-cleanup-20261020';
-import {initSkipFeedback} from './skip-feedback.js?v=skip-feedback-20261021';
-import {preloadPlayerPortraits} from './player-portraits.js?v=club-only-cleanup-20261020';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=cup-stoppage-20261021';
-import {MATCH_SPEEDS} from './match-motion.js?v=added-time-badge-20261021';
-import {initMatchPlayback} from './match-playback.js?v=added-time-badge-20261021';
-import {initCelebration} from './celebration.js?v=club-only-cleanup-20261020';
+import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=five-eras-20261022';
+import {filterQuickClubs} from './quick-catalog.js?v=five-eras-20261022';
+import {filterHistory} from './history.js?v=five-eras-20261022';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=five-eras-20261022';
+import { squadsForMode, competitionName } from '../data/competitions.js?v=five-eras-20261022';
+import { state, MODES } from './state.js?v=five-eras-20261022';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=five-eras-20261022';
+import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=five-eras-20261022';
+import * as storage from './storage.js?v=five-eras-20261022';
+import * as ui from './ui.js?v=five-eras-20261022';
+import {downloadResult} from './share.js?v=five-eras-20261022';
+import {initPlayerDrag} from './player-drag.js?v=five-eras-20261022';
+import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=five-eras-20261022';
+import {MATCH_SPEEDS} from './match-motion.js?v=five-eras-20261022';
+import {initMatchPlayback} from './match-playback.js?v=five-eras-20261022';
+import {initCelebration} from './celebration.js?v=five-eras-20261022';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
 const historyFilters={search:'',mode:'all',titlesOnly:false};
@@ -36,7 +35,6 @@ function render(){const screenChanged=state.screen!==lastRenderedScreen;const ac
   app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
-  if(state.screen==='draft'&&!state.rolling)preloadPlayerPortraits(state.draft?.currentSquad?.jogadores);
   if(focusInApp){let target=focusId?document.getElementById(focusId):[...app.querySelectorAll('[data-action]')].find(el=>el.dataset.action===focusAction&&el.dataset.value===focusValue);if(target?.disabled)target=app.querySelector('[data-action="next-match"],[data-action="player"]:not(:disabled),[data-action="draw"]');target?.focus({preventScroll:true});}
 }
 function restore(saved){
@@ -45,7 +43,7 @@ function restore(saved){
   const mode=saved?.mode==='brasileirao'?'copa-do-brasil':saved?.mode==='daily'?'cup':saved?.mode;
   if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||mode==='legends'||MODES.some(m=>m.id===mode)))return false;
   const upgrade=saved.rulesVersion!==2||!!legacy[saved.formation];
-  Object.assign(state,saved);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=MATCH_SPEEDS.includes(saved.matchSpeed)?saved.matchSpeed:1;
+  Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=MATCH_SPEEDS.includes(saved.matchSpeed)?saved.matchSpeed:1;
   if (saved.mode === 'brasileirao') {
     state.draft = {...state.draft, mode};
     state.tournament=null;state.pendingRound=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;
@@ -271,7 +269,7 @@ initPlayerDrag({
   onStart:highlightDrag,
   onPlace:addPlayer,
   onCancel:()=>{if(['draft','summary'].includes(state.screen)){state.draft.selectedId=null;state.draft.selectedPickId=null;render();}},
-  renderCard:ui.renderPlayerDragCard
+  renderPreview:ui.renderPlayerDragPreview
 });
 modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 document.addEventListener('visibilitychange',()=>{if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});

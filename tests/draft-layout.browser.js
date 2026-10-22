@@ -1,8 +1,8 @@
-import {renderDraft} from '../js/ui.js?v=pitch-club-crests-20261021';
-import {initSkipFeedback} from '../js/skip-feedback.js?v=skip-feedback-20261021';
-import {allSquads} from '../data/clubs.js';
-import {FORMATIONS,positionFit} from '../js/engine.js';
-import {createDraft} from '../js/draft.js';
+import {renderDraft} from '../js/ui.js?v=five-eras-20261022';
+import {initSkipFeedback} from '../js/skip-feedback.js?v=five-eras-20261022';
+import {allSquads} from '../data/clubs.js?v=five-eras-20261022';
+import {FORMATIONS,positionFit} from '../js/engine.js?v=five-eras-20261022';
+import {createDraft} from '../js/draft.js?v=five-eras-20261022';
 
 const query=new URLSearchParams(location.search);
 const cases=[

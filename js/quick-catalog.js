@@ -1,6 +1,6 @@
-import {clubs, allSquads} from '../data/clubs.js?v=creator-ovr-20261021';
-import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=club-only-cleanup-20261020';
-import {squadTeam,FORMATIONS} from './engine.js?v=cup-stoppage-20261021';
+import {clubs, allSquads} from '../data/clubs.js?v=five-eras-20261022';
+import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=five-eras-20261022';
+import {squadTeam,FORMATIONS} from './engine.js?v=five-eras-20261022';
 
 const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 

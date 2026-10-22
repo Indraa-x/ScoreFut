@@ -1,4 +1,4 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=cup-stoppage-20261021';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=five-eras-20261022';
 
 export const MATCH_FLOW_VERSION = 1;
 
@@ -17,6 +17,10 @@ export function migrateChampionsFormat(state) {
   const tournament = upgradeChampionsTournament(state.tournament);
   if (tournament === state.tournament) return {};
   if (!state.pendingRound) return {tournament};
+  if (currentMatch(state)?.stage === 'group') return {
+    tournament,pendingRound:upgradeChampionsTournament(state.pendingRound),
+    userMatchIndex:state.userMatchIndex,matchMinute:state.matchMinute,
+  };
   const session = prepareUserRound(tournament);
   return {...session, matchMinute:currentMatch(state)?.id === currentMatch(session)?.id ? state.matchMinute : 0};
 }

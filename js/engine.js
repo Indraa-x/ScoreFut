@@ -4,7 +4,7 @@
  * OVR and attributes drive the bounded Poisson equation, with modest player assistance.
  */
 
-import { squadsForMode } from '../data/competitions.js?v=club-only-cleanup-20261020';
+import { squadsForMode } from '../data/competitions.js?v=five-eras-20261022';
 
 export const POSITION_MAP = Object.freeze({
   GOL: 'GOL', ZAG: 'DEF', LD: 'DEF', LE: 'DEF', DEF: 'DEF',
@@ -462,7 +462,7 @@ export function resolveKnockoutTie(first, second, home, away, rng) {
   const aggregate = [first.result.awayGoals + second.result.homeGoals,
     first.result.homeGoals + second.result.awayGoals];
   let winnerId = aggregate[0] > aggregate[1] ? home.id : aggregate[1] > aggregate[0] ? away.id : null;
-  let result = {...second.result, winnerId};
+  let result = {...second.result};
   if (!winnerId) {
     const penalties = shootout(home, away, rng);
     winnerId = penalties.score[0] > penalties.score[1] ? home.id : away.id;

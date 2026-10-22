@@ -1,5 +1,5 @@
-/** Mouse/pen dragging with a live card instead of the browser's row snapshot. */
-export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderCard}) {
+/** Mouse/pen dragging with a compact text preview; no portrait or player card assets. */
+export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPreview}) {
   let gesture=null,ignoreClickUntil=0;
   const reducedMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
   const slots=()=>[...app.querySelectorAll('[data-action="slot"]')];
@@ -26,7 +26,7 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderCar
     slots().forEach(slot=>slot.classList.toggle('drop-target',slot===target));
     g.card.classList.toggle('over-slot',!!target);
     g.card.classList.toggle('invalid-slot',inField&&!target);
-    g.card.querySelector('.drag-card-feedback').textContent=target?(target.dataset.lineupPlayer?'Trocar em ':'Soltar em ')+target.dataset.slotLabel:inField?'Posição indisponível':'Leve até o campo';
+    g.card.querySelector('.drag-feedback').textContent=target?(target.dataset.lineupPlayer?'Trocar em ':'Soltar em ')+target.dataset.slotLabel:inField?'Posição indisponível':'Leve até o campo';
   }
 
   function activate(g) {
@@ -41,15 +41,7 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderCar
     g.card=document.createElement('div');
     g.card.className='player-drag';
     g.card.setAttribute('aria-hidden','true');
-    g.card.innerHTML=renderCard(player);
-    const portrait=g.card.querySelector('[data-player-portrait]');
-    if(portrait){
-      const show=()=>{portrait.parentElement.classList.add('photo-ready');};
-      const fallback=()=>{portrait.hidden=true;portrait.parentElement.classList.remove('photo-ready');};
-      portrait.addEventListener('load',show,{once:true});
-      portrait.addEventListener('error',fallback,{once:true});
-      if(portrait.complete){if(portrait.naturalWidth)show();else fallback();}
-    }
+    g.card.innerHTML=renderPreview(player);
     document.body.append(g.card);
     positionCard(g);
     if(!reducedMotion())g.card.firstElementChild.animate(

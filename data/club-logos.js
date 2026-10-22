@@ -7,7 +7,7 @@ const localClubLogos = Object.fromEntries([
   'flamengo', 'palmeiras', 'sao-paulo', 'corinthians', 'santos',
   'gremio', 'internacional', 'vasco', 'fluminense', 'botafogo', 'cruzeiro',
   'atletico-mineiro', 'athletico-paranaense', 'bahia', 'fortaleza',
-  'celtic', 'marseille', 'psv', 'roma',
+  'celtic', 'marseille', 'psv', 'roma', 'galatasaray', 'fenerbahce', 'rb-leipzig',
 ].map(id => [id, `assets/logos/${id}.png`]));
 
 export const CLUB_LOGOS = Object.freeze(localClubLogos);
