@@ -27,7 +27,7 @@
 @media(prefers-reduced-motion:reduce){.champions-tie,.champions-phase-picker button{transition:none}.champions-tie:hover:not(:disabled){transform:none}.champions-tree-center>.champions-tie:hover:not(:disabled){transform:translateY(-50%)}}
 
 /* Give the match sidebar the same readable scale as the rest of the site. */
-.champions-sidebar-group{border-color:#d8e1dc;border-radius:14px;box-shadow:0 4px 18px #173b2a05}
+.match-calendar .champions-sidebar-group{border:1px solid #cbd8d0;border-radius:16px;box-shadow:0 2px 10px #173b2a08;overflow:hidden}
 .champions-sidebar-group .calendar-heading{padding:19px 18px;background:var(--surface);border-bottom:1px solid #e4ebe7;gap:12px}
 .champions-sidebar-group .calendar-heading>div{gap:10px;min-width:0}
 .champions-sidebar-group .calendar-heading h2{font-size:18px;font-weight:800;letter-spacing:-.35px}

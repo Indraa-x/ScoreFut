@@ -6,8 +6,8 @@ import {filterHistory,formatHistoryDate} from './history.js?v=five-eras-20261022
 import { competitionName, competitionLogo } from '../data/competitions.js?v=five-eras-20261022';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=five-eras-20261022';
 import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=five-eras-20261022';
-import { renderMatchView } from './match-view.js?v=next-game-clean-20261022';
-import { renderChampionsCompetition, renderChampionsTieDetails } from './champions-view.js?v=group-footer-clean-20261022';
+import { renderMatchView } from './match-view.js?v=group-card-clean-20261022';
+import { renderChampionsCompetition, renderChampionsTieDetails } from './champions-view.js?v=group-card-clean-20261022';
 import { renderBrazilCupBracket, renderCupStages } from './brazil-cup-view.js?v=five-eras-20261022';
 import { championDecoration, championConfetti } from './celebration.js?v=five-eras-20261022';
 export const esc = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

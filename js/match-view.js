@@ -1,5 +1,5 @@
 import {renderMatchGoals} from './match-goals.js?v=five-eras-20261022';
-import {renderChampionsSidebar} from './champions-view.js?v=group-footer-clean-20261022';
+import {renderChampionsSidebar} from './champions-view.js?v=group-card-clean-20261022';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=five-eras-20261022';
 import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=five-eras-20261022';
 import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=two-match-speeds-20261022';
