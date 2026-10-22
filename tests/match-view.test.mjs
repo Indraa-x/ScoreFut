@@ -22,12 +22,14 @@ test('the match screen shows 22 numbered circles, a real calendar and speed cont
   assert.ok(html.includes('Gols da partida'));
   assert.ok(html.includes('match-field-legend'));
   assert.ok(html.includes('Ver próximos jogos (1)'));
-  for(const label of ['Normal','Rápido','Muito rápido'])assert.ok(html.includes(label));
+  for(const label of ['Normal','Rápido'])assert.ok(html.includes(label));
+  assert.ok(!/Muito rápido|Ritmo da partida|<small>[148]×<\/small>/.test(html));
   assert.ok(html.indexOf('data-live-pitch')<html.indexOf('data-match-goals'));
   assert.ok(html.includes('Confronto a definir'));
   assert.ok(html.includes('assets/competitions/champions-league.png'));
   assert.ok(!/Estatísticas|Lances|Escanteios|Cartões|match-statistics|match-feed|campaign-strip/.test(html));
-  for(const speed of [1,4,8])assert.ok(html.includes('data-value="'+speed+'" aria-label="Velocidade'));
+  assert.equal((html.match(/data-action="match-speed"/g)||[]).length,2);
+  for(const [speed,label]of [[4,'Normal'],[8,'Rápido']])assert.ok(html.includes('data-value="'+speed+'" aria-label="'+label+'"'));
   const future=state.tournament.matches.filter(m=>m.round>match.round&&[m.homeId,m.awayId].includes('user'));
   for(const fixture of future){
     const opponent=state.tournament.teams.find(team=>team.id===(fixture.homeId==='user'?fixture.awayId:fixture.homeId));
@@ -42,6 +44,20 @@ test('the match screen shows 22 numbered circles, a real calendar and speed cont
   assert.ok(html.match(/<input id="match-timeline"[^>]*>/)[0].includes('disabled'));
   assert.ok(!renderBracket(state).includes('resultados ainda não reproduzidos'));
   assert.equal(state.tournament.groups[0].standings[0].played,0);
+});
+
+test('both cups expose only normal and fast, with a lightning icon only on active fast',()=>{
+  for(const mode of ['champions','copa-do-brasil'])for(const matchSpeed of [undefined,1,4,8]){
+    const state={...view(),mode,matchSpeed,...prepareUserRound(createTournament(home,allSquads,{mode,seed:39}))};
+    const html=renderMatch(state),controls=html.match(/<div class="match-speed"[\s\S]*?<\/section>/)[0];
+    const buttons=[...controls.matchAll(/<button[^>]*data-action="match-speed"[^>]*>[\s\S]*?<\/button>/g)].map(match=>match[0]);
+    assert.equal(buttons.length,2);
+    assert.equal(buttons[0].includes('aria-pressed="true"'),matchSpeed!==8);
+    assert.equal(buttons[1].includes('aria-pressed="true"'),matchSpeed===8);
+    assert.equal(buttons[1].includes('<svg'),matchSpeed===8);
+    assert.ok(!buttons[0].includes('<svg'));
+    assert.ok(!/Ritmo da partida|Muito rápido|[148][×x]/.test(controls));
+  }
 });
 
 test('fractional minutes show seconds and reveal only goals already reached',()=>{

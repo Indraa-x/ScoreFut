@@ -2,19 +2,23 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { allSquads } from '../data/clubs.js';
 import { FORMATIONS, squadTeam, simulateMatch, mulberry32 } from '../js/engine.js';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, matchAddedMinutes, scoreAt } from '../js/match-motion.js';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, matchAddedMinutes, scoreAt, MATCH_SPEEDS, normalizeMatchSpeed } from '../js/match-motion.js';
 import { initMatchPlayback } from '../js/match-playback.js';
 import {renderMatch} from '../js/ui.js';
 
 const home={...squadTeam(allSquads[0]),id:'user'},away=squadTeam(allSquads[4]);
 const match={id:'motion-test',homeId:home.id,awayId:away.id,result:simulateMatch(home,away,mulberry32(39),{knockout:true})};
 
-test('continuous clock supports 1x, 4x and 8x without jumping by minutes',()=>{
-  assert.equal(advanceMatchMinute(0,1000,1,90),1);
+test('normal plays at 4x, fast at 8x and legacy speeds adopt normal without clock jumps',()=>{
+  assert.deepEqual(MATCH_SPEEDS,[4,8]);
+  for(const legacy of [undefined,null,1,2,0,-1,NaN]){
+    assert.equal(normalizeMatchSpeed(legacy),4);
+    assert.equal(advanceMatchMinute(0,1000,legacy,90),4);
+  }
   assert.equal(advanceMatchMinute(0,1000,4,90),4);
   assert.equal(advanceMatchMinute(0,1000,8,90),8);
   assert.equal(advanceMatchMinute(89.99,16,8,90),90);
-  assert.equal(advanceMatchMinute(15,16,1,90),15.016);
+  assert.equal(advanceMatchMinute(15,16,4,90),15.064);
   assert.equal(formatMatchClock(15.5),'15:30');
   assert.equal(formatMatchClock(120),'120:00');
   assert.deepEqual(scoreAt(match.result,match.result.duration),[match.result.homeGoals,match.result.awayGoals]);
@@ -96,14 +100,14 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
   try{
     const playback=initMatchPlayback({app,state,onFinish:()=>finish++,onSave:()=>saves++});
     playback.attach();assert.equal(state.matchPlaying,true);playback.start();tick(0);tick(100);
-    assert.equal(state.matchMinute,.1);assert.equal(clock.textContent,'00:06');
+    assert.equal(state.matchSpeed,4);assert.equal(state.matchMinute,.4);assert.equal(clock.textContent,'00:24');
     assert.equal(addedTime.hidden,true);
     assert.ok(scorers.innerHTML.includes('Nenhum gol marcado'));
     const before=players[5].style.transform;
     tick(200);assert.notEqual(players[5].style.transform,before);
-    globalThis.document.hidden=true;playback.attach();assert.equal(state.matchPlaying,false);assert.equal(callbacks.size,0);assert.equal(state.matchMinute,.2);
+    globalThis.document.hidden=true;playback.attach();assert.equal(state.matchPlaying,false);assert.equal(callbacks.size,0);assert.equal(state.matchMinute,.8);
     globalThis.document.hidden=false;state.matchSpeed=8;playback.attach();assert.equal(state.matchPlaying,true);playback.start();tick(300);tick(400);
-    assert.equal(state.matchMinute,1);assert.equal(callbacks.size,1);
+    assert.equal(state.matchMinute,1.6);assert.equal(callbacks.size,1);
     assert.ok(scorers.innerHTML.includes(home.lineup[10].player.nome));
     assert.ok(scorers.innerHTML.includes('--team-color-1:#2bb777;--team-color-2:#174b2e'));
     assert.ok(scorers.innerHTML.includes(`--team-color-1:${away.cores[0]};--team-color-2:${away.cores[1]}`));

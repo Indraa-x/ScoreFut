@@ -3,11 +3,13 @@ import { hashSeed, mulberry32 } from './engine.js?v=five-eras-20261022';
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const mix = (a, b, progress) => a + (b - a) * progress;
 const smooth = value => value * value * (3 - 2 * value);
-export const MATCH_SPEEDS = [1, 4, 8];
+export const MATCH_SPEEDS = [4, 8];
+export const normalizeMatchSpeed = speed => speed === 8 ? 8 : 4;
 
-// At 1×, one second of playback represents one minute of football.
+// Normal represents four football minutes per second; fast represents eight.
+// Legacy 1× saves and invalid values adopt the new normal pace.
 export function advanceMatchMinute(minute, milliseconds, speed, duration) {
-  return Math.min(duration, minute + Math.max(0, milliseconds) / 1000 * (MATCH_SPEEDS.includes(speed) ? speed : 1));
+  return Math.min(duration, minute + Math.max(0, milliseconds) / 1000 * normalizeMatchSpeed(speed));
 }
 
 export function formatMatchClock(minute) {

@@ -1,12 +1,34 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/clubs.js';
-import {CREATOR_RATING_REVIEW,CREATOR_RATING_REVIEWS,CREATOR_RATINGS_BY_SQUAD} from '../data/creator-ratings.js';
+import {CREATOR_RATING_REVIEW,CREATOR_RATING_REVIEWS,CREATOR_RATINGS_BY_SQUAD,CREATOR_DIRECT_RATING_REVIEWS} from '../data/creator-ratings.js';
 import {applyHistoricalFifaRating} from '../data/ratings.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {refreshDraftRatings} from '../js/draft.js';
 
 const player=(squadId,id)=>allSquads.find(squad=>squad.id===squadId)?.jogadores.find(player=>player.id===id);
+
+test('the direct request locks Kaka 2007 at 92 above FIFA 08 and survives saved draft reloads',()=>{
+  const kaka=player('milan-2007','kaka');
+  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,1);
+  assert.equal(kaka.ovr,92);
+  assert.equal(kaka.ratingKind,'creator-review');
+  assert.deepEqual(kaka.creatorReview,CREATOR_DIRECT_RATING_REVIEWS[0]);
+  assert.equal(kaka.releaseRating.ovr,90);
+  assert.equal(kaka.releaseRating.edition,'FIFA 08');
+  assert.equal(kaka.ratingEdition,undefined);
+  const repeated=applyHistoricalFifaRating(kaka,'milan-2007');
+  assert.deepEqual(repeated,kaka);
+  const slot=FORMATIONS['4-3-3'].slots.find(slot=>positionFit(kaka,slot)!==null);
+  const old={...kaka,ovr:90,atributos:Object.fromEntries(Object.entries(kaka.atributos).map(([key,value])=>[key,Math.max(1,value-2)]))};
+  const draft={seed:42,rngState:90,rerolls:2,seen:['milan-2007'],currentSquadId:'milan-2007',picks:[{player:old,squadId:'milan-2007',slot}]};
+  const refreshed=refreshDraftRatings(draft,allSquads);
+  assert.deepEqual(refreshed.picks[0].player,kaka);
+  assert.deepEqual({...refreshed,picks:[]},{...draft,picks:[]});
+  assert.equal(draft.picks[0].player.ovr,90);
+  const unrelated=applyHistoricalFifaRating({id:'kaka',ovr:80,atributos:{ataque:80,meio:80,defesa:40}},'milan-2006');
+  assert.equal(unrelated.ovr,80);
+});
 
 test('all 45 new OVR edits and 22 earlier edits reach their exact player and season',()=>{
   assert.equal(CREATOR_RATING_REVIEWS.length,2);

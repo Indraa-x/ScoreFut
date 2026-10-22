@@ -2,15 +2,15 @@ import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js?v=five-eras
 import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js?v=five-eras-20261022';
 import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=five-eras-20261022';
 export {RELEASE_RATINGS_BY_SQUAD};
-import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=five-eras-20261022';
-import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=five-eras-20261022';
+import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=kaka-92-20261022';
+import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=vintage-ratings-20261022';
 export { SEASON_RATINGS_BY_SQUAD };
 
 /**
  * Historical FIFA/EA SPORTS FC OVRs, with explicit reviews for exceptional
  * seasons and a conservative fallback where no archived rating is available.
  */
-export const RATINGS_VERSION = 13;
+export const RATINGS_VERSION = 15;
 export const MAX_OVR = 99;
 
 // Legacy same-year records are retained only as provenance. Active ratings
@@ -252,7 +252,7 @@ export function recalibratePlayer(player, attributeFloor = 1) {
   };
 }
 
-/** Creator JSON edits > verified following edition > editorial season review. */
+/** Creator JSON/direct edits > verified following edition > editorial season review. */
 export function applyHistoricalFifaRating(player, squadId) {
   const editionRating = MODERN_RATINGS_BY_SQUAD[squadId]?.[player.id]
     ?? ARCHIVED_RATINGS_BY_SQUAD[squadId]?.[player.id];

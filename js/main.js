@@ -1,20 +1,20 @@
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=five-eras-20261022';
-import {filterQuickClubs} from './quick-catalog.js?v=five-eras-20261022';
+import {filterQuickClubs} from './quick-catalog.js?v=kaka-92-20261022';
 import {filterHistory} from './history.js?v=five-eras-20261022';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=five-eras-20261022';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=kaka-92-20261022';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=five-eras-20261022';
-import { state, MODES } from './state.js?v=five-eras-20261022';
+import { state, MODES } from './state.js?v=two-match-speeds-20261022';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=five-eras-20261022';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=uniform-draw-20261022';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
-import * as ui from './ui.js?v=five-eras-20261022';
+import * as ui from './ui.js?v=two-match-speeds-20261022';
 import {downloadResult} from './share.js?v=five-eras-20261022';
 import {initPlayerDrag} from './player-drag.js?v=five-eras-20261022';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
 import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=five-eras-20261022';
-import {MATCH_SPEEDS} from './match-motion.js?v=five-eras-20261022';
-import {initMatchPlayback} from './match-playback.js?v=five-eras-20261022';
+import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=two-match-speeds-20261022';
+import {initMatchPlayback} from './match-playback.js?v=two-match-speeds-20261022';
 import {initCelebration} from './celebration.js?v=five-eras-20261022';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
@@ -44,7 +44,7 @@ function restore(saved){
   const mode=saved?.mode==='brasileirao'?'copa-do-brasil':saved?.mode==='daily'?'cup':saved?.mode;
   if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||mode==='legends'||MODES.some(m=>m.id===mode)))return false;
   const upgrade=saved.rulesVersion!==2||!!legacy[saved.formation];
-  Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=MATCH_SPEEDS.includes(saved.matchSpeed)?saved.matchSpeed:1;
+  Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=normalizeMatchSpeed(saved.matchSpeed);
   if (saved.mode === 'brasileirao') {
     state.draft = {...state.draft, mode};
     state.tournament=null;state.pendingRound=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;
@@ -87,7 +87,7 @@ function updateHistoryList(){
   app.querySelectorAll('[data-action="history-outcome"]').forEach(button=>button.setAttribute('aria-pressed',String((button.dataset.value==='titles')===historyFilters.titlesOnly)));
 }
 function startDraft(){state.quickSquadId=null;state.teamName='Meu time';const date=storage.today();
-  const seed=crypto.getRandomValues(new Uint32Array(1))[0];state.draft=createDraft(seed,date,state.mode);state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=1;navigate('draft');
+  const seed=crypto.getRandomValues(new Uint32Array(1))[0];state.draft=createDraft(seed,date,state.mode);state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('draft');
 }
 async function roll(kind='new'){
   if(state.rolling||(kind!=='new'&&state.draft?.rerolls<=0))return;
@@ -196,7 +196,7 @@ function startTournament(){
     finishTournament();return;
   }
   Object.assign(state,prepareUserRound(createTournament(user,allSquads,{mode:state.mode,seed,excludeSquadIds:state.draft.picks.map(p=>p.squadId)})));
-  state.matchFlowVersion=MATCH_FLOW_VERSION;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=1;navigate('match');}
+  state.matchFlowVersion=MATCH_FLOW_VERSION;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('match');}
 function finishCurrentMatch(){stopPlayback();commitUserRound(state);persist();render();}
 function nextMatch(){
   const match=currentMatch(state);if(!match||state.matchMinute<match.result.duration)return;
@@ -242,7 +242,7 @@ case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value)
 case'quick-region':if(['all','brasil','europa'].includes(value)){state.quickRegion=value;render();}break;
 case'quick-clear':state.quickSearch='';state.quickRegion='all';render();app.querySelector('#quick-search')?.focus();break;
 case'next-match':nextMatch();break;
-case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();}break;}
+case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();if(speed===8)app.querySelector('.match-speed-fast')?.classList.add('is-activating');}break;}
 case'bracket':state.returnScreen=state.screen;navigate('bracket');break;case'back-match':navigate(state.returnScreen==='result'?'result':'match');break;
 case'champions-view':{if(state.tournament?.mode!=='champions')break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
 case'champions-group':if(state.screen==='bracket'&&state.tournament?.mode==='champions'&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;

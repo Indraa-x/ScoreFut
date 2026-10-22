@@ -24,7 +24,7 @@ test('ratings retain a varied scale and valid simulation attributes',()=>{
   assert.ok(Object.values(p.atributos).every(a=>Number.isInteger(a)&&a>=1&&a<=99),p.id);
   assert.deepEqual(JSON.parse(JSON.stringify(p)),p);
  }
- assert.equal(RATINGS_VERSION,13);
+ assert.equal(RATINGS_VERSION,15);
 });
 
 test('each verified rating identifies its exact player, source and following edition',()=>{
@@ -95,7 +95,7 @@ test('unverified eras are explicitly editorial and never borrow an OVR from a di
   assert.equal(p.ratingExpectedEdition,edition(squad.ano+1));
   if(review)assert.equal(p.ovr,review.ovr);else assert.match(p.ratingReason,/sem OVR verificável/);
  }
- const vintage=player('bayern-1974','gerd-muller');assert.equal(vintage.ratingKind,'editorial-estimate');
+ const vintage=player('bayern-1974','gerd-muller');assert.equal(vintage.ratingKind,'season-review');
  const absent={id:'unknown',ovr:78,atributos:{ataque:80,meio:70,defesa:50}};
  const updated=applyHistoricalFifaRating(absent,'missing-2015');
  assert.equal(updated.ovr,78);assert.deepEqual(updated.atributos,absent.atributos);
@@ -103,7 +103,7 @@ test('unverified eras are explicitly editorial and never borrow an OVR from a di
 });
 
 test('rating changes adjust attributes by their signed delta, clamp limits and are immutable and idempotent',()=>{
- for(const [squadId,id,expected]of [['milan-2007','kaka',90],['manchester-city-2024','kevin-de-bruyne',89]]){
+ for(const [squadId,id,expected]of [['milan-2007','kaka',92],['manchester-city-2024','kevin-de-bruyne',89]]){
   const base={id,ovr:80,atributos:{ataque:98,meio:82,defesa:49,finalizacao:74,reflexo:1,posicionamento:77}};
   const before=structuredClone(base),updated=applyHistoricalFifaRating(base,squadId);
   assert.equal(updated.ovr,expected);
@@ -122,9 +122,9 @@ test('saved draft selections adopt the new edition while retaining skips, positi
  }
 });
 
-test('the audit accounts for every player and the 67 creator overrides',()=>{
+test('the audit accounts for every player and the 68 creator overrides',()=>{
  const audit=JSON.parse(fs.readFileSync(new URL('../data/release-rating-audit.json',import.meta.url),'utf8'));
- assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,67);
+ assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,68);
  assert.equal(audit.verifiedReleaseRecords,RELEASE_RATING_POLICY.verifiedRecords);
  assert.equal(new Set(audit.rows.map(row=>row.squadId+'/'+row.playerId)).size,2365);
  for(const row of audit.rows){const p=player(row.squadId,row.playerId);assert.ok(p);

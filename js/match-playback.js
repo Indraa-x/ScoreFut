@@ -1,5 +1,5 @@
 import { currentMatch } from './match-session.js?v=five-eras-20261022';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt } from './match-motion.js?v=five-eras-20261022';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, matchEndLabel, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=two-match-speeds-20261022';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=five-eras-20261022';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
@@ -45,7 +45,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     if (nodes.progress && document.activeElement !== nodes.progress) nodes.progress.value = state.matchMinute;
     nodes.progress?.style.setProperty('--progress', `${state.matchMinute / match.result.duration * 100}%`);
     const goal = match.result.events.filter(event => event.type === 'goal' && event.minute <= state.matchMinute).at(-1);
-    const showGoal = goal && state.matchMinute - goal.minute < 1.4 * (state.matchSpeed || 1) && state.matchMinute < match.result.duration;
+    const showGoal = goal && state.matchMinute - goal.minute < 1.4 * normalizeMatchSpeed(state.matchSpeed) && state.matchMinute < match.result.duration;
     nodes.goal.classList.toggle('visible', !!showGoal);
     if (showGoal) {
       const text = `${formatMatchEventMinute(match.result,goal.minute)}′ · ${goal.player.nome}`;
@@ -54,6 +54,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
   }
   function attach() {
     stop(); observer?.disconnect(); nodes = null;
+    state.matchSpeed=normalizeMatchSpeed(state.matchSpeed);
     state.matchPlaying=false;
     if (state.screen !== 'match') return;
     const match = currentMatch(state), pitch = app.querySelector('[data-live-pitch]');

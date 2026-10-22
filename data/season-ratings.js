@@ -3,6 +3,7 @@
  * each player's form during the represented season; the OVR is editorial.
  * Keep these exceptions keyed by squad AND player, never by career reputation.
  */
+import { VINTAGE_RATINGS_BY_SQUAD } from './vintage-ratings.js?v=vintage-ratings-20261022';
 const review = (source, reason, ratings) => Object.freeze(Object.fromEntries(
   Object.entries(ratings).map(([id, ovr]) => [id, Object.freeze({ovr, source, reason})])
 ));
@@ -11,6 +12,7 @@ const psgBallonDor = 'https://www.psg.fr/en/content/ballon-d-or-2025-a-historic-
 const psgUnfp = 'https://en.news.psg.fr/press-releases/club/paris-saint-germain-shines-at-the-unfp-2025-awards-with-14-awards';
 
 export const SEASON_RATINGS_BY_SQUAD = Object.freeze({
+  ...VINTAGE_RATINGS_BY_SQUAD,
   'juventus-1998': review(worldAwards,
     'Revisão editorial solicitada pelo criador do ScoreFut: Zidane na Juventus de 1998 passa a OVR 93.',
     {'zinedine-zidane':93}

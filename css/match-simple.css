@@ -28,10 +28,18 @@
 .match-field-legend i{width:13px;height:13px;flex:0 0 13px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 0 0 1px #24272d22}
 .live-pitch .match-ball,.live-pitch .match-ball>svg{width:15px;height:15px}
 .match-card .live-controls{justify-content:center;flex-wrap:wrap;gap:14px;padding:12px 20px}
-.match-speed{gap:12px;flex-wrap:wrap}
-.match-speed>span{font-size:12px;font-weight:700}
-.match-speed button{font-size:12px;min-height:36px;padding:8px 12px;font-weight:700}
-.match-speed button small{font-size:10px;font-weight:500;margin-left:3px;opacity:.8}
+#app .match-speed{gap:0;flex-wrap:nowrap;justify-content:center}
+#app .match-speed>div{display:flex;gap:4px;padding:4px;border:1px solid #dbe4df;border-radius:12px;background:#eef2ef}
+#app .match-speed button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:112px;min-height:44px;padding:9px 14px;border:0;border-radius:8px;font-size:13px;font-weight:750;color:var(--text);background:transparent}
+#app .match-speed button[aria-pressed="true"]{color:#fff;background:var(--green);box-shadow:0 1px 4px #174b2e16}
+#app .match-speed .match-speed-fast[aria-pressed="true"]{color:#49340a;background:#f7cb46;box-shadow:0 1px 4px #7b570b20}
+#app .match-speed button:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+#app .match-speed button>svg{width:15px;height:15px;flex:0 0 15px;stroke-width:2;fill:currentColor}
+#app .match-speed-fast.is-activating{animation:sf-speed-nudge .28s ease-out}
+#app .match-speed-fast.is-activating>svg{animation:sf-speed-bolt .28s ease-out}
+@keyframes sf-speed-nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-1.5px)}50%{transform:translateX(1.5px)}75%{transform:translateX(-.75px)}}
+@keyframes sf-speed-bolt{0%,100%{transform:scale(1)}45%{transform:scale(1.15) rotate(-5deg)}}
+@media(prefers-reduced-motion:reduce){#app .match-speed-fast.is-activating,#app .match-speed-fast.is-activating>svg{animation:none}}
 .match-calendar{overflow:auto;scrollbar-width:thin;padding-right:2px;gap:14px}
 .match-goals-panel{display:flex;flex-direction:column;flex:0 0 240px;height:240px;min-height:0;overflow:hidden;border-radius:12px;background:var(--surface)}
 .match-goals-panel .calendar-heading{padding:15px 16px;flex:0 0 auto}

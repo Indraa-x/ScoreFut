@@ -1,4 +1,4 @@
-/** Player/season OVRs selected by the creator, imported without changing the historical EA archive. */
+/** Creator-selected player/season OVRs from JSON imports and direct requests; EA archives remain unchanged. */
 const importedReview = {
   "format": "scorefut-ovr-review",
   "schemaVersion": 1,
@@ -695,6 +695,16 @@ export const CREATOR_RATING_REVIEWS = Object.freeze(importedReviews.map(review=>
 })));
 export const CREATOR_RATING_REVIEW = CREATOR_RATING_REVIEWS.at(-1);
 
+// Direct requests have the same priority as the creator's JSON imports.
+// Keep their provenance separate instead of rewriting an imported JSON.
+export const CREATOR_DIRECT_RATING_REVIEWS = Object.freeze([
+  Object.freeze({
+    squadId:'milan-2007', playerId:'kaka', nome:'Kaká', ovr:92, previousOvr:90,
+    reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
+    reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Kaká do Milan 2007 deve permanecer com OVR 92, acima da nota do FIFA.',
+  }),
+]);
+
 // Keep each import's provenance; the latest edit wins for the same player/season.
 const ratingsBySquad = {};
 for (const review of CREATOR_RATING_REVIEWS) {
@@ -706,6 +716,9 @@ for (const review of CREATOR_RATING_REVIEWS) {
       exportedAt:review.exportedAt,
     });
   }
+}
+for (const review of CREATOR_DIRECT_RATING_REVIEWS) {
+  (ratingsBySquad[review.squadId] ??= {})[review.playerId] = review;
 }
 export const CREATOR_RATINGS_BY_SQUAD = Object.freeze(Object.fromEntries(
   Object.entries(ratingsBySquad).map(([squadId,ratings])=>[squadId,Object.freeze(ratings)])

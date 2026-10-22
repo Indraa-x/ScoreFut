@@ -4,7 +4,7 @@
   "squads": 215,
   "players": 2365,
   "verifiedReleaseRecords": 1069,
-  "creatorOverrides": 67,
+  "creatorOverrides": 68,
   "rows": [
     {
       "squadId": "real-madrid-2002",
@@ -1519,7 +1519,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 94,
+      "currentOvr": 94,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1528,7 +1531,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 94,
+      "currentOvr": 94,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1537,7 +1543,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 91,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1546,7 +1555,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 90,
+      "currentOvr": 88,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1555,7 +1567,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1564,7 +1579,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1573,7 +1591,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1582,7 +1603,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1591,7 +1615,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1600,7 +1627,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bayern-1974",
@@ -1609,7 +1639,10 @@
       "year": 1974,
       "expectedEdition": "FIFA 75",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1990",
@@ -1924,9 +1957,13 @@
       "name": "Kaká",
       "year": 2007,
       "expectedEdition": "FIFA 08",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 90,
-      "source": "https://fifaindex.com/teams/47-ac-milan/fifa08"
+      "source": "https://fifaindex.com/teams/47-ac-milan/fifa08",
+      "previousOvr": 90,
+      "currentOvr": 92,
+      "reviewSource": "data/creator-ratings.js",
+      "note": "Pedido direto do criador em 22/10/2026: Kaká do Milan 2007 fica com OVR 92. A nota 90 do FIFA 08 permanece apenas como registro da fonte."
     },
     {
       "squadId": "milan-2007",
@@ -2025,7 +2062,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 93,
+      "currentOvr": 93,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2034,7 +2074,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 93,
+      "currentOvr": 93,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2043,7 +2086,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 92,
+      "currentOvr": 92,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2052,7 +2098,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 90,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2061,7 +2110,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 90,
+      "currentOvr": 88,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2070,7 +2122,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2079,7 +2134,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2088,7 +2146,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2097,7 +2158,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2106,7 +2170,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "milan-1989",
@@ -2115,7 +2182,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 74,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "manchester-united-1994",
@@ -3081,7 +3151,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 92,
+      "currentOvr": 91,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3090,7 +3163,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 90,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3099,7 +3175,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 87,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3108,7 +3187,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 87,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3117,7 +3199,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3126,7 +3211,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3135,7 +3223,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3144,7 +3235,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3153,7 +3247,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3162,7 +3259,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "liverpool-1984",
@@ -3171,7 +3271,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "manchester-city-2018",
@@ -4148,7 +4251,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4157,7 +4263,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4166,7 +4275,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4175,7 +4287,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4184,7 +4299,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4193,7 +4311,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4202,7 +4323,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4211,7 +4335,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4220,7 +4347,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4229,7 +4359,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "arsenal-1971",
@@ -4238,7 +4371,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "chelsea-2005",
@@ -5743,7 +5879,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 94,
+      "currentOvr": 94,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5752,7 +5891,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 92,
+      "currentOvr": 91,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5761,7 +5903,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 87,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5770,7 +5915,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 87,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5779,7 +5927,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 86,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5788,7 +5939,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5797,7 +5951,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5806,7 +5963,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5815,7 +5975,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5824,7 +5987,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "juventus-1985",
@@ -5833,7 +5999,10 @@
       "year": 1985,
       "expectedEdition": "FIFA 86",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1992",
@@ -6249,7 +6418,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 95,
+      "currentOvr": 95,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6258,7 +6430,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 90,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6267,7 +6442,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 89,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6276,7 +6454,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 86,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6285,7 +6466,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6294,7 +6478,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6303,7 +6490,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6312,7 +6502,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6321,7 +6514,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6330,7 +6526,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "ajax-1972",
@@ -6339,7 +6538,10 @@
       "year": 1972,
       "expectedEdition": "FIFA 73",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1990",
@@ -6777,7 +6979,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 95,
+      "currentOvr": 95,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6786,7 +6991,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6795,7 +7003,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6804,7 +7015,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6813,7 +7027,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6822,7 +7039,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6831,7 +7051,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6840,7 +7063,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6849,7 +7075,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6858,7 +7087,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "napoli-1987",
@@ -6867,7 +7099,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "tottenham-2016",
@@ -9426,7 +9661,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 90,
+      "currentOvr": 88,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9435,7 +9673,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 86,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9444,7 +9685,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9453,7 +9697,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9462,7 +9709,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9471,7 +9721,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9480,7 +9733,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9489,7 +9745,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9498,7 +9757,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9507,7 +9769,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "porto-1987",
@@ -9516,7 +9781,10 @@
       "year": 1987,
       "expectedEdition": "FIFA 88",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "benfica-1990",
@@ -10459,7 +10727,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 90,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10468,7 +10739,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10477,7 +10751,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10486,7 +10763,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10495,7 +10775,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10504,7 +10787,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10513,7 +10799,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10522,7 +10811,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10531,7 +10823,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10540,7 +10835,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "valencia-1980",
@@ -10549,7 +10847,10 @@
       "year": 1980,
       "expectedEdition": "FIFA 81",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1997",
@@ -10975,7 +11276,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -10984,7 +11288,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -10993,7 +11300,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11002,7 +11312,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11011,7 +11324,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11020,7 +11336,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11029,7 +11348,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11038,7 +11360,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11047,7 +11372,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11056,7 +11384,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "monaco-1988",
@@ -11065,7 +11396,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-2009",
@@ -11484,7 +11818,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 94,
+      "currentOvr": 94,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11493,7 +11830,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 89,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11502,7 +11842,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 90,
+      "currentOvr": 88,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11511,7 +11854,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11520,7 +11866,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11529,7 +11878,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11538,7 +11890,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11547,7 +11902,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11556,7 +11914,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11565,7 +11926,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "flamengo-1981",
@@ -11574,7 +11938,10 @@
       "year": 1981,
       "expectedEdition": "FIFA 82",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "palmeiras-1996",
@@ -14033,7 +14400,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 87,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14042,7 +14412,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14051,7 +14424,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14060,7 +14436,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14069,7 +14448,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14078,7 +14460,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14087,7 +14472,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14096,7 +14484,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14105,7 +14496,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14114,7 +14508,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "gremio-1983",
@@ -14123,7 +14520,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-2006",
@@ -14441,7 +14841,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 92,
+      "currentOvr": 91,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14450,7 +14853,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14459,7 +14865,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14468,7 +14877,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14477,7 +14889,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14486,7 +14901,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14495,7 +14913,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14504,7 +14925,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14513,7 +14937,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14522,7 +14949,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1979",
@@ -14531,7 +14961,10 @@
       "year": 1979,
       "expectedEdition": "FIFA 80",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14540,7 +14973,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 92,
+      "currentOvr": 91,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14549,7 +14985,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 91,
+      "currentOvr": 89,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14558,7 +14997,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14567,7 +15009,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14576,7 +15021,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14585,7 +15033,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14594,7 +15045,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14603,7 +15057,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14612,7 +15069,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14621,7 +15081,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "internacional-1976",
@@ -14630,7 +15093,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1997",
@@ -15043,7 +15509,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 87,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15052,7 +15521,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15061,7 +15533,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15070,7 +15545,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15079,7 +15557,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15088,7 +15569,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15097,7 +15581,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15106,7 +15593,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15115,7 +15605,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15124,7 +15617,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "vasco-1989",
@@ -15133,7 +15629,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-2007",
@@ -15559,7 +16058,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15568,7 +16070,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15577,7 +16082,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15586,7 +16094,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15595,7 +16106,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15604,7 +16118,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15613,7 +16130,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15622,7 +16142,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15631,7 +16154,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15640,7 +16166,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "fluminense-1984",
@@ -15649,7 +16178,10 @@
       "year": 1984,
       "expectedEdition": "FIFA 85",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "botafogo-1995",
@@ -16571,7 +17103,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 86,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16580,7 +17115,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 86,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16589,7 +17127,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16598,7 +17139,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16607,7 +17151,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16616,7 +17163,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 85,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16625,7 +17175,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16634,7 +17187,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16643,7 +17199,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16652,7 +17211,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "cruzeiro-1976",
@@ -16661,7 +17223,10 @@
       "year": 1976,
       "expectedEdition": "FIFA 77",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-2013",
@@ -17076,7 +17641,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17085,7 +17653,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17094,7 +17665,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17103,7 +17677,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17112,7 +17689,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17121,7 +17701,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17130,7 +17713,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17139,7 +17725,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17148,7 +17737,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17157,7 +17749,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "atletico-mineiro-1971",
@@ -17166,7 +17761,10 @@
       "year": 1971,
       "expectedEdition": "FIFA 72",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "athletico-paranaense-2001",
@@ -17980,7 +18578,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -17989,7 +18590,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -17998,7 +18602,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18007,7 +18614,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18016,7 +18626,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18025,7 +18638,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18034,7 +18650,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18043,7 +18662,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18052,7 +18674,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18061,7 +18686,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1988",
@@ -18070,7 +18698,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "bahia-1959",
@@ -18775,7 +19406,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "creator",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Nota do criador preservada e prioritária sobre a revisão editorial de 1970–1989.",
+      "previousOvr": 85,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18784,7 +19418,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18793,7 +19430,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18802,7 +19442,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "creator",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Nota do criador preservada e prioritária sobre a revisão editorial de 1970–1989.",
+      "previousOvr": 83,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18811,7 +19454,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "creator",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Nota do criador preservada e prioritária sobre a revisão editorial de 1970–1989.",
+      "previousOvr": 82,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18820,7 +19466,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18829,7 +19478,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18838,7 +19490,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18847,7 +19502,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18856,7 +19514,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-1970",
@@ -18865,7 +19526,10 @@
       "year": 1970,
       "expectedEdition": "FIFA 71",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 77,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "celtic-2003",
@@ -19489,7 +20153,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 90,
+      "currentOvr": 88,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19498,7 +20165,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19507,7 +20177,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19516,7 +20189,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19525,7 +20201,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19534,7 +20213,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19543,7 +20225,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19552,7 +20237,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19561,7 +20249,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19570,7 +20261,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-1989",
@@ -19579,7 +20273,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "marseille-2018",
@@ -19698,7 +20395,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 82,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19707,7 +20407,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19716,7 +20419,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19725,7 +20431,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19734,7 +20443,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 77,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19743,7 +20455,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 77,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19752,7 +20467,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 74,
+      "currentOvr": 74,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19761,7 +20479,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 73,
+      "currentOvr": 73,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19770,7 +20491,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 72,
+      "currentOvr": 72,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19779,7 +20503,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 70,
+      "currentOvr": 70,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1988",
@@ -19788,7 +20515,10 @@
       "year": 1988,
       "expectedEdition": "FIFA 89",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 70,
+      "currentOvr": 70,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-2005",
@@ -20016,7 +20746,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 89,
+      "currentOvr": 87,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20025,7 +20758,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20034,7 +20770,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20043,7 +20782,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 84,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20052,7 +20794,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 81,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20061,7 +20806,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20070,7 +20818,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20079,7 +20830,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20088,7 +20842,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20097,7 +20854,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-1978",
@@ -20106,7 +20866,10 @@
       "year": 1978,
       "expectedEdition": "FIFA 79",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "psv-2024",
@@ -20543,7 +21306,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 92,
+      "currentOvr": 92,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20552,7 +21318,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 90,
+      "currentOvr": 88,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20561,7 +21330,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 88,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20570,7 +21342,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20579,7 +21354,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 86,
+      "currentOvr": 83,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20588,7 +21366,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20597,7 +21378,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20606,7 +21390,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 84,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20615,7 +21402,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20624,7 +21414,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-1983",
@@ -20633,7 +21426,10 @@
       "year": 1983,
       "expectedEdition": "FIFA 84",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 77,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "roma-2022",
@@ -20752,7 +21548,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 87,
+      "currentOvr": 85,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20761,7 +21560,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20770,7 +21572,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20779,7 +21584,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 83,
+      "currentOvr": 80,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20788,7 +21596,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 82,
+      "currentOvr": 79,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20797,7 +21608,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 81,
+      "currentOvr": 78,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20806,7 +21620,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 80,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20815,7 +21632,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20824,7 +21644,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 76,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20833,7 +21656,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 79,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-1989",
@@ -20842,7 +21668,10 @@
       "year": 1989,
       "expectedEdition": "FIFA 90",
       "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "note": "Revisão editorial individual da temporada (1970–1989). Não é OVR oficial da EA.",
+      "previousOvr": 78,
+      "currentOvr": 75,
+      "reviewSource": "data/VINTAGE-RATINGS.md"
     },
     {
       "squadId": "galatasaray-2000",
@@ -22360,5 +23189,15 @@
       "releaseOvr": 78,
       "source": "https://fifaindex.com/teams/112172-rb-leipzig/fc24"
     }
-  ]
+  ],
+  "vintageReview": {
+    "checkedAt": "2026-10-22",
+    "squads": 25,
+    "players": 275,
+    "reduced": 250,
+    "retained": 25,
+    "source": "data/VINTAGE-RATINGS.md"
+  },
+  "creatorImportedOverrides": 67,
+  "creatorDirectOverrides": 1
 }
