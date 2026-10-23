@@ -45,6 +45,18 @@
 .stat-item strong{font-size:27px;font-weight:800;letter-spacing:-1px;color:var(--text)}
 .stat-item span{display:block;font-size:8px;letter-spacing:.5px;margin-top:7px;line-height:1.5}
 .stat-item>svg{color:var(--green);width:22px;height:22px;flex-shrink:0}
+.stat-item>.home-stat-icon{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;margin:0;border-radius:11px}
+.home-stat-icon svg{width:24px;height:24px;stroke-width:1.8}
+.stat-item>.home-stat-icon.titles{background:#fff2cf;color:#94700a}
+.stat-item>.home-stat-icon.best{background:#edf2ff;color:#355ab2}
+.stat-item>.home-stat-icon.rate{background:#eaf6ef;color:#13754b}
+.stat-item>.home-stat-icon.streak{background:#fff0e5;color:#b35522}
+html[data-theme="dark"] .stat-item>.home-stat-icon.titles{background:#332d1d;color:#e8c36c}
+html[data-theme="dark"] .stat-item>.home-stat-icon.best{background:#202e46;color:#a0bbff}
+html[data-theme="dark"] .stat-item>.home-stat-icon.rate{background:#1c3429;color:#7dd9ab}
+html[data-theme="dark"] .stat-item>.home-stat-icon.streak{background:#33291f;color:#efb075}
+@media(max-width:1100px){.personal-stats .stat-item{display:block}.stat-item>.home-stat-icon{margin-bottom:12px}}
+@media(max-width:650px){.stat-item>.home-stat-icon{width:34px;height:34px;flex-basis:34px;border-radius:9px}}
 .all-clubs-line{margin-top:24px;color:var(--muted)}
 /* The same white cards and quiet dividers carry through review and results. */
 .setup-main,.setup-side,.summary-info,.attribute-card,.gauge-card,.history-widget{background:var(--surface)}
