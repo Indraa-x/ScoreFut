@@ -56,7 +56,7 @@
 .player-row.unavailable .player-select:disabled{opacity:1;color:var(--blocked-text)}
 .player-row.unavailable .player-name,.player-row.unavailable .player-ovr,.player-row.unavailable .player-details,.player-row.unavailable .player-ovr small{color:var(--blocked-text)}
 .player-row.unavailable .player-avatar{background:#f3cece;color:var(--blocked-text)}
-#app[data-screen="draft"] .player-row.unavailable .position-chip{background:#e99b9b;color:var(--blocked-text);border:1px solid #c74646}
+#app[data-screen="draft"] .player-row.unavailable .position-chip{background:#f3cece;color:var(--blocked-text);border:1px solid #c74646}
 .player-row.unavailable .position-chip.DEF,.player-row.unavailable .position-chip.ATA,.player-row.unavailable .position-chip.MEI,.player-row.unavailable .position-chip.GOL{color:var(--blocked-text)}
 .player-row.unavailable .player-avatar:after{background:#c74646}
 .player-status{display:block;margin-top:3px;font-size:11px;font-weight:600;line-height:1.15;color:var(--blocked-text)}

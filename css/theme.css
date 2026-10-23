@@ -42,7 +42,7 @@ html[data-theme="dark"] #app .formation-option.selected{background:#19764e;color
 html[data-theme="dark"] .home-stars-heading>span:first-child{color:var(--muted)}
 html[data-theme="dark"] .home-stars{background:linear-gradient(180deg,#27342f,#19231e);border-color:var(--border)}
 html[data-theme="dark"] .home-stars-footer{background:var(--soft);border-color:var(--border)}
-html[data-theme="dark"] :is(.formation-option,.mode-tag,.stat-icon,.position-chip,.player-status,.player-avatar,.help-step>span,.history-summary-icon,.history-team-crest,.history-outcome-filter,.quick-regions,.quick-ready-rating,.champions-group-picker button,.champions-phase-picker,.champions-unknown,.champions-bracket-pending,.match-added-time,.match-calendar .upcoming-game,.match-calendar .recent-game,.resume-banner){background:var(--soft);border-color:var(--border);color:var(--muted)}
+html[data-theme="dark"] :is(.formation-option,.mode-tag,.stat-icon,.position-chip,.player-avatar,.help-step>span,.history-summary-icon,.history-team-crest,.history-outcome-filter,.quick-regions,.quick-ready-rating,.champions-group-picker button,.champions-phase-picker,.champions-unknown,.champions-bracket-pending,.match-added-time,.match-calendar .upcoming-game,.match-calendar .recent-game,.resume-banner){background:var(--soft);border-color:var(--border);color:var(--muted)}
 html[data-theme="dark"] :is(.history-outcome-filter button[aria-pressed="true"],.quick-regions button[aria-pressed="true"],.champions-phase-picker button[aria-pressed="true"],.champions-group-picker button[aria-pressed="true"]){background:var(--elevated);color:var(--green);border-color:var(--border)}
 html[data-theme="dark"] .mode-card[data-value="legends"] :is(p,.mode-card-bottom){color:#d0cdb9}
 html[data-theme="dark"] .mode-card[data-value="legends"] :is(.mode-icon,.mode-tag){background:#ffffff0d;color:var(--legends-accent)}
@@ -62,8 +62,12 @@ html[data-theme="dark"] .player-row{border-color:var(--border)}
 html[data-theme="dark"] #app .player-row:not(.unavailable){background:var(--surface);border-color:var(--border)}
 html[data-theme="dark"] #app .player-row:nth-child(even):not(.unavailable){background:#1e2822}
 html[data-theme="dark"] #app :is(.box-title,.strength-block){background:var(--soft);border-color:var(--border);color:var(--text)}
-html[data-theme="dark"] .player-select:hover,html[data-theme="dark"] .player-row.selected .player-select{background:var(--soft)}
-html[data-theme="dark"] :is(.player-info small,.player-details,.player-status,.season-award,.quick-card-season,.box-row>span,.history-entry-meta,.history-storage-note){color:var(--muted)}
+html[data-theme="dark"] .player-select:hover:not(:disabled),html[data-theme="dark"] .player-row.selected .player-select:not(:disabled){background:var(--soft)}
+html[data-theme="dark"] :is(.player-info small,.player-details,.season-award,.quick-card-season,.box-row>span,.history-entry-meta,.history-storage-note){color:var(--muted)}
+/* Unavailable players keep one coherent palette, including their position and status. */
+html[data-theme="dark"] #app[data-screen="draft"] .player-row.unavailable .position-chip,
+html[data-theme="dark"] .player-row.unavailable .player-avatar{background:#5a3036;border-color:var(--blocked-border);color:var(--blocked-text)}
+html[data-theme="dark"] .player-row.unavailable .player-avatar:after{background:var(--red)}
 html[data-theme="dark"] #app .draft-skip-status,html[data-theme="dark"] #app .draft-skip-status strong{color:var(--green)}
 html[data-theme="dark"] #app .draft-skip-status small{color:var(--muted)}
 html[data-theme="dark"] #app .reroll-buttons .btn:disabled{background:var(--soft);border-color:var(--border);color:var(--muted)}
