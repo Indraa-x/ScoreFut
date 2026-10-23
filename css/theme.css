@@ -5,6 +5,7 @@
   --green:#13754b;--gold:#94700a;--cyan:#007488;--red:#b64d4d;--orange:#a65310;
   --border:#c5ccd4;--soft:#e0e4e9;--shadow:0 16px 55px #24272d0b;
   --blocked-bg:#f4b8b8;--blocked-border:#d76969;--blocked-text:#821f26;
+  --surface-alt:#f7faf8;--accent-soft:#edf6f0;
 }
 :root[data-theme="dark"] {
   color-scheme:only dark;
@@ -15,6 +16,7 @@
   --quick-accent:#efbd70;--quick-soft:#30291c;--quick-border:#7a6038;
   --legends-gradient:linear-gradient(120deg,#293536,#35372d 55%,#403b24);
   --legends-ink:#f5efd8;--legends-accent:#dfca80;--legends-border:#625e42;
+  --surface-alt:#1e2822;--accent-soft:#1d382a;
 }
 html,body{background:var(--bg);color:var(--text)}
 input,select,textarea,dialog{color-scheme:inherit}
@@ -50,6 +52,7 @@ html[data-theme="dark"] #app[data-screen="summary"] .quick-ready-layout .summary
 html[data-theme="dark"] :is(.quick-launch,.quick-season-block select){background:var(--soft);color:var(--text);border-color:var(--border)}
 html[data-theme="dark"] .quick-attribute-track{background:var(--quick-soft)}
 html[data-theme="dark"] .quick-launch .btn-primary{background:var(--quick-gradient);color:var(--quick-ink);border-color:var(--quick-border)}
+html[data-theme="dark"] .result-hero[data-mode="quick"]{background:linear-gradient(180deg,var(--quick-soft),var(--surface) 48%)}
 html[data-theme="dark"] .mode-card[data-value="legends"],html[data-theme="dark"] .setup-mode-option[data-value="legends"]{background:var(--legends-gradient);color:var(--legends-ink)}
 html[data-theme="dark"] .result-hero[data-mode="legends"]{background:var(--legends-gradient);border-color:var(--legends-border)}
 html[data-theme="dark"] .result-hero[data-mode="legends"] .result-stats>div{background:#ffffff08}
@@ -82,6 +85,10 @@ html[data-theme="dark"] :is(.live-field-wrap,.live-pitch-area){background:var(--
 html[data-theme="dark"] .match-goals-panel .match-scorers .scorer-team-name{background:none;color:var(--text);-webkit-text-fill-color:var(--text);-webkit-text-stroke:0}
 html[data-theme="dark"] .goal-notice{background:#1d382af7;border-color:var(--border);color:var(--text)}
 html[data-theme="dark"] .goal-notice strong{color:var(--green)}
+html[data-theme="dark"] .champion-competition-name[data-competition="champions"]{background-image:linear-gradient(110deg,#a7b6ff,#83c5f5)}
+html[data-theme="dark"] .champion-competition-name[data-competition="copa-do-brasil"]{background-image:linear-gradient(110deg,#8abaff,#7bdda3 55%,#e1c977)}
+html[data-theme="dark"] .champion-competition-name[data-competition="quick"]{background-image:linear-gradient(110deg,#efbd70,#efad76)}
+html[data-theme="dark"] .champion-competition-name[data-competition="legends"]{background-image:linear-gradient(110deg,#d0d7d3,#dfca80)}
 html[data-theme="dark"] :is(.scorer-minute,.match-aggregate,.match-penalties){background:var(--soft);color:var(--text);border-color:var(--border)}
 html[data-theme="dark"] dialog::backdrop{background:#000a}
 @media(max-width:760px){.header-inner{flex-wrap:nowrap;gap:10px}.header-inner nav{margin-left:auto;gap:6px}.header-inner .nav-link{padding-inline:9px}.header-inner .nav-link[data-action="help"]{display:none}}

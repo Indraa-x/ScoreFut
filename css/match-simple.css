@@ -46,7 +46,7 @@
 .match-goals-panel .calendar-heading h2{font-size:16px}
 .match-goals-panel .match-goals{display:grid;grid-template-columns:minmax(0,1fr);height:auto;min-height:0;max-height:none;flex:1;padding:14px 16px;gap:15px;border:0;scrollbar-gutter:stable;overflow:auto}
 .match-goals-panel .match-scorers h3{font:800 12px/1.4 var(--body);color:var(--muted);margin:0 0 7px}
-.match-goals-panel .match-scorers .scorer-team-name{width:fit-content;font-size:14px;background:linear-gradient(115deg,var(--team-color-1),var(--team-color-2));background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:.35px color-mix(in srgb,var(--team-color-1) 55%,#233345);}
+.match-goals-panel .match-scorers .scorer-team-name{width:fit-content;font-size:14px;background:linear-gradient(115deg,color-mix(in srgb,var(--team-color-1) 30%,#17352c),color-mix(in srgb,var(--team-color-2) 30%,#17352c));background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:0;}
 .match-goals-panel .match-scorers p{font-size:13px;justify-content:space-between;text-align:left;gap:3px 8px}
 .match-goals-panel .match-scorers span{font-size:12px}
 .match-goals-panel .match-scorers.away{text-align:left}

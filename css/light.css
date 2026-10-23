@@ -3,7 +3,7 @@
 .club-badge.club-logo{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;overflow:visible}
 .club-badge.club-logo::after{display:none}
 .club-logo img{display:block;width:100%;height:100%;object-fit:contain}
-#app[data-screen="draft"] .season-year{display:inline-block;font-size:26px;font-weight:800;line-height:1.1;letter-spacing:.3px;background:linear-gradient(115deg,color-mix(in srgb,var(--year-color-1) 52%,#17352c),color-mix(in srgb,var(--year-color-2) 52%,#17352c));background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:0;text-shadow:none;font-variant-numeric:tabular-nums}
+#app[data-screen="draft"] .season-year{display:inline-block;font-size:26px;font-weight:800;line-height:1.1;letter-spacing:.3px;background:linear-gradient(115deg,color-mix(in srgb,var(--year-color-1) 35%,#17352c),color-mix(in srgb,var(--year-color-2) 35%,#17352c));background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:0;text-shadow:none;font-variant-numeric:tabular-nums}
 .competition-logo{display:block;width:48px;height:48px;object-fit:contain;flex:0 0 auto;background:#fff;border-radius:6px;padding:4px}
 .mode-icon:has(.competition-logo){background:transparent}
 .mode-icon .competition-logo{width:100%;height:100%}
@@ -44,7 +44,7 @@
 .hero-float span{color:var(--muted)}
 .stadium-label,.stadium-season{color:var(--muted)}
 .mode-card:nth-child(4) .mode-icon{color:#7056a3}
-.panel-head,.players-heading,.box-title,.pitch-header,.match-card .scoreboard,.match-feed .panel-head,.group-card h3{background:#d6dce3}
+.panel-head,.players-heading,.box-title,.pitch-header,.match-card .scoreboard,.match-feed .panel-head,.group-card h3{background:var(--soft)}
 .players-panel,.draft-box,.draft-center,.group-card{overflow:hidden}
 .player-row{background:#e7ebf0}
 .player-row:nth-child(even){background:#dde3e9}
@@ -86,8 +86,8 @@
 dialog::backdrop{background:#30364055}
 .screen-title>div:first-child{background:var(--soft);border-radius:8px;padding:8px 12px}
 .hero-copy>p{background:var(--soft);border-radius:6px;padding:10px 12px}
-.draw-empty-copy{background:#d6dce3;border-radius:6px;padding:5px 10px}
-.feed-empty,.strength-block,.setup-main{background:#e7ebf0}
+.draw-empty-copy{background:var(--surface);border-radius:6px;padding:5px 10px}
+.feed-empty,.strength-block,.setup-main{background:var(--surface)}
 #app[data-screen="draft"] .draw-empty{grid-template-columns:30px minmax(0,max-content) auto;justify-content:start;gap:16px}
 #app[data-screen="draft"] .draw-empty .btn{justify-self:start}
 @media(max-width:760px){

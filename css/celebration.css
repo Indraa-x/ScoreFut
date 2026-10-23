@@ -2,8 +2,8 @@
 .result-hero>.champion-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
 .result-hero>.champion-confetti i{top:-24px;width:var(--w);height:var(--h);border-radius:var(--round);background:var(--c);opacity:.95;animation:champion-confetti-fall var(--duration) linear var(--delay) 3 both}
 .result-hero>:not(.champion-confetti){position:relative;z-index:2}
-.result-hero .celebration-sound{position:absolute;right:18px;top:16px;border:1px solid var(--border);border-radius:7px;padding:8px 11px;background:#ffffffb3;font:500 11px var(--body);color:var(--text);z-index:3}
-.celebration-sound:hover{background:#fff}
+.result-hero .celebration-sound{position:absolute;right:18px;top:16px;border:1px solid var(--border);border-radius:7px;padding:8px 11px;background:var(--surface);font:500 11px var(--body);color:var(--text);z-index:3}
+.result-hero .celebration-sound:hover{background:var(--soft)}
 @keyframes champion-confetti-fall{0%{transform:translate3d(0,-15px,0) rotate(0);opacity:0}8%{opacity:.95}90%{opacity:.95}100%{transform:translate3d(var(--drift),var(--confetti-fall,720px),0) rotate(var(--spin));opacity:0}}
 @media(max-width:600px){.result-hero .champion-trophy{width:120px;height:150px;margin-top:20px}.result-hero .celebration-sound{right:12px;top:12px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){.result-hero>.champion-confetti{display:none}}

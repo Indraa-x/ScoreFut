@@ -22,7 +22,7 @@
 .match-status.playing{color:var(--green)}
 .match-status i{width:5px;height:5px;border-radius:50%;background:currentColor}
 .match-card .score-numbers{display:flex;align-items:center;justify-content:center;gap:13px;font:700 44px/1.15 var(--body);font-variant-numeric:tabular-nums;letter-spacing:-1.5px;margin:4px 0}
-.match-card .score-numbers i{font:400 23px var(--body);color:#7b8793}
+.match-card .score-numbers i{font:400 23px var(--body);color:var(--muted)}
 .match-clock-row{display:flex;align-items:center;justify-content:center;gap:8px}
 .match-card .score-clock{font:650 12px/1.4 var(--body);font-variant-numeric:tabular-nums;color:var(--text);margin:0}
 .match-clock-row>small{font-size:10px;color:var(--muted)}
@@ -67,7 +67,7 @@
 .fixture-list{padding:12px;overflow:auto;min-height:0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .upcoming-game{background:#fff;border:1px solid #d1d8df;border-radius:8px;padding:12px;margin-bottom:10px}
 .fixture-round{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:12px;font-size:9px;color:var(--muted)}
-.fixture-round>small{font-size:9px;background:#e8edf1;border-radius:4px;padding:3px 6px;flex-shrink:0}
+.fixture-round>small{font-size:9px;background:var(--soft);border-radius:4px;padding:3px 6px;flex-shrink:0}
 .fixture-opponent{display:flex;align-items:center;gap:10px}
 .fixture-opponent>.club-badge{width:34px;height:34px;flex:0 0 34px;font-size:10px}
 .fixture-opponent>div{flex:1;min-width:0}

@@ -4,7 +4,7 @@
 .nav-link{font-weight:700;color:#63716b}
 .nav-link.active{color:var(--green)}
 .nav-link.active:after{height:3px;border-radius:3px 3px 0 0}
-.edition{color:#7e8c85;font-size:9px;letter-spacing:1.2px}
+.edition{color:var(--muted);font-size:9px;letter-spacing:1.2px}
 .btn{font-weight:700;border-radius:10px}
 .btn-primary{color:#fff}
 .btn-outline{background:#fff}
@@ -55,12 +55,12 @@
 .result-hero h1{font-weight:800;letter-spacing:-2px;line-height:1.15}
 .result-hero>p{font-size:14px;line-height:1.6}
 .result-stats{gap:14px;margin-top:30px}
-.result-stats>div{background:#f4f8f5;border:1px solid #e6eee8;border-radius:12px;padding:20px 24px;min-width:124px}
+.result-stats>div{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:20px 24px;min-width:124px}
 .result-stats span{font-size:10px;letter-spacing:.3px;margin-top:8px;font-weight:700;line-height:1.5}
 .result-actions .btn{min-height:50px;font-size:13px;padding:14px 20px}
 .result-campaign{border-radius:15px;overflow:hidden}
-.result-match-row{background:#fff}
-.result-match-row:nth-child(even){background:#f7faf8}
+.result-match-row{background:var(--surface)}
+.result-match-row:nth-child(even){background:var(--surface-alt)}
 .result-match-row>span:first-child{color:var(--muted)}
 .result-match-row>strong{font-weight:800;letter-spacing:-1px}
 .history-widget{border-radius:14px}
