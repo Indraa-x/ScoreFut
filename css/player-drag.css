@@ -8,6 +8,6 @@
 .player-drag.over-slot .slot-circle{border-color:#b7f0cf;box-shadow:0 7px 18px #143c2b40,0 0 0 3px #17835730}
 .player-drag.invalid-slot .slot-circle{border-color:#ce6060;box-shadow:0 7px 18px #143c2b30,0 0 0 3px #b4383833}
 .draft-pitch .slot-circle{transition:background .16s,color .16s,border-color .16s,box-shadow .16s,transform .16s}
-.draft-pitch .pitch-slot.drop-target .slot-circle{transform:scale(1.08)}
+.draft-pitch .pitch-slot.drop-target .slot-circle{transform:none}
 .draft-pitch .pitch-slot.incompatible{transition:opacity .16s}
 @media(prefers-reduced-motion:reduce){.player-select.dragging,.player-drag .slot-circle,.draft-pitch .slot-circle,.draft-pitch .pitch-slot.incompatible{transition:none}.draft-pitch .pitch-slot.drop-target .slot-circle{transform:none}}

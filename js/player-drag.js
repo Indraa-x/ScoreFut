@@ -1,4 +1,12 @@
 /** Mouse/pen dragging uses the field's circular club/OVR marker. */
+export function dragPreviewScale(distance,sourceSize,targetSize=sourceSize) {
+  const close=targetSize*.55,far=Math.max(120,targetSize*2.4);
+  const progress=Math.max(0,Math.min(1,(distance-close)/(far-close)));
+  const eased=progress*progress*(3-2*progress);
+  const fitted=targetSize/sourceSize;
+  return fitted+(1.6-fitted)*eased;
+}
+
 export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPreview}) {
   let gesture=null,ignoreClickUntil=0;
   const reducedMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -18,11 +26,17 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
   }
 
   function positionPreview(g) {
-    const {width,height}=g.card.getBoundingClientRect();
-    const x=Math.max(8,Math.min(innerWidth-width-8,g.x-g.grabX));
-    const y=Math.max(8,Math.min(innerHeight-height-8,g.y-g.grabY));
-    g.card.style.transform=`translate3d(${x}px,${y}px,0)`;
     const {target,inField}=dropTarget(g.x,g.y);
+    const compatible=slots().filter(slot=>!slot.disabled&&slot.classList.contains('compatible'));
+    const nearby=compatible.map(slot=>{
+      const rect=slot.querySelector('.slot-circle').getBoundingClientRect();
+      return {rect,distance:Math.hypot(g.x-rect.x-rect.width/2,g.y-rect.y-rect.height/2)};
+    }).sort((a,b)=>a.distance-b.distance)[0];
+    const scale=dragPreviewScale(nearby?.distance??Infinity,g.size,nearby?.rect.width??g.size);
+    const width=g.size*scale,height=width;
+    const x=Math.max(8,Math.min(innerWidth-width-8,g.x-g.grabX*scale));
+    const y=Math.max(8,Math.min(innerHeight-height-8,g.y-g.grabY*scale));
+    g.card.style.transform=`translate3d(${x+(width-g.size)/2}px,${y+(height-g.size)/2}px,0) scale(${scale})`;
     slots().forEach(slot=>slot.classList.toggle('drop-target',slot===target));
     g.card.classList.toggle('over-slot',!!target);
     g.card.classList.toggle('invalid-slot',inField&&!target);
@@ -36,6 +50,7 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
     const originCircle=g.source.querySelector('.slot-circle');
     const circle=originCircle||slots().find(slot=>slot.classList.contains('compatible'))?.querySelector('.slot-circle');
     const rect=circle?.getBoundingClientRect(),size=rect?.width||58;
+    g.size=size;
     const grabbedCircle=originCircle&&g.startX>=rect.left&&g.startX<=rect.right&&g.startY>=rect.top&&g.startY<=rect.bottom;
     g.grabX=grabbedCircle?g.startX-rect.left:size/2;
     g.grabY=grabbedCircle?g.startY-rect.top:size/2;
@@ -60,9 +75,9 @@ export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPre
 
   function animateAway(card,destination,placed) {
     if(reducedMotion()){card.remove();return;}
-    const rect=card.getBoundingClientRect();
-    const scale=placed&&destination?Math.min(destination.width/rect.width,destination.height/rect.height):.94;
-    const end=destination?`translate3d(${destination.x+destination.width/2-rect.width/2}px,${destination.y+destination.height/2-rect.height/2}px,0) scale(${scale})`:card.style.transform+' scale(.94)';
+    const size=parseFloat(getComputedStyle(card).width);
+    const scale=placed&&destination?Math.min(destination.width/size,destination.height/size):.94;
+    const end=destination?`translate3d(${destination.x+destination.width/2-size/2}px,${destination.y+destination.height/2-size/2}px,0) scale(${scale})`:card.style.transform+' scale(.94)';
     const frames=[{transform:card.style.transform,opacity:1}];
     if(placed)frames.push({transform:end,opacity:.95,offset:.78});
     frames.push({transform:end,opacity:0});
