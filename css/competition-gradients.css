@@ -30,6 +30,7 @@
 .mode-card .mode-icon>.competition-logo{
   width:100%;height:100%;padding:0;object-fit:contain;background:transparent;border-radius:0;
 }
+.mode-card:is([data-value="euro"],[data-value="copa-do-brasil"]) .mode-icon>.competition-logo{transform:scale(1.28)}
 :is(.mode-card,.setup-mode-option):is([data-value="copa-do-brasil"],[data-value="champions"]):hover{filter:brightness(1.08)}
 .setup-mode-option:is([data-value="copa-do-brasil"],[data-value="champions"]).selected{
   box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--competition-border);
