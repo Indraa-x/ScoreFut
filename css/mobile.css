@@ -26,7 +26,7 @@
  .hero-copy>p{font-size:15px;line-height:1.65;margin:16px 0 20px}
  .hero-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
  .hero-actions .btn{width:100%;min-height:54px;font-size:15px}
- .hero-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:18px}
+ .hero-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:18px}
  .hero-steps li{font-size:10px;gap:4px;white-space:nowrap}
  .home-stars{height:240px;min-height:0}
  .home-stars-heading{padding:14px 14px 6px}
