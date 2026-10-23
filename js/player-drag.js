@@ -4,7 +4,7 @@ export function dragPreviewScale(distance,sourceSize,targetSize=sourceSize) {
   const progress=Math.max(0,Math.min(1,(distance-close)/(far-close)));
   const eased=progress*progress*(3-2*progress);
   const fitted=targetSize/sourceSize;
-  return fitted+(1.6-fitted)*eased;
+  return fitted+(1.5-fitted)*eased;
 }
 
 export function initPlayerDrag({app,getPlayer,onStart,onPlace,onCancel,renderPreview}) {
