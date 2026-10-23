@@ -53,9 +53,12 @@ Abra **http://127.0.0.1:4173**. Não é necessário executar `npm install`. Para
 ## Verificar
 
 ```bash
+npm run prepare:site
 npm test
 npm run check
 ```
+
+`prepare:site` atualiza a página inicial no HTML com o mesmo conteúdo do jogo e gera `dist/`, incluindo o sitemap. Execute-o após mudar a home para manter a versão inicial e a versão interativa sincronizadas.
 
 Os testes cobrem os elencos, as formações, os sorteios, o motor de partidas, as competições, o histórico e a retomada de campanhas.
 
