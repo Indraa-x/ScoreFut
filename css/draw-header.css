@@ -15,7 +15,7 @@
 #app[data-screen="draft"] .draft-skip-status small{font-size:10px;font-weight:600;color:#586a61;white-space:nowrap}
 #app[data-screen="draft"] .reroll-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 #app[data-screen="draft"] .reroll-buttons .btn{min-width:0;min-height:52px;padding:10px 12px;gap:8px;border-radius:8px;background:#145d3f;border:1px solid #104c32;color:#fff;font-size:14px;font-weight:800;line-height:1.35;white-space:normal;box-shadow:0 3px 8px #163b2312}
-#app[data-screen="draft"] .reroll-buttons .btn svg{width:17px;height:17px;flex:0 0 17px}
+#app[data-screen="draft"] .reroll-buttons .btn svg{width:20px;height:20px;flex:0 0 20px;stroke-width:1.9}
 #app[data-screen="draft"] .reroll-buttons .btn:hover:not(:disabled){background:#0e4b31;filter:none}
 #app[data-screen="draft"] .reroll-buttons .btn:disabled{opacity:1;background:#e4e9e5;border-color:#bdc9c0;color:#68756c;box-shadow:none}
 #app[data-screen="draft"] .draw-empty{grid-column:1/-1;display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:16px;width:100%;padding:6px 0;text-align:left}
