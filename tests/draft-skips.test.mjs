@@ -15,7 +15,7 @@ test('the shared count decreases to zero and exhausted controls remain clickable
     const html=renderDraft({mode:'champions',formation:'4-3-3',teamName:'Meu time',rolling:false,draft:{...draft,currentSquad:allSquads.find(squad=>squad.id===draft.currentSquadId),otherSeasonAvailable:true}});
     assert.equal(draft.rerolls,remaining);
     assert.ok(html.includes(`<strong>${remaining}</strong> ${remaining===1?'skip restante':'skips restantes'}`));
-    assert.ok(html.includes('4 no total'));
+    assert.ok(!html.includes('no total'));
     for(const action of ['reroll-club','reroll-season']){
       const button=html.match(new RegExp(`<button[^>]*data-action="${action}"[^>]*>`))[0];
       assert.equal(/\sdisabled(?:[\s=>])/.test(button),false);
