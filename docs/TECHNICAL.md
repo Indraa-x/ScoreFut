@@ -1,8 +1,8 @@
 # Documentação técnica do ScoreFut
 
-Jogo de draft e simulação de futebol em português do Brasil. Monte uma escalação de **11 jogadores — um goleiro e dez de linha**. Cada sorteio oferece onze destaques de um clube em uma temporada histórica; escolha um atleta por rodada e dispute a competição. O Modo rápido usa os onze titulares de um clube na formação escolhida.
+Jogo de draft e simulação de futebol em português do Brasil. Monte uma escalação de **11 jogadores — um goleiro e dez de linha**. Cada sorteio oferece onze destaques de um clube ou seleção em uma época histórica; escolha um atleta por rodada e dispute a competição. Os modos visíveis são Euro, Copa do Brasil e Champions League; campanhas antigas do Modo rápido continuam legíveis.
 
-São 43 clubes, com cinco épocas distintas por clube: 215 elencos e 2.365 registros. A Champions oferece 28 clubes europeus; a Copa do Brasil, 15 brasileiros. Todos os escudos são arquivos locais com fontes e hashes em `assets/logos/sources.json`. O projeto usa módulos JavaScript, HTML e CSS, sem dependências de execução. OVRs seguem a [política de edição e prioridades](../data/RATING-SOURCES.md). “Meu time” conserva seu símbolo genérico.
+São 43 clubes, com cinco épocas distintas por clube: 215 elencos e 2.365 registros. A Euro acrescenta 24 seleções e 101 edições reais, totalizando 316 elencos e 3.476 registros. As épocas e notas da Euro estão em [EURO-SOURCES.md](../data/EURO-SOURCES.md). A Champions oferece 28 clubes europeus; a Copa do Brasil, 15 brasileiros. Todos os escudos são arquivos locais com fontes e hashes em `assets/logos/sources.json`. O projeto usa módulos JavaScript, HTML e CSS, sem dependências de execução. OVRs seguem a [política de edição e prioridades](../data/RATING-SOURCES.md). “Meu time” conserva seu símbolo genérico.
 
 A Copa do Brasil oferece Flamengo, Palmeiras, São Paulo, Corinthians, Santos, Grêmio, Internacional, Vasco, Fluminense, Botafogo, Cruzeiro, Atlético-MG, Athletico-PR, Bahia e Fortaleza. Boca Juniors e River Plate foram removidos da base ativa.
 
@@ -67,12 +67,12 @@ A força geral é a média do OVR dos jogadores escalados. Clube e temporada nã
 
 | Modo | Formato |
 |---|---|
-| Modo rápido | Escolha a formação e o clube, confira o elenco e clique em Pular para simulação; mata-mata com 16 times e até quatro partidas |
+| Euro | 24 equipes em seis grupos, dois primeiros e quatro melhores terceiros; mata-mata em jogo único, até sete partidas |
 | Copa do Brasil | Até 16 equipes, uma temporada por clube brasileiro e Meu time; oitavas, quartas e semifinais em ida e volta; final em jogo único |
 | Champions League | 28 clubes europeus históricos da base; 32 elencos no formato clássico de grupos e mata-mata |
 | Modo Lendas | Copa com as notas ocultas durante o draft |
 
-Modo rápido: substitui a Copa ScoreFut na página inicial e na seleção de modos, com gradiente amarelo, âmbar e laranja. A mesma identidade aparece nos botões, etapas, filtros, atributos, resultado e PNG da campanha rápida. Primeiro escolha uma das oito formações e clique em Escolher time. Depois escolha um dos 43 clubes; a temporada mais recente compatível com a formação escolhida aparece pronta no campinho. A formação não é substituída automaticamente. Clubes sem uma temporada compatível ficam identificados e desabilitados; use Alterar formação para escolher outro esquema. Essa escolha não inicia a simulação. Na prévia, é possível trocar entre temporadas compatíveis do clube ou voltar para escolher outro time mantendo a formação. Somente **Pular para simulação** calcula a campanha inteira, usando o motor por OVR e atributos com a ajuda leve de dificuldade. Escudo, nome do clube e jogadores são preservados no resultado e no histórico.
+Compatibilidade do Modo rápido antigo: a Euro o substitui nas escolhas de novos modos. O código antigo mantém as campanhas salvas legíveis, com a identidade original em amarelo, âmbar e laranja. A mesma identidade aparece nos botões, etapas, filtros, atributos, resultado e PNG da campanha rápida. Primeiro escolha uma das oito formações e clique em Escolher time. Depois escolha um dos 43 clubes; a temporada mais recente compatível com a formação escolhida aparece pronta no campinho. A formação não é substituída automaticamente. Clubes sem uma temporada compatível ficam identificados e desabilitados; use Alterar formação para escolher outro esquema. Essa escolha não inicia a simulação. Na prévia, é possível trocar entre temporadas compatíveis do clube ou voltar para escolher outro time mantendo a formação. Somente **Pular para simulação** calcula a campanha inteira, usando o motor por OVR e atributos com a ajuda leve de dificuldade. Escudo, nome do clube e jogadores são preservados no resultado e no histórico.
 
 A biblioteca do Modo rápido tem busca sem distinção de acentos ou maiúsculas, filtros Brasil/Europa e cards com temporada e OVR do mesmo elenco que será escolhido. A prévia mostra os titulares no campo, os quatro atributos do time, as conquistas da temporada e uma única ação principal para simular. O estado da busca é mantido ao voltar para escolher outro clube. As telas inicial, de revisão, de partida e de resultado compartilham superfícies claras, títulos fortes e divisores discretos em `css/design-system.css`; o fluxo rápido fica em `css/quick-game.css`.
 
@@ -191,3 +191,7 @@ No draft, os botões Outro clube e Outra temporada compartilham 4 skips por camp
 ## Site publicado
 
 O jogo é servido pelo GitHub Pages em https://indraa-x.github.io/ScoreFut/. A origem é a raiz da branch `main`; `.nojekyll` mantém os arquivos HTML, CSS, JavaScript e assets como arquivos estáticos. Novos commits em `main` atualizam a publicação.
+
+## Euro
+
+`data/game-squads.js` agrega os clubes e as seleções sem alterar a base de clubes. `squadsForMode()` impede seleções de entrarem em competições de clubes. `createEuro()` cria seis grupos neutros com 23 seleções adversárias distintas e o time do usuário. `js/euro.js` ordena o confronto direto e os melhores terceiros e aplica a tabela das 15 combinações às oitavas. O fluxo de rodada pendente, salvamento, replay e histórico é compartilhado. `js/champions-view.js` adapta grupos e chaveamento às seis chaves e aos jogos únicos da Euro.

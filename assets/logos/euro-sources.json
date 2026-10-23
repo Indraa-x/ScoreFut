@@ -1,0 +1,123 @@
+[
+  {
+    "id": "nation-spain",
+    "source": "https://assets.football-logos.cc/logos/spain/256x256/spain-national-team.a42d399e.png",
+    "sha256": "ae950ad37dc1e4d5d11c78aef8a58806c97212dff1e6b894a3503019ff40c409"
+  },
+  {
+    "id": "nation-germany",
+    "source": "https://assets.football-logos.cc/logos/germany/256x256/germany-national-team.6c5e7edf.png",
+    "sha256": "8e6bfa0ad4365133c853e83056fce3d743a46eab5d7db8496d4d28fada4ac995"
+  },
+  {
+    "id": "nation-france",
+    "source": "https://assets.football-logos.cc/logos/france/256x256/france-national-team.cc82cdbf.png",
+    "sha256": "43fe47f421f99741b02d741d81bfef890e57fec691a24485c3f430d5339228b0"
+  },
+  {
+    "id": "nation-italy",
+    "source": "https://assets.football-logos.cc/logos/italy/256x256/italy-national-team.e86a120c.png",
+    "sha256": "76a3f6ae9a049e482c1f14ff255ae28664a122944a9f515e02abfda3dfde6dcb"
+  },
+  {
+    "id": "nation-england",
+    "source": "https://assets.football-logos.cc/logos/england/256x256/england-national-team.1dd4fab6.png",
+    "sha256": "c1f4ceea485f554f6a2e70efc7ef95b437979358ea691665b413e0a2ead1b944"
+  },
+  {
+    "id": "nation-netherlands",
+    "source": "https://assets.football-logos.cc/logos/netherlands/256x256/dutch-national-team.3fd62267.png",
+    "sha256": "b7266b121b3152f72487722d08039a723a9fd26d96d9cafc66c405c5df009c1d"
+  },
+  {
+    "id": "nation-denmark",
+    "source": "https://assets.football-logos.cc/logos/denmark/256x256/denmark-national-team.9d5a1b50.png",
+    "sha256": "986620157939c9d45a6fed91d48168f09819864447b0fa4c9a9d4b3f65389607"
+  },
+  {
+    "id": "nation-belgium",
+    "source": "https://assets.football-logos.cc/logos/belgium/256x256/belgium-national-team.28a4fd00.png",
+    "sha256": "b3b9164e3b568c8c650373d861307af11442a0e35b2ed7e0ce6cf1c5ebaafb97"
+  },
+  {
+    "id": "nation-croatia",
+    "source": "https://assets.football-logos.cc/logos/croatia/256x256/croatia-national-team.585829ca.png",
+    "sha256": "99765ab62b757e11ac655b4d300d1906daa31ce004bc96c61350f2833cf8c056"
+  },
+  {
+    "id": "nation-czechia",
+    "source": "https://assets.football-logos.cc/logos/czech-republic/256x256/czech-republic-national-team.22a2a846.png",
+    "sha256": "9eab4a82a3d0523c3a80fdde4faf62c75c2ddbfdcc75effcca646a7a0d95bda2"
+  },
+  {
+    "id": "nation-switzerland",
+    "source": "https://assets.football-logos.cc/logos/switzerland/256x256/switzerland-national-team.4c74693e.png",
+    "sha256": "1da151dca54387de7f8d7a89f3184b84c3a3a9b5695c3b707e611ba433992a91"
+  },
+  {
+    "id": "nation-turkey",
+    "source": "https://assets.football-logos.cc/logos/turkey/256x256/turkey-national-team.47b9d986.png",
+    "sha256": "3180117aaa83b2961768dcfbf8adc3f88b333d161000529302662f0430022369"
+  },
+  {
+    "id": "nation-hungary",
+    "source": "https://assets.football-logos.cc/logos/hungary/256x256/hungary-national-team.ae5854d7.png",
+    "sha256": "9f662766d5ce65608de06d95b65f4bfd175bda9c186bd22a4ec3e6ae4f7308f9"
+  },
+  {
+    "id": "nation-romania",
+    "source": "https://assets.football-logos.cc/logos/romania/256x256/romania-national-team.0ee2aa31.png",
+    "sha256": "585bc88085aefeadd0b6dea3a885a27b1d5cf153001a4e1885050dfa67a535aa"
+  },
+  {
+    "id": "nation-poland",
+    "source": "https://assets.football-logos.cc/logos/poland/256x256/poland-national-team.859a4472.png",
+    "sha256": "f4427f88ad76be777f769ca67c09f04e8d789373011b50d139f51c11bdb7f808"
+  },
+  {
+    "id": "nation-austria",
+    "source": "https://assets.football-logos.cc/logos/austria/256x256/austria-national-team.b0823a90.png",
+    "sha256": "cb76082805228db66728cc3c2375baec194a9d263411a02c966734422a1405b4"
+  },
+  {
+    "id": "nation-scotland",
+    "source": "https://assets.football-logos.cc/logos/scotland/256x256/scotland-national-team.bb5a6c4f.png",
+    "sha256": "104179b9afa426e606a3bcd847e64362f399844f381c5dbf3cc42d6ba0f2c6be"
+  },
+  {
+    "id": "nation-ukraine",
+    "source": "https://assets.football-logos.cc/logos/ukraine/256x256/ukraine-national-team.2b3ce76b.png",
+    "sha256": "87c830fd3fb44399a4d675522f0de861d7475133fa7843557a3140fb7718ac66"
+  },
+  {
+    "id": "nation-slovakia",
+    "source": "https://assets.football-logos.cc/logos/slovakia/256x256/slovakia-national-team.59718f80.png",
+    "sha256": "432470542bfdde12b5566eb63655eb2fb6e36e26d86df5a53c1c2de16b25c5d9"
+  },
+  {
+    "id": "nation-slovenia",
+    "source": "https://assets.football-logos.cc/logos/slovenia/256x256/slovenia-national-team.80b3ea17.png",
+    "sha256": "54a23299092743056420cd89aaf50a72ed6fd359d42aa08efbb5b3fc8df0ecb2"
+  },
+  {
+    "id": "nation-albania",
+    "source": "https://assets.football-logos.cc/logos/albania/256x256/albania-national-team.89856a7e.png",
+    "sha256": "b1ef32dcc4f119369320a5172c41676602ae427a23c4fee3e7d65ec8ee739784"
+  },
+  {
+    "id": "nation-serbia",
+    "source": "https://assets.football-logos.cc/logos/serbia/256x256/serbia-national-team.bb7e67cd.png",
+    "sha256": "031197229135fb487e62d3ca9416e3926ca0a94818f8f75d33a3da33f1a32b72"
+  },
+  {
+    "id": "nation-georgia",
+    "source": "https://assets.football-logos.cc/logos/georgia/256x256/georgia-national-team.bbdb3b19.png",
+    "sha256": "a3d4a998d09a54d901eb5722adf132eb8fc523f01fafd1ab01e66e0122a449b5"
+  },
+  {
+    "id": "nation-portugal",
+    "source": "https://assets.football-logos.cc/logos/portugal/700x700/portuguese-football-federation.21becde8.png",
+    "sha256": "c7eb5f9831c7625f8618e4c1506cc0302f038d3b86f7a5c084a32941c4ab65d2",
+    "note": "Previously archived federation crest, reused without alteration."
+  }
+]

@@ -10,4 +10,5 @@ const localClubLogos = Object.fromEntries([
   'celtic', 'marseille', 'psv', 'roma', 'galatasaray', 'fenerbahce', 'rb-leipzig',
 ].map(id => [id, `assets/logos/${id}.png`]));
 
-export const CLUB_LOGOS = Object.freeze(localClubLogos);
+const nationIds=['spain','germany','france','italy','england','portugal','netherlands','denmark','belgium','croatia','czechia','switzerland','turkey','hungary','romania','poland','austria','scotland','ukraine','slovakia','slovenia','albania','serbia','georgia'];
+export const CLUB_LOGOS = Object.freeze({...localClubLogos,...Object.fromEntries(nationIds.map(id=>['nation-'+id,`assets/logos/nation-${id}.png`]))});

@@ -1,4 +1,4 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=five-eras-20261022';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=euro-20261023';
 
 export const MATCH_FLOW_VERSION = 1;
 

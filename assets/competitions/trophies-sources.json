@@ -2,6 +2,10 @@
   "source": "Imagens fornecidas pelo usuário",
   "files": [
     {
+      "file": "euro-trophy.png",
+      "original": "330px-Euro_trophy_icon.png"
+    },
+    {
       "file": "champions-trophy.png",
       "original": "champions.png"
     },

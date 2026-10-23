@@ -60,10 +60,11 @@ test('the separate simulation action completes the knockout, preserves the chose
   assert.throws(()=>simulateQuickGame({...args,picks:[selected.draft.picks[0],...selected.draft.picks.slice(0,10)]}),/jogadores únicos/);
 });
 
-test('quick mode replaces ScoreFut, offers club selection and stops on a preview with the simulation button',()=>{
+test('Euro replaces the visible quick mode while legacy club selection and saved previews remain readable',()=>{
   const home=renderHome({clubs,stats:{titles:0,best:'—',streak:0,winRate:0}});
-  assert.ok(home.includes('data-value="quick"'));
-  assert.ok(home.includes('Modo rápido'));
+  assert.ok(home.includes('data-value="euro"'));
+  assert.ok(!home.includes('data-value="quick"'));
+  assert.ok(home.includes('Euro'));
   assert.ok(!home.includes('Copa ScoreFut'));
   assert.ok(!home.includes('data-value="cup"'));
   const first=renderSetup({mode:'quick',formation:'4-3-3'});

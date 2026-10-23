@@ -1,4 +1,4 @@
-import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=five-eras-20261022';
+import { hashSeed, mulberry32, FORMATIONS, TEAM_SIZE, positionFit } from './engine.js?v=euro-20261023';
 export const DEFAULT_REROLLS = 4;
 export function createDraft(seed,date,mode) {return {seed:hashSeed(seed),rngState:hashSeed(seed),date,mode,rerollLimit:mode==='daily'?0:DEFAULT_REROLLS,rerolls:mode==='daily'?0:DEFAULT_REROLLS,seen:[],picks:[],currentSquadId:null,selectedId:null};}
 /** Upgrade the budget once, preserving the number of skips already spent. */

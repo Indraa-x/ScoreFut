@@ -11,8 +11,9 @@ export const EUROPE_CLUB_IDS = Object.freeze([
   'galatasaray','fenerbahce','rb-leipzig',
 ]);
 export function squadsForMode(squads,mode){
+  if(mode==='euro')return squads.filter(squad=>squad.kind==='national');
   const ids=mode==='copa-do-brasil'?BRAZIL_CUP_CLUB_IDS:mode==='brasileirao'?BRAZIL_CLUB_IDS:mode==='champions'?EUROPE_CLUB_IDS:null;
-  return ids?squads.filter(squad=>ids.includes(squad.clubId)):squads;
+  return ids?squads.filter(squad=>ids.includes(squad.clubId)):squads.filter(squad=>squad.kind!=='national');
 }
-export function competitionName(mode){return {'copa-do-brasil':'Copa do Brasil',brasileirao:'Brasileirão',champions:'Champions League',legends:'Modo Lendas',quick:'Modo rápido'}[mode]||'Copa ScoreFut';}
-export function competitionLogo(mode){return {'copa-do-brasil':'assets/competitions/copa-do-brasil.png',brasileirao:'assets/competitions/brasileirao.png',champions:'assets/competitions/champions-league.png'}[mode]||null;}
+export function competitionName(mode){return {euro:'Euro','copa-do-brasil':'Copa do Brasil',brasileirao:'Brasileirão',champions:'Champions League',legends:'Modo Lendas',quick:'Modo rápido'}[mode]||'Copa ScoreFut';}
+export function competitionLogo(mode){return {euro:'assets/competitions/euro-trophy.png','copa-do-brasil':'assets/competitions/copa-do-brasil.png',brasileirao:'assets/competitions/brasileirao.png',champions:'assets/competitions/champions-league.png'}[mode]||null;}

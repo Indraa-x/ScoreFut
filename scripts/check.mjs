@@ -1,4 +1,4 @@
-import {validateData} from '../data/clubs.js';
+import {validateData} from '../data/game-squads.js';
 import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 const data=validateData();console.log(JSON.stringify(data,null,2));if(!data.valid)process.exit(1);

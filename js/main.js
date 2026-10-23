@@ -1,21 +1,21 @@
-import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=five-eras-20261022';
-import {filterQuickClubs} from './quick-catalog.js?v=falcao-90-20261022';
-import {filterHistory} from './history.js?v=five-eras-20261022';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=falcao-90-20261022';
-import { squadsForMode, competitionName } from '../data/competitions.js?v=five-eras-20261022';
-import { state, MODES } from './state.js?v=two-match-speeds-20261022';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=five-eras-20261022';
-import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=uniform-draw-20261022';
+import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=euro-20261023';
+import {filterQuickClubs} from './quick-catalog.js?v=euro-20261023';
+import {filterHistory} from './history.js?v=euro-20261023';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=euro-20261023';
+import { squadsForMode, competitionName } from '../data/competitions.js?v=euro-20261023';
+import { state, MODES } from './state.js?v=euro-20261023';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=euro-20261023';
+import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=euro-20261023';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
-import * as ui from './ui.js?v=mode-trophy-backgrounds-20261023';
-import {downloadResult} from './share.js?v=five-eras-20261022';
+import * as ui from './ui.js?v=euro-20261023';
+import {downloadResult} from './share.js?v=euro-20261023';
 import {initPlayerDrag} from './player-drag.js?v=drag-size-adjustment-20261023';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=five-eras-20261022';
-import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=two-match-speeds-20261022';
-import {initMatchPlayback} from './match-playback.js?v=match-group-clean-20261022';
-import {initCelebration} from './celebration.js?v=five-eras-20261022';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=euro-20261023';
+import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=euro-20261023';
+import {initMatchPlayback} from './match-playback.js?v=euro-20261023';
+import {initCelebration} from './celebration.js?v=euro-20261023';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
 const historyFilters={search:'',mode:'all',titlesOnly:false};
@@ -42,7 +42,7 @@ function restore(saved){
   const legacy={'2-1-1':'4-3-3','1-2-1':'4-3-3','1-1-2':'4-4-2'};
   const formation=legacy[saved?.formation]||saved?.formation;
   const mode=saved?.mode==='brasileirao'?'copa-do-brasil':saved?.mode==='daily'?'cup':saved?.mode;
-  if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||mode==='legends'||MODES.some(m=>m.id===mode)))return false;
+  if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||mode==='legends'||mode==='quick'||MODES.some(m=>m.id===mode)))return false;
   const upgrade=saved.rulesVersion!==2||!!legacy[saved.formation];
   Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=normalizeMatchSpeed(saved.matchSpeed);
   if (saved.mode === 'brasileirao') {
@@ -67,9 +67,9 @@ function restore(saved){
   delete state.draft.selectedId;delete state.draft.selectedSlotId;delete state.draft.selectedPickId;
   hydrateDraft();if(state.screen==='bracket')state.screen='match';persist();render();return true;
 }
-function openSetup(mode='quick',quickStep='formation'){
+function openSetup(mode='euro',quickStep='formation'){
   if(mode==='brasileirao')mode='copa-do-brasil';
-  state.mode=MODES.some(m=>m.id===mode)?mode:'quick';state.quickStep=quickStep;navigate('setup');
+  state.mode=mode==='quick'||MODES.some(m=>m.id===mode)?mode:'euro';state.quickStep=quickStep;navigate('setup');
 }
 function updateQuickSearch(search){
   state.quickSearch=search;
@@ -228,11 +228,11 @@ async function launchFromHome(button){
       else await new Promise(resolve=>setTimeout(resolve,620));
     }
   }
-  if(state.screen==='home')openSetup('quick');
+  if(state.screen==='home')openSetup('euro');
 }
 async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
 case'home':navigate('home');break;case'history':navigate('history');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
-case'setup':openSetup(value||'quick');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
+case'setup':openSetup(value||'euro');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
 case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){restore(saved);window.scrollTo(0,0);}break;}
 case'draw':await roll();break;case'reroll-club':await roll('club');break;case'reroll-season':await roll('season');break;case'player':selectPlayer(value);break;case'slot':slotAction(value);break;
 case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value);break;case'quick-choose-club':openSetup('quick','clubs');break;case'quick-formation':openSetup('quick');break;
@@ -241,10 +241,10 @@ case'quick-clear':state.quickSearch='';state.quickRegion='all';render();app.quer
 case'next-match':nextMatch();break;
 case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();if(speed===8)app.querySelector('.match-speed-fast')?.classList.add('is-activating');}break;}
 case'bracket':state.returnScreen=state.screen;navigate('bracket');break;case'back-match':navigate(state.returnScreen==='result'?'result':'match');break;
-case'champions-view':{if(state.tournament?.mode!=='champions')break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
-case'champions-group':if(state.screen==='bracket'&&state.tournament?.mode==='champions'&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;
-case'champions-round':if(state.screen==='bracket'&&state.tournament?.mode==='champions'&&['round16','quarter','semi','final'].includes(value)){state.championsRound=value;render();}break;
-case'champions-tie':{if(state.tournament?.mode!=='champions')break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
+case'champions-view':{if(!['champions','euro'].includes(state.tournament?.mode))break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
+case'champions-group':if(state.screen==='bracket'&&['champions','euro'].includes(state.tournament?.mode)&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;
+case'champions-round':if(state.screen==='bracket'&&['champions','euro'].includes(state.tournament?.mode)&&['round16','quarter','semi','final'].includes(value)){state.championsRound=value;render();}break;
+case'champions-tie':{if(!['champions','euro'].includes(state.tournament?.mode))break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
 case'match-index':{const i=Number(value);if(!state.pendingRound&&Number.isInteger(i)&&i>=0&&i<state.tournament.userMatches.length){stopPlayback();state.userMatchIndex=i;state.matchMinute=state.tournament.userMatches[i].result.duration;persist();render();}break;}
 case'result-lineup':if(state.screen==='result'&&state.resultRecord){document.getElementById('modal-content').innerHTML=ui.renderResultLineup(state.resultRecord);modal.showModal();}break;case'download':downloadResult(state.resultRecord);toast('Seu resultado em PNG está pronto.');break;
 case'history-outcome':historyFilters.titlesOnly=value==='titles';updateHistoryList();break;

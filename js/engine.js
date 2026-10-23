@@ -4,7 +4,8 @@
  * OVR and attributes drive the bounded Poisson equation, with modest player assistance.
  */
 
-import { squadsForMode } from '../data/competitions.js?v=five-eras-20261022';
+import { squadsForMode } from '../data/competitions.js?v=euro-20261023';
+import {euroGroupOrder,euroThirdPlaceStandings,euroRound16Pairings} from './euro.js?v=euro-20261023';
 
 export const POSITION_MAP = Object.freeze({
   GOL: 'GOL', ZAG: 'DEF', LD: 'DEF', LE: 'DEF', DEF: 'DEF',
@@ -364,6 +365,7 @@ export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, 
   // during a large audit. No module cache or input mutation is involved.
   const opponentTeam = squad => candidateTeams?.get(squad.id) || squadTeam(squad);
   const eligible = shuffle(allSquads.filter(squad => !excluded.has(squad.id) && squad.id !== user.id), rng);
+  if (mode === 'euro') return createEuro(user, allSquads, excluded, rng, seed, settings, opponentTeam);
   if (mode === 'brasileirao') return createLeague(user, eligible, rng, seed, settings, opponentTeam);
   if (mode === 'copa-do-brasil') return createBrazilCup(user, eligible, rng, seed, settings, opponentTeam);
   const needed = isQuick ? 15 : 31;
@@ -410,6 +412,31 @@ export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, 
 
 
 const KNOCKOUT_STAGES = ['round16', 'quarter', 'semi', 'final'];
+
+function createEuro(user, squads, excluded, rng, seed, settings, opponentTeam) {
+  const countries=[...new Set(squads.map(squad=>squad.clubId))].filter(id=>id!==user.clubId);
+  if(countries.length<23)throw new Error('A Euro precisa de 23 seleções adversárias diferentes.');
+  const opponents=shuffle(countries,rng).slice(0,23).map(id=>{
+    const eras=squads.filter(squad=>squad.clubId===id),unused=eras.filter(squad=>!excluded.has(squad.id));
+    // A sole real edition remains available even when a draft pick came from it.
+    return opponentTeam(choose(unused.length?unused:eras,rng));
+  });
+  const teams=[user,...opponents],order=shuffle(teams.map(team=>team.id),rng),groups=[],matches=[];
+  const schedule=[[[0,1],[2,3]],[[0,2],[3,1]],[[0,3],[1,2]]];
+  for(let index=0;index<6;index++){
+    const id=String.fromCharCode(65+index),teamIds=order.slice(index*4,index*4+4);
+    groups.push({id,name:`Grupo ${id}`,teamIds,standings:[]});
+    schedule.forEach((pairs,round)=>pairs.forEach(([home,away],game)=>matches.push({
+      id:`group-${id}-${round+1}-${game+1}`,stage:'group',stageLabel:`Grupo ${id} · rodada ${round+1}`,
+      groupId:id,round:round+1,homeId:teamIds[home],awayId:teamIds[away],neutral:true,result:null,
+    })));
+  }
+  const tournament={mode:'euro',seed:hashSeed(seed),rngState:rng.getState(),settings:{...settings},
+    userTeamId:user.id,teams,groups,matches,bracket:[],groupRounds:3,knockoutFormat:'single-legged',
+    progressRound:0,userMatches:[],championId:null,complete:false};
+  tournament.groups=standingsFor(tournament);tournament.campaign=campaignFor(tournament);
+  return tournament;
+}
 
 function createBrazilCup(user, eligible, rng, seed, settings, opponentTeam) {
   const clubs = new Map();
@@ -571,7 +598,7 @@ function createLeague(user, eligible, rng, seed, settings, opponentTeam) {
 }
 
 function standingsFor(tournament) {
-  return tournament.groups.map(group => {
+  const groups = tournament.groups.map(group => {
     const rows = group.teamIds.map(teamId => ({ teamId, id: teamId, name: tournament.teams.find(team => team.id === teamId)?.name, played: 0, wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0, goalDifference: 0, points: 0, qualified: false }));
     tournament.matches.filter(match => match.groupId === group.id && match.result).forEach(match => {
       [match.homeId, match.awayId].forEach((teamId, side) => {
@@ -589,10 +616,17 @@ function standingsFor(tournament) {
     });
     // After points, goal difference, and goals scored, seeded drawing of lots
     // breaks a perfect tie. Club spelling and editorial strength give no edge.
-    rows.sort((a, b) => b.points - a.points || (tournament.mode==='brasileirao'?b.wins-a.wins:0) || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor || hashSeed(`${tournament.seed}:${a.teamId}`) - hashSeed(`${tournament.seed}:${b.teamId}`));
+    if(tournament.mode==='euro')rows.splice(0,rows.length,...euroGroupOrder(rows,tournament.matches.filter(match=>match.groupId===group.id),id=>hashSeed(`${tournament.seed}:${id}`)));
+    else rows.sort((a, b) => b.points - a.points || (tournament.mode==='brasileirao'?b.wins-a.wins:0) || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor || hashSeed(`${tournament.seed}:${a.teamId}`) - hashSeed(`${tournament.seed}:${b.teamId}`));
     if (tournament.mode!=='brasileirao' && rows.every(row => row.played === group.teamIds.length-1)) rows.forEach((row, index) => { row.qualified = index < 2; });
     return { ...group, standings: rows };
   });
+  if(tournament.mode==='euro'&&groups.every(group=>group.standings.every(row=>row.played===3))){
+    const thirds=euroThirdPlaceStandings({...tournament,groups},id=>hashSeed(`${tournament.seed}:${id}`));
+    const qualified=new Set(thirds.slice(0,4).map(row=>row.teamId));
+    groups.forEach(group=>{group.standings[2].qualified=qualified.has(group.standings[2].teamId);});
+  }
+  return groups;
 }
 
 function campaignFor(tournament) {
@@ -651,7 +685,7 @@ export function playNextRound(tournament) {
     const home = next.teams.find(team => team.id === match.homeId);
     const away = next.teams.find(team => team.id === match.awayId);
     match.result = simulateMatch(home, away, rng, { knockout: !league && !groupRound,
-      stoppageTimeAllowed:next.mode === 'champions', settings: next.settings });
+      stoppageTimeAllowed:['champions','euro'].includes(next.mode), settings: next.settings });
   });
   next.progressRound += 1;
   next.rngState = rng.getState();
@@ -662,7 +696,9 @@ export function playNextRound(tournament) {
     const fixtures = [];
     // Group winner and runner-up enter opposite bracket halves; a group
     // rematch can only happen in the final.
-    for (let half = 0; half < 2; half += 1) {
+    if(next.mode==='euro')fixtures.push(...euroRound16Pairings(next,id=>hashSeed(`${next.seed}:${id}`))
+      .map(([home,away],index)=>({...stageFixture('round16',home,away,index,groupRounds+1),neutral:true})));
+    else for (let half = 0; half < 2; half += 1) {
       for (let index = 0; index < next.groups.length; index += 2) {
         const first = next.groups[index].standings;
         const second = next.groups[index + 1].standings;
@@ -684,7 +720,7 @@ export function playNextRound(tournament) {
       next.complete = true;
     } else {
       const nextStage = knockoutStages[knockoutIndex + 1];
-      const fixtures = Array.from({ length: selected.length / 2 }, (_, index) => stageFixture(nextStage, selected[index * 2].result.winnerId, selected[index * 2 + 1].result.winnerId, index, next.progressRound + 1));
+      const fixtures = Array.from({ length: selected.length / 2 }, (_, index) => ({...stageFixture(nextStage, selected[index * 2].result.winnerId, selected[index * 2 + 1].result.winnerId, index, next.progressRound + 1),...(next.mode==='euro'?{neutral:true}:{})}));
       next.matches.push(...fixtures);
       next.bracket.push({ stage: nextStage, label: STAGE_LABELS[nextStage], matches: fixtures });
     }

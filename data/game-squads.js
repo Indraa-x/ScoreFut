@@ -1,3 +1,24 @@
-import {allSquads} from './clubs.js?v=falcao-90-20261022';
-export {clubs,validateData} from './clubs.js?v=falcao-90-20261022';
-export {allSquads};
+import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=falcao-90-20261022';
+import {euroNations,euroSquads} from './euro-squads.js?v=euro-20261023';
+export {clubs} from './clubs.js?v=falcao-90-20261022';
+export {euroNations,euroSquads};
+export const allSquads=[...clubSquads,...euroSquads];
+export function validateData(){
+  const original=validateClubs(),errors=[...original.errors],tags=new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
+  if(euroNations.length!==24||euroSquads.length!==101)errors.push('Euro: esperadas 24 seleções e 101 épocas reais.');
+  if(new Set(allSquads.map(s=>s.id)).size!==allSquads.length)errors.push('IDs de elenco repetidos.');
+  for(const nation of euroNations){
+    const eras=euroSquads.filter(s=>s.clubId===nation.id);
+    if(eras.length<1||eras.length>5||eras.length!==new Set(eras.map(s=>s.ano)).size)errors.push(`${nation.nome}: épocas inválidas.`);
+  }
+  for(const squad of euroSquads){
+    const players=squad.jogadores;
+    if(players.length!==11||new Set(players.map(p=>p.id)).size!==11||players.filter(p=>p.tags.includes('GOL')).length!==1)errors.push(`${squad.id}: escalação inválida.`);
+    for(const p of players){
+      if(!p.nome||!p.id||!Number.isFinite(p.ovr)||p.ovr<40||p.ovr>99||!p.tags.length||p.tags.some(tag=>!tags.has(tag)))errors.push(`${squad.id}/${p.id}: jogador inválido.`);
+      if(['ataque','meio','defesa','finalizacao','reflexo','posicionamento'].some(key=>!Number.isFinite(p.atributos?.[key])))errors.push(`${squad.id}/${p.id}: atributos ausentes.`);
+      if(p.ratingKind==='release-rating'&&p.releaseRating.releaseYear!==squad.ratingYear)errors.push(`${squad.id}/${p.id}: edição incorreta.`);
+    }
+  }
+  return {...original,valid:errors.length===0,errors,nations:euroNations.length,squads:allSquads.length,players:allSquads.reduce((n,s)=>n+s.jogadores.length,0)};
+}

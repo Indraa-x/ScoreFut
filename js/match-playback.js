@@ -1,6 +1,6 @@
-import { currentMatch } from './match-session.js?v=five-eras-20261022';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=two-match-speeds-20261022';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=five-eras-20261022';
+import { currentMatch } from './match-session.js?v=euro-20261023';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=euro-20261023';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=euro-20261023';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;

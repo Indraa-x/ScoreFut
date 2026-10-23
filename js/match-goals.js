@@ -1,4 +1,4 @@
-import { formatMatchEventMinute } from './match-motion.js?v=five-eras-20261022';
+import { formatMatchEventMinute } from './match-motion.js?v=euro-20261023';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const color=(value,fallback)=>/^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(value||'')?value:fallback;
