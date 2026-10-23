@@ -2,7 +2,7 @@ import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js?v=five-eras
 import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js?v=five-eras-20261022';
 import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=five-eras-20261022';
 export {RELEASE_RATINGS_BY_SQUAD};
-import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=falcao-90-20261022';
+import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=arsenal-88-20261023';
 import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=vintage-ratings-20261022';
 export { SEASON_RATINGS_BY_SQUAD };
 
@@ -10,7 +10,7 @@ export { SEASON_RATINGS_BY_SQUAD };
  * Historical FIFA/EA SPORTS FC OVRs, with explicit reviews for exceptional
  * seasons and a conservative fallback where no archived rating is available.
  */
-export const RATINGS_VERSION = 17;
+export const RATINGS_VERSION = 18;
 export const MAX_OVR = 99;
 
 // Legacy same-year records are retained only as provenance. Active ratings

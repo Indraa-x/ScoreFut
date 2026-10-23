@@ -67,7 +67,7 @@ test('the before/after audit has 250 reductions, no increases and all personal e
     personal++;assert.equal(player(squad,id).ovr,review.ovr);
     assert.equal(player(squad,id).ratingKind,'creator-review');
   }
-  assert.equal(personal,73);
+  assert.equal(personal,79);
 });
 
 test('lowered vintage ratings update simulation attributes and saved picks without losing progress',()=>{

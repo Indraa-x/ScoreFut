@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-10-22",
+  "checkedAt": "2026-10-23",
   "clubs": 43,
   "squads": 215,
   "players": 2365,
   "verifiedReleaseRecords": 1069,
-  "creatorOverrides": 73,
+  "creatorOverrides": 79,
   "rows": [
     {
       "squadId": "real-madrid-2002",
@@ -4060,9 +4060,13 @@
       "name": "Robert Pirès",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 92,
-      "source": "https://www.fifaindex.com/player/1605/robert-pires/fifa06/"
+      "source": "https://www.fifaindex.com/player/1605/robert-pires/fifa06/",
+      "previousOvr": 92,
+      "creatorOvr": 90,
+      "reviewSource": "data/creator-ratings.js",
+      "note": "Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole."
     },
     {
       "squadId": "arsenal-2004",
@@ -4080,9 +4084,13 @@
       "name": "Gilberto Silva",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 89,
-      "source": "https://fifaindex.com/teams/1-arsenal/fifa05"
+      "source": "https://fifaindex.com/teams/1-arsenal/fifa05",
+      "previousOvr": 89,
+      "creatorOvr": 86,
+      "reviewSource": "data/creator-ratings.js",
+      "note": "Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole."
     },
     {
       "squadId": "arsenal-2004",
@@ -4090,9 +4098,13 @@
       "name": "Fredrik Ljungberg",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 89,
-      "source": "https://fifaindex.com/teams/1-arsenal/fifa05"
+      "source": "https://fifaindex.com/teams/1-arsenal/fifa05",
+      "previousOvr": 89,
+      "creatorOvr": 87,
+      "reviewSource": "data/creator-ratings.js",
+      "note": "Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole."
     },
     {
       "squadId": "arsenal-2004",
@@ -4100,9 +4112,13 @@
       "name": "Lauren",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 89,
-      "source": "https://fifaindex.com/teams/1-arsenal/fifa05"
+      "source": "https://fifaindex.com/teams/1-arsenal/fifa05",
+      "previousOvr": 89,
+      "creatorOvr": 84,
+      "reviewSource": "data/creator-ratings.js",
+      "note": "Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole."
     },
     {
       "squadId": "arsenal-2004",
@@ -4120,9 +4136,13 @@
       "name": "Kolo Touré",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 88,
-      "source": "https://fifaindex.com/teams/1-arsenal/fifa05"
+      "source": "https://fifaindex.com/teams/1-arsenal/fifa05",
+      "previousOvr": 88,
+      "creatorOvr": 85,
+      "reviewSource": "data/creator-ratings.js",
+      "note": "Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole."
     },
     {
       "squadId": "arsenal-2004",
@@ -4130,9 +4150,13 @@
       "name": "Jens Lehmann",
       "year": 2004,
       "expectedEdition": "FIFA 05",
-      "status": "verified-release",
+      "status": "creator",
       "releaseOvr": 87,
-      "source": "https://fifaindex.com/teams/1-arsenal/fifa05"
+      "source": "https://fifaindex.com/teams/1-arsenal/fifa05",
+      "previousOvr": 87,
+      "creatorOvr": 84,
+      "reviewSource": "data/creator-ratings.js",
+      "note": "Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole."
     },
     {
       "squadId": "arsenal-2006",
@@ -23200,5 +23224,5 @@
     "source": "data/VINTAGE-RATINGS.md"
   },
   "creatorImportedOverrides": 67,
-  "creatorDirectOverrides": 1
+  "creatorDirectOverrides": 12
 }

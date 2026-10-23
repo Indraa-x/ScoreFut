@@ -1,7 +1,7 @@
 import { MODES,LEGACY_QUICK_MODE } from './state.js?v=euro-20261023';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=euro-20261023';
-import { clubs, allSquads, euroNations, euroSquads } from '../data/game-squads.js?v=euro-20261023';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=euro-20261023';
+import { clubs, allSquads, euroNations, euroSquads } from '../data/game-squads.js?v=arsenal-88-20261023';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=arsenal-88-20261023';
 import {filterHistory,formatHistoryDate} from './history.js?v=euro-20261023';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=euro-20261023';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=euro-20261023';

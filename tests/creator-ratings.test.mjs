@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import {allSquads} from '../data/clubs.js';
 import {CREATOR_RATING_REVIEW,CREATOR_RATING_REVIEWS,CREATOR_RATINGS_BY_SQUAD,CREATOR_DIRECT_RATING_REVIEWS} from '../data/creator-ratings.js';
 import {applyHistoricalFifaRating} from '../data/ratings.js';
-import {FORMATIONS,positionFit} from '../js/engine.js';
+import {FORMATIONS,positionFit,squadTeam,calculateTeam} from '../js/engine.js';
 import {refreshDraftRatings} from '../js/draft.js';
 
 const player=(squadId,id)=>allSquads.find(squad=>squad.id===squadId)?.jogadores.find(player=>player.id===id);
 
 test('the direct request locks Kaka 2007 at 92 above FIFA 08 and survives saved draft reloads',()=>{
   const kaka=player('milan-2007','kaka');
-  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,6);
+  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,12);
   assert.equal(kaka.ovr,92);
   assert.equal(kaka.ratingKind,'creator-review');
   assert.deepEqual(kaka.creatorReview,CREATOR_DIRECT_RATING_REVIEWS[0]);
@@ -28,6 +28,26 @@ test('the direct request locks Kaka 2007 at 92 above FIFA 08 and survives saved 
   assert.equal(draft.picks[0].player.ovr,90);
   const unrelated=applyHistoricalFifaRating({id:'kaka',ovr:80,atributos:{ataque:80,meio:80,defesa:40}},'milan-2006');
   assert.equal(unrelated.ovr,80);
+});
+
+test('Arsenal 2004 averages exactly 88 while preserving its leading players and refreshing old picks',()=>{
+  const squad=allSquads.find(squad=>squad.id==='arsenal-2004'),team=squadTeam(squad);
+  const unchanged={'thierry-henry':93,'patrick-vieira':91,'dennis-bergkamp':90,'sol-campbell':90,'ashley-cole':88};
+  for(const [id,ovr]of Object.entries(unchanged))assert.equal(player(squad.id,id).ovr,ovr,id);
+  assert.equal(squad.jogadores.reduce((sum,p)=>sum+p.ovr,0),88*11);
+  assert.equal(team.strength.overall,88);
+  const previous={'robert-pires':92,'fredrik-ljungberg':89,'gilberto-silva':89,'kolo-toure':88,'lauren':89,'jens-lehmann':87};
+  for(const p of squad.jogadores){
+    assert.deepEqual(applyHistoricalFifaRating(p,squad.id),p);
+    if(previous[p.id]){
+      assert.equal(p.ratingKind,'creator-review');assert.equal(p.releaseRating.ovr,previous[p.id]);
+      assert.equal(p.creatorReview.previousOvr,previous[p.id]);
+    }
+  }
+  const draft={seed:42,rngState:90,rerolls:2,seen:[squad.id],currentSquadId:squad.id,picks:team.lineup.map(pick=>({...pick,player:{...pick.player,ovr:previous[pick.player.id]??pick.player.ovr}}))};
+  const saved=structuredClone(draft),refreshed=refreshDraftRatings(draft,allSquads);
+  assert.equal(calculateTeam(refreshed.picks).overall,88);
+  assert.deepEqual({...refreshed,picks:[]},{...saved,picks:[]});assert.deepEqual(draft,saved);
 });
 
 test('all 45 new OVR edits and 22 earlier edits reach their exact player and season',()=>{

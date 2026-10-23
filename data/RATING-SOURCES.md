@@ -6,7 +6,7 @@ Não se usa o ano da capa como se fosse o ano de lançamento.
 
 ## Prioridade
 
-1. Os **73 ajustes do criador** sempre prevalecem: os 67 importados dos JSONs de 21 e 22/10 e seis pedidos diretos: **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial. Pedidos diretos ficam separados dos arquivos importados em `CREATOR_DIRECT_RATING_REVIEWS`.
+1. Os **79 ajustes do criador** sempre prevalecem: os 67 importados dos JSONs de 21 e 22/10 e 12 revisões diretas, incluindo os pedidos anteriores: **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial. Pedidos diretos ficam separados dos arquivos importados em `CREATOR_DIRECT_RATING_REVIEWS`.
 2. OVR verificável da edição seguinte ao ano da época, por pessoa e elenco, em `release-ratings.js` (`release-rating`). Uma transferência não muda a identidade: por exemplo, Donnarumma do PSG 2025 pode ter a nota do Manchester City no FC 26.
 3. Na ausência de registro verificável nessa edição, revisão editorial explícita (`season-review`) ou estimativa histórica (`editorial-estimate`). Não se copia uma nota de outra edição, de um homônimo ou de um jogador genérico sem licença.
 
@@ -14,7 +14,7 @@ As antigas notas da edição de mesmo ano foram mantidas somente como histórico
 
 ## Cobertura conferida
 
-Há **1.069 registros jogador/época verificados**, dos quais 33 também têm ajuste pessoal. Na base ativa de 2.365 registros: 1.036 usam a nota verificada, 73 usam os ajustes pessoais e 1.256 continuam editoriais: 272 revisões explícitas e 984 estimativas anteriores. A auditoria completa está em [release-rating-audit.json](release-rating-audit.json), com uma linha para cada jogador/época. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
+Há **1.069 registros jogador/época verificados**, dos quais 39 também têm ajuste pessoal. Na base ativa de 2.365 registros: 1.030 usam a nota verificada, 79 usam os ajustes pessoais e 1.256 continuam editoriais: 272 revisões explícitas e 984 estimativas anteriores. A auditoria completa está em [release-rating-audit.json](release-rating-audit.json), com uma linha para cada jogador/época. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
 
 A [revisão de 1970–1989](VINTAGE-RATINGS.md) confere 275 registros e reduz 250 notas exageradas, preservando os grandes craques e os 67 ajustes pessoais. Os valores continuam identificados como editoriais: não existia uma edição FIFA/FC da EA lançada nessas décadas. As decisões são individuais por jogador e temporada, sem desconto automático por idade ou época.
 
@@ -39,3 +39,18 @@ O jogo é estático: nenhuma consulta ao FIFA Index ou SoFIFA ocorre durante a p
 ## Seleções da Euro
 
 O modo Euro acrescenta 101 elencos de seleções, separados dos 215 elencos de clubes. As épocas reais, as fontes e a cobertura das notas estão em [EURO-SOURCES.md](EURO-SOURCES.md). A Euro 2020 usa FIFA 22, pois foi disputada em 2021. As notas dos clubes e os ajustes existentes do criador não foram alterados por essa ampliação.
+
+## Reequilíbrio do Arsenal 2004 — 23/10/2026
+
+A pedido do criador, os onze titulares somam 968 pontos: média exata de OVR 88. Henry (93), Vieira (91), Bergkamp (90), Campbell (90) e Ashley Cole (88) permanecem com as mesmas notas. Apenas seis notas foram revistas, com prioridade sobre o FIFA 05 e preservando as fontes originais em `releaseRating`.
+
+| Jogador | Antes | Depois |
+| --- | ---: | ---: |
+| Robert Pirès | 92 | 90 |
+| Fredrik Ljungberg | 89 | 87 |
+| Gilberto Silva | 89 | 86 |
+| Kolo Touré | 88 | 85 |
+| Lauren | 89 | 84 |
+| Jens Lehmann | 87 | 84 |
+
+As seis revisões constam em `CREATOR_DIRECT_RATING_REVIEWS`. Nenhum outro elenco foi alterado. Escolhas em drafts ainda sem torneio são atualizadas pelo fluxo existente de restauração; campanhas já iniciadas conservam os seus jogadores e resultados.

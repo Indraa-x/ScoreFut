@@ -1,4 +1,4 @@
-import {clubs, allSquads} from '../data/clubs.js?v=falcao-90-20261022';
+import {clubs, allSquads} from '../data/clubs.js?v=arsenal-88-20261023';
 import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=euro-20261023';
 import {squadTeam,FORMATIONS} from './engine.js?v=euro-20261023';
 

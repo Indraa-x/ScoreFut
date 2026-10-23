@@ -1,14 +1,14 @@
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=euro-20261023';
-import {filterQuickClubs} from './quick-catalog.js?v=euro-20261023';
+import {filterQuickClubs} from './quick-catalog.js?v=arsenal-88-20261023';
 import {filterHistory} from './history.js?v=euro-20261023';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=euro-20261023';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=arsenal-88-20261023';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=euro-20261023';
 import { state, MODES } from './state.js?v=euro-20261023';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=euro-20261023';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=euro-20261023';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
-import * as ui from './ui.js?v=match-header-trophies-20261023';
+import * as ui from './ui.js?v=arsenal-88-20261023';
 import {downloadResult} from './share.js?v=euro-20261023';
 import {initPlayerDrag} from './player-drag.js?v=drag-size-adjustment-20261023';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';

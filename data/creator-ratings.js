@@ -728,6 +728,18 @@ export const CREATOR_DIRECT_RATING_REVIEWS = Object.freeze([
     reviewedAt:'2026-10-22', source:'data/creator-ratings.js',
     reason:'Ajuste do criador do ScoreFut solicitado diretamente em 22/10/2026: Falcão da Roma 1983 passa de OVR 92 para 90.',
   }),
+  ...[
+    ['robert-pires','Robert Pirès',92,90],
+    ['fredrik-ljungberg','Fredrik Ljungberg',89,87],
+    ['gilberto-silva','Gilberto Silva',89,86],
+    ['kolo-toure','Kolo Touré',88,85],
+    ['lauren','Lauren',89,84],
+    ['jens-lehmann','Jens Lehmann',87,84],
+  ].map(([playerId,nome,previousOvr,ovr])=>Object.freeze({
+    squadId:'arsenal-2004',playerId,nome,ovr,previousOvr,
+    reviewedAt:'2026-10-23',source:'data/creator-ratings.js',
+    reason:'Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole.',
+  })),
 ]);
 
 // Keep each import's provenance; the latest edit wins for the same player/season.
