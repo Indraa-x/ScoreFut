@@ -70,3 +70,16 @@ body:has(#app[data-screen="draft"]){min-height:100dvh;height:auto;display:flex;f
  #app[data-screen="draft"] .draft-box{display:block}
  #app[data-screen="draft"] .draft-box .box-row{border-right:0}
 }
+/* Desktop skips belong above the player list; let the pitch use its panel width. */
+@media(min-width:761px){
+ #app[data-screen="draft"] .draft-layout:has(.reroll-block){grid-template-areas:"draw draw draw" "skips pitch team" "players pitch team";grid-template-rows:auto max-content minmax(0,1fr)}
+ #app[data-screen="draft"] .draw-card:has(.reroll-block){display:contents}
+ #app[data-screen="draft"] .draw-card:has(.reroll-block) .draw-club-info{grid-area:draw;padding:16px 20px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+ #app[data-screen="draft"] .draw-card .reroll-block{grid-area:skips;padding:16px;margin:0;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+ #app[data-screen="draft"] .reroll-buttons{max-width:none}
+ #app[data-screen="draft"] .reroll-buttons .btn{font-size:13px;padding:10px 8px}
+ #app[data-screen="draft"] .draft-pitch{width:min(calc(100% - 32px),600px);aspect-ratio:7/9}
+}
+@media(min-width:761px) and (max-width:1279px){
+ #app[data-screen="draft"] .draft-layout:has(.reroll-block){grid-template-areas:"draw draw" "skips pitch" "players pitch" "team team";grid-template-rows:auto max-content minmax(0,1fr) auto}
+}

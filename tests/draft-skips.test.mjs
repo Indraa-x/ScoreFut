@@ -47,3 +47,22 @@ test('old drafts gain the fourth skip once and keep the skips already spent',()=
   }
   const daily=createDraft(2,'date','daily');assert.equal(refreshDraftSkips(daily).rerolls,0);
 });
+
+test('a reroll keeps both controls and the previous club visible while preventing another selection',()=>{
+  const squad=allSquads[0],draft={...createDraft(42,'2026-10-23','champions'),currentSquad:squad,currentSquadId:squad.id,otherSeasonAvailable:true};
+  const state={mode:'champions',formation:'4-3-3',teamName:'Meu time',rolling:true,draft};
+  const html=renderDraft(state);
+  assert.ok(html.includes('aria-busy="true"'));
+  assert.ok(html.includes(squad.nome));
+  assert.ok(html.includes('Sorteando…'));
+  for(const action of ['reroll-club','reroll-season']){
+    const buttons=[...html.matchAll(new RegExp(`<button[^>]*data-action="${action}"[^>]*>`,'g'))];
+    assert.equal(buttons.length,1);
+    assert.match(buttons[0][0],/\sdisabled(?:[\s=>])/);
+  }
+  for(const button of html.matchAll(/<button[^>]*data-action="player"[^>]*>/g))assert.match(button[0],/\sdisabled(?:[\s=>])/);
+  assert.equal(draft.rerolls,4);
+  const first=renderDraft({...state,draft:{...draft,currentSquad:null,currentSquadId:null}});
+  assert.ok(first.includes('Buscando time…'));
+  assert.ok(!first.includes('data-action="reroll-club"'));
+});
