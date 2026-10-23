@@ -27,7 +27,7 @@ test('the match screen shows 22 numbered circles, a real calendar and speed cont
   assert.ok(!/Muito rápido|Ritmo da partida|<small>[148]×<\/small>/.test(html));
   assert.ok(html.indexOf('data-live-pitch')<html.indexOf('data-match-goals'));
   assert.ok(!html.includes('Confronto a definir'));
-  assert.ok(html.includes('assets/competitions/champions-league.png'));
+  assert.ok(html.includes('assets/competitions/champions-trophy.png'));
   assert.ok(!/Estatísticas|Lances|Escanteios|Cartões|match-statistics|match-feed|campaign-strip/.test(html));
   assert.equal((html.match(/data-action="match-speed"/g)||[]).length,2);
   for(const [speed,label]of [[4,'Normal'],[8,'Rápido']])assert.ok(html.includes('data-value="'+speed+'" aria-label="'+label+'"'));
