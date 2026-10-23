@@ -9,15 +9,19 @@ import {renderHome,renderSetup,renderMatch,renderBracket} from '../js/ui.js';
 
 const user={...squadTeam(allSquads[0]),id:'user',clubId:'user',name:'Meu time'};
 
-test('the categories include instant quick play and both local competition logos',()=>{
+test('the categories keep their home logos and use trophy backgrounds in mode selection',()=>{
   assert.deepEqual(MODES.map(mode=>mode.id),['quick','copa-do-brasil','champions']);
   const home=renderHome({clubs,stats:{titles:0,best:'—',streak:0,winRate:0}});
   assert.ok(!home.includes('Copa do Mundo')&&!home.includes('SELEÇÕES DO MUNDO'));
+  assert.ok(home.includes('assets/competitions/copa-do-brasil.png'));
+  assert.ok(home.includes('assets/competitions/champions-league.png'));
   for(const mode of ['copa-do-brasil','champions']){
     const setup=renderSetup({mode,formation:'4-3-3'});
     assert.ok(!/Desafio diário|Mata-mata rápido/.test(home+setup));
-    assert.ok(setup.includes('assets/competitions/copa-do-brasil.png'));
-    assert.ok(setup.includes('assets/competitions/champions-league.png'));
+    const options=setup.match(/<div class="setup-mode-options"[^>]*>([\s\S]*?)<\/div>/)[1];
+    assert.ok(options.includes('assets/competitions/brazil-cup-trophy.png'));
+    assert.ok(options.includes('assets/competitions/champions-trophy.png'));
+    assert.ok(!options.includes('competition-logo'));
   }
   assert.equal(squadsForMode(allSquads,'copa-do-brasil').length,75);
   assert.equal(squadsForMode(allSquads,'champions').length,140);
