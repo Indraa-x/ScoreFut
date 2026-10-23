@@ -11,6 +11,8 @@
 .history-summary.titles .history-summary-icon{background:#fff2cf;color:#94700a}
 .history-summary.played .history-summary-icon{background:#edf2ff;color:#355ab2}
 .history-summary.streak .history-summary-icon{background:#fff0e5;color:#b35522}
+.history-summary.streak .history-summary-icon svg{width:24px;height:24px;stroke-width:1.8}
+html[data-theme="dark"] .history-summary.streak .history-summary-icon{background:#33291f;color:#efb075}
 .history-summary>div{min-width:0}
 .history-summary>div>span{display:block;color:var(--muted);font-size:11px;font-weight:600;line-height:1.5}
 .history-summary strong{display:block;margin-top:7px;font-size:32px;font-weight:800;line-height:1.15;letter-spacing:-1px;font-variant-numeric:tabular-nums}
