@@ -21,6 +21,7 @@
 html,body{background:var(--bg);color:var(--text)}
 input,select,textarea,dialog{color-scheme:inherit}
 .header-inner nav{align-items:center;margin-left:clamp(28px,4vw,56px);gap:22px}
+.header-inner .nav-link{background:transparent;-webkit-tap-highlight-color:transparent}
 .theme-toggle{display:grid;place-items:center;position:relative;width:42px;height:42px;flex:0 0 42px;padding:0;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);box-shadow:0 2px 5px #102b2510;transition:background .2s,border-color .2s,transform .2s}
 .theme-toggle:hover{background:var(--soft);border-color:var(--muted)}
 .theme-toggle:active{transform:scale(.94)}
@@ -32,7 +33,7 @@ html[data-theme="dark"] .brand-logo{content:url('../assets/scorefut-logo-dark.sv
 html[data-theme="dark"] :is(.site-header,footer,.panel,.btn-outline,.personal-stats,.setup-main,.setup-side,.summary-pitch,.summary-info,.team-overview>*,.history-summary,.history-search,.history-entry,.history-empty,.champions-group-panel,.champions-knockout-panel,.champions-tie,.champions-detail-leg,.quick-ready-title){background:var(--surface);border-color:var(--border);color:var(--text)}
 html[data-theme="dark"] :is(.calendar-heading,.match-card .live-scoreboard,.match-card .live-controls,.players-heading,.pitch-header,.players-panel,.pitch-toolbar,.box-widget,.box-row,.summary-team,.summary-stat,.league-standings thead th){background:var(--surface);border-color:var(--border)}
 html[data-theme="dark"] :is(.nav-link,.edition){color:var(--muted)}
-html[data-theme="dark"] .nav-link.active{color:var(--green);background:var(--soft)}
+html[data-theme="dark"] .nav-link.active{color:var(--green)}
 html[data-theme="dark"] :is(.btn-primary,.hero-actions .hero-play-cta,.formation-option.selected){background:#19764e;color:#fff;border-color:#2c9567}
 html[data-theme="dark"] #app .hero-copy h1>span{background-image:linear-gradient(110deg,#75dfae,#7fd4cd 65%,#8cbbf1)}
 html[data-theme="dark"] #app .hero-actions .hero-play-cta{background:#19764e;border-color:#2c9567;color:#fff}
