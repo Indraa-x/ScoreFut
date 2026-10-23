@@ -139,6 +139,6 @@ test('the final displays shootout scores separately without a fictitious next st
   const html=renderMatch(state);
   assert.equal(score(html),'1–1');
   assert.ok(html.includes('Pênaltis <b>3 – 4</b>'));
-  assert.ok(html.includes('Decidida nos pênaltis'));
+  assert.ok(!/match-end-label|Partida encerrada|Decidida nos pênaltis|Após prorrogação/.test(html));
   assert.ok(!html.includes('Confronto a definir'));
 });
