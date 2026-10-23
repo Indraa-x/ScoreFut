@@ -7,9 +7,8 @@
 .mode-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .mode-card[data-value="euro"] :is(p,.mode-card-bottom){color:#ffffffe8}
 .mode-card[data-value="euro"] .mode-tag{background:#0003;color:#fff}
-.mode-card[data-value="euro"] .mode-icon{background:#ffffff15;border-color:#ffffff30;color:#fff}
-.mode-card[data-value="euro"] .competition-logo{width:34px;height:42px;object-fit:contain}
-[data-mode="euro"] .competition-logo,.mode-card[data-value="euro"] .competition-logo{background:transparent;padding:0;border:0;filter:drop-shadow(0 2px 5px #0002)}
+.mode-card[data-value="euro"] .mode-icon{background:#ffffff1f;border-color:#ffffff52;color:#fff}
+.competition-logo[src="assets/competitions/euro-trophy.png"]{background:transparent;padding:0;border:0;filter:drop-shadow(0 2px 5px #0002)}
 :is(.mode-card,.setup-mode-option)[data-value="euro"]:hover{filter:brightness(1.08)}
 .mode-card[data-value="euro"]::after{
   content:'';position:absolute;inset:auto 20px 0;height:3px;border-radius:3px 3px 0 0;

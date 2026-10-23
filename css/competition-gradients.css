@@ -21,6 +21,15 @@
 }
 .mode-card:is([data-value="copa-do-brasil"],[data-value="champions"]) :is(p,.mode-card-bottom){color:#ffffffe0}
 .mode-card:is([data-value="copa-do-brasil"],[data-value="champions"]) .mode-tag{background:#00000026;color:#fff}
+/* Dark competition marks need their own light surface over the gradients. */
+.mode-card .mode-icon:has(.competition-logo){
+  display:flex;align-items:center;justify-content:center;
+  width:72px;height:72px;padding:10px;margin-bottom:18px;border-radius:16px;
+  background:#fff;border:1px solid #ffffffb3;box-shadow:0 4px 12px #00133624;
+}
+.mode-card .mode-icon>.competition-logo{
+  width:100%;height:100%;padding:0;object-fit:contain;background:transparent;border-radius:0;
+}
 :is(.mode-card,.setup-mode-option):is([data-value="copa-do-brasil"],[data-value="champions"]):hover{filter:brightness(1.08)}
 .setup-mode-option:is([data-value="copa-do-brasil"],[data-value="champions"]).selected{
   box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--competition-border);
