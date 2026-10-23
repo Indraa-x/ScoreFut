@@ -354,3 +354,15 @@ main:has(.draft-layout),main:has(.summary-layout){max-width:1760px;padding-left:
  .formation-preview{justify-self:center;max-width:190px}
  .setup-mode-option{font-size:13px}
 }
+/* Let desktop formation selection fill the available space above the footer. */
+@media(min-width:761px){
+ body:has(#app[data-screen="setup"]>.setup-layout){min-height:100dvh;display:flex;flex-direction:column}
+ #app[data-screen="setup"]:has(>.setup-layout){display:flex;flex:1;flex-direction:column;min-height:0;width:100%}
+ #app[data-screen="setup"]:has(>.setup-layout)>.screen-title{width:100%;flex:none}
+ .setup-layout{flex:1;align-items:stretch}
+ .setup-main{display:grid}
+ .setup-formation-layout{align-self:stretch}
+ .formation-preview{max-width:clamp(220px,calc((100dvh - 340px)*20/27),400px)}
+ .setup-side{display:flex;flex-direction:column;height:auto}
+ .setup-side>.btn{margin-top:auto}
+}
