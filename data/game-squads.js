@@ -1,6 +1,6 @@
-import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=arsenal-88-20261023';
+import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=brazil-classics-20261024';
 import {euroNations,euroSquads} from './euro-squads.js?v=euro-20261023';
-export {clubs} from './clubs.js?v=arsenal-88-20261023';
+export {clubs} from './clubs.js?v=brazil-classics-20261024';
 export {euroNations,euroSquads};
 export const allSquads=[...clubSquads,...euroSquads];
 export function validateData(){

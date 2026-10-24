@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-10-23",
+  "checkedAt": "2026-10-24",
   "clubs": 43,
   "squads": 215,
   "players": 2365,
   "verifiedReleaseRecords": 1069,
-  "creatorOverrides": 79,
+  "creatorOverrides": 92,
   "rows": [
     {
       "squadId": "real-madrid-2002",
@@ -13979,8 +13979,12 @@
       "name": "Dorval",
       "year": 1963,
       "expectedEdition": "FIFA 64",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 86,5 para o Santos 1963, preservando Pelé, Gilmar, Zito, Pepe, Coutinho e Mauro Ramos.",
+      "previousOvr": 86,
+      "currentOvr": 84,
+      "creatorOvr": 84,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "santos-1963",
@@ -13988,8 +13992,12 @@
       "name": "Lima",
       "year": 1963,
       "expectedEdition": "FIFA 64",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 86,5 para o Santos 1963, preservando Pelé, Gilmar, Zito, Pepe, Coutinho e Mauro Ramos.",
+      "previousOvr": 85,
+      "currentOvr": 83,
+      "creatorOvr": 83,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "santos-1963",
@@ -13997,8 +14005,12 @@
       "name": "Mengálvio",
       "year": 1963,
       "expectedEdition": "FIFA 64",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 86,5 para o Santos 1963, preservando Pelé, Gilmar, Zito, Pepe, Coutinho e Mauro Ramos.",
+      "previousOvr": 85,
+      "currentOvr": 83,
+      "creatorOvr": 83,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "santos-1963",
@@ -14006,8 +14018,12 @@
       "name": "Calvet",
       "year": 1963,
       "expectedEdition": "FIFA 64",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 86,5 para o Santos 1963, preservando Pelé, Gilmar, Zito, Pepe, Coutinho e Mauro Ramos.",
+      "previousOvr": 83,
+      "currentOvr": 81,
+      "creatorOvr": 81,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "santos-1963",
@@ -14015,8 +14031,12 @@
       "name": "Dalmo",
       "year": 1963,
       "expectedEdition": "FIFA 64",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 86,5 para o Santos 1963, preservando Pelé, Gilmar, Zito, Pepe, Coutinho e Mauro Ramos.",
+      "previousOvr": 82,
+      "currentOvr": 80,
+      "creatorOvr": 80,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "gremio-1995",
@@ -16647,8 +16667,12 @@
       "name": "Quarentinha",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 88,
+      "currentOvr": 86,
+      "creatorOvr": 86,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "botafogo-1962",
@@ -16656,8 +16680,12 @@
       "name": "Amarildo",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 88,
+      "currentOvr": 87,
+      "creatorOvr": 87,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "botafogo-1962",
@@ -16665,8 +16693,12 @@
       "name": "Manga",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 88,
+      "currentOvr": 86,
+      "creatorOvr": 86,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "botafogo-1962",
@@ -16674,8 +16706,12 @@
       "name": "Zagallo",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 87,
+      "currentOvr": 85,
+      "creatorOvr": 85,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "botafogo-1962",
@@ -16683,8 +16719,12 @@
       "name": "Rildo",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 84,
+      "currentOvr": 82,
+      "creatorOvr": 82,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "botafogo-1962",
@@ -16692,8 +16732,12 @@
       "name": "Joel",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 82,
+      "currentOvr": 79,
+      "creatorOvr": 79,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "botafogo-1962",
@@ -16701,8 +16745,12 @@
       "name": "Zé Maria",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 82,
+      "currentOvr": 79,
+      "creatorOvr": 79,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "botafogo-1962",
@@ -16710,8 +16758,12 @@
       "name": "Ayrton",
       "year": 1962,
       "expectedEdition": "FIFA 63",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.",
+      "previousOvr": 81,
+      "currentOvr": 78,
+      "creatorOvr": 78,
+      "reviewSource": "data/creator-ratings.js"
     },
     {
       "squadId": "cruzeiro-1997",

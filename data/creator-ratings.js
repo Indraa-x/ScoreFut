@@ -740,6 +740,31 @@ export const CREATOR_DIRECT_RATING_REVIEWS = Object.freeze([
     reviewedAt:'2026-10-23',source:'data/creator-ratings.js',
     reason:'Reequilíbrio editorial autorizado pelo criador em 23/10/2026: média exata de OVR 88 para o Arsenal 2004, preservando Henry, Vieira, Bergkamp, Campbell e Ashley Cole.',
   })),
+  ...[
+    ['waldir-cardoso-lebre','Quarentinha',88,86],
+    ['amarildo-tavares-da-silveira','Amarildo',88,87],
+    ['haiel-de-souza','Manga',88,86],
+    ['mario-jorge-lobo-zagallo','Zagallo',87,85],
+    ['rildo-da-costa-menezes','Rildo',84,82],
+    ['joel-roberto-carvalho','Joel',82,79],
+    ['ze-maria-defensor-botafogo','Zé Maria',82,79],
+    ['ayrton-ferreira-da-silva','Ayrton',81,78],
+  ].map(([playerId,nome,previousOvr,ovr])=>Object.freeze({
+    squadId:'botafogo-1962',playerId,nome,ovr,previousOvr,
+    reviewedAt:'2026-10-24',source:'data/creator-ratings.js',
+    reason:'Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 85,5 para o Botafogo 1962, preservando Garrincha, Didi e Nílton Santos.',
+  })),
+  ...[
+    ['dorval-rodrigues','Dorval',86,84],
+    ['antonio-lima-dos-santos','Lima',85,83],
+    ['mengalvio-pedro-figueiro','Mengálvio',85,83],
+    ['raul-donazar-calvet','Calvet',83,81],
+    ['dalmo-gaspar','Dalmo',82,80],
+  ].map(([playerId,nome,previousOvr,ovr])=>Object.freeze({
+    squadId:'santos-1963',playerId,nome,ovr,previousOvr,
+    reviewedAt:'2026-10-24',source:'data/creator-ratings.js',
+    reason:'Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 86,5 para o Santos 1963, preservando Pelé, Gilmar, Zito, Pepe, Coutinho e Mauro Ramos.',
+  })),
 ]);
 
 // Keep each import's provenance; the latest edit wins for the same player/season.

@@ -6,7 +6,7 @@ Não se usa o ano da capa como se fosse o ano de lançamento.
 
 ## Prioridade
 
-1. Os **79 ajustes do criador** sempre prevalecem: os 67 importados dos JSONs de 21 e 22/10 e 12 revisões diretas, incluindo os pedidos anteriores: **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial. Pedidos diretos ficam separados dos arquivos importados em `CREATOR_DIRECT_RATING_REVIEWS`.
+1. Os **92 ajustes do criador** sempre prevalecem: os 67 importados dos JSONs de 21 e 22/10 e 25 revisões diretas, incluindo os pedidos anteriores: **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial. Pedidos diretos ficam separados dos arquivos importados em `CREATOR_DIRECT_RATING_REVIEWS`.
 2. OVR verificável da edição seguinte ao ano da época, por pessoa e elenco, em `release-ratings.js` (`release-rating`). Uma transferência não muda a identidade: por exemplo, Donnarumma do PSG 2025 pode ter a nota do Manchester City no FC 26.
 3. Na ausência de registro verificável nessa edição, revisão editorial explícita (`season-review`) ou estimativa histórica (`editorial-estimate`). Não se copia uma nota de outra edição, de um homônimo ou de um jogador genérico sem licença.
 
@@ -14,7 +14,7 @@ As antigas notas da edição de mesmo ano foram mantidas somente como histórico
 
 ## Cobertura conferida
 
-Há **1.069 registros jogador/época verificados**, dos quais 39 também têm ajuste pessoal. Na base ativa de 2.365 registros: 1.030 usam a nota verificada, 79 usam os ajustes pessoais e 1.256 continuam editoriais: 272 revisões explícitas e 984 estimativas anteriores. A auditoria completa está em [release-rating-audit.json](release-rating-audit.json), com uma linha para cada jogador/época. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
+Há **1.069 registros jogador/época verificados**, dos quais 39 também têm ajuste pessoal. Na base ativa de 2.365 registros: 1.030 usam a nota verificada, 92 usam os ajustes pessoais e 1.243 continuam editoriais: 272 revisões explícitas e 971 estimativas anteriores. A auditoria completa está em [release-rating-audit.json](release-rating-audit.json), com uma linha para cada jogador/época. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
 
 A [revisão de 1970–1989](VINTAGE-RATINGS.md) confere 275 registros e reduz 250 notas exageradas, preservando os grandes craques e os 67 ajustes pessoais. Os valores continuam identificados como editoriais: não existia uma edição FIFA/FC da EA lançada nessas décadas. As decisões são individuais por jogador e temporada, sem desconto automático por idade ou época.
 
@@ -54,3 +54,27 @@ A pedido do criador, os onze titulares somam 968 pontos: média exata de OVR 88.
 | Jens Lehmann | 87 | 84 |
 
 As seis revisões constam em `CREATOR_DIRECT_RATING_REVIEWS`. Nenhum outro elenco foi alterado. Escolhas em drafts ainda sem torneio são atualizadas pelo fluxo existente de restauração; campanhas já iniciadas conservam os seus jogadores e resultados.
+
+## Reequilíbrio de Botafogo 1962 e Santos 1963 — 24/10/2026
+
+A pedido do criador, o Botafogo 1962 passa a OVR geral calculado **85,5**, e o Santos 1963 a **86,5**. Os onze jogadores somam, respectivamente, 941 e 952 pontos; `calculateTeam` arredonda a média para uma casa decimal. As notas individuais continuam inteiras.
+
+Garrincha (95), Didi (92) e Nílton Santos (92) permanecem iguais no Botafogo. No Santos, continuam Pelé (96), Gilmar (90), Zito (89), Pepe (89), Coutinho (89) e Mauro Ramos (88).
+
+| Elenco | Jogador | Antes | Depois |
+| --- | --- | ---: | ---: |
+| Botafogo 1962 | Quarentinha | 88 | 86 |
+| Botafogo 1962 | Amarildo | 88 | 87 |
+| Botafogo 1962 | Manga | 88 | 86 |
+| Botafogo 1962 | Zagallo | 87 | 85 |
+| Botafogo 1962 | Rildo | 84 | 82 |
+| Botafogo 1962 | Joel | 82 | 79 |
+| Botafogo 1962 | Zé Maria | 82 | 79 |
+| Botafogo 1962 | Ayrton | 81 | 78 |
+| Santos 1963 | Dorval | 86 | 84 |
+| Santos 1963 | Lima | 85 | 83 |
+| Santos 1963 | Mengálvio | 85 | 83 |
+| Santos 1963 | Calvet | 83 | 81 |
+| Santos 1963 | Dalmo | 82 | 80 |
+
+As treze alterações têm procedência em `CREATOR_DIRECT_RATING_REVIEWS` e na auditoria. Os atributos de simulação acompanham as reduções; drafts ainda sem torneio recebem as notas novas na restauração. Os demais elencos e as campanhas já iniciadas são preservados.

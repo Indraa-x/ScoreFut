@@ -10,7 +10,7 @@ const player=(squadId,id)=>allSquads.find(squad=>squad.id===squadId)?.jogadores.
 
 test('the direct request locks Kaka 2007 at 92 above FIFA 08 and survives saved draft reloads',()=>{
   const kaka=player('milan-2007','kaka');
-  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,12);
+  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,25);
   assert.equal(kaka.ovr,92);
   assert.equal(kaka.ratingKind,'creator-review');
   assert.deepEqual(kaka.creatorReview,CREATOR_DIRECT_RATING_REVIEWS[0]);
@@ -48,6 +48,27 @@ test('Arsenal 2004 averages exactly 88 while preserving its leading players and 
   const saved=structuredClone(draft),refreshed=refreshDraftRatings(draft,allSquads);
   assert.equal(calculateTeam(refreshed.picks).overall,88);
   assert.deepEqual({...refreshed,picks:[]},{...saved,picks:[]});assert.deepEqual(draft,saved);
+});
+
+test('Brazilian 1960s squads reach the requested overall ratings and refresh saved picks without changing their stars',()=>{
+  const cases=[
+    {id:'botafogo-1962',overall:85.5,previous:87.2,sum:941,stars:{'manuel-francisco-dos-santos':95,'nilton-santos':92,'waldyr-pereira':92}},
+    {id:'santos-1963',overall:86.5,previous:87.5,sum:952,stars:{pele:96,'gilmar-dos-santos-neves':90,'jose-ely-de-miranda':89,'jose-macia':89,'antonio-wilson-vieira-honorio':89,'mauro-ramos':88}},
+  ];
+  for(const item of cases){
+    const squad=allSquads.find(s=>s.id===item.id),team=squadTeam(squad);
+    assert.equal(team.strength.overall,item.overall);
+    assert.equal(squad.jogadores.reduce((sum,p)=>sum+p.ovr,0),item.sum);
+    for(const [id,ovr]of Object.entries(item.stars))assert.equal(player(item.id,id).ovr,ovr,id);
+    const draft={seed:42,rngState:90,rerolls:2,seen:[item.id],currentSquadId:item.id,picks:team.lineup.map(pick=>({...pick,player:{...pick.player,ovr:pick.player.creatorReview?.previousOvr??pick.player.ovr}}))};
+    const original=structuredClone(draft);
+    assert.equal(calculateTeam(draft.picks).overall,item.previous);
+    const refreshed=refreshDraftRatings(draft,allSquads);
+    assert.equal(calculateTeam(refreshed.picks).overall,item.overall);
+    assert.deepEqual({...refreshed,picks:[]},{...draft,picks:[]});
+    assert.deepEqual(draft,original);
+    for(const p of squad.jogadores)assert.deepEqual(applyHistoricalFifaRating(p,item.id),p);
+  }
 });
 
 test('all 45 new OVR edits and 22 earlier edits reach their exact player and season',()=>{
