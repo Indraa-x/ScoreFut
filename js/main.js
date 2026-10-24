@@ -1,3 +1,4 @@
+import {initBrowserNavigation} from './browser-navigation.js?v=browser-navigation-20261023';
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=euro-20261023';
 import {filterQuickClubs} from './quick-catalog.js?v=arsenal-88-20261023';
 import {filterHistory} from './history.js?v=euro-20261023';
@@ -17,7 +18,30 @@ import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=euro-2026102
 import {initMatchPlayback} from './match-playback.js?v=euro-20261023';
 import {initCelebration} from './celebration.js?v=euro-20261023';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
-let toastTimer=null,storageWarning=false,lastRenderedScreen=null;
+let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0;
+const navigationSessions=new Map();
+const gameScreens=new Set(['draft','summary','match','bracket']);
+const sessionId=draft=>draft?`${draft.mode}:${draft.date}:${draft.seed}`:null;
+function rememberSession(){if(gameScreens.has(state.screen)&&state.draft&&state.draft.mode===state.mode&&!state.resultRecord){navigationSessions.set(sessionId(state.draft),{...state});}}
+function currentRoute(){return {screen:state.screen,mode:state.mode,quickStep:state.quickStep,...(gameScreens.has(state.screen)?{session:sessionId(state.draft)}:{}),...(['result','bracket'].includes(state.screen)&&state.resultRecord?{recordId:state.resultRecord.id}:{}),...(state.screen==='bracket'?{championsView:state.championsView,returnScreen:state.returnScreen}:{})};}
+function visitRoute(route){
+  navigationVersion++;rememberSession();stopPlayback();if(modal.open)modal.close();
+  const requested=route.screen;
+  if(requested==='bracket'&&route.recordId){const record=storage.read('history',[]).find(r=>r.id===route.recordId);if(record?.tournament){state.resultRecord=record;state.tournament=record.tournament;state.mode=record.mode;state.screen='bracket';state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'result';}else state.screen='history';}
+  else if(gameScreens.has(requested)){
+    const id=route.session||sessionId(state.draft)||sessionId(storage.read('active')?.draft);
+    const cached=navigationSessions.get(id),saved=storage.read('active');
+    if(cached)Object.assign(state,cached);
+    else if(saved&&sessionId(saved.draft)===id)restore(saved);
+    if(!state.draft||sessionId(state.draft)!==id){state.screen='setup';state.mode=MODES.some(m=>m.id===route.mode)?route.mode:'euro';}
+    else{state.mode=state.draft.mode;state.resultRecord=null;state.screen=['match','bracket'].includes(requested)&&!state.tournament?'summary':requested;if(state.screen==='summary'&&state.draft.picks.length!==TEAM_SIZE)state.screen='draft';if(requested==='bracket'){state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'match';}}
+  }else if(requested==='result'){
+    const record=storage.read('history',[]).find(r=>r.id===route.recordId)|| (state.resultRecord?.id===route.recordId?state.resultRecord:null);
+    if(record){state.resultRecord=record;state.tournament=record.tournament||null;state.mode=record.mode;state.screen='result';}else state.screen='history';
+  }else{state.screen=requested; if(requested==='setup'){state.mode=MODES.some(m=>m.id===route.mode)||route.mode==='quick'?route.mode:'euro';state.quickStep=route.quickStep||'formation';}}
+  state.rolling=false;state.matchPlaying=false;render();window.scrollTo({top:0,behavior:'instant'});
+}
+
 const historyFilters={search:'',mode:'all',titlesOnly:false};
 const playback=initMatchPlayback({app,state,onFinish:finishCurrentMatch,onSave:persist});
 const celebration=initCelebration({app,getRecord:()=>state.resultRecord,getScreen:()=>state.screen});
@@ -28,10 +52,10 @@ function toast(message){const el=document.getElementById('toast');el.textContent
 function savedDraft(){const saved=storage.read('active');return saved?.draft?.picks?.length<TEAM_SIZE||saved?.screen==='summary'||saved?.screen==='match'?saved:null;}
 function hydrateDraft(){if(!state.draft)return;const pool=squadsForMode(allSquads,state.mode);state.draft.currentSquad=pool.find(s=>s.id===state.draft.currentSquadId)||null;state.draft.otherSeasonAvailable=pool.some(s=>s.clubId===state.draft.currentSquad?.clubId&&!state.draft.seen.includes(s.id));}
 function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed};}
-function persist(){if(!state.draft)return;const saved=snapshot();const ok=storage.write('active',saved);if(!ok&&!storageWarning){storageWarning=true;toast('Este navegador não permite salvar o progresso. Você pode continuar jogando.');}}
+function persist(){rememberSession();if(!state.draft)return;const saved=snapshot();const ok=storage.write('active',saved);if(!ok&&!storageWarning){storageWarning=true;toast('Este navegador não permite salvar o progresso. Você pode continuar jogando.');}}
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
-function navigate(screen){if(state.screen==='match'&&['home','history','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
-function render(){const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup'),stats=storage.statistics(history);let html='';
+function navigate(screen){navigationVersion++;rememberSession();if(state.screen==='match'&&['home','history','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
+function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup'),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'history':html=ui.renderHistory(history,stats,historyFilters);break;default:html=ui.renderHome({stats,clubs});}
   app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
@@ -91,11 +115,11 @@ function startDraft(){state.quickSquadId=null;state.teamName='Meu time';const da
 }
 async function roll(kind='new'){
   if(state.rolling||(kind!=='new'&&state.draft?.rerolls<=0))return;
-  const draftAtStart=state.draft;
+  const draftAtStart=state.draft,versionAtStart=navigationVersion;
   let drawn=false;
   state.rolling=true;render();
   await new Promise(r=>setTimeout(r,1500));
-  if(state.screen!=='draft'||state.draft!==draftAtStart){state.rolling=false;return;}
+  if(navigationVersion!==versionAtStart||state.screen!=='draft'||state.draft!==draftAtStart){state.rolling=false;return;}
   try{state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind,state.mode,cryptoRandomIndex);drawn=true;persist();}
   catch(error){toast(error.message);}
   finally{
@@ -183,6 +207,7 @@ function chooseQuickTeam(squadId){
   navigate('summary');
 }
 function startTournament(){
+  if(state.tournament){if(state.tournament.complete){const record=storage.read('history',[]).find(r=>r.id===`11-${state.mode}-${state.draft?.seed}-${state.draft?.date}`);if(record){state.resultRecord=record;navigate('result');return;}}navigate('match');return;}
   const picks=state.draft?.picks||[],slots=FORMATIONS[state.formation].slots;
   if(picks.length!==TEAM_SIZE||new Set(picks.map(p=>p.player.id)).size!==TEAM_SIZE||new Set(picks.map(p=>p.slot.id)).size!==TEAM_SIZE||picks.some(p=>!slots.some(s=>s.id===p.slot.id&&positionFit(p.player,s)!==null))){toast('Complete as onze posições antes de entrar em campo.');return;}
   const strength=calculateTeam(state.draft.picks),user={id:'user',name:state.teamName,clubId:'user',monograma:ui.initials(state.teamName),cores:['#2bb777','#174b2e'],lineup:state.draft.picks,strength};
@@ -214,9 +239,10 @@ function finishTournament(){
   const record={rulesVersion:2,id:`11-${state.mode}-${state.draft.seed}-${state.draft.date}`,date:state.draft.date,teamName:state.teamName,mode:state.mode,formation:state.formation,picks:state.draft.picks,strength:calculateTeam(state.draft.picks).overall,champion:c.champion,stageLabel:c.champion?title:league?c.stageLabel:c.stage==='group'?'Eliminado na fase de grupos':`Eliminado · ${c.stageLabel}`,rank:c.champion?6:league?Math.max(1,6-c.position):(rank[c.stage]||1),goalsFor:c.goalsFor,goalsAgainst:c.goalsAgainst,played:c.played,topScorer:c.topScorer,tournament:t};
   const history=storage.read('history',[]);
   if(!history.some(g=>g.id===record.id)){history.push(record);storage.write('history',history.slice(-50));}
-  storage.remove('active');state.resultRecord=record;navigate('result');
+  storage.remove('active');rememberSession();state.resultRecord=record;navigate('result');
 }
 async function launchFromHome(button){
+  const versionAtStart=navigationVersion;
   if(state.screen!=='home'||button?.disabled)return;
   if(button){
     button.classList.add('is-launching');
@@ -228,12 +254,12 @@ async function launchFromHome(button){
       else await new Promise(resolve=>setTimeout(resolve,620));
     }
   }
-  if(state.screen==='home')openSetup('euro');
+  if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('euro');
 }
 async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
 case'home':navigate('home');break;case'history':navigate('history');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
 case'setup':openSetup(value||'euro');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
-case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){restore(saved);window.scrollTo(0,0);}break;}
+case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}break;}
 case'draw':await roll();break;case'reroll-club':await roll('club');break;case'reroll-season':await roll('season');break;case'player':selectPlayer(value);break;case'slot':slotAction(value);break;
 case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value);break;case'quick-choose-club':openSetup('quick','clubs');break;case'quick-formation':openSetup('quick');break;
 case'quick-region':if(['all','brasil','europa'].includes(value)){state.quickRegion=value;render();}break;
@@ -272,4 +298,5 @@ initPlayerDrag({
 modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 document.addEventListener('visibilitychange',()=>{if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});
 window.addEventListener('pagehide',()=>{stopPlayback();if(['draft','summary','match'].includes(state.screen))persist();});
-render();
+navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});
+navigation.start();
