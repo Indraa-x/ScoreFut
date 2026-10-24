@@ -9,7 +9,7 @@ import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, si
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=euro-20261023';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=five-eras-20261022';
-import * as ui from './ui.js?v=no-pitch-direction-20261024';
+import * as ui from './ui.js?v=clean-home-portraits-20261024';
 import {downloadResult} from './share.js?v=euro-20261023';
 import {initPlayerDrag} from './player-drag.js?v=drag-size-adjustment-20261023';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
