@@ -30,7 +30,7 @@ function homePlayers(){
       {name:'Lionel Messi',src:'messi.png?v=messi-inter-miami-20261024',width:649,height:900,head:{x:319,y:200,height:230}},
       {name:'Cristiano Ronaldo',src:'cristiano-ronaldo.png?v=home-portraits-20261021',width:649,height:900,head:{x:326,y:200,height:208}},
       {name:'Neymar Jr.',src:'neymar.png',head:{x:309,y:21,height:200}},
-      {name:'Luka Modrić',src:'modric.png?v=home-modric-20261024',head:{x:326,y:24,height:220}},
+      {name:'Luka Modrić',src:'modric.png?v=home-modric-20261024',zoom:1.06,fadeStops:[[.97,1],[1,0]],head:{x:326,y:24,height:220}},
     ]},
     {className:'legends',width:649,height:900,players:[
       {name:'Gianluigi Buffon',src:'buffon.png',head:{x:339,y:196,height:251}},
