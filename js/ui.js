@@ -39,7 +39,7 @@ function homePlayers(){
       {name:'Ronaldinho Gaúcho',src:'ronaldinho.png',head:{x:341,y:188,height:260}},
     ]},
     {className:'next',players:[
-      {name:'Jamal Musiala',src:'group-3-player-1.png?v=correct-olise-slot-20261021',width:485,height:673,head:{x:266,y:146,height:181}},
+      {name:'Jamal Musiala',src:'group-3-player-1.png?v=correct-olise-slot-20261021',width:485,height:673,head:{x:266,y:156,height:181}},
       {name:'Désiré Doué',src:'group-3-player-2.png',width:649,height:900,offsetX:-60,head:{x:327,y:168,height:231}},
       {name:'Michael Olise',src:'group-3-player-3.png?v=olise-home-20261023',width:649,height:900,head:{x:325,y:174,height:245}},
       {name:'Jogador com uniforme azul e vermelho',src:'group-3-player-4.png',width:649,height:900,head:{x:351,y:208,height:206}},

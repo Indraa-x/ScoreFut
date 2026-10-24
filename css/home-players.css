@@ -16,6 +16,9 @@
 .home-star-portrait img{position:absolute;top:var(--portrait-top);left:50%;width:auto;height:var(--portrait-height);max-width:none;transform:translateX(calc(-1 * var(--portrait-center)));filter:url(#home-portrait-solid);-webkit-mask-image:var(--portrait-fade);mask-image:var(--portrait-fade);user-select:none;pointer-events:none}
 .home-portrait-filters{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
 @media(min-width:421px){.home-stars-group{container-type:inline-size}.home-star-portrait{top:auto;height:min(100%,55cqw)}}
+/* Every carousel group shares the same hairline and torso baseline. */
+#app .home-stars-lineup{width:94%;padding:12px 0 0}
+#app .home-star-portrait{inset:0;height:100%;aspect-ratio:auto}
 .home-stars-footer{position:relative;z-index:2;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:#d9e0e7;border-top:1px solid #cbd3dc;color:var(--muted);font-size:10px}
 .home-stars-footer>span{display:flex;align-items:center;gap:7px}
 .home-stars-footer svg{width:14px;height:14px;flex:0 0 14px;color:var(--green)}
