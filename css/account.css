@@ -1,0 +1,94 @@
+/* Local player accounts, achievement cards and account access in the header. */
+.account-trigger{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:4px 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text);font:600 12px var(--body);white-space:nowrap;transition:background .18s,border-color .18s,transform .18s}
+.account-trigger:hover{border-color:var(--green);background:var(--soft);transform:translateY(-1px)}
+.account-trigger-icon{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--elevated);color:var(--green);font-size:10px;font-weight:800}
+.account-trigger-icon svg{width:15px;height:15px}
+dialog#modal:has(.account-modal-view){width:min(900px,calc(100vw - 32px));max-width:900px;max-height:calc(100dvh - 36px);overflow:auto;padding:24px;border-color:var(--border);background:var(--surface);color:var(--text)}
+.account-modal-view{display:grid;gap:18px}
+.account-modal-view>.modal-head{margin:0 0 2px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.account-modal-view>.modal-head h2{margin:5px 0 0;font-size:25px}
+.account-modal-view .icon-button{width:38px;height:38px;min-height:38px;min-width:38px}
+.account-auth-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.86fr);gap:16px}
+.account-auth-card,.account-benefit-card{padding:26px;border:1px solid var(--border);border-radius:15px;background:var(--surface-alt,var(--soft))}
+.account-auth-card{display:flex;flex-direction:column;align-items:flex-start}
+.account-brand-mark,.account-benefit-mark{display:grid;place-items:center;width:42px;height:42px;margin-bottom:19px;border:1px solid #29c77c45;border-radius:13px;background:#29c77c12;color:var(--green)}
+.account-brand-mark svg,.account-benefit-mark svg{width:21px;height:21px}
+.account-auth-card h3,.account-benefit-card h3{margin:8px 0 7px;font-size:21px;line-height:1.25}
+.account-auth-card>p,.account-benefit-card>p{margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+.account-form{display:grid;width:100%;gap:9px;margin-top:21px}
+.account-form label{margin-top:4px;color:var(--text);font-size:11px;font-weight:650}
+.account-form input{width:100%;min-height:44px;padding:10px 13px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);font:13px var(--body);outline:none}
+.account-form input::placeholder{color:var(--muted);opacity:.8}
+.account-form input:focus{border-color:var(--green);box-shadow:0 0 0 3px #25bd7620}
+.account-form-error{margin:0;color:#ff8585;font-size:11px;line-height:1.4}
+.account-form-error:not([hidden]){display:block}
+.account-submit{width:100%;margin-top:8px;display:flex;justify-content:center;align-items:center;gap:9px}
+.account-submit svg{width:16px;height:16px}
+.account-switch{margin:15px 0 0!important;font-size:11px!important}
+.account-switch button,.account-history-link{display:inline-flex;align-items:center;gap:5px;padding:2px;background:none;color:var(--green);font:700 11px var(--body)}
+.account-switch button:hover,.account-history-link:hover{text-decoration:underline}
+.account-local-note{margin:16px 0 0!important;color:var(--muted);font-size:10px!important;line-height:1.5}
+.account-benefit-card{position:relative;overflow:hidden;background:radial-gradient(ellipse at 95% 0,#29c77c22,transparent 56%),linear-gradient(145deg,#13231b,#17241d);border-color:#29c77c35;color:#f2f7f3}
+.account-benefit-card:after{content:'★';position:absolute;right:-12px;top:75px;color:#fff;opacity:.035;font-size:180px;line-height:1;pointer-events:none}
+.account-benefit-card .eyebrow{color:#65dda0}
+.account-benefit-card>p{color:#b5c4b9}
+.account-preview-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:23px;padding:14px 0;border-top:1px solid #ffffff1c;border-bottom:1px solid #ffffff1c}
+.account-preview-stats span{display:grid;gap:3px;color:#b5c4b9;font-size:9px}
+.account-preview-stats b{color:#fff;font:700 19px var(--heading)}
+.account-mini-achievements{display:grid;gap:9px;margin-top:17px}
+.account-mini-achievements>span{display:flex;align-items:center;gap:8px;color:#d8e6dc;font-size:10px}
+.account-mini-achievements svg{width:15px;height:15px;color:#67dfa1}
+.account-profile-card{display:flex;align-items:center;gap:14px;padding:17px;border:1px solid var(--border);border-radius:13px;background:var(--surface-alt,var(--soft))}
+.account-avatar-large{display:grid;place-items:center;width:52px;height:52px;flex:0 0 auto;border:1px solid #28c77b55;border-radius:16px;background:linear-gradient(145deg,#1f7d53,#145336);color:#effff4;font:700 16px var(--heading)}
+.account-profile-copy{min-width:0;flex:1}
+.account-profile-copy h3{margin:4px 0;font-size:17px;overflow-wrap:anywhere}
+.account-profile-copy p{margin:0;color:var(--muted);font-size:11px;overflow-wrap:anywhere}
+.account-logout{min-height:36px;padding:8px 12px;font-size:10px}
+.account-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.account-stat-grid>div{display:grid;gap:5px;padding:13px 15px;border:1px solid var(--border);border-radius:11px;background:var(--surface-alt,var(--soft))}
+.account-stat-grid span{color:var(--muted);font-size:10px}
+.account-stat-grid strong{color:var(--text);font:700 23px var(--heading)}
+.account-stat-grid strong small{color:var(--muted);font:600 12px var(--body)}
+.account-section-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:12px}
+.account-section-heading h3{margin:4px 0 0;font-size:18px}
+.account-section-heading>span{color:var(--muted);font-size:10px}
+.account-achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.account-achievement{display:flex;align-items:center;gap:10px;min-width:0;padding:12px;border:1px solid var(--border);border-radius:11px;background:var(--surface-alt,var(--soft))}
+.account-achievement.locked{opacity:.66}
+.account-achievement.unlocked{border-color:#29c77c3a;background:linear-gradient(120deg,#29c77c0d,var(--surface-alt,var(--soft)))}
+.account-achievement-icon{display:grid;place-items:center;width:34px;height:34px;flex:0 0 auto;border-radius:10px;background:var(--elevated);color:var(--muted)}
+.account-achievement.unlocked .account-achievement-icon{background:#29c77c18;color:var(--green)}
+.account-achievement-icon svg{width:17px;height:17px}
+.account-achievement-copy{display:grid;gap:3px;min-width:0;flex:1}
+.account-achievement-copy strong{font-size:10px;line-height:1.3}
+.account-achievement-copy>span{color:var(--muted);font-size:9px;line-height:1.35}
+.account-achievement-progress{height:3px;margin-top:3px;overflow:hidden;border-radius:5px;background:var(--border)}
+.account-achievement-progress i{display:block;height:100%;border-radius:inherit;background:var(--green)}
+.account-achievement-count{color:var(--muted);font-size:9px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.account-recent-list{overflow:hidden;border:1px solid var(--border);border-radius:11px}
+.account-recent-list>div{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border)}
+.account-recent-list>div:last-child{border-bottom:0}
+.account-recent-icon{display:grid;place-items:center;width:30px;height:30px;flex:0 0 auto;border-radius:9px;background:var(--elevated);color:var(--muted)}
+.account-recent-icon.champion{background:#29c77c16;color:var(--green)}
+.account-recent-icon svg{width:15px;height:15px}
+.account-recent-list>div>span:nth-child(2){display:grid;gap:3px;min-width:0;flex:1}
+.account-recent-list strong{overflow:hidden;color:var(--text);font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.account-recent-list small{overflow:hidden;color:var(--muted);font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.account-recent-list>div>b{color:var(--muted);font-size:9px;white-space:nowrap}
+.account-recent-list>div>b.champion{color:var(--green)}
+.account-empty-history{margin:0;padding:15px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-size:11px;text-align:center}
+.account-footnote{margin:0!important;text-align:center}
+@media(max-width:900px){.account-trigger-label{display:none}.account-trigger{width:38px;padding:4px}}
+@media(max-width:600px){
+ dialog#modal:has(.account-modal-view){width:calc(100vw - 20px);max-height:calc(100dvh - 20px);padding:16px;border-radius:14px}
+ .account-modal-view{gap:13px}.account-modal-view>.modal-head h2{font-size:22px}
+ .account-auth-layout{grid-template-columns:1fr;gap:10px}.account-auth-card,.account-benefit-card{padding:19px}
+ .account-benefit-card{padding-block:17px}.account-brand-mark,.account-benefit-mark{margin-bottom:12px}
+ .account-profile-card{gap:10px;padding:12px}.account-avatar-large{width:44px;height:44px;border-radius:13px;font-size:14px}
+ .account-profile-copy h3{font-size:15px}.account-profile-copy p{font-size:10px}
+ .account-logout{min-width:0;min-height:34px;padding:7px 9px;font-size:9px}
+ .account-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.account-stat-grid>div{padding:10px 12px}.account-stat-grid strong{font-size:20px}
+ .account-achievement-grid{grid-template-columns:1fr;gap:7px}.account-achievement{padding:10px}
+ .account-section-heading h3{font-size:16px}.account-section-heading>span{font-size:9px}
+ .account-switch{font-size:11px!important}.account-local-note{margin-top:12px!important}
+}
