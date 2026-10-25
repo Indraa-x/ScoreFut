@@ -6,6 +6,30 @@ export function activeAccountId(){try{return localStorage.getItem(prefix+'accoun
 export function setAccountSession(id){try{if(id)localStorage.setItem(prefix+'account-session',id);else localStorage.removeItem(prefix+'account-session');return true;}catch{return false;}}
 export function clearGuestProgress(){try{localStorage.removeItem(prefix+'active');localStorage.removeItem(prefix+'history');return true;}catch{return false;}}
 export function clearAccountProgress(id){try{for(const key of accountScopedKeys)localStorage.removeItem(accountKey(key,id));return true;}catch{return false;}}
+function moveProgress(sourceAccountId,targetAccountId){
+  const moved=[];
+  try{
+    for(const key of accountScopedKeys){
+      const source=sourceAccountId?accountKey(key,sourceAccountId):prefix+key;
+      const target=targetAccountId?accountKey(key,targetAccountId):prefix+key;
+      const value=localStorage.getItem(source);
+      if(value===null)continue;
+      if(localStorage.getItem(target)!==null)throw new Error('O destino já contém progresso.');
+      localStorage.removeItem(source);
+      try{localStorage.setItem(target,value);}
+      catch(error){localStorage.setItem(source,value);throw error;}
+      moved.push({source,target,value});
+    }
+    return true;
+  }catch{
+    for(const item of moved.reverse()){
+      try{localStorage.removeItem(item.target);localStorage.setItem(item.source,item.value);}catch{/* Mantém a falha sinalizada ao chamador. */}
+    }
+    return false;
+  }
+}
+export function moveGuestProgressToAccount(id){return moveProgress(null,id);}
+export function moveAccountProgressToGuest(id){return moveProgress(id,null);}
 export function read(key, fallback = null) { try { const value = localStorage.getItem(storageKey(key)); return value === null ? fallback : JSON.parse(value); } catch { return fallback; } }
 export function write(key, value) { try {localStorage.setItem(storageKey(key),JSON.stringify(value));return true;} catch {return false;} }
 export function remove(key) {try {localStorage.removeItem(storageKey(key));} catch { /* Navegação privada pode bloquear o armazenamento. */ }}

@@ -1,4 +1,4 @@
-import * as storage from './storage.js?v=username-login-20261025';
+import * as storage from './storage.js?v=account-storage-move-20261025';
 
 const ACCOUNT_INDEX='accounts';
 const HASH_ITERATIONS=160000;
@@ -33,24 +33,18 @@ export async function createAccount({username,password}){
 
   const accounts=listAccounts();
   if(accounts.some(account=>normalizeUsername(account.username||account.name)===normalizedUsername))throw new Error('Já existe uma conta com este nome de usuário neste navegador.');
-  const guestHistory=storage.read('history',[]);
-  const guestActive=storage.read('active');
   const salt=makeSalt();
   const account={id:crypto.randomUUID(),name:safeUsername,username:safeUsername,salt,passwordHash:await hashPassword(String(password),salt),createdAt:new Date().toISOString()};
   if(!storage.write(ACCOUNT_INDEX,[...accounts,account]))throw new Error('Não foi possível salvar a conta neste navegador.');
+  if(!storage.moveGuestProgressToAccount(account.id)){
+    storage.write(ACCOUNT_INDEX,accounts);
+    throw new Error('Não foi possível transferir o histórico. Seus dados antigos continuam salvos neste navegador.');
+  }
   if(!storage.setAccountSession(account.id)){
+    storage.moveAccountProgressToGuest(account.id);
     storage.write(ACCOUNT_INDEX,accounts);
-    throw new Error('Não foi possível iniciar a conta neste navegador.');
+    throw new Error('Não foi possível iniciar a conta. Seus dados antigos continuam salvos neste navegador.');
   }
-  const historySaved=storage.write('history',Array.isArray(guestHistory)?guestHistory:[]);
-  const activeSaved=guestActive==null||storage.write('active',guestActive);
-  if(!historySaved||!activeSaved){
-    storage.setAccountSession(null);
-    storage.clearAccountProgress(account.id);
-    storage.write(ACCOUNT_INDEX,accounts);
-    throw new Error('Não foi possível salvar o histórico da conta. Seus dados anteriores foram mantidos.');
-  }
-  storage.clearGuestProgress();
   return publicAccount(account);
 }
 
