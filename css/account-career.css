@@ -1,4 +1,5 @@
 /* ScoreFut player passport and original achievement medals. */
+.account-modal-view{--heading:'Barlow Condensed','Arial Narrow',sans-serif}
 dialog#modal:has(.account-career){width:min(1000px,calc(100vw - 32px));max-width:1000px;padding:26px;border-radius:16px}
 .account-career{gap:20px}
 .account-career>.modal-head h2{font-size:28px;letter-spacing:.1px}
