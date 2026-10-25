@@ -1,0 +1,130 @@
+/* ScoreFut player passport and original achievement medals. */
+dialog#modal:has(.account-career){width:min(1000px,calc(100vw - 32px));max-width:1000px;padding:26px;border-radius:16px}
+.account-career{gap:20px}
+.account-career>.modal-head h2{font-size:28px;letter-spacing:.1px}
+.account-career .eyebrow{font-size:9px;letter-spacing:1.6px}
+.account-history-link{gap:8px;padding:8px 0;font-size:11px;white-space:nowrap}
+.account-history-link svg{width:16px;height:16px}
+.account-history-link:hover{text-underline-offset:4px}
+
+/* One player card and a continuous record strip. */
+.career-passport{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 230px;overflow:hidden;border:1px solid var(--border);border-radius:12px;background:var(--surface-alt,var(--soft))}
+.career-passport:after{content:'';position:absolute;width:220px;height:220px;right:75px;top:-115px;border:1px solid var(--border);border-radius:50%;pointer-events:none;opacity:.55}
+.career-identity{display:flex;align-items:center;gap:18px;min-width:0;padding:20px 24px;z-index:1}
+.career-emblem{width:68px;height:78px;flex:0 0 auto}
+.career-emblem-edge{fill:#77b894;stroke:#8bcca8;stroke-width:1}
+.career-emblem-field{fill:#18462f}
+.career-emblem-stripe{fill:#276c48}
+.career-emblem-shirt{fill:#ebf1db;stroke:#123623;stroke-width:1.5}
+.career-emblem text{fill:#16492e;font:800 16px var(--body);letter-spacing:-1px}
+.career-emblem-stitch{stroke:#b8d6b9;stroke-width:1.5}
+.career-player{min-width:0;flex:1}
+.career-player .eyebrow{color:var(--muted);font-size:8px}
+.career-player h3{margin:5px 0 6px;font:700 34px/1 var(--heading);letter-spacing:.2px;overflow-wrap:anywhere}
+.career-player p{color:var(--muted);font-size:10px;line-height:1.5}
+.career-logout{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;margin-top:3px;padding:5px 0 5px 8px;background:none;color:var(--muted);font-size:10px}
+.career-logout:hover{color:var(--text)}
+.career-logout svg{width:16px;height:16px}
+.career-honours{display:flex;align-items:center;justify-content:center;gap:12px;border-left:1px solid var(--border);position:relative;z-index:1}
+.career-honours>svg{width:29px;height:34px;color:var(--gold);stroke-width:1.35}
+.career-honours strong{font:600 59px/.9 var(--heading);letter-spacing:-2px;color:var(--gold)}
+.career-honours>span{font-size:10px;line-height:1.5;color:var(--muted)}
+.career-record{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-column:1/-1;border-top:1px solid var(--border);position:relative;z-index:1}
+.career-record>div{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 16px}
+.career-record>div+div{border-left:1px solid var(--border)}
+.career-record strong{font:600 27px/1 var(--heading);font-variant-numeric:tabular-nums;color:var(--text)}
+.career-record strong small{font-size:15px;margin-left:2px}
+.career-record span{color:var(--muted);font-size:10px;line-height:1.4}
+
+/* Open shelves keep the collection separate from the match history. */
+.career-section-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:10px}
+.career-section-head .eyebrow{font-size:8px;color:var(--muted)}
+.career-section-head h3{margin:5px 0 0;font:600 25px/1 var(--heading);letter-spacing:.2px}
+.career-collection-count{display:grid;gap:7px;min-width:158px;text-align:right;color:var(--muted);font-size:11px;white-space:nowrap}
+.career-collection-count b{font:600 22px/1 var(--heading);color:var(--text)}
+.career-collection-count small{font-size:9px;margin-left:5px}
+.career-collection-track{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.career-collection-track i{height:3px;background:var(--border);border-radius:1px}
+.career-collection-track i.filled{background:var(--green)}
+.achievement-shelf{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.achievement-tile{display:flex;flex-direction:column;align-items:center;min-width:0;padding:14px 9px 15px;text-align:center;position:relative}
+.achievement-tile:nth-child(-n+5){border-bottom:1px solid var(--border)}
+.achievement-tile:after{content:'';position:absolute;right:0;top:22px;bottom:22px;width:1px;background:var(--border);opacity:.45}
+.achievement-tile:nth-child(5n):after{display:none}
+.achievement-tile h4{display:grid;align-items:center;min-height:30px;margin:7px 0 3px;color:var(--text);font-size:11px;line-height:1.3;font-weight:700}
+.achievement-tile p{margin:0;min-height:28px;max-width:150px;color:var(--muted);font-size:10px;line-height:1.45}
+.achievement-state{margin-top:8px;color:var(--muted);font-size:9px;line-height:1.3;font-variant-numeric:tabular-nums}
+.is-earned .achievement-state{color:var(--green);font-weight:600}
+.is-earned .achievement-state:before{content:'';display:inline-block;width:4px;height:4px;margin:0 5px 2px 0;border-radius:50%;background:currentColor}
+.achievement-badge{display:block;width:78px;height:88px;flex:0 0 auto;overflow:visible;transition:transform .18s ease;--medal-rim:#a6884f;--medal-face:#254334;--medal-metal:#e2c787;--medal-ink:#344537;--medal-detail:#8fbd97;--medal-ribbon:#95743c;--medal-light:#fff3c9}
+.achievement-tile:hover .achievement-badge{transform:translateY(-3px)}
+.medal-ribbon{fill:var(--medal-ribbon);stroke:var(--medal-rim);stroke-width:1}
+.medal-rim{fill:var(--medal-rim);stroke:var(--medal-metal);stroke-width:.7}
+.medal-face{fill:var(--medal-face)}
+.medal-engraving{stroke:var(--medal-rim);stroke-width:.9;opacity:.7}
+.medal-metal{fill:var(--medal-metal);stroke:var(--medal-metal);stroke-width:1.2}
+.medal-secondary{fill:none;stroke:var(--medal-detail);stroke-width:2.1}
+.medal-cut{fill:none;stroke:var(--medal-ink);stroke-width:1.7}
+.medal-highlight{fill:none;stroke:var(--medal-light);stroke-width:1.5;opacity:.85}
+.medal-status{fill:var(--surface);stroke:var(--medal-rim);stroke-width:1.2}
+.medal-status-mark{color:var(--medal-metal)}
+.medal-first-campaign,.medal-three-campaigns{--medal-rim:#589b78;--medal-face:#173e2b;--medal-metal:#b4dfb8;--medal-ink:#225038;--medal-detail:#72b798;--medal-ribbon:#326648;--medal-light:#efffe5}
+.medal-ten-campaigns{--medal-rim:#b58c65;--medal-face:#463126;--medal-metal:#edc294;--medal-ink:#634328;--medal-detail:#be976e;--medal-ribbon:#856047}
+.medal-five-titles{--medal-face:#403721;--medal-rim:#c49a52;--medal-metal:#f4d894;--medal-detail:#c5a663;--medal-ribbon:#a67c37}
+.medal-three-win-streak{--medal-face:#492a22;--medal-rim:#bd7b51;--medal-metal:#f2b676;--medal-ink:#713b26;--medal-detail:#ce8660;--medal-ribbon:#975b3e}
+.medal-euro-title{--medal-face:#1c4257;--medal-rim:#7babb9;--medal-metal:#e2ecec;--medal-ink:#477185;--medal-detail:#87bdcf;--medal-ribbon:#2f7092;--medal-light:#fff}
+.medal-champions-title{--medal-face:#2d3554;--medal-rim:#8c99bc;--medal-metal:#e6e9f4;--medal-ink:#4e5d7d;--medal-detail:#9ba8d3;--medal-ribbon:#4a5682;--medal-light:#fff}
+.medal-brazil-title{--medal-face:#254532;--medal-rim:#b7a453;--medal-metal:#f0d684;--medal-ink:#4f6336;--medal-detail:#87af7c;--medal-ribbon:#538044}
+.achievement-badge.pending{--medal-rim:#4e6254;--medal-face:#242f27;--medal-metal:#98aa9d;--medal-ink:#394d3e;--medal-detail:#748b7b;--medal-ribbon:#34473a;--medal-light:#becbc0}
+[data-theme="light"] .achievement-badge.pending{--medal-rim:#a9b6ac;--medal-face:#e4ebe4;--medal-metal:#7b9181;--medal-ink:#e4ebe4;--medal-detail:#819889;--medal-ribbon:#c8d3c8;--medal-light:#c4d4c6}
+
+.career-history .career-section-head{margin-bottom:8px}
+.career-results{border-top:1px solid var(--border)}
+.career-result{display:flex;align-items:center;gap:14px;min-width:0;padding:12px 1px;border-bottom:1px solid var(--border)}
+.career-result-number{width:24px;flex:0 0 auto;color:var(--muted);font:500 18px/1 var(--heading);opacity:.65}
+.career-result-team{display:grid;gap:4px;min-width:0;flex:1}
+.career-result-team strong{font-size:11px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.career-result-team small{font-size:9px;color:var(--muted)}
+.career-result-outcome{display:flex;align-items:center;gap:6px;max-width:40%;text-align:right;color:var(--muted);font-size:10px;line-height:1.4}
+.career-result-outcome svg{width:14px;height:14px;flex:0 0 auto}
+.career-result.is-champion .career-result-outcome{color:var(--gold);font-weight:650}
+.career-empty{display:flex;align-items:center;gap:14px;padding:20px 0;border-block:1px solid var(--border);color:var(--muted)}
+.career-empty>svg{width:28px;height:28px;flex:0 0 auto;opacity:.8}
+.career-empty p{font-size:12px;color:var(--text)}
+.career-empty p span{display:block;margin-top:4px;font-size:10px;color:var(--muted)}
+.account-career .account-footnote{margin:0;font-size:9px;opacity:.85}
+
+/* The sign-in preview uses the same medal artwork. */
+.account-benefit-card{display:flex;flex-direction:column;justify-content:center;background:#173528;border-color:#355841;color:#edf4e8}
+.account-benefit-card:after{content:none}
+.account-benefit-card .eyebrow{color:#a9c9b3;font-size:8px;letter-spacing:1.4px}
+.account-benefit-card h3{margin:12px 0;font:600 33px/1.05 var(--heading)}
+.account-benefit-card>p{font-size:11px;line-height:1.6;color:#bacdbf}
+.account-preview-medals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:24px 0}
+.account-preview-medals>div{display:flex;align-items:center;flex-direction:column;text-align:center;gap:8px}
+.account-preview-medals .achievement-badge{width:68px;height:77px}
+.account-preview-medals span{color:#d7e4d7;font-size:9px;line-height:1.4}
+.account-preview-medals .medal-status{fill:#173528}
+.account-preview-medals .achievement-badge.pending{--medal-rim:#65816d;--medal-face:#254633;--medal-metal:#9ab79e;--medal-ink:#254633;--medal-detail:#789c82;--medal-ribbon:#385e43;--medal-light:#b9d1ba}
+.account-preview-stats{margin-top:0;padding:18px 0 0;border-bottom:0;border-top:1px solid #ffffff26}
+.account-preview-stats b{color:#edf4e8;font:600 25px/1 var(--heading)}
+
+@media(max-width:900px){.career-identity{padding:18px;gap:14px}.career-passport{grid-template-columns:minmax(0,1fr) 200px}.career-honours{gap:9px}.career-honours strong{font-size:53px}}
+@media(max-width:680px){
+  dialog#modal:has(.account-career){width:calc(100vw - 20px);max-height:calc(100dvh - 20px);padding:18px;border-radius:14px}
+  .account-career{gap:22px}.account-career>.modal-head h2{font-size:26px}
+  .career-passport{grid-template-columns:minmax(0,1fr) 100px}.career-identity{padding:16px 12px;gap:10px}.career-emblem{width:48px;height:56px}
+  .career-player h3{font-size:25px}.career-player .eyebrow{font-size:7px;letter-spacing:1px}.career-player p{font-size:9px}
+  .career-logout{padding:3px 0;margin:0}.career-logout span{display:none}.career-logout svg{width:15px;height:15px}
+  .career-honours{flex-wrap:wrap;align-content:center;gap:3px 5px;padding:12px 8px}.career-honours>svg{width:19px;height:25px}.career-honours strong{font-size:43px;letter-spacing:-1px}.career-honours>span{width:100%;text-align:center;font-size:8px}.career-honours br{display:none}
+  .career-record>div{display:grid;justify-items:center;gap:6px;padding:11px 5px}.career-record strong{font-size:26px}.career-record span{font-size:9px;text-align:center}
+  .career-section-head{gap:10px}.career-section-head h3{font-size:24px}.career-collection-count{min-width:124px;font-size:10px}.career-collection-count small{font-size:8px;margin-left:3px}.career-collection-count b{font-size:21px}
+  .achievement-shelf{grid-template-columns:repeat(2,minmax(0,1fr))}.achievement-tile{padding:17px 10px}.achievement-tile:nth-child(n){border-bottom:1px solid var(--border)}.achievement-tile:nth-last-child(-n+2){border-bottom:0}
+  .achievement-tile:nth-child(n):after{display:block}.achievement-tile:nth-child(2n):after{display:none}.achievement-tile h4{font-size:12px;min-height:18px;margin:9px 0 5px}.achievement-tile p{font-size:10px;min-height:29px;max-width:145px}.achievement-badge{width:85px;height:96px}.achievement-state{font-size:9px}
+  .career-result{gap:10px;padding-block:13px}.career-result-number{width:17px;font-size:17px}.career-result-team strong{font-size:11px}.career-result-team small{font-size:9px}.career-result-team small>span{display:none}.career-result-outcome{font-size:9px}.account-history-link{font-size:10px}
+  .account-auth-layout{grid-template-columns:1fr;gap:12px}.account-benefit-card h3{font-size:30px}.account-preview-medals{margin-block:20px}.account-preview-medals .achievement-badge{width:74px;height:84px}
+}
+@media(max-width:380px){
+  dialog#modal:has(.account-career){padding:14px}.career-passport{grid-template-columns:minmax(0,1fr) 83px}.career-emblem{width:40px;height:48px}.career-identity{gap:8px;padding:15px 10px}.career-player h3{font-size:22px}.career-honours strong{font-size:36px}.career-honours>svg{width:17px}.career-player p{font-size:8px}.career-logout svg{width:13px}
+}
+@media(prefers-reduced-motion:reduce){.achievement-badge{transition:none}.achievement-tile:hover .achievement-badge{transform:none}}
