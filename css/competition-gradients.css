@@ -53,7 +53,7 @@
 }
 .setup-mode-option>.mode-trophy-backdrop{
   position:absolute;left:50%;top:4px;transform:translateX(-50%);width:88%;height:calc(100% - 10px);
-  object-fit:contain;opacity:.30;filter:grayscale(1);pointer-events:none;user-select:none;z-index:0;
+  object-fit:contain;opacity:.42;filter:grayscale(1);pointer-events:none;user-select:none;z-index:0;
   mask-image:linear-gradient(#000 50%,#0006 85%,transparent);
 }
 .setup-mode-option.has-trophy>span{position:relative;z-index:2;text-shadow:0 1px 3px #0006}
