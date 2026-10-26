@@ -41,7 +41,7 @@ function homePlayers(){
     {className:'next',players:[
       {name:'Erling Haaland',src:'haaland.png?v=home-duo-20261024',width:485,height:567,fadeStops:[[.94,1],[1,0]],head:{x:282,y:11,height:210}},
       {name:'Jude Bellingham',src:'bellingham.png?v=home-duo-20261024',width:649,height:900,head:{x:337,y:174,height:250}},
-      {name:'Kylian Mbappé',src:'mbappe-psg-20261026.png',width:485,height:567,fadeStops:[[.93,1],[1,0]],head:{x:305,y:21,height:225}},
+      {name:'Kylian Mbappé',src:'mbappe.png?v=home-mbappe-20261024',width:644,height:900,fadeStops:[[.93,1],[1,0]],head:{x:385,y:143,height:205}},
       {name:'Lamine Yamal',src:'group-3-player-4.png',width:649,height:900,offsetX:20,head:{x:351,y:208,height:206}},
     ]},
   ];
