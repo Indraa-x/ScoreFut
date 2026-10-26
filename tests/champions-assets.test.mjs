@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {clubs,allSquads} from '../data/clubs.js';
+import {clubs,allSquads} from '../data/game-squads.js';
 import {CLUB_LOGOS} from '../data/club-logos.js';
 import {renderDraft,renderPlayerDragPreview} from '../js/ui.js';
 import {createDraft} from '../js/draft.js';
-import {FORMATIONS,positionFit} from '../js/engine.js';
+import {FORMATIONS,positionFit,POSITION_MAP} from '../js/engine.js';
 
 const root=new URL('../',import.meta.url);
 const sources=JSON.parse(fs.readFileSync(new URL('assets/logos/sources.json',root),'utf8'));
@@ -23,12 +23,15 @@ test('all 43 clubs have a valid local crest with a recorded source',()=>{
  }
 });
 
-test('every era renders positions and ratings without requiring player faces or cards',()=>{
+test('every era lists attack, midfield, defense and goalkeeper in order without changing its roster',()=>{
  for(const squad of allSquads){
+  const original=structuredClone(squad.jogadores);
   const draft={...createDraft(123,'2026-10-22','champions'),currentSquad:squad,currentSquadId:squad.id};
-  const html=renderDraft({mode:'champions',formation:'4-3-3',draft});
+  const html=renderDraft({mode:squad.kind==='national'?'world-cup':'champions',formation:'4-3-3',draft});
   const positions=[...html.matchAll(/<span class="player-avatar">([^<]+)<\/span>/g)].map(match=>match[1]);
-  assert.deepEqual(positions,squad.jogadores.map(player=>player.tags[0]),squad.id);
+  assert.deepEqual([...positions].sort(),squad.jogadores.map(player=>player.tags[0]).sort(),squad.id);
+  assert.match(positions.map(tag=>POSITION_MAP[tag]+',').join(''),/^(?:ATA,)*(?:MEI,)*(?:DEF,)*GOL,$/,squad.id);
+  assert.deepEqual(squad.jogadores,original,squad.id+' must keep its source order');
   assert.ok(!/assets\/players|data-player-portrait|player-drag-card/.test(html),squad.id);
   for(const player of squad.jogadores){
    const preview=renderPlayerDragPreview({player,squad,hidden:false});

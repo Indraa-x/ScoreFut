@@ -4,9 +4,10 @@ import fs from 'node:fs';
 import {worldCupNations,worldCupSquads,allSquads,validateData} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
 import {CLUB_LOGOS} from '../data/club-logos.js';
-import {FORMATIONS,squadTeam,createTournament,playNextRound,simulateTournament} from '../js/engine.js';
+import {FORMATIONS,squadTeam,calculateTeam,createTournament,playNextRound,simulateTournament} from '../js/engine.js';
 import {WORLD_CUP_PENDING_PAIRS,worldCupGroupOrder,worldCupRound16Pairings} from '../js/world-cup.js';
-import {createDraft,drawSquad,confirmPick,automaticSlot} from '../js/draft.js';
+import {createDraft,drawSquad,confirmPick,automaticSlot,refreshDraftRatings} from '../js/draft.js';
+import {applyWorldCupRatingReview} from '../data/world-cup-ratings.js';
 import {prepareUserRound,commitUserRound,currentMatch} from '../js/match-session.js';
 import {renderHome,renderSetup,renderDraft,renderMatch,renderBracket,renderResult} from '../js/ui.js';
 import {championsBracket} from '../js/champions-view.js';
@@ -44,6 +45,9 @@ test('World Cup OVRs identify the exact released FIFA edition and explicitly dis
   if(p.ratingKind==='release-rating'){
    assert.equal(p.releaseRating.releaseYear,squad.ano);assert.equal(p.ratingEdition,'FIFA '+String(squad.ano+1).slice(-2));
    assert.equal(p.releaseRating.ovr,p.ovr);assert.ok(p.ratingSource.startsWith('https://'));
+  }else if(p.ratingKind==='creator-review'){
+   assert.equal(p.creatorReview.squadId,squad.id);assert.equal(p.creatorReview.playerId,p.id);
+   assert.equal(p.creatorReview.ovr,p.ovr);assert.equal(p.ratingSource,'data/world-cup-ratings.js');
   }else{assert.equal(p.ratingKind,'editorial-estimate');assert.match(p.ratingReason,/Estimativa/);}
   if(squad.ano<1993)assert.equal(p.ratingExpectedEdition,null);
  }
@@ -55,6 +59,29 @@ test('World Cup OVRs identify the exact released FIFA edition and explicitly dis
  assert.equal(brazil94.find(p=>p.nome==='Romário').ovr,96);
  assert.equal(brazil94.find(p=>p.nome==='Bebeto').ovr,91);
 });
+test('Hungary 1954 and Germany 1974 average 88.5, preserve their stars and refresh unfinished saved picks',()=>{
+ const cases=[
+  {id:'nation-hungary-1954',before:91.2,stars:{'ferenc-puskas':98,'sandor-kocsis':95}},
+  {id:'nation-germany-1974',before:90.9,stars:{'franz-beckenbauer':96,'gerd-muller':96}},
+ ];
+ for(const item of cases){
+  const squad=worldCupSquads.find(s=>s.id===item.id),team=squadTeam(squad);
+  assert.equal(team.strength.overall,88.5);assert.equal(squad.jogadores.reduce((sum,p)=>sum+p.ovr,0),974);
+  for(const [id,ovr]of Object.entries(item.stars))assert.equal(squad.jogadores.find(p=>p.id===id).ovr,ovr);
+  for(const p of squad.jogadores){
+   assert.deepEqual(applyWorldCupRatingReview(p,item.id),p);
+   assert.ok(Object.values(p.atributos).every(value=>Number.isInteger(value)&&value>=1&&value<=99));
+  }
+  const draft={...createDraft(42,'2026-10-26','world-cup'),picks:team.lineup.map(pick=>({...pick,squadId:item.id,player:{...pick.player,ovr:pick.player.creatorReview?.previousOvr??pick.player.ovr}}))};
+  const original=structuredClone(draft);assert.equal(calculateTeam(draft.picks).overall,item.before);
+  const updated=refreshDraftRatings(draft,allSquads);
+  assert.equal(calculateTeam(updated.picks).overall,88.5);assert.deepEqual(draft,original);
+  assert.deepEqual({...updated,picks:[]},{...draft,picks:[]});
+ }
+ const unchanged=worldCupSquads.find(s=>s.id==='nation-hungary-1962').jogadores;
+ assert.ok(unchanged.every(p=>p.ratingKind!=='creator-review'));
+});
+
 test('all eight formations can complete a national draft with four shared skips and no duplicate people',()=>{
  for(const formation of Object.keys(FORMATIONS))for(let seed=0;seed<8;seed++){
   let draft=createDraft(seed,'2026-10-26','world-cup');assert.equal(draft.rerolls,4);

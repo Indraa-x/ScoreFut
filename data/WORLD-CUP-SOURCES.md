@@ -53,7 +53,7 @@ Alemanha inclui as campanhas da Alemanha Ocidental, seguindo a continuidade hist
 
 Mantém-se a política do ScoreFut: a época usa a edição lançada naquele ano. Exemplos: **2006 → FIFA 07, 2010 → FIFA 11, 2014 → FIFA 15, 2018 → FIFA 19, 2022 → FIFA 23**. Não se transporta uma nota recente para uma época antiga como se fosse registro verificado.
 
-Nesta base, **683 entradas têm nota de edição identificada** e **1022 têm estimativa histórica individual explicitamente marcada**. Épocas anteriores à série FIFA não recebem uma edição inventada. Valores inválidos do arquivo de consulta, incluindo placeholders de 39 em quatro registros de Camarões de 2010, foram rejeitados; os registros de Eto’o e N’Koulou foram conferidos diretamente nas páginas da edição.
+Nesta base, **683 entradas têm nota de edição identificada**, **1004 têm estimativa histórica individual explicitamente marcada** e **18 têm ajuste direto do criador**. Épocas anteriores à série FIFA não recebem uma edição inventada. Valores inválidos do arquivo de consulta, incluindo placeholders de 39 em quatro registros de Camarões de 2010, foram rejeitados; os registros de Eto’o e N’Koulou foram conferidos diretamente nas páginas da edição.
 
 Fontes de consulta:
 
@@ -64,6 +64,12 @@ Fontes de consulta:
 - [Nicolas N’Koulou, FIFA 11](https://fifaindex.com/players/188829-nicolas-nkoulou-ndoubena/fifa11): 74.
 
 As estimativas são ajustes editoriais do jogo, com valores individuais para craques e titulares de cada época; não são apresentadas como notas oficiais da EA. As alterações pessoais dos clubes permanecem nos arquivos próprios dos clubes. Os atributos de simulação usam o mesmo modelo por posição e OVR do modo de seleções.
+
+## Reequilíbrio solicitado em 26/10/2026
+
+Hungria 1954 e Alemanha 1974 passam a OVR geral calculado **88,5**. Cada onze soma 974 pontos; a média é arredondada para uma casa decimal, mantendo os OVRs individuais inteiros. Puskás (98), Kocsis (95), Beckenbauer (96) e Gerd Müller (96) permanecem iguais. As outras dezoito notas e seus atributos foram reduzidos individualmente.
+
+Os ajustes estão em `world-cup-ratings.js`, com OVR anterior, OVR novo, data e procedência. Os dados originais continuam no arquivo de elencos. Drafts sem torneio recebem as novas notas ao retomar; campanhas já iniciadas mantêm seus jogadores e resultados.
 
 ## Formato no jogo
 
