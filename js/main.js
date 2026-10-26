@@ -1,16 +1,16 @@
-import {initBrowserNavigation} from './browser-navigation.js?v=browser-navigation-20261023';
+import {initBrowserNavigation} from './browser-navigation.js?v=browser-achievements-20261025';
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=euro-20261023';
 import {filterQuickClubs} from './quick-catalog.js?v=brazil-classics-20261024';
-import {filterHistory} from './history.js?v=euro-20261023';
 import { clubs, allSquads, validateData } from '../data/game-squads.js?v=brazil-classics-20261024';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=euro-20261023';
 import { state, MODES } from './state.js?v=euro-20261023';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=euro-20261023';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=euro-20261023';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
-import * as storage from './storage.js?v=account-storage-move-20261025';
-import * as ui from './ui.js?v=career-medals-20261025';
-import * as accounts from './accounts.js?v=account-storage-move-20261025';
+import * as storage from './storage.js?v=browser-achievements-20261025';
+import * as ui from './ui.js?v=browser-achievements-20261025';
+import {updateAchievementLedger} from './achievements.js?v=browser-achievements-20261025';
+import {saveCampaignProgress} from './campaign-progress.js?v=browser-achievements-20261025';
 import {downloadResult} from './share.js?v=euro-20261023';
 import {initPlayerDrag} from './player-drag.js?v=drag-size-adjustment-20261023';
 import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
@@ -19,7 +19,9 @@ import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=euro-2026102
 import {initMatchPlayback} from './match-playback.js?v=euro-20261023';
 import {initCelebration} from './celebration.js?v=euro-20261023';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
-let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0,accountModalMode='login';
+const browserProgressReady=storage.initializeBrowserProgress();
+let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0;
+let pendingAchievementLedger=null;
 const navigationSessions=new Map();
 const gameScreens=new Set(['draft','summary','match','bracket']);
 const sessionId=draft=>draft?`${draft.mode}:${draft.date}:${draft.seed}`:null;
@@ -28,7 +30,7 @@ function currentRoute(){return {screen:state.screen,mode:state.mode,quickStep:st
 function visitRoute(route){
   navigationVersion++;rememberSession();stopPlayback();if(modal.open)modal.close();
   const requested=route.screen;
-  if(requested==='bracket'&&route.recordId){const record=storage.read('history',[]).find(r=>r.id===route.recordId);if(record?.tournament){state.resultRecord=record;state.tournament=record.tournament;state.mode=record.mode;state.screen='bracket';state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'result';}else state.screen='history';}
+  if(requested==='bracket'&&route.recordId){const record=storage.read('history',[]).find(r=>r.id===route.recordId);if(record?.tournament){state.resultRecord=record;state.tournament=record.tournament;state.mode=record.mode;state.screen='bracket';state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'result';}else state.screen='achievements';}
   else if(gameScreens.has(requested)){
     const id=route.session||sessionId(state.draft)||sessionId(storage.read('active')?.draft);
     const cached=navigationSessions.get(id),saved=storage.read('active');
@@ -38,12 +40,11 @@ function visitRoute(route){
     else{state.mode=state.draft.mode;state.resultRecord=null;state.screen=['match','bracket'].includes(requested)&&!state.tournament?'summary':requested;if(state.screen==='summary'&&state.draft.picks.length!==TEAM_SIZE)state.screen='draft';if(requested==='bracket'){state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'match';}}
   }else if(requested==='result'){
     const record=storage.read('history',[]).find(r=>r.id===route.recordId)|| (state.resultRecord?.id===route.recordId?state.resultRecord:null);
-    if(record){state.resultRecord=record;state.tournament=record.tournament||null;state.mode=record.mode;state.screen='result';}else state.screen='history';
+    if(record){state.resultRecord=record;state.tournament=record.tournament||null;state.mode=record.mode;state.screen='result';}else state.screen='achievements';
   }else{state.screen=requested; if(requested==='setup'){state.mode=MODES.some(m=>m.id===route.mode)||route.mode==='quick'?route.mode:'euro';state.quickStep=route.quickStep||'formation';}}
   state.rolling=false;state.matchPlaying=false;render();window.scrollTo({top:0,behavior:'instant'});
 }
 
-const historyFilters={search:'',mode:'all',titlesOnly:false};
 const playback=initMatchPlayback({app,state,onFinish:finishCurrentMatch,onSave:persist});
 const celebration=initCelebration({app,getRecord:()=>state.resultRecord,getScreen:()=>state.screen});
 initSkipFeedback({app,getDraft:()=>state.screen==='draft'&&!state.rolling?state.draft:null});
@@ -55,13 +56,20 @@ function hydrateDraft(){if(!state.draft)return;const pool=squadsForMode(allSquad
 function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed};}
 function persist(){rememberSession();if(!state.draft)return;const saved=snapshot();const ok=storage.write('active',saved);if(!ok&&!storageWarning){storageWarning=true;toast('Este navegador não permite salvar o progresso. Você pode continuar jogando.');}}
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
-function navigate(screen){navigationVersion++;rememberSession();if(state.screen==='match'&&['home','history','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
-function updateAccountTrigger(){const button=document.getElementById('account-trigger');if(!button)return;const user=accounts.currentAccount();button.innerHTML=user?`<span class="account-trigger-icon" aria-hidden="true">${ui.esc(ui.initials(user.name))}</span><span class="account-trigger-label">${ui.esc(user.name.split(' ')[0])}</span>`:`<span class="account-trigger-icon" aria-hidden="true">${ui.icon('users')}</span><span class="account-trigger-label">Entrar</span>`;button.setAttribute('aria-label',user?`Conta de ${user.name}`:'Entrar ou criar conta');button.title=user?`Conta de ${user.name}`:'Entrar ou criar conta';}
-function openAccountModal(view=accountModalMode){const user=accounts.currentAccount();if(user)accountModalMode='login';else accountModalMode=view;const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup');const stats=storage.statistics(history);document.getElementById('modal-content').innerHTML=ui.renderAccount(user,history,stats,accountModalMode);if(!modal.open)modal.showModal();if(!user)modal.querySelector('#account-username')?.focus({preventScroll:true});}
-function resetForAccount(){navigationVersion++;navigationSessions.clear();stopPlayback();Object.assign(state,{screen:'home',mode:'euro',formation:'4-3-3',teamName:'Meu time',quickSquadId:null,quickStep:'formation',quickSearch:'',quickRegion:'all',draft:null,tournament:null,pendingRound:null,userMatchIndex:0,matchUnlockedIndex:0,matchMinute:0,matchPlaying:false,resultRecord:null,rolling:false});const saved=storage.read('active');if(saved)restore(saved);navigation?.sync();render();window.scrollTo({top:0,behavior:'instant'});}
+function navigate(screen){navigationVersion++;rememberSession();if(state.screen==='match'&&['home','achievements','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
+function browserAchievements(history){
+  const saved=storage.read('achievements');
+  const ledger=updateAchievementLedger(history,pendingAchievementLedger||saved);
+  if(pendingAchievementLedger){
+    const durable=updateAchievementLedger([],saved);
+    for(const id of Object.keys(ledger.progress))ledger.progress[id]=Math.max(ledger.progress[id],durable.progress[id]);
+  }
+  if(pendingAchievementLedger||JSON.stringify(saved)!==JSON.stringify(ledger))pendingAchievementLedger=storage.write('achievements',ledger)?null:ledger;
+  return ledger;
+}
 function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup'),stats=storage.statistics(history);let html='';
-  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'history':html=ui.renderHistory(history,stats,historyFilters);break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='history'?'history':'home')));updateAccountTrigger();
+  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
+  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
   if(focusInApp){let target=focusId?document.getElementById(focusId):[...app.querySelectorAll('[data-action]')].find(el=>el.dataset.action===focusAction&&el.dataset.value===focusValue);if(target?.disabled)target=app.querySelector('[data-action="next-match"],[data-action="player"]:not(:disabled),[data-action="draw"]');target?.focus({preventScroll:true});}
@@ -105,14 +113,6 @@ function updateQuickSearch(search){
   const grid=app.querySelector('#quick-club-grid'),count=app.querySelector('[data-quick-count]');
   if(grid)grid.innerHTML=ui.renderQuickClubCards(items);
   if(count)count.textContent=`${items.length} ${items.length===1?'clube':'clubes'}`;
-}
-function updateHistoryList(){
-  if(state.screen!=='history')return;
-  const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup'),filtered=filterHistory(history,historyFilters);
-  const list=app.querySelector('#history-entries'),count=app.querySelector('[data-history-count]');
-  if(list)list.innerHTML=ui.renderHistoryEntries(filtered,Boolean(history.length));
-  if(count)count.textContent=`${filtered.length} de ${history.length} campanhas`;
-  app.querySelectorAll('[data-action="history-outcome"]').forEach(button=>button.setAttribute('aria-pressed',String((button.dataset.value==='titles')===historyFilters.titlesOnly)));
 }
 function startDraft(){state.quickSquadId=null;state.teamName='Meu time';const date=storage.today();
   const seed=crypto.getRandomValues(new Uint32Array(1))[0];state.draft=createDraft(seed,date,state.mode);state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('draft');
@@ -242,8 +242,11 @@ function finishTournament(){
   const title='Campeão · '+competitionName(state.mode);
   const record={rulesVersion:2,id:`11-${state.mode}-${state.draft.seed}-${state.draft.date}`,date:state.draft.date,teamName:state.teamName,mode:state.mode,formation:state.formation,picks:state.draft.picks,strength:calculateTeam(state.draft.picks).overall,champion:c.champion,stageLabel:c.champion?title:league?c.stageLabel:c.stage==='group'?'Eliminado na fase de grupos':`Eliminado · ${c.stageLabel}`,rank:c.champion?6:league?Math.max(1,6-c.position):(rank[c.stage]||1),goalsFor:c.goalsFor,goalsAgainst:c.goalsAgainst,played:c.played,topScorer:c.topScorer,tournament:t};
   const history=storage.read('history',[]);
-  if(!history.some(g=>g.id===record.id)){history.push(record);storage.write('history',history.slice(-50));}
-  storage.remove('active');rememberSession();state.resultRecord=record;navigate('result');
+  const saved=saveCampaignProgress(record,history,browserAchievements(history),storage);
+  pendingAchievementLedger=saved.ledgerSaved?null:saved.ledger;
+  if(!saved.ledgerSaved&&!saved.historySaved)persist();
+  if(!saved.ledgerSaved){storageWarning=true;toast('O navegador não conseguiu salvar as conquistas. Elas continuam disponíveis nesta aba.');}
+  rememberSession();state.resultRecord=record;navigate('result');
 }
 async function launchFromHome(button){
   const versionAtStart=navigationVersion;
@@ -261,8 +264,7 @@ async function launchFromHome(button){
   if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('euro');
 }
 async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
-case'home':navigate('home');break;case'history':navigate('history');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
-case'account-open':openAccountModal();break;case'account-mode':if(!accounts.currentAccount()&&['login','register'].includes(value))openAccountModal(value);break;case'account-logout':accounts.logoutAccount();accountModalMode='login';modal.close();resetForAccount();toast('Você saiu da conta.');break;case'account-history':modal.close();navigate('history');break;
+case'home':navigate('home');break;case'achievements':navigate('achievements');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
 case'setup':openSetup(value||'euro');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
 case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}break;}
 case'draw':await roll();break;case'reroll-club':await roll('club');break;case'reroll-season':await roll('season');break;case'player':selectPlayer(value);break;case'slot':slotAction(value);break;
@@ -278,16 +280,10 @@ case'champions-round':if(state.screen==='bracket'&&['champions','euro'].includes
 case'champions-tie':{if(!['champions','euro'].includes(state.tournament?.mode))break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
 case'match-index':{const i=Number(value);if(!state.pendingRound&&Number.isInteger(i)&&i>=0&&i<state.tournament.userMatches.length){stopPlayback();state.userMatchIndex=i;state.matchMinute=state.tournament.userMatches[i].result.duration;persist();render();}break;}
 case'result-lineup':if(state.screen==='result'&&state.resultRecord){document.getElementById('modal-content').innerHTML=ui.renderResultLineup(state.resultRecord);modal.showModal();}break;case'download':downloadResult(state.resultRecord);toast('Seu resultado em PNG está pronto.');break;
-case'history-outcome':historyFilters.titlesOnly=value==='titles';updateHistoryList();break;
-case'history-clear':Object.assign(historyFilters,{search:'',mode:'all',titlesOnly:false});render();app.querySelector('#history-search')?.focus();break;
-case'history-result':{const record=storage.read('history',[]).find(g=>g.id===value);if(record){state.resultRecord=record;state.tournament=record.tournament||null;state.pendingRound=null;state.mode=record.mode;navigate('result');}break;}
 }}
 document.addEventListener('click',event=>{const element=event.target.closest('[data-action]');if(element&&!element.disabled)action(element.dataset.action,element.dataset.value,element).catch(error=>{console.error(error);toast('Não foi possível completar a ação. '+error.message);});});
-modal.addEventListener('submit',async event=>{const form=event.target;if(form.id!=='account-form')return;event.preventDefault();const submit=form.querySelector('[type="submit"]'),error=document.getElementById('account-error');if(error){error.hidden=true;error.textContent='';}submit.disabled=true;submit.setAttribute('aria-busy','true');const values=new FormData(form);try{const user=form.dataset.mode==='register'?await accounts.createAccount({username:values.get('username'),password:values.get('password')}):await accounts.loginAccount({username:values.get('username'),password:values.get('password')});modal.close();accountModalMode='login';resetForAccount();toast(`Bem-vindo${form.dataset.mode==='register'?'':' de volta'}, ${user.name.split(' ')[0]}!`);}catch(reason){if(error){error.textContent=reason instanceof Error?reason.message:'Não foi possível entrar na conta.';error.hidden=false;}submit.disabled=false;submit.removeAttribute('aria-busy');}});
 app.addEventListener('change',event=>{if(event.target.id==='quick-season')action('quick-team',event.target.value,event.target).catch(error=>toast(error.message));});
 app.addEventListener('input',event=>{if(event.target.id==='quick-search'&&state.mode==='quick'&&state.screen==='setup')updateQuickSearch(event.target.value);});
-app.addEventListener('input',event=>{if(event.target.id==='history-search'&&state.screen==='history'){historyFilters.search=event.target.value;updateHistoryList();}});
-app.addEventListener('change',event=>{if(event.target.id==='history-mode'&&state.screen==='history'){historyFilters.mode=event.target.value;updateHistoryList();}});
 initPlayerDrag({
   app,
   getPlayer:id=>{
@@ -304,5 +300,6 @@ initPlayerDrag({
 modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 document.addEventListener('visibilitychange',()=>{if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});
 window.addEventListener('pagehide',()=>{stopPlayback();if(['draft','summary','match'].includes(state.screen))persist();});
+if(!browserProgressReady){storageWarning=true;toast('Não foi possível concluir o salvamento neste navegador. Seu progresso anterior foi mantido.');}
 navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});
 navigation.start();

@@ -1,0 +1,76 @@
+/* Browser-saved trophy room, with original ScoreFut medal artwork. */
+.achievements-page{--heading:'Barlow Condensed','Arial Narrow',sans-serif;max-width:1080px;margin:0 auto}
+.achievements-heading{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:28px}
+.achievements-heading h1{margin:8px 0 9px;font:600 48px/1 var(--heading)}
+.achievements-heading p{color:var(--muted);font-size:13px;line-height:1.6}
+.achievements-total{display:grid;gap:6px;min-width:170px;text-align:right}
+.achievements-total>strong{font:600 47px/1 var(--heading);color:var(--green)}
+.achievements-total>strong small{font-size:25px;color:var(--muted)}
+.achievements-total>span{color:var(--muted);font-size:10px}
+.achievement-total-track{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:3px}
+.achievement-total-track i{height:4px;background:var(--border);border-radius:1px}
+.achievement-total-track i.filled{background:var(--green)}
+.achievements-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:24px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.achievements-stat{display:flex;align-items:center;justify-content:center;gap:14px;padding:22px 14px}
+.achievements-stat+div{border-left:1px solid var(--border)}
+.achievements-stat>svg{width:24px;height:26px;color:var(--green)}
+.achievements-stat:nth-child(2)>svg{color:var(--gold)}
+.achievements-stat:nth-child(3)>svg{color:var(--orange)}
+.achievements-stat strong{font:600 36px/1 var(--heading);font-variant-numeric:tabular-nums}
+.achievements-stat>span{color:var(--muted);font-size:11px;line-height:1.5}
+.achievements-cabinet{padding:24px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.achievement-collection-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.achievement-collection-heading h2{font:600 28px/1 var(--heading)}
+.achievement-collection-heading>span{font-size:10px;color:var(--muted)}
+.achievements-save-note{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:22px;color:var(--muted);font-size:10px;line-height:1.6;text-align:center}
+.achievements-save-note svg{width:14px;height:14px;flex:0 0 auto}
+.achievement-shelf{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.achievement-tile{display:flex;flex-direction:column;align-items:center;min-width:0;padding:14px 9px 15px;text-align:center;position:relative}
+.achievement-tile:nth-child(-n+5){border-bottom:1px solid var(--border)}
+.achievement-tile:after{content:'';position:absolute;right:0;top:22px;bottom:22px;width:1px;background:var(--border);opacity:.45}
+.achievement-tile:nth-child(5n):after{display:none}
+.achievement-tile h3{display:grid;align-items:center;min-height:30px;margin:7px 0 3px;color:var(--text);font-size:11px;line-height:1.3;font-weight:700}
+.achievement-tile p{margin:0;min-height:28px;max-width:150px;color:var(--muted);font-size:10px;line-height:1.45}
+.achievement-state{margin-top:8px;color:var(--muted);font-size:9px;line-height:1.3;font-variant-numeric:tabular-nums}
+.is-earned .achievement-state{color:var(--green);font-weight:600}
+.is-earned .achievement-state:before{content:'';display:inline-block;width:4px;height:4px;margin:0 5px 2px 0;border-radius:50%;background:currentColor}
+.achievement-badge{display:block;width:78px;height:88px;flex:0 0 auto;overflow:visible;transition:transform .18s ease;--medal-rim:#a6884f;--medal-face:#254334;--medal-metal:#e2c787;--medal-ink:#344537;--medal-detail:#8fbd97;--medal-ribbon:#95743c;--medal-light:#fff3c9}
+.achievement-tile:hover .achievement-badge{transform:translateY(-3px)}
+.medal-ribbon{fill:var(--medal-ribbon);stroke:var(--medal-rim);stroke-width:1}
+.medal-rim{fill:var(--medal-rim);stroke:var(--medal-metal);stroke-width:.7}
+.medal-face{fill:var(--medal-face)}
+.medal-engraving{stroke:var(--medal-rim);stroke-width:.9;opacity:.7}
+.medal-metal{fill:var(--medal-metal);stroke:var(--medal-metal);stroke-width:1.2}
+.medal-secondary{fill:none;stroke:var(--medal-detail);stroke-width:2.1}
+.medal-cut{fill:none;stroke:var(--medal-ink);stroke-width:1.7}
+.medal-highlight{fill:none;stroke:var(--medal-light);stroke-width:1.5;opacity:.85}
+.medal-status{fill:var(--surface);stroke:var(--medal-rim);stroke-width:1.2}
+.medal-status-mark{color:var(--medal-metal)}
+.medal-first-campaign,.medal-three-campaigns{--medal-rim:#589b78;--medal-face:#173e2b;--medal-metal:#b4dfb8;--medal-ink:#225038;--medal-detail:#72b798;--medal-ribbon:#326648;--medal-light:#efffe5}
+.medal-ten-campaigns{--medal-rim:#b58c65;--medal-face:#463126;--medal-metal:#edc294;--medal-ink:#634328;--medal-detail:#be976e;--medal-ribbon:#856047}
+.medal-five-titles{--medal-face:#403721;--medal-rim:#c49a52;--medal-metal:#f4d894;--medal-detail:#c5a663;--medal-ribbon:#a67c37}
+.medal-three-win-streak{--medal-face:#492a22;--medal-rim:#bd7b51;--medal-metal:#f2b676;--medal-ink:#713b26;--medal-detail:#ce8660;--medal-ribbon:#975b3e}
+.medal-euro-title{--medal-face:#1c4257;--medal-rim:#7babb9;--medal-metal:#e2ecec;--medal-ink:#477185;--medal-detail:#87bdcf;--medal-ribbon:#2f7092;--medal-light:#fff}
+.medal-champions-title{--medal-face:#2d3554;--medal-rim:#8c99bc;--medal-metal:#e6e9f4;--medal-ink:#4e5d7d;--medal-detail:#9ba8d3;--medal-ribbon:#4a5682;--medal-light:#fff}
+.medal-brazil-title{--medal-face:#254532;--medal-rim:#b7a453;--medal-metal:#f0d684;--medal-ink:#4f6336;--medal-detail:#87af7c;--medal-ribbon:#538044}
+.achievement-badge.pending{--medal-rim:#4e6254;--medal-face:#242f27;--medal-metal:#98aa9d;--medal-ink:#394d3e;--medal-detail:#748b7b;--medal-ribbon:#34473a;--medal-light:#becbc0}
+[data-theme="light"] .achievement-badge.pending{--medal-rim:#a9b6ac;--medal-face:#e4ebe4;--medal-metal:#7b9181;--medal-ink:#e4ebe4;--medal-detail:#819889;--medal-ribbon:#c8d3c8;--medal-light:#c4d4c6}
+
+
+.achievements-page .achievement-shelf{border-bottom:0}
+.achievements-page .achievement-tile{padding:22px 10px}
+.achievements-page .achievement-badge{width:94px;height:106px}
+.achievements-page .achievement-tile h3{font-size:12px;margin-top:12px}
+.achievements-page .achievement-tile p{font-size:11px;min-height:32px}
+.achievements-page .achievement-state{font-size:10px}
+@media(max-width:760px){.achievements-stat{gap:9px;padding:19px 10px}.achievements-stat strong{font-size:31px}.achievements-stat>span{font-size:10px}.achievements-stat>svg{width:21px}}
+@media(max-width:680px){
+ .achievements-heading{gap:15px;margin-bottom:22px;align-items:flex-start}.achievements-heading h1{font-size:39px}.achievements-heading p{font-size:11px;max-width:175px}
+ .achievements-total{min-width:118px;margin-top:7px}.achievements-total>strong{font-size:36px}.achievements-total>strong small{font-size:21px}.achievements-total>span{font-size:8px}
+ .achievements-overview{margin-bottom:20px}.achievements-stat{flex-wrap:wrap;gap:6px;padding:15px 8px}.achievements-stat>svg{width:18px;height:20px}.achievements-stat strong{font-size:30px}.achievements-stat>span{width:100%;text-align:center;font-size:9px}
+ .achievements-cabinet{padding:18px 14px}.achievement-collection-heading h2{font-size:25px}.achievement-collection-heading>span{font-size:9px}
+ .achievement-shelf{grid-template-columns:repeat(2,minmax(0,1fr))}.achievement-tile:nth-child(n){border-bottom:1px solid var(--border)}.achievement-tile:nth-last-child(-n+2){border-bottom:0}.achievement-tile:nth-child(n):after{display:block}.achievement-tile:nth-child(2n):after{display:none}
+ .achievements-page .achievement-tile{padding:20px 8px}.achievements-page .achievement-badge{width:85px;height:96px}.achievements-page .achievement-tile h3{font-size:12px;min-height:30px;margin:10px 0 5px}.achievements-page .achievement-tile p{font-size:10px;min-height:30px;max-width:145px}.achievements-page .achievement-state{font-size:9px}
+ .achievements-save-note{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.achievement-badge{transition:none}.achievement-tile:hover .achievement-badge{transform:none}}

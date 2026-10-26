@@ -28,11 +28,21 @@ test('in-page updates replace the current entry and repeated navigation does not
   const f=fixture();f.route={screen:'setup',mode:'euro'};f.navigation.push();
   f.route.mode='champions';f.navigation.sync();f.navigation.push();
   assert.equal(f.entries.length,2);
-  f.route={screen:'history'};f.navigation.push();f.move(-1);assert.equal(f.route.mode,'champions');
+  f.route={screen:'achievements'};f.navigation.push();f.move(-1);assert.equal(f.route.mode,'champions');
   f.route={screen:'home'};f.navigation.push();assert.equal(f.entries.length,3);assert.equal(f.host.location.hash,'#home');
 });
 
 test('unknown old fragments fall back to home and direct known pages are restored',()=>{
   const unknown=fixture('#manager-market');assert.equal(unknown.route.screen,'home');assert.equal(unknown.entries.length,1);
-  const known=fixture('#history');assert.equal(known.route.screen,'history');assert.equal(known.entries.length,1);
+  const known=fixture('#achievements');assert.equal(known.route.screen,'achievements');assert.equal(known.entries.length,1);
+  const legacy=fixture('#history');assert.equal(legacy.route.screen,'achievements');assert.equal(legacy.host.location.hash,'#achievements');assert.equal(legacy.entries.length,1);
+});
+
+test('saved browser entries from the retired history screen open achievements',()=>{
+  const f=fixture();
+  f.entries[0].state={scorefutNavigation:{version:1,route:{screen:'history'}}};
+  f.move(0);
+  assert.equal(f.route.screen,'achievements');
+  assert.equal(f.host.location.hash,'#achievements');
+  assert.equal(f.entries.length,1);
 });
