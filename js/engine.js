@@ -71,13 +71,17 @@ export const FORMATIONS = Object.freeze({
 });
 
 export const SIMULATION_SETTINGS = Object.freeze({
-  modelVersion: 3,
+  modelVersion: 4,
   baseXG: 1.3,
   xGExponent: 1.6,
   minXG: 0.2,
   maxXG: 4.5,
   userAttackMultiplier: 1.12,
   userDefenseMultiplier: 1.06,
+  dominantUserMinOverall: 85,
+  weakOpponentMaxOverall: 72,
+  dominanceAttackMultiplier: 1.4,
+  dominanceDefenseMultiplier: 1.25,
 });
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -225,7 +229,15 @@ export function expectedGoals(team, opponent, settings = SIMULATION_SETTINGS) {
   const defense = opposition.defense;
   const assistance=team.isUser&&!opponent.isUser ? (settings.userAttackMultiplier??1)
     : opponent.isUser&&!team.isUser ? 1/(settings.userDefenseMultiplier??1) : 1;
-  return clamp(settings.baseXG * (Math.max(1, attack) / Math.max(1, defense)) ** settings.xGExponent * assistance, settings.minXG, settings.maxXG);
+  // Only the human-controlled side receives this extra advantage in a clear mismatch.
+  // Strict thresholds use the calculated OVR, before the UI rounds it to an integer.
+  const dominates=(strong,weak)=>strong.overall>(settings.dominantUserMinOverall??85)
+    &&weak.overall<(settings.weakOpponentMaxOverall??72);
+  const mismatch=team.isUser&&!opponent.isUser&&dominates(metrics,opposition)
+    ? settings.dominanceAttackMultiplier??1
+    : opponent.isUser&&!team.isUser&&dominates(opposition,metrics)
+      ? 1/(settings.dominanceDefenseMultiplier??1) : 1;
+  return clamp(settings.baseXG * (Math.max(1, attack) / Math.max(1, defense)) ** settings.xGExponent * assistance * mismatch, settings.minXG, settings.maxXG);
 }
 
 function shootout(home, away, rng) {

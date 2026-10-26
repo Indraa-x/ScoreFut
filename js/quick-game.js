@@ -1,5 +1,5 @@
-import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=world-cup-20261026';
-import {createDraft} from './draft.js?v=world-cup-20261026';
+import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=simulation-gap-20261026';
+import {createDraft} from './draft.js?v=simulation-gap-20261026';
 
 /** Select one historical club's complete lineup; simulation is a separate action. */
 export function selectQuickTeam({squadId,seed,date,squads,formation=null}){

@@ -1,6 +1,6 @@
-import { currentMatch } from './match-session.js?v=world-cup-20261026';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=world-cup-20261026';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=world-cup-20261026';
+import { currentMatch } from './match-session.js?v=simulation-gap-20261026';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=simulation-gap-20261026';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=simulation-gap-20261026';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;

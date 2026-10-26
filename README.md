@@ -35,6 +35,7 @@ Conquistas e estatísticas são salvas no navegador, sem cadastro. A Copa do Mun
 - **4 skips por draft**, compartilhados entre clube/seleção e temporada/edição.
 - Partidas com placar, relógio, bolinhas numeradas e autores dos gols.
 - Simulação baseada em OVR e atributos, com uma pequena ajuda de dificuldade e sem vitória garantida.
+- Quando o OVR calculado do jogador é maior que 85 e o adversário tem menos de 72, a vantagem é reforçada: xG a favor ×1,4 e xG contra ÷1,25, além do ajuste básico. Vale em todas as competições, em casa ou fora; empates e derrotas continuam possíveis.
 - Conquistas permanentes, estatísticas e taças das três competições.
 - Celebração com troféus, confetes e som de torcida em volume baixo.
 - Resultado para baixar em PNG e progresso salvo no navegador.

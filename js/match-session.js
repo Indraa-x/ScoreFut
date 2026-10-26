@@ -1,4 +1,4 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=world-cup-20261026';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=simulation-gap-20261026';
 
 export const MATCH_FLOW_VERSION = 1;
 
@@ -53,6 +53,11 @@ export function migrateNeutralSimulation(state) {
   if(!state.tournament || state.tournament.settings?.modelVersion===SIMULATION_SETTINGS.modelVersion)return {};
   const {draftFamiliarity,...oldSettings}=state.tournament.settings||{};
   const tournament={...state.tournament,settings:{...oldSettings,...SIMULATION_SETTINGS},teams:state.tournament.teams.map(team=>({...team,isUser:team.id===state.tournament.userTeamId,strength:calculateTeam(team.lineup)}))};
+  // Version 3 already used the current ratings. Keep a replay that has started;
+  // its following rounds adopt the new matchup rule without changing visible scores.
+  if(state.pendingRound&&oldSettings.modelVersion>=3&&state.matchMinute>0){
+    return {tournament,pendingRound:{...state.pendingRound,settings:tournament.settings,teams:tournament.teams}};
+  }
   if(state.pendingRound)return {...prepareUserRound(tournament),matchMinute:0};
   return {tournament};
 }

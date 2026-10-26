@@ -1,8 +1,8 @@
-import {renderMatchGoals} from './match-goals.js?v=world-cup-20261026';
-import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=world-cup-20261026';
+import {renderMatchGoals} from './match-goals.js?v=simulation-gap-20261026';
+import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=simulation-gap-20261026';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';
-import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=world-cup-20261026';
-import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=world-cup-20261026';
+import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=simulation-gap-20261026';
+import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=simulation-gap-20261026';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {

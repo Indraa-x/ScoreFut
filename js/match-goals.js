@@ -1,4 +1,4 @@
-import { formatMatchEventMinute } from './match-motion.js?v=world-cup-20261026';
+import { formatMatchEventMinute } from './match-motion.js?v=simulation-gap-20261026';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const color=(value,fallback)=>/^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(value||'')?value:fallback;

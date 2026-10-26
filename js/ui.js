@@ -1,12 +1,12 @@
 import { MODES,LEGACY_QUICK_MODE } from './state.js?v=world-cup-20261026';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=world-cup-20261026';
 import { clubs, allSquads, worldCupNations, worldCupSquads } from '../data/game-squads.js?v=national-balance-20261026';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=world-cup-20261026';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=simulation-gap-20261026';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';
-import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=world-cup-20261026';
-import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=world-cup-20261026';
-import { renderMatchView } from './match-view.js?v=world-cup-20261026';
-import { renderChampionsCompetition, renderChampionsTieDetails } from './champions-view.js?v=world-cup-20261026';
+import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=simulation-gap-20261026';
+import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=simulation-gap-20261026';
+import { renderMatchView } from './match-view.js?v=simulation-gap-20261026';
+import { renderChampionsCompetition, renderChampionsTieDetails } from './champions-view.js?v=simulation-gap-20261026';
 import { renderBrazilCupBracket, renderCupStages } from './brazil-cup-view.js?v=world-cup-20261026';
 import { championDecoration, championConfetti } from './celebration.js?v=world-cup-20261026';
 import { renderAchievementsView } from './achievements-view.js?v=world-cup-20261026';
