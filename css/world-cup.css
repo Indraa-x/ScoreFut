@@ -7,8 +7,8 @@
 .mode-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .mode-card[data-value="world-cup"] :is(p,.mode-card-bottom){color:#ffffffe8}
 .mode-card[data-value="world-cup"] .mode-tag{background:#0003;color:#fff}
-.mode-card[data-value="world-cup"] .mode-icon:has(.competition-logo){background:#ffffff0e;border-color:#ffffff30;box-shadow:none}
-.mode-card[data-value="world-cup"] .mode-icon>.competition-logo{transform:none;object-fit:contain;filter:drop-shadow(0 3px 5px #0003)}
+.mode-card[data-value="world-cup"] .mode-icon:has(.competition-logo){padding:0;overflow:hidden;background:#202020;border-color:#ffffff30;box-shadow:none}
+.mode-card[data-value="world-cup"] .mode-icon>.competition-logo{transform:none;object-fit:contain;filter:none;border-radius:inherit}
 :is(.mode-card,.setup-mode-option)[data-value="world-cup"]:hover{filter:brightness(1.08)}
 .mode-card[data-value="world-cup"]::after{content:'';position:absolute;inset:auto 22px 0;height:3px;background:#d7ba62;border-radius:3px 3px 0 0;pointer-events:none}
 .setup-mode-option[data-value="world-cup"].selected{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--competition-border)}

@@ -144,7 +144,8 @@ test('all competition surfaces use the supplied World Cup trophy and the matchin
  let t=make(4);for(let i=0;i<3;i++)t=playNextRound(t);
  const bracket=renderBracket({mode:'world-cup',tournament:t,championsView:'knockout',championsRound:'round16'});
  const result=renderResult({id:'world-title',mode:'world-cup',champion:true,teamName:'Meu time',strength:90,goalsFor:15,goalsAgainst:3,played:7},null);
- for(const html of [home,setup,bracket,result])assert.ok(html.includes('assets/competitions/world-cup-trophy.png'));
+ assert.ok(home.includes('assets/competitions/world-cup-logo.png'));
+ for(const html of [setup,bracket,result])assert.ok(html.includes('assets/competitions/world-cup-trophy.png'));
  for(const html of [home,setup,draftHtml,bracket,result])assert.doesNotMatch(html,/\bEuro\b|euro-logo|euro-trophy|Melhores terceiros/);
  assert.ok(setup.includes('32 seleções')||setup.includes('Copa do Mundo'));
  const trophy=achievementsFor([{mode:'world-cup',champion:true}]).find(a=>a.id==='world-cup-title');
