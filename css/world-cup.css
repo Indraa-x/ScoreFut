@@ -17,7 +17,6 @@
 .setup-mode-option[data-value="world-cup"].selected{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--competition-border)}
 .setup-mode-option[data-value="world-cup"].selected::after{content:'✓';position:absolute;right:6px;top:3px;font-size:11px;font-weight:800;color:#fff;z-index:3}
 .setup-mode-option[data-value="world-cup"] .mode-trophy-backdrop{object-position:center;opacity:.38;filter:drop-shadow(0 2px 3px #53390080)}
-html[data-theme] #app[data-mode="world-cup"] .formation-option.selected{background:linear-gradient(120deg,#c7a74e,#ead38b);border-color:#d8bb69;color:#183c2a;box-shadow:none}
 #app[data-mode="world-cup"] .setup-competition-title>.competition-trophy{width:36px;height:64px;object-fit:contain;filter:drop-shadow(0 2px 5px #0002)}
 [data-mode="world-cup"] .champions-page-title .competition-logo{height:60px;width:36px;object-fit:contain}
 .match-competition-link{display:inline-flex;align-items:center;gap:9px;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
