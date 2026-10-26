@@ -56,7 +56,7 @@ function homePlayers(){
   }).join('')}</div>`).join('');
   return `<section class="home-stars" aria-label="Craques do futebol"><svg class="home-portrait-filters" aria-hidden="true" focusable="false"><defs><filter id="home-portrait-solid" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncA type="linear" slope="8"/></feComponentTransfer></filter></defs></svg><div class="home-stars-lineup">${portraits}</div><div class="home-stars-footer"><span>${icon('users')} Onze jogadores. Um só time.</span><span>${icon('trophy')} Clubes e seleções históricas</span></div></section>`;
 }
-function competitionMark(mode,home=false){const logo=home&&mode==='world-cup'?'assets/competitions/world-cup-logo.png':competitionLogo(mode);return logo?`<img class="competition-logo" src="${logo}" width="256" height="256" alt="" decoding="async">`:'';}
+function competitionMark(mode,home=false){const logo=home&&mode==='world-cup'?'assets/competitions/world-cup-logo-white.jpg':competitionLogo(mode);return logo?`<img class="competition-logo" src="${logo}" width="256" height="256" alt="" decoding="async">`:'';}
 const competitionTrophies={'world-cup':'assets/competitions/world-cup-trophy.png','copa-do-brasil':'assets/competitions/brazil-cup-trophy.png',champions:'assets/competitions/champions-trophy.png'};
 function setupCompetitionMark(mode){const trophy=competitionTrophies[mode];return trophy?`<img class="competition-logo competition-trophy" src="${trophy}" width="256" height="256" alt="" decoding="async">`:competitionMark(mode);}
 function setupModeOption(mode,selected){

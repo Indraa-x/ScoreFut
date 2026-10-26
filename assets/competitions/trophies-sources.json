@@ -2,6 +2,11 @@
   "source": "Imagens fornecidas pelo usuário",
   "files": [
     {
+      "file": "world-cup-logo-white.jpg",
+      "original": "Gemini_Generated_Image_7gvq7s7gvq7s7gvq.jpg",
+      "usage": "Logo com fundo branco fornecida pelo usuário, sem edição; enquadramento e escala no card via CSS."
+    },
+    {
       "file": "world-cup-logo.png",
       "original": "codex-clipboard-fcebdd18-7a4a-423e-ad3c-1d6b21b62bba.png",
       "usage": "Ícone do card da Copa do Mundo na página principal; arquivo original sem edição."
