@@ -3,7 +3,7 @@
  * each player's form during the represented season; the OVR is editorial.
  * Keep these exceptions keyed by squad AND player, never by career reputation.
  */
-import { VINTAGE_RATINGS_BY_SQUAD } from './vintage-ratings.js?v=vintage-ratings-20261022';
+import { VINTAGE_RATINGS_BY_SQUAD } from './vintage-ratings.js?v=world-cup-20261026';
 const review = (source, reason, ratings) => Object.freeze(Object.fromEntries(
   Object.entries(ratings).map(([id, ovr]) => [id, Object.freeze({ovr, source, reason})])
 ));

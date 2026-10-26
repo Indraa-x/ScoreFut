@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 const guest=key=>'scorefut.'+key;
 const scoped=(id,key)=>`scorefut.account.${id}.${key}`;
 const record=(id,champion=false,mode='quick',date='2026-10-25')=>({id,champion,mode,date});
-const active=seed=>({screen:'draft',mode:'euro',draft:{seed,date:'2026-10-25',picks:[]}});
+const active=seed=>({screen:'draft',mode:'world-cup',draft:{seed,date:'2026-10-25',picks:[]}});
 let moduleId=0;
 
 class MemoryStorage{
@@ -46,7 +46,7 @@ test('a fresh browser initializes permanent achievements without creating an acc
 });
 
 test('the signed-in career moves to canonical keys with exact raw snapshots preserved',async()=>{
-  const history='[\n  '+JSON.stringify(record('signed-in',true,'euro'))+'\n]';
+  const history='[\n  '+JSON.stringify(record('signed-in',true,'world-cup'))+'\n]';
   const draft=JSON.stringify(active(42),null,2);
   await fixture({[guest('accounts')]:'[{"id":"one","passwordHash":"old-hash"}]',[guest('account-session')]:'one',[scoped('one','history')]:history,[scoped('one','active')]:draft},(storage,store)=>{
     assert.equal(storage.initializeBrowserProgress(),true);
@@ -57,7 +57,7 @@ test('the signed-in career moves to canonical keys with exact raw snapshots pres
     assert.equal(store.getItem(guest('accounts')),null);
     assert.equal(store.getItem(guest('account-session')),null);
     assert.equal(storage.read('active').draft.seed,42);
-    assert.equal(storage.read('achievements').progress['euro-title'],1);
+    assert.equal(storage.read('achievements').progress['world-cup-title'],1);
   });
 });
 
@@ -75,7 +75,7 @@ test('guest progress stays primary without a session and other careers remain ar
 });
 
 test('adopting a profile preserves displaced guest data and every unselected account',async()=>{
-  const guestHistory=JSON.stringify([record('guest',true,'euro')]),guestActive=JSON.stringify(active(10));
+  const guestHistory=JSON.stringify([record('guest',true,'world-cup')]),guestActive=JSON.stringify(active(10));
   const currentHistory=JSON.stringify([record('current',true,'champions')]),otherHistory=JSON.stringify([record('other',true,'copa-do-brasil')]);
   await fixture({[guest('history')]:guestHistory,[guest('active')]:guestActive,[guest('account-session')]:'current',[scoped('current','history')]:currentHistory,[scoped('current','active')]:JSON.stringify(active(20)),[scoped('other','history')]:otherHistory,[scoped('other','active')]:JSON.stringify(active(30))},(storage,store)=>{
     assert.equal(storage.initializeBrowserProgress(),true);
@@ -85,7 +85,7 @@ test('adopting a profile preserves displaced guest data and every unselected acc
     assert.equal(store.getItem('scorefut.legacy-browser.guest.active'),guestActive);
     assert.equal(store.getItem(scoped('other','history')),otherHistory);
     assert.equal(JSON.parse(store.getItem(scoped('other','active'))).draft.seed,30);
-    for(const id of ['euro-title','champions-title','brazil-title'])assert.equal(storage.read('achievements').progress[id],1);
+    for(const id of ['world-cup-title','champions-title','brazil-title'])assert.equal(storage.read('achievements').progress[id],1);
   });
 });
 
@@ -113,14 +113,14 @@ test('a nearly full browser migrates a large draft without holding a second copy
 
 for(const failedKey of ['history','active','achievements','browser-progress-version']){
   test(`a failed ${failedKey} write restores exact originals and routes to the old career`,async()=>{
-    const entries={[guest('account-session')]:'one',[guest('accounts')]:'[{"id":"one","passwordHash":"retained-until-success"}]',[guest('history')]:'[  '+JSON.stringify(record('guest'))+'  ]',[guest('active')]:JSON.stringify(active(1)),[scoped('one','history')]:JSON.stringify([record('profile',true,'euro')],null,2),[scoped('one','active')]:JSON.stringify(active(2),null,2),[guest('theme')]:'"dark"'};
+    const entries={[guest('account-session')]:'one',[guest('accounts')]:'[{"id":"one","passwordHash":"retained-until-success"}]',[guest('history')]:'[  '+JSON.stringify(record('guest'))+'  ]',[guest('active')]:JSON.stringify(active(1)),[scoped('one','history')]:JSON.stringify([record('profile',true,'world-cup')],null,2),[scoped('one','active')]:JSON.stringify(active(2),null,2),[guest('theme')]:'"dark"'};
     await fixture(entries,(storage,store)=>{
       const before=store.snapshot();
       assert.equal(storage.initializeBrowserProgress(),false);
       assert.deepEqual(store.snapshot(),before);
       assert.equal(storage.read('history')[0].id,'profile');
       assert.equal(storage.read('active').draft.seed,2);
-      assert.equal(storage.read('achievements').progress['euro-title'],1);
+      assert.equal(storage.read('achievements').progress['world-cup-title'],1);
       assert.equal(storage.initializeBrowserProgress(),true);
       assert.equal(storage.read('history')[0].id,'profile');
       assert.equal(store.getItem(guest('accounts')),null);
@@ -139,7 +139,7 @@ test('independent profiles seed earned medals without joining their winning sequ
 });
 
 test('successful migration is idempotent across calls and page reloads',async()=>{
-  await fixture({[guest('account-session')]:'one',[scoped('one','history')]:JSON.stringify([record('current')]),[scoped('archive','history')]:JSON.stringify([record('archive',true,'euro')])},async(storage,store)=>{
+  await fixture({[guest('account-session')]:'one',[scoped('one','history')]:JSON.stringify([record('current')]),[scoped('archive','history')]:JSON.stringify([record('archive',true,'world-cup')])},async(storage,store)=>{
     assert.equal(storage.initializeBrowserProgress(),true);
     const after=store.snapshot();
     assert.equal(storage.initializeBrowserProgress(),true);

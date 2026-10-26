@@ -9,7 +9,7 @@ const canonical='https://indraa-x.github.io/ScoreFut/';
 test('the public home has crawlable content before JavaScript and stays in sync with the game',()=>{
   const main=source.match(/<main\b[^>]*>[\s\S]*?<\/main>/)?.[0];
   assert.ok(main?.includes('<h1>'));
-  for(const name of ['Champions League','Copa do Brasil','Euro'])assert.ok(main.includes(name));
+  for(const name of ['Champions League','Copa do Brasil','Copa do Mundo'])assert.ok(main.includes(name));
   assert.ok(main.includes('data-action="play-home"'));
   assert.ok(main.includes('data-screen="home"'));
   assert.ok(!main.includes('editor-overs')&&!main.includes('scorefut.active'));

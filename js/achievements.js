@@ -24,7 +24,7 @@ const definitions=[
   {id:'three-titles',name:'Tricampeão',description:'Conquiste três títulos.',icon:'star',target:3,progress:titleCount},
   {id:'five-titles',name:'Dinastia',description:'Conquiste cinco títulos.',icon:'flame',target:5,progress:titleCount},
   {id:'three-win-streak',name:'Em sequência',description:'Vença três campanhas seguidas.',icon:'bolt',target:3,progress:longestWinningStreak},
-  {id:'euro-title',name:'Rei da Europa',description:'Seja campeão da Euro.',icon:'trophy',target:1,progress:history=>wonMode(history,'euro')},
+  {id:'world-cup-title',name:'Campeão do mundo',description:'Seja campeão da Copa do Mundo.',icon:'trophy',target:1,progress:history=>wonMode(history,'world-cup')},
   {id:'champions-title',name:'Noite dos campeões',description:'Conquiste a Champions League.',icon:'star',target:1,progress:history=>wonMode(history,'champions')},
   {id:'brazil-title',name:'Glória brasileira',description:'Conquiste a Copa do Brasil.',icon:'shield',target:1,progress:history=>wonMode(history,'copa-do-brasil')}
 ];
@@ -81,7 +81,7 @@ export function recordAchievementProgress(record,recordsBefore=[],ledger=null){
   const won=record.champion===true;
   if(won){
     for(const id of ['first-title','three-titles','five-titles'])advance(id);
-    const modeAchievement={euro:'euro-title',champions:'champions-title','copa-do-brasil':'brazil-title'};
+    const modeAchievement={'world-cup':'world-cup-title',champions:'champions-title','copa-do-brasil':'brazil-title'};
     if(Object.hasOwn(record,'mode')&&typeof record.mode==='string'&&Object.hasOwn(modeAchievement,record.mode))progress[modeAchievement[record.mode]]=1;
   }
   const currentStreak=won?Math.min(Number.MAX_SAFE_INTEGER,(saved.currentStreak||0)+1):0;

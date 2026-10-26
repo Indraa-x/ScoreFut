@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {initBrowserNavigation} from '../js/browser-navigation.js';
 
 function fixture(hash=''){
-  const entries=[{url:'https://example.com/ScoreFut/?v=release'+hash,state:null}],listeners={};let index=0,route={screen:'home',mode:'euro'};
+  const entries=[{url:'https://example.com/ScoreFut/?v=release'+hash,state:null}],listeners={};let index=0,route={screen:'home',mode:'world-cup'};
   const host={location:new URL(entries[0].url),addEventListener:(name,callback)=>listeners[name]=callback};
   host.history={get state(){return entries[index].state;},replaceState(state,title,url){entries[index]={state,url};host.location=new URL(url);},pushState(state,title,url){entries.splice(++index);entries.push({state,url});host.location=new URL(url);}};
   const navigation=initBrowserNavigation({host,getRoute:()=>route,onVisit:next=>{route={...next};navigation.sync();}});
@@ -25,7 +25,7 @@ test('Back and Forward visit screens without adding or replaying game snapshots'
 });
 
 test('in-page updates replace the current entry and repeated navigation does not add duplicates',()=>{
-  const f=fixture();f.route={screen:'setup',mode:'euro'};f.navigation.push();
+  const f=fixture();f.route={screen:'setup',mode:'world-cup'};f.navigation.push();
   f.route.mode='champions';f.navigation.sync();f.navigation.push();
   assert.equal(f.entries.length,2);
   f.route={screen:'achievements'};f.navigation.push();f.move(-1);assert.equal(f.route.mode,'champions');

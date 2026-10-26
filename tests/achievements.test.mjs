@@ -16,10 +16,10 @@ test('three consecutive titles stay earned after a loss, including a streak earl
 });
 
 test('earned progress survives truncated or empty history and merges with new progress',()=>{
-  const initial=Array.from({length:10},(_,index)=>campaign(index<3,index===0?'euro':'quick'));
+  const initial=Array.from({length:10},(_,index)=>campaign(index<3,index===0?'world-cup':'quick'));
   const ledger=updateAchievementLedger(initial);
   const truncated=[campaign()];
-  for(const id of ['first-campaign','three-campaigns','ten-campaigns','first-title','three-titles','euro-title']){
+  for(const id of ['first-campaign','three-campaigns','ten-campaigns','first-title','three-titles','world-cup-title']){
     assert.equal(achievement(truncated,id,ledger).unlocked,true,id);
     assert.equal(achievement([],id,ledger).unlocked,true,id);
   }
@@ -31,15 +31,15 @@ test('earned progress survives truncated or empty history and merges with new pr
 });
 
 test('mode titles require a real win in their matching competition',()=>{
-  const records=[campaign(false,'euro'),campaign(true,'quick'),campaign(true,'champions'),campaign(true,'copa-do-brasil')];
-  assert.equal(achievement(records,'euro-title').unlocked,false);
+  const records=[campaign(false,'world-cup'),campaign(true,'quick'),campaign(true,'champions'),campaign(true,'copa-do-brasil')];
+  assert.equal(achievement(records,'world-cup-title').unlocked,false);
   assert.equal(achievement(records,'champions-title').unlocked,true);
   assert.equal(achievement(records,'brazil-title').unlocked,true);
-  assert.equal(achievement([{champion:'true',mode:'euro'}],'euro-title').unlocked,false);
+  assert.equal(achievement([{champion:'true',mode:'world-cup'}],'world-cup-title').unlocked,false);
 });
 
 test('ledger snapshots contain only known, finite, capped integer progress',()=>{
-  const legacy=JSON.parse('{"first-campaign":99,"three-campaigns":2.9,"ten-campaigns":"10","first-title":-4,"three-titles":null,"five-titles":true,"three-win-streak":3,"euro-title":1,"unknown":4,"__proto__":{"polluted":true}}');
+  const legacy=JSON.parse('{"first-campaign":99,"three-campaigns":2.9,"ten-campaigns":"10","first-title":-4,"three-titles":null,"five-titles":true,"three-win-streak":3,"world-cup-title":1,"unknown":4,"__proto__":{"polluted":true}}');
   const ledger=updateAchievementLedger([],legacy);
   assert.equal(ledger.version,1);
   assert.equal(Object.keys(ledger.progress).length,10);
@@ -66,7 +66,7 @@ test('malformed or unsupported saved data cannot invent medals or throw',()=>{
 });
 
 test('snapshot merging never mutates records or previous ledgers',()=>{
-  const records=[campaign(true,'euro'),campaign(false)];
+  const records=[campaign(true,'world-cup'),campaign(false)];
   const prior={version:1,progress:{'first-title':1,'ten-campaigns':7}};
   const beforeRecords=structuredClone(records),beforeLedger=structuredClone(prior);
   const merged=updateAchievementLedger(records,prior);
@@ -81,7 +81,7 @@ test('snapshot merging never mutates records or previous ledgers',()=>{
 test('record events advance lifetime partial titles even after older wins leave the last 50 records',()=>{
   let records=[],ledger=null;
   for(let index=0;index<205;index++){
-    const record={id:`record-${index}`,...campaign(index%51===0,index===0?'euro':'quick')};
+    const record={id:`record-${index}`,...campaign(index%51===0,index===0?'world-cup':'quick')};
     ledger=recordAchievementProgress(record,records,ledger);
     records=[...records,record].slice(-50);
   }
@@ -90,7 +90,7 @@ test('record events advance lifetime partial titles even after older wins leave 
   assert.equal(ledger.progress['three-titles'],3);
   assert.equal(ledger.progress['ten-campaigns'],10);
   assert.equal(achievement(records,'five-titles',ledger).unlocked,true);
-  assert.equal(achievement(records,'euro-title',ledger).unlocked,true);
+  assert.equal(achievement(records,'world-cup-title',ledger).unlocked,true);
   assert.equal(ledger.lastRecordId,'record-204');
 });
 

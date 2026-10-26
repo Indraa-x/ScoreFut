@@ -1,0 +1,27 @@
+/* World Cup: deep green and trophy gold, within the existing ScoreFut layout. */
+:is(.mode-card,.setup-mode-option)[data-value="world-cup"]{
+ --competition-gradient:linear-gradient(125deg,#073c31 0%,#246349 55%,#796122 100%);
+ --competition-border:#b99b48;background:var(--competition-gradient);border-color:var(--competition-border);color:#fff;position:relative;
+}
+.mode-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.mode-card[data-value="world-cup"] :is(p,.mode-card-bottom){color:#ffffffe8}
+.mode-card[data-value="world-cup"] .mode-tag{background:#0003;color:#fff}
+.mode-card[data-value="world-cup"] .mode-icon:has(.competition-logo){background:#ffffff0e;border-color:#ffffff30;box-shadow:none}
+.mode-card[data-value="world-cup"] .mode-icon>.competition-logo{transform:none;object-fit:contain;filter:drop-shadow(0 3px 5px #0003)}
+:is(.mode-card,.setup-mode-option)[data-value="world-cup"]:hover{filter:brightness(1.08)}
+.mode-card[data-value="world-cup"]::after{content:'';position:absolute;inset:auto 22px 0;height:3px;background:#d7ba62;border-radius:3px 3px 0 0;pointer-events:none}
+.setup-mode-option[data-value="world-cup"].selected{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--competition-border)}
+.setup-mode-option[data-value="world-cup"].selected::after{content:'✓';position:absolute;right:6px;top:3px;font-size:11px;font-weight:800;color:#fff;z-index:3}
+.setup-mode-option[data-value="world-cup"] .mode-trophy-backdrop{object-position:center;opacity:.27}
+html[data-theme] #app[data-mode="world-cup"] .formation-option.selected{background:linear-gradient(120deg,#c7a74e,#ead38b);border-color:#d8bb69;color:#183c2a;box-shadow:none}
+#app[data-mode="world-cup"] .setup-competition-title>.competition-trophy{width:36px;height:64px;object-fit:contain;filter:drop-shadow(0 2px 5px #0002)}
+[data-mode="world-cup"] .champions-page-title .competition-logo{height:60px;width:36px;object-fit:contain}
+.match-competition-link{display:inline-flex;align-items:center;gap:9px;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.match-competition-link svg{width:16px;height:16px;color:var(--muted)}
+.match-competition-link:hover{color:var(--green)}
+.hero-steps{flex-wrap:wrap}
+.result-hero[data-mode="world-cup"]{border-color:#a88b40}
+.champion-competition-name[data-competition="world-cup"]{color:var(--text)}
+[data-mode="world-cup"] .champions-tree-trophy>img{height:118px;width:62px;object-fit:contain}
+[data-mode="world-cup"] .champions-knockout-heading>span{max-width:245px;text-align:right}
+@media(max-width:760px){.mode-grid{grid-template-columns:1fr}.home-stars-footer>span:last-child{font-size:9px}[data-mode="world-cup"] .champions-knockout-heading>span{max-width:none;text-align:left}}

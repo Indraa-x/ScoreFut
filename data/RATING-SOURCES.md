@@ -36,9 +36,9 @@ As fontes podem ter a última atualização arquivada de uma edição ou uma fot
 Cada registro verificado contém `ovr`, `edition`, `releaseYear`, `source` e, quando conhecido, `eaId`. `releaseYear` é o ano da temporada; `edition` é o jogo lançado nesse ano. Atualize também a auditoria ao modificar a cobertura. Os testes conferem a edição, a pessoa no elenco, a prioridade dos ajustes importados e diretos, os atributos, a persistência e todas as 2.365 linhas.
 
 O jogo é estático: nenhuma consulta ao FIFA Index ou SoFIFA ocorre durante a partida. A pesquisa de notas e o antigo catálogo de imagens não são dependências para adicionar jogadores.
-## Seleções da Euro
+## Seleções da Copa do Mundo
 
-O modo Euro acrescenta 101 elencos de seleções, separados dos 215 elencos de clubes. As épocas reais, as fontes e a cobertura das notas estão em [EURO-SOURCES.md](EURO-SOURCES.md). A Euro 2020 usa FIFA 22, pois foi disputada em 2021. As notas dos clubes e os ajustes existentes do criador não foram alterados por essa ampliação.
+O modo Copa do Mundo acrescenta 155 elencos reais de seleções, separados dos 215 elencos de clubes. Épocas, fontes e cobertura das notas: [WORLD-CUP-SOURCES.md](WORLD-CUP-SOURCES.md).
 
 ## Reequilíbrio do Arsenal 2004 — 23/10/2026
 

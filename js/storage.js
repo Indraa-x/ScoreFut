@@ -1,4 +1,4 @@
-import {updateAchievementLedger} from './achievements.js?v=browser-achievements-20261025';
+import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 
 const prefix = 'scorefut.';
 const progressKeys=['history','active'];
@@ -107,9 +107,23 @@ export function initializeBrowserProgress(){
 export function read(key, fallback = null) { if(key==='achievements'&&inMemoryLedger)return inMemoryLedger;try { const value = localStorage.getItem(storageKey(key)); return value === null ? fallback : JSON.parse(value); } catch { return fallback; } }
 export function write(key, value) { if(key==='achievements'&&inMemoryLedger)inMemoryLedger=value;try {localStorage.setItem(storageKey(key),JSON.stringify(value));return true;} catch {return false;} }
 export function remove(key) {try {localStorage.removeItem(storageKey(key));} catch { /* Navegação privada pode bloquear o armazenamento. */ }}
+/** Keep a retired competition's exact save locally, without relabelling its results. */
+export function archiveRetiredCompetition(){
+ let store,key,raw;
+ try{
+  store=localStorage;key=storageKey('active');raw=store.getItem(key);
+  const saved=parse(raw);
+  if(saved?.mode!=='euro')return true;
+  let archive=prefix+'retired-national.active',slot=0;
+  while(store.getItem(archive)!==null)archive=prefix+'retired-national.active.'+(++slot);
+  store.setItem(archive,raw);
+  store.removeItem(key);
+  return true;
+ }catch{return false;}
+}
 export function today() {return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
 export function statistics(history = read('history',[])) {
   let streak=0; for(const game of [...history].reverse()) {if(game.champion) streak++;else break;}
   const best = history.reduce((a,b)=>(b.rank||0)>(a?.rank||0)?b:a,null);
-  return {titles:history.filter(g=>g.champion).length,played:history.length,best:best?.stageLabel || '—',streak,winRate:history.length?Math.round(history.filter(g=>g.champion).length/history.length*100):0};
+  return {titles:history.filter(g=>g.champion).length,played:history.length,best:(best?.stageLabel || '—').replace(/\bEuro\b/g,'Seleções'),streak,winRate:history.length?Math.round(history.filter(g=>g.champion).length/history.length*100):0};
 }

@@ -1,9 +1,9 @@
-import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js?v=five-eras-20261022';
-import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js?v=five-eras-20261022';
-import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=five-eras-20261022';
+import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js?v=world-cup-20261026';
+import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js?v=world-cup-20261026';
+import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=world-cup-20261026';
 export {RELEASE_RATINGS_BY_SQUAD};
-import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=brazil-classics-20261024';
-import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=vintage-ratings-20261022';
+import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=world-cup-20261026';
+import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=world-cup-20261026';
 export { SEASON_RATINGS_BY_SQUAD };
 
 /**

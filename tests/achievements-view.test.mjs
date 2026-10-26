@@ -18,9 +18,9 @@ test('achievements are a full page with browser save information and no account 
 });
 
 test('previous medals remain shown with an empty or pruned campaign history',()=>{
-  const ledger=updateAchievementLedger([{id:'euro-title',mode:'euro',champion:true},...Array.from({length:2},(_,i)=>({id:String(i),champion:true}))]);
+  const ledger=updateAchievementLedger([{id:'world-cup-title',mode:'world-cup',champion:true},...Array.from({length:2},(_,i)=>({id:String(i),champion:true}))]);
   const html=renderAchievementsView([],statistics([]),ledger,helpers);
-  assert.match(html,/is-earned" data-achievement="euro-title"/);
+  assert.match(html,/is-earned" data-achievement="world-cup-title"/);
   assert.match(html,/is-earned" data-achievement="three-win-streak"/);
   assert.match(html,/Sua trajetória/);
 });

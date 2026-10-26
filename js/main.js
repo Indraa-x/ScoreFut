@@ -1,25 +1,26 @@
-import {initBrowserNavigation} from './browser-navigation.js?v=browser-achievements-20261025';
-import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=euro-20261023';
-import {filterQuickClubs} from './quick-catalog.js?v=brazil-classics-20261024';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=brazil-classics-20261024';
-import { squadsForMode, competitionName } from '../data/competitions.js?v=euro-20261023';
-import { state, MODES } from './state.js?v=euro-20261023';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=euro-20261023';
-import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=euro-20261023';
-import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
-import * as storage from './storage.js?v=browser-achievements-20261025';
-import * as ui from './ui.js?v=achievements-style-20261026';
-import {updateAchievementLedger} from './achievements.js?v=browser-achievements-20261025';
-import {saveCampaignProgress} from './campaign-progress.js?v=browser-achievements-20261025';
-import {downloadResult} from './share.js?v=euro-20261023';
-import {initPlayerDrag} from './player-drag.js?v=drag-size-adjustment-20261023';
-import {initSkipFeedback} from './skip-feedback.js?v=five-eras-20261022';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=euro-20261023';
-import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=euro-20261023';
-import {initMatchPlayback} from './match-playback.js?v=euro-20261023';
-import {initCelebration} from './celebration.js?v=euro-20261023';
+import {initBrowserNavigation} from './browser-navigation.js?v=world-cup-20261026';
+import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=world-cup-20261026';
+import {filterQuickClubs} from './quick-catalog.js?v=world-cup-20261026';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=world-cup-20261026';
+import { squadsForMode, competitionName } from '../data/competitions.js?v=world-cup-20261026';
+import { state, MODES } from './state.js?v=world-cup-20261026';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=world-cup-20261026';
+import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=world-cup-20261026';
+import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
+import * as storage from './storage.js?v=world-cup-20261026';
+import * as ui from './ui.js?v=world-cup-20261026';
+import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
+import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
+import {downloadResult} from './share.js?v=world-cup-20261026';
+import {initPlayerDrag} from './player-drag.js?v=world-cup-20261026';
+import {initSkipFeedback} from './skip-feedback.js?v=world-cup-20261026';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=world-cup-20261026';
+import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=world-cup-20261026';
+import {initMatchPlayback} from './match-playback.js?v=world-cup-20261026';
+import {initCelebration} from './celebration.js?v=world-cup-20261026';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 const browserProgressReady=storage.initializeBrowserProgress();
+const competitionProgressReady=storage.archiveRetiredCompetition();
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0;
 let pendingAchievementLedger=null;
 const navigationSessions=new Map();
@@ -30,18 +31,18 @@ function currentRoute(){return {screen:state.screen,mode:state.mode,quickStep:st
 function visitRoute(route){
   navigationVersion++;rememberSession();stopPlayback();if(modal.open)modal.close();
   const requested=route.screen;
-  if(requested==='bracket'&&route.recordId){const record=storage.read('history',[]).find(r=>r.id===route.recordId);if(record?.tournament){state.resultRecord=record;state.tournament=record.tournament;state.mode=record.mode;state.screen='bracket';state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'result';}else state.screen='achievements';}
+  if(requested==='bracket'&&route.recordId){const record=storage.read('history',[]).find(r=>r.id===route.recordId);if(record?.tournament&&record.mode!=='euro'){state.resultRecord=record;state.tournament=record.tournament;state.mode=record.mode;state.screen='bracket';state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'result';}else state.screen='achievements';}
   else if(gameScreens.has(requested)){
     const id=route.session||sessionId(state.draft)||sessionId(storage.read('active')?.draft);
     const cached=navigationSessions.get(id),saved=storage.read('active');
     if(cached)Object.assign(state,cached);
     else if(saved&&sessionId(saved.draft)===id)restore(saved);
-    if(!state.draft||sessionId(state.draft)!==id){state.screen='setup';state.mode=MODES.some(m=>m.id===route.mode)?route.mode:'euro';}
+    if(!state.draft||sessionId(state.draft)!==id){state.screen='setup';state.mode=MODES.some(m=>m.id===route.mode)?route.mode:'world-cup';}
     else{state.mode=state.draft.mode;state.resultRecord=null;state.screen=['match','bracket'].includes(requested)&&!state.tournament?'summary':requested;if(state.screen==='summary'&&state.draft.picks.length!==TEAM_SIZE)state.screen='draft';if(requested==='bracket'){state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'match';}}
   }else if(requested==='result'){
     const record=storage.read('history',[]).find(r=>r.id===route.recordId)|| (state.resultRecord?.id===route.recordId?state.resultRecord:null);
-    if(record){state.resultRecord=record;state.tournament=record.tournament||null;state.mode=record.mode;state.screen='result';}else state.screen='achievements';
-  }else{state.screen=requested; if(requested==='setup'){state.mode=MODES.some(m=>m.id===route.mode)||route.mode==='quick'?route.mode:'euro';state.quickStep=route.quickStep||'formation';}}
+    if(record&&record.mode!=='euro'){state.resultRecord=record;state.tournament=record.tournament||null;state.mode=record.mode;state.screen='result';}else state.screen='achievements';
+  }else{state.screen=requested; if(requested==='setup'){state.mode=MODES.some(m=>m.id===route.mode)||route.mode==='quick'?route.mode:'world-cup';state.quickStep=route.quickStep||'formation';}}
   state.rolling=false;state.matchPlaying=false;render();window.scrollTo({top:0,behavior:'instant'});
 }
 
@@ -67,7 +68,7 @@ function browserAchievements(history){
   if(pendingAchievementLedger||JSON.stringify(saved)!==JSON.stringify(ledger))pendingAchievementLedger=storage.write('achievements',ledger)?null:ledger;
   return ledger;
 }
-function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]).filter(record=>record.mode!=='world-cup'),stats=storage.statistics(history);let html='';
+function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
   app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
@@ -103,9 +104,9 @@ function restore(saved){
   delete state.draft.selectedId;delete state.draft.selectedSlotId;delete state.draft.selectedPickId;
   hydrateDraft();if(state.screen==='bracket')state.screen='match';persist();render();return true;
 }
-function openSetup(mode='euro',quickStep='formation'){
+function openSetup(mode='world-cup',quickStep='formation'){
   if(mode==='brasileirao')mode='copa-do-brasil';
-  state.mode=mode==='quick'||MODES.some(m=>m.id===mode)?mode:'euro';state.quickStep=quickStep;navigate('setup');
+  state.mode=mode==='quick'||MODES.some(m=>m.id===mode)?mode:'world-cup';state.quickStep=quickStep;navigate('setup');
 }
 function updateQuickSearch(search){
   state.quickSearch=search;
@@ -261,11 +262,11 @@ async function launchFromHome(button){
       else await new Promise(resolve=>setTimeout(resolve,620));
     }
   }
-  if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('euro');
+  if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('world-cup');
 }
 async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
 case'home':navigate('home');break;case'achievements':navigate('achievements');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
-case'setup':openSetup(value||'euro');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
+case'setup':openSetup(value||'world-cup');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
 case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}break;}
 case'draw':await roll();break;case'reroll-club':await roll('club');break;case'reroll-season':await roll('season');break;case'player':selectPlayer(value);break;case'slot':slotAction(value);break;
 case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value);break;case'quick-choose-club':openSetup('quick','clubs');break;case'quick-formation':openSetup('quick');break;
@@ -274,10 +275,10 @@ case'quick-clear':state.quickSearch='';state.quickRegion='all';render();app.quer
 case'next-match':nextMatch();break;
 case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();if(speed===8)app.querySelector('.match-speed-fast')?.classList.add('is-activating');}break;}
 case'bracket':state.returnScreen=state.screen;navigate('bracket');break;case'back-match':navigate(state.returnScreen==='result'?'result':'match');break;
-case'champions-view':{if(!['champions','euro'].includes(state.tournament?.mode))break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
-case'champions-group':if(state.screen==='bracket'&&['champions','euro'].includes(state.tournament?.mode)&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;
-case'champions-round':if(state.screen==='bracket'&&['champions','euro'].includes(state.tournament?.mode)&&['round16','quarter','semi','final'].includes(value)){state.championsRound=value;render();}break;
-case'champions-tie':{if(!['champions','euro'].includes(state.tournament?.mode))break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
+case'champions-view':{if(!['champions','world-cup'].includes(state.tournament?.mode))break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
+case'champions-group':if(state.screen==='bracket'&&['champions','world-cup'].includes(state.tournament?.mode)&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;
+case'champions-round':if(state.screen==='bracket'&&['champions','world-cup'].includes(state.tournament?.mode)&&['round16','quarter','semi','final'].includes(value)){state.championsRound=value;render();}break;
+case'champions-tie':{if(!['champions','world-cup'].includes(state.tournament?.mode))break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
 case'match-index':{const i=Number(value);if(!state.pendingRound&&Number.isInteger(i)&&i>=0&&i<state.tournament.userMatches.length){stopPlayback();state.userMatchIndex=i;state.matchMinute=state.tournament.userMatches[i].result.duration;persist();render();}break;}
 case'result-lineup':if(state.screen==='result'&&state.resultRecord){document.getElementById('modal-content').innerHTML=ui.renderResultLineup(state.resultRecord);modal.showModal();}break;case'download':downloadResult(state.resultRecord);toast('Seu resultado em PNG está pronto.');break;
 }}
@@ -300,6 +301,6 @@ initPlayerDrag({
 modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 document.addEventListener('visibilitychange',()=>{if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});
 window.addEventListener('pagehide',()=>{stopPlayback();if(['draft','summary','match'].includes(state.screen))persist();});
-if(!browserProgressReady){storageWarning=true;toast('Não foi possível concluir o salvamento neste navegador. Seu progresso anterior foi mantido.');}
+if(!browserProgressReady||!competitionProgressReady){storageWarning=true;toast('Não foi possível concluir o salvamento neste navegador. Seu progresso anterior foi mantido.');}
 navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});
 navigation.start();

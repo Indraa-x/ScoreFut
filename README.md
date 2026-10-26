@@ -17,17 +17,17 @@
 
 ---
 
-ScoreFut é um jogo de futebol para navegador com **43 clubes, 24 seleções, 316 elencos históricos e equipes de 11 jogadores**. Escolha sua formação, monte um time e acompanhe a campanha até o resultado.
+ScoreFut é um jogo de futebol para navegador com **43 clubes, 32 seleções, 370 elencos históricos e equipes de 11 jogadores**. Escolha sua formação, monte um time e acompanhe a campanha até o resultado.
 
 ## Modos de jogo
 
 | Modo | Como funciona |
 | --- | --- |
-| **Euro** | Draft entre 24 seleções, com até cinco edições reais de Euro por seleção. Seis grupos, quatro melhores terceiros e mata-mata em jogo único. |
+| **Copa do Mundo** | Draft entre 32 seleções, com até cinco épocas reais de Copas por seleção. Oito grupos, classificação dos dois primeiros e mata-mata em jogo único a partir das oitavas. |
 | **Copa do Brasil** | Draft de craques brasileiros. Ida e volta até a semifinal e final em jogo único. |
 | **Champions League** | Draft entre 28 clubes europeus. Fase de grupos e mata-mata no formato clássico. |
 
-Campanhas antigas de Modo rápido e Lendas continuam disponíveis no histórico. A Euro substitui o Modo rápido na seleção de novos modos.
+Conquistas e estatísticas são salvas no navegador, sem cadastro. A Copa do Mundo ocupa o modo de seleções. Os elencos, as fontes das notas e os critérios das épocas estão em [WORLD-CUP-SOURCES.md](data/WORLD-CUP-SOURCES.md).
 
 ## No campo
 
@@ -35,7 +35,7 @@ Campanhas antigas de Modo rápido e Lendas continuam disponíveis no histórico.
 - **4 skips por draft**, compartilhados entre clube/seleção e temporada/edição.
 - Partidas com placar, relógio, bolinhas numeradas e autores dos gols.
 - Simulação baseada em OVR e atributos, com uma pequena ajuda de dificuldade e sem vitória garantida.
-- Histórico com busca, filtros por competição e títulos, estatísticas e escalações.
+- Conquistas permanentes, estatísticas e taças das três competições.
 - Celebração com troféus, confetes e som de torcida em volume baixo.
 - Resultado para baixar em PNG e progresso salvo no navegador.
 
@@ -87,6 +87,6 @@ Consulte a [documentação técnica](docs/TECHNICAL.md) para as regras do motor,
 
 ## Créditos
 
-Projeto independente criado por Indraa, sem vínculo com clubes, ligas ou jogadores. Os OVRs usam a edição FIFA/FC lançada no ano da temporada (2015 → FIFA 16), preservando os ajustes do criador. Casos sem registro verificável são estimativas identificadas. Veja [notas e fontes](data/RATING-SOURCES.md), as [cinco épocas por clube](data/FIVE-ERAS.md) e as [épocas, regras e fontes da Euro](data/EURO-SOURCES.md).
+Projeto independente criado por Indraa, sem vínculo com clubes, ligas ou jogadores. Os OVRs usam a edição FIFA/FC lançada no ano da temporada (2015 → FIFA 16), preservando os ajustes do criador. Casos sem registro verificável são estimativas identificadas. Veja [notas e fontes](data/RATING-SOURCES.md), as [cinco épocas por clube](data/FIVE-ERAS.md) e as [épocas, regras e fontes da Copa do Mundo](data/EURO-SOURCES.md).
 
 O draft usa posições, nomes e OVRs, sem faces ou cartinhas. A arte da página inicial foi preservada. Os escudos mantêm seus créditos em [clubes](assets/logos/sources.json) e [competições](assets/competitions/sources.json); o antigo catálogo de retratos permanece arquivado, sem carregamento no jogo. O áudio de torcida é **Crowd Cheer**, de FoolBoyMedia, com licença CC0; os detalhes estão em [fontes do áudio](assets/audio/sources.json).

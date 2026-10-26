@@ -1,17 +1,17 @@
-import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=brazil-classics-20261024';
-import {euroNations,euroSquads} from './euro-squads.js?v=euro-20261023';
-export {clubs} from './clubs.js?v=brazil-classics-20261024';
-export {euroNations,euroSquads};
-export const allSquads=[...clubSquads,...euroSquads];
+import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=world-cup-20261026';
+import {worldCupNations,worldCupSquads} from './world-cup-squads.js?v=world-cup-20261026';
+export {clubs} from './clubs.js?v=world-cup-20261026';
+export {worldCupNations,worldCupSquads};
+export const allSquads=[...clubSquads,...worldCupSquads];
 export function validateData(){
   const original=validateClubs(),errors=[...original.errors],tags=new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
-  if(euroNations.length!==24||euroSquads.length!==101)errors.push('Euro: esperadas 24 seleções e 101 épocas reais.');
+  if(worldCupNations.length!==32||worldCupSquads.length!==155)errors.push('Copa do Mundo: esperadas 32 seleções e 155 épocas reais.');
   if(new Set(allSquads.map(s=>s.id)).size!==allSquads.length)errors.push('IDs de elenco repetidos.');
-  for(const nation of euroNations){
-    const eras=euroSquads.filter(s=>s.clubId===nation.id);
+  for(const nation of worldCupNations){
+    const eras=worldCupSquads.filter(s=>s.clubId===nation.id);
     if(eras.length<1||eras.length>5||eras.length!==new Set(eras.map(s=>s.ano)).size)errors.push(`${nation.nome}: épocas inválidas.`);
   }
-  for(const squad of euroSquads){
+  for(const squad of worldCupSquads){
     const players=squad.jogadores;
     if(players.length!==11||new Set(players.map(p=>p.id)).size!==11||players.filter(p=>p.tags.includes('GOL')).length!==1)errors.push(`${squad.id}: escalação inválida.`);
     for(const p of players){
@@ -20,5 +20,5 @@ export function validateData(){
       if(p.ratingKind==='release-rating'&&p.releaseRating.releaseYear!==squad.ratingYear)errors.push(`${squad.id}/${p.id}: edição incorreta.`);
     }
   }
-  return {...original,valid:errors.length===0,errors,nations:euroNations.length,squads:allSquads.length,players:allSquads.reduce((n,s)=>n+s.jogadores.length,0)};
+  return {...original,valid:errors.length===0,errors,nations:worldCupNations.length,squads:allSquads.length,players:allSquads.reduce((n,s)=>n+s.jogadores.length,0)};
 }

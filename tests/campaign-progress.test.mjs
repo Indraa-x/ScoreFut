@@ -13,7 +13,7 @@ function fixture(allowWrite=()=>true){
 }
 
 test('a completed record is appended once and does not advance its ledger twice',()=>{
-  const f=fixture(),record=campaign('one',true,'euro');
+  const f=fixture(),record=campaign('one',true,'world-cup');
   const first=saveCampaignProgress(record,[],null,f.storage);
   assert.equal(first.ledgerSaved,true);
   assert.equal(first.historySaved,true);

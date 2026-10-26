@@ -1,0 +1,250 @@
+{
+  "provider": "football-logos.cc",
+  "credit": "National federation crests via https://football-logos.cc/national-teams/",
+  "logos": [
+    {
+      "id": "nation-brazil",
+      "name": "Brasil",
+      "file": "assets/logos/nation-brazil.png",
+      "source": "https://football-logos.cc/brazil/brazil-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/brazil/700x700/brazil-national-team.caceec49.png",
+      "sha256": "d6e169c2d15a62aff7c097790cc42ec7ebf997044a33ac59339efef90d415485"
+    },
+    {
+      "id": "nation-argentina",
+      "name": "Argentina",
+      "file": "assets/logos/nation-argentina.png",
+      "source": "https://football-logos.cc/argentina/argentina-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/argentina/700x700/argentina-national-team.83b3320e.png",
+      "sha256": "535db0e8bffa949ca36f2cf733d2bc2a119e55a1e087105d81641225c70c1dff"
+    },
+    {
+      "id": "nation-germany",
+      "source": "https://assets.football-logos.cc/logos/germany/256x256/germany-national-team.6c5e7edf.png",
+      "sha256": "8e6bfa0ad4365133c853e83056fce3d743a46eab5d7db8496d4d28fada4ac995",
+      "name": "Alemanha",
+      "file": "assets/logos/nation-germany.png"
+    },
+    {
+      "id": "nation-italy",
+      "source": "https://assets.football-logos.cc/logos/italy/256x256/italy-national-team.e86a120c.png",
+      "sha256": "76a3f6ae9a049e482c1f14ff255ae28664a122944a9f515e02abfda3dfde6dcb",
+      "name": "Itália",
+      "file": "assets/logos/nation-italy.png"
+    },
+    {
+      "id": "nation-france",
+      "source": "https://assets.football-logos.cc/logos/france/256x256/france-national-team.cc82cdbf.png",
+      "sha256": "43fe47f421f99741b02d741d81bfef890e57fec691a24485c3f430d5339228b0",
+      "name": "França",
+      "file": "assets/logos/nation-france.png"
+    },
+    {
+      "id": "nation-uruguay",
+      "name": "Uruguai",
+      "file": "assets/logos/nation-uruguay.png",
+      "source": "https://football-logos.cc/uruguay/uruguay-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/uruguay/700x700/uruguay-national-team.d4efefc9.png",
+      "sha256": "a2f7077251709ab9b777be921814b538dff86b6799e54437b20b20b7ba25df2e"
+    },
+    {
+      "id": "nation-england",
+      "source": "https://assets.football-logos.cc/logos/england/256x256/england-national-team.1dd4fab6.png",
+      "sha256": "c1f4ceea485f554f6a2e70efc7ef95b437979358ea691665b413e0a2ead1b944",
+      "name": "Inglaterra",
+      "file": "assets/logos/nation-england.png"
+    },
+    {
+      "id": "nation-spain",
+      "source": "https://assets.football-logos.cc/logos/spain/256x256/spain-national-team.a42d399e.png",
+      "sha256": "ae950ad37dc1e4d5d11c78aef8a58806c97212dff1e6b894a3503019ff40c409",
+      "name": "Espanha",
+      "file": "assets/logos/nation-spain.png"
+    },
+    {
+      "id": "nation-netherlands",
+      "source": "https://assets.football-logos.cc/logos/netherlands/256x256/dutch-national-team.3fd62267.png",
+      "sha256": "b7266b121b3152f72487722d08039a723a9fd26d96d9cafc66c405c5df009c1d",
+      "name": "Países Baixos",
+      "file": "assets/logos/nation-netherlands.png"
+    },
+    {
+      "id": "nation-portugal",
+      "source": "https://assets.football-logos.cc/logos/portugal/700x700/portuguese-football-federation.21becde8.png",
+      "sha256": "c7eb5f9831c7625f8618e4c1506cc0302f038d3b86f7a5c084a32941c4ab65d2",
+      "note": "Previously archived federation crest, reused without alteration.",
+      "name": "Portugal",
+      "file": "assets/logos/nation-portugal.png"
+    },
+    {
+      "id": "nation-croatia",
+      "source": "https://assets.football-logos.cc/logos/croatia/256x256/croatia-national-team.585829ca.png",
+      "sha256": "99765ab62b757e11ac655b4d300d1906daa31ce004bc96c61350f2833cf8c056",
+      "name": "Croácia",
+      "file": "assets/logos/nation-croatia.png"
+    },
+    {
+      "id": "nation-belgium",
+      "source": "https://assets.football-logos.cc/logos/belgium/256x256/belgium-national-team.28a4fd00.png",
+      "sha256": "b3b9164e3b568c8c650373d861307af11442a0e35b2ed7e0ce6cf1c5ebaafb97",
+      "name": "Bélgica",
+      "file": "assets/logos/nation-belgium.png"
+    },
+    {
+      "id": "nation-sweden",
+      "name": "Suécia",
+      "file": "assets/logos/nation-sweden.png",
+      "source": "https://football-logos.cc/sweden/sweden-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/sweden/256x256/sweden-national-team.02516fd9.png",
+      "sha256": "114cc8d2fcf66dd91b14f608b4598d814f11914a46b619d24e4fde4a8524d00c"
+    },
+    {
+      "id": "nation-hungary",
+      "source": "https://assets.football-logos.cc/logos/hungary/256x256/hungary-national-team.ae5854d7.png",
+      "sha256": "9f662766d5ce65608de06d95b65f4bfd175bda9c186bd22a4ec3e6ae4f7308f9",
+      "name": "Hungria",
+      "file": "assets/logos/nation-hungary.png"
+    },
+    {
+      "id": "nation-poland",
+      "source": "https://assets.football-logos.cc/logos/poland/256x256/poland-national-team.859a4472.png",
+      "sha256": "f4427f88ad76be777f769ca67c09f04e8d789373011b50d139f51c11bdb7f808",
+      "name": "Polônia",
+      "file": "assets/logos/nation-poland.png"
+    },
+    {
+      "id": "nation-denmark",
+      "source": "https://assets.football-logos.cc/logos/denmark/256x256/denmark-national-team.9d5a1b50.png",
+      "sha256": "986620157939c9d45a6fed91d48168f09819864447b0fa4c9a9d4b3f65389607",
+      "name": "Dinamarca",
+      "file": "assets/logos/nation-denmark.png"
+    },
+    {
+      "id": "nation-switzerland",
+      "source": "https://assets.football-logos.cc/logos/switzerland/256x256/switzerland-national-team.4c74693e.png",
+      "sha256": "1da151dca54387de7f8d7a89f3184b84c3a3a9b5695c3b707e611ba433992a91",
+      "name": "Suíça",
+      "file": "assets/logos/nation-switzerland.png"
+    },
+    {
+      "id": "nation-chile",
+      "name": "Chile",
+      "file": "assets/logos/nation-chile.png",
+      "source": "https://football-logos.cc/chile/chile-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/chile/700x700/chile-national-team.2025127c.png",
+      "sha256": "756e7f9afb5fd368bbd7531744588d8a136f7ba10631d175310bd62536d8de3b"
+    },
+    {
+      "id": "nation-colombia",
+      "name": "Colômbia",
+      "file": "assets/logos/nation-colombia.png",
+      "source": "https://football-logos.cc/colombia/colombia-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/colombia/700x700/colombia-national-team.d2541145.png",
+      "sha256": "254fe2db3571f85d16f4a742c18574f1243be7b548295be6bfe496c28316501a"
+    },
+    {
+      "id": "nation-mexico",
+      "name": "México",
+      "file": "assets/logos/nation-mexico.png",
+      "source": "https://football-logos.cc/mexico/mexico-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/mexico/700x700/mexico-national-team.d85a13ca.png",
+      "sha256": "01a33a5144e320bea954a4c37179a9b5ffa94795d2939df0428caa9e5b5b2fdc"
+    },
+    {
+      "id": "nation-united-states",
+      "name": "Estados Unidos",
+      "file": "assets/logos/nation-united-states.png",
+      "source": "https://football-logos.cc/usa/usa-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/usa/700x700/usa-national-team.c093768f.png",
+      "sha256": "29766849328fa466455adfac99d54d868dba2363d6e5c73bdc629c3e4effaeb2"
+    },
+    {
+      "id": "nation-japan",
+      "name": "Japão",
+      "file": "assets/logos/nation-japan.png",
+      "source": "https://football-logos.cc/japan/japan-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/japan/700x700/japan-national-team.0783a9e9.png",
+      "sha256": "6aec7aaa5e0c682a0967b58eb7a3f380bd2fcfbd0139b57d6185854d1da2f4ce"
+    },
+    {
+      "id": "nation-south-korea",
+      "name": "Coreia do Sul",
+      "file": "assets/logos/nation-south-korea.png",
+      "source": "https://football-logos.cc/south-korea/south-korea-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/south-korea/700x700/south-korea-national-team.222b8234.png",
+      "sha256": "ffd080c99ac3c8c14dde26ba7993d427773af889254533e2a7aa131a4d12896c"
+    },
+    {
+      "id": "nation-australia",
+      "name": "Austrália",
+      "file": "assets/logos/nation-australia.png",
+      "source": "https://football-logos.cc/australia/australia-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/australia/700x700/australia-national-team.25ee3a16.png",
+      "sha256": "d751bb4d53ea5401c8ab43172f161ae66c8c3f9c9b2373c8083665c69434cd12"
+    },
+    {
+      "id": "nation-morocco",
+      "name": "Marrocos",
+      "file": "assets/logos/nation-morocco.png",
+      "source": "https://football-logos.cc/morocco/morocco-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/morocco/700x700/morocco-national-team.9f36aa1b.png",
+      "sha256": "dc0f5a102a221df3f33e3ee536120846be07e55aa7f71b4392594f55eae8274c"
+    },
+    {
+      "id": "nation-senegal",
+      "name": "Senegal",
+      "file": "assets/logos/nation-senegal.png",
+      "source": "https://football-logos.cc/senegal/senegal-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/senegal/700x700/senegal-national-team.9d38991b.png",
+      "sha256": "c9a7e191955db5e18ebbd1635ca88caa0d472926684baae955bebc1ba07e233c"
+    },
+    {
+      "id": "nation-cameroon",
+      "name": "Camarões",
+      "file": "assets/logos/nation-cameroon.png",
+      "source": "https://football-logos.cc/cameroon/cameroon-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/cameroon/256x256/cameroon-national-team.4985f1e1.png",
+      "sha256": "28e78c8306cb8c88b1e0548e940488a0c72db2f4803f0679d56cc26a599bc4d8"
+    },
+    {
+      "id": "nation-ghana",
+      "name": "Gana",
+      "file": "assets/logos/nation-ghana.png",
+      "source": "https://football-logos.cc/ghana/ghana-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/ghana/256x256/ghana-national-team.6a4e553b.png",
+      "sha256": "4849ab4ad3567ab93c76c8d55d0fee1772df5ad5e61243f6e6866970f66276bd"
+    },
+    {
+      "id": "nation-nigeria",
+      "name": "Nigéria",
+      "file": "assets/logos/nation-nigeria.png",
+      "source": "https://football-logos.cc/nigeria/nigeria-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/nigeria/256x256/nigeria-national-team.fa5cc64e.png",
+      "sha256": "7b1ae8d2cc38307a2aff07b6cbcb979c3ae76e41a8a551a7432d33f5357f7ec6"
+    },
+    {
+      "id": "nation-algeria",
+      "name": "Argélia",
+      "file": "assets/logos/nation-algeria.png",
+      "source": "https://football-logos.cc/algeria/algeria-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/algeria/256x256/algeria-national-team.91f79918.png",
+      "sha256": "5cab4b4feaf179f7b3251ab1d9a52630feffa33a1a87f45792fdf5d535dcde81"
+    },
+    {
+      "id": "nation-costa-rica",
+      "name": "Costa Rica",
+      "file": "assets/logos/nation-costa-rica.png",
+      "source": "https://football-logos.cc/costa-rica/costa-rica-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/costa-rica/256x256/costa-rica-national-team.dc76ad85.png",
+      "sha256": "28a24e30538ce05577e27e8265bd317b41630b1747ebf6cf5e70ea2197ab95be"
+    },
+    {
+      "id": "nation-ecuador",
+      "name": "Equador",
+      "file": "assets/logos/nation-ecuador.png",
+      "source": "https://football-logos.cc/ecuador/ecuador-national-team/",
+      "imageUrl": "https://assets.football-logos.cc/logos/ecuador/700x700/ecuador-national-team.02108d33.png",
+      "sha256": "124e18d3aad575d27da81a01c23997ca157a13ec7faa401674f841f7269f5536"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
-import { achievementsFor,achievementSummary } from './achievements.js?v=browser-achievements-20261025';
+import { achievementsFor,achievementSummary } from './achievements.js?v=world-cup-20261026';
 
 const pad=value=>String(value).padStart(2,'0');
 const competitions={
-  'euro-title':{name:'Euro',trophy:'assets/competitions/euro-trophy.png'},
+  'world-cup-title':{name:'Copa do Mundo',trophy:'assets/competitions/world-cup-trophy.png'},
   'champions-title':{name:'Champions League',trophy:'assets/competitions/champions-trophy.png'},
   'brazil-title':{name:'Copa do Brasil',trophy:'assets/competitions/brazil-cup-trophy.png'}
 };

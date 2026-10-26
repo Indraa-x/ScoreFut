@@ -1,4 +1,4 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=euro-20261023';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=world-cup-20261026';
 
 export const MATCH_FLOW_VERSION = 1;
 

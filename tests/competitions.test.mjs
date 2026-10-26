@@ -10,9 +10,10 @@ import {renderHome,renderSetup,renderMatch,renderBracket} from '../js/ui.js';
 const user={...squadTeam(allSquads[0]),id:'user',clubId:'user',name:'Meu time'};
 
 test('the categories keep their home logos and use trophy backgrounds in mode selection',()=>{
-  assert.deepEqual(MODES.map(mode=>mode.id),['euro','copa-do-brasil','champions']);
+  assert.deepEqual(MODES.map(mode=>mode.id),['world-cup','copa-do-brasil','champions']);
   const home=renderHome({clubs,stats:{titles:0,best:'—',streak:0,winRate:0}});
-  assert.ok(!home.includes('Copa do Mundo')&&!home.includes('SELEÇÕES DO MUNDO'));
+  assert.ok(home.includes('Copa do Mundo'));
+  assert.ok(home.includes('assets/competitions/world-cup-trophy.png'));
   assert.ok(home.includes('assets/competitions/copa-do-brasil.png'));
   assert.ok(home.includes('assets/competitions/champions-league.png'));
   for(const mode of ['copa-do-brasil','champions']){
