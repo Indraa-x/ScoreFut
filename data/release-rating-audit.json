@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-10-24",
+  "checkedAt": "2026-10-26",
   "clubs": 43,
   "squads": 215,
   "players": 2365,
   "verifiedReleaseRecords": 1069,
-  "creatorOverrides": 92,
+  "creatorOverrides": 93,
   "rows": [
     {
       "squadId": "real-madrid-2002",
@@ -761,7 +761,12 @@
       "expectedEdition": "FIFA 12",
       "status": "creator",
       "releaseOvr": 94,
-      "source": "https://fifaindex.com/teams/241-fc-barcelona/fifa12"
+      "source": "https://fifaindex.com/teams/241-fc-barcelona/fifa12",
+      "previousOvr": 95,
+      "currentOvr": 96,
+      "creatorOvr": 96,
+      "reviewSource": "data/imported-ovr-review.js",
+      "note": "Ajuste do criador importado de scorefut-overs-acima-93-2026-10-26 (1).json em 26/10/2026."
     },
     {
       "squadId": "barcelona-2011",
@@ -871,7 +876,12 @@
       "expectedEdition": "FIFA 16",
       "status": "creator",
       "releaseOvr": 94,
-      "source": "https://sofifa.com/player/158023/lionel-messi/16/158127"
+      "source": "https://sofifa.com/player/158023/lionel-messi/16/158127",
+      "previousOvr": 94,
+      "currentOvr": 95,
+      "creatorOvr": 95,
+      "reviewSource": "data/imported-ovr-review.js",
+      "note": "Ajuste do criador importado de scorefut-overs-acima-93-2026-10-26 (1).json em 26/10/2026."
     },
     {
       "squadId": "barcelona-2015",
@@ -13925,8 +13935,12 @@
       "name": "Pelé",
       "year": 1963,
       "expectedEdition": "FIFA 64",
-      "status": "editorial",
-      "note": "Sem OVR verificável na edição pedida; conservar estimativa histórica ou ajuste do criador."
+      "status": "creator",
+      "note": "Ajuste do criador importado de scorefut-overs-acima-93-2026-10-26 (1).json em 26/10/2026.",
+      "previousOvr": 96,
+      "currentOvr": 95,
+      "creatorOvr": 95,
+      "reviewSource": "data/imported-ovr-review.js"
     },
     {
       "squadId": "santos-1963",
@@ -23276,5 +23290,11 @@
     "source": "data/VINTAGE-RATINGS.md"
   },
   "creatorImportedOverrides": 67,
-  "creatorDirectOverrides": 12
+  "creatorDirectOverrides": 12,
+  "latestEditorImport": {
+    "sourceFile": "scorefut-overs-acima-93-2026-10-26 (1).json",
+    "exportedAt": "2026-10-26T17:07:53.408Z",
+    "clubChanges": 3,
+    "nationalChanges": 15
+  }
 }

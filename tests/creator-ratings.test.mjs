@@ -5,6 +5,7 @@ import {CREATOR_RATING_REVIEW,CREATOR_RATING_REVIEWS,CREATOR_RATINGS_BY_SQUAD,CR
 import {applyHistoricalFifaRating} from '../data/ratings.js';
 import {FORMATIONS,positionFit,squadTeam,calculateTeam} from '../js/engine.js';
 import {refreshDraftRatings} from '../js/draft.js';
+import {IMPORTED_OVR_BY_SQUAD} from '../data/imported-ovr-review.js';
 
 const player=(squadId,id)=>allSquads.find(squad=>squad.id===squadId)?.jogadores.find(player=>player.id===id);
 
@@ -53,7 +54,7 @@ test('Arsenal 2004 averages exactly 88 while preserving its leading players and 
 test('Brazilian 1960s squads reach the requested overall ratings and refresh saved picks without changing their stars',()=>{
   const cases=[
     {id:'botafogo-1962',overall:85.5,previous:87.2,sum:941,stars:{'manuel-francisco-dos-santos':95,'nilton-santos':92,'waldyr-pereira':92}},
-    {id:'santos-1963',overall:86.5,previous:87.5,sum:952,stars:{pele:96,'gilmar-dos-santos-neves':90,'jose-ely-de-miranda':89,'jose-macia':89,'antonio-wilson-vieira-honorio':89,'mauro-ramos':88}},
+    {id:'santos-1963',overall:86.5,previous:87.5,sum:951,stars:{pele:95,'gilmar-dos-santos-neves':90,'jose-ely-de-miranda':89,'jose-macia':89,'antonio-wilson-vieira-honorio':89,'mauro-ramos':88}},
   ];
   for(const item of cases){
     const squad=allSquads.find(s=>s.id===item.id),team=squadTeam(squad);
@@ -83,6 +84,8 @@ test('all 45 new OVR edits and 22 earlier edits reach their exact player and sea
   for(const review of CREATOR_RATING_REVIEWS)for(const change of review.changes){
     const found=player(change.squadId,change.playerId);
     assert.ok(found,`${change.squadId}/${change.playerId}`);
+    const newer=IMPORTED_OVR_BY_SQUAD[change.squadId]?.[change.playerId];
+    if(newer){assert.equal(found.ovr,newer.ovr);assert.deepEqual(found.creatorReview,newer);continue;}
     assert.equal(found.ovr,change.toOvr,`${change.squadId}/${change.playerId} OVR`);
     assert.equal(found.ratingKind,'creator-review');assert.equal(found.ratingEdition,undefined);
     assert.equal(found.creatorReview.previousOvr,change.fromOvr);
@@ -97,8 +100,8 @@ test('all 45 new OVR edits and 22 earlier edits reach their exact player and sea
 
 test('new increases and decreases affect only the specified seasons',()=>{
   assert.equal(player('barcelona-2009','lionel-messi').ovr,93);
-  assert.equal(player('barcelona-2011','lionel-messi').ovr,95);
-  assert.equal(player('barcelona-2015','lionel-messi').ovr,94);
+  assert.equal(player('barcelona-2011','lionel-messi').ovr,96);
+  assert.equal(player('barcelona-2015','lionel-messi').ovr,95);
   assert.equal(player('real-madrid-2017','cristiano-ronaldo').ovr,93);
   assert.equal(player('manchester-united-2009','cristiano-ronaldo').ovr,93);
   assert.equal(player('manchester-united-2008','cristiano-ronaldo').ovr,91);
@@ -151,7 +154,7 @@ test('existing draft picks receive every imported rating without losing position
     const latest=player(change.squadId,change.playerId),slot=FORMATIONS['4-3-3'].slots.find(slot=>positionFit(latest,slot)!==null);
     const draft={seed:42,rngState:90,rerolls:2,seen:[change.squadId],currentSquadId:change.squadId,picks:[{player:{...latest,ovr:change.fromOvr},squadId:change.squadId,slot}]};
     const original=structuredClone(draft),refreshed=refreshDraftRatings(draft,allSquads);
-    assert.equal(refreshed.picks[0].player.ovr,change.toOvr);
+    assert.equal(refreshed.picks[0].player.ovr,IMPORTED_OVR_BY_SQUAD[change.squadId]?.[change.playerId]?.ovr??change.toOvr);
     assert.equal(refreshed.picks[0].slot,slot);
     assert.deepEqual({...refreshed,picks:[]},{...draft,picks:[]});
     assert.deepEqual(draft,original);

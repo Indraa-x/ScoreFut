@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import {allSquads} from '../data/clubs.js';
 import {VINTAGE_RATINGS_BY_SQUAD} from '../data/vintage-ratings.js';
 import {CREATOR_RATINGS_BY_SQUAD} from '../data/creator-ratings.js';
+import {IMPORTED_OVR_BY_SQUAD} from '../data/imported-ovr-review.js';
 import {applyHistoricalFifaRating} from '../data/ratings.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {refreshDraftRatings} from '../js/draft.js';
@@ -64,7 +65,7 @@ test('the before/after audit has 250 reductions, no increases and all personal e
   }
   let personal=0;
   for(const [squad,ratings]of Object.entries(CREATOR_RATINGS_BY_SQUAD))for(const [id,review]of Object.entries(ratings)){
-    personal++;assert.equal(player(squad,id).ovr,review.ovr);
+    personal++;assert.equal(player(squad,id).ovr,IMPORTED_OVR_BY_SQUAD[squad]?.[id]?.ovr??review.ovr);
     assert.equal(player(squad,id).ratingKind,'creator-review');
   }
   assert.equal(personal,92);

@@ -53,7 +53,7 @@ Alemanha inclui as campanhas da Alemanha Ocidental, seguindo a continuidade hist
 
 Mantém-se a política do ScoreFut: a época usa a edição lançada naquele ano. Exemplos: **2006 → FIFA 07, 2010 → FIFA 11, 2014 → FIFA 15, 2018 → FIFA 19, 2022 → FIFA 23**. Não se transporta uma nota recente para uma época antiga como se fosse registro verificado.
 
-Nesta base, **683 entradas têm nota de edição identificada**, **1004 têm estimativa histórica individual explicitamente marcada** e **18 têm ajuste direto do criador**. Épocas anteriores à série FIFA não recebem uma edição inventada. Valores inválidos do arquivo de consulta, incluindo placeholders de 39 em quatro registros de Camarões de 2010, foram rejeitados; os registros de Eto’o e N’Koulou foram conferidos diretamente nas páginas da edição.
+Nesta base, **683 entradas têm nota de edição identificada**, **989 têm estimativa histórica individual explicitamente marcada** e **33 têm ajuste direto do criador**. Épocas anteriores à série FIFA não recebem uma edição inventada. Valores inválidos do arquivo de consulta, incluindo placeholders de 39 em quatro registros de Camarões de 2010, foram rejeitados; os registros de Eto’o e N’Koulou foram conferidos diretamente nas páginas da edição.
 
 Fontes de consulta:
 
@@ -67,7 +67,7 @@ As estimativas são ajustes editoriais do jogo, com valores individuais para cra
 
 ## Reequilíbrio solicitado em 26/10/2026
 
-Hungria 1954 e Alemanha 1974 passam a OVR geral calculado **88,5**. Cada onze soma 974 pontos; a média é arredondada para uma casa decimal, mantendo os OVRs individuais inteiros. Puskás (98), Kocsis (95), Beckenbauer (96) e Gerd Müller (96) permanecem iguais. As outras dezoito notas e seus atributos foram reduzidos individualmente.
+Hungria 1954 e Alemanha 1974 passaram inicialmente a OVR geral calculado **88,5**. Cada onze soma 974 pontos; a média é arredondada para uma casa decimal, mantendo os OVRs individuais inteiros. Puskás (98), Kocsis (95), Beckenbauer (96) e Gerd Müller (96) permanecem iguais. As outras dezoito notas e seus atributos foram reduzidos individualmente.
 
 Os ajustes estão em `world-cup-ratings.js`, com OVR anterior, OVR novo, data e procedência. Os dados originais continuam no arquivo de elencos. Drafts sem torneio recebem as novas notas ao retomar; campanhas já iniciadas mantêm seus jogadores e resultados.
 
@@ -87,3 +87,7 @@ O sorteio do draft escolhe primeiro a seleção com intervalos iguais, depois um
 O recorte de convocações e participações de `world-cup-squads.js` deriva do trabalho **© 2023 Joshua C. Fjelstul, Ph.D.**, [The Fjelstul World Cup Database](https://github.com/jfjelstul/worldcup). Esse recorte e sua organização derivada são disponibilizados sob [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode), conforme a licença da base. Modificações: seleção das 32 equipes e épocas, seleção dos onze, nomes de exibição e identidades canônicas, tradução e revisão das posições, acréscimo de OVR e atributos do jogo. Imagens e referências FIFA/EA conservam a autoria de seus titulares.
 
 Pesquisa e conferência: 26 de outubro de 2026.
+
+## Importação posterior do editor — 26/10/2026
+
+O arquivo `scorefut-overs-acima-93-2026-10-26 (1).json` define 15 novas notas de seleções, preservadas integralmente em `imported-ovr-review.js`. Essa revisão prevalece sobre as anteriores. Com Puskás 95, Beckenbauer 94 e Gerd Müller 95, Hungria 1954 e Alemanha 1974 passam a média calculada 88,3; nenhum outro jogador foi aumentado para compensar. Os atributos recebem a diferença da nota e drafts sem torneio recebem as atualizações ao retomar.

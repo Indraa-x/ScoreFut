@@ -1,4 +1,5 @@
 /** Direct creator reviews apply only to the requested national team and era. */
+import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js?v=creator-import-20261026';
 const reviews=[
  ['nation-hungary-1954',[
   ['gyula-grosics',92,88],['jeno-buzanszky',86,82],['gyula-lorant',88,85],
@@ -19,7 +20,7 @@ export const WORLD_CUP_CREATOR_REVIEWS=Object.freeze(Object.fromEntries(reviews.
  })]))),
 ])));
 export function applyWorldCupRatingReview(player,squadId){
- const review=WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
+ const review=IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
  if(!review)return player;
  const delta=review.ovr-player.ovr;
  return {...player,ovr:review.ovr,ratingKind:'creator-review',creatorReview:review,

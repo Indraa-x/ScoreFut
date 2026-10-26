@@ -6,6 +6,7 @@ import {RATINGS_VERSION,MAX_OVR,RELEASE_RATINGS_BY_SQUAD,SEASON_RATINGS_BY_SQUAD
 import {ARCHIVED_RATINGS_BY_SQUAD} from '../data/fifa-archive-ratings.js';
 import {MODERN_RATINGS_BY_SQUAD} from '../data/modern-ratings.js';
 import {CREATOR_RATINGS_BY_SQUAD} from '../data/creator-ratings.js';
+import {IMPORTED_OVR_BY_SQUAD} from '../data/imported-ovr-review.js';
 import {RELEASE_RATING_POLICY} from '../data/release-ratings.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {refreshDraftRatings} from '../js/draft.js';
@@ -24,7 +25,7 @@ test('ratings retain a varied scale and valid simulation attributes',()=>{
   assert.ok(Object.values(p.atributos).every(a=>Number.isInteger(a)&&a>=1&&a<=99),p.id);
   assert.deepEqual(JSON.parse(JSON.stringify(p)),p);
  }
- assert.equal(RATINGS_VERSION,19);
+ assert.equal(RATINGS_VERSION,20);
 });
 
 test('each verified rating identifies its exact player, source and following edition',()=>{
@@ -37,7 +38,7 @@ test('each verified rating identifies its exact player, source and following edi
    assert.ok(Number.isInteger(record.ovr)&&record.ovr>=40&&record.ovr<=99);
    assert.match(record.source,/^https:\/\//);
    assert.deepEqual(found.releaseRating,record);
-   const creator=CREATOR_RATINGS_BY_SQUAD[squadId]?.[id];
+   const creator=IMPORTED_OVR_BY_SQUAD[squadId]?.[id]??CREATOR_RATINGS_BY_SQUAD[squadId]?.[id];
    assert.equal(found.ovr,creator?.ovr??record.ovr,`${squadId}/${id}`);
    assert.equal(found.ratingKind,creator?'creator-review':'release-rating');
    assert.equal(found.ratingEdition,creator?undefined:record.edition);
@@ -59,7 +60,7 @@ test('2015 uses FIFA 16, recent seasons use FC 26, and transfers keep the same p
   const found=player(squad,id);assert.equal(found.ovr,ovr,`${squad}/${id}`);
   assert.equal(found.ratingEdition,game);assert.equal(found.ratingKind,'release-rating');
  }
- assert.equal(player('barcelona-2015','lionel-messi').ovr,94);
+ assert.equal(player('barcelona-2015','lionel-messi').ovr,95);
  assert.equal(player('barcelona-2015','lionel-messi').ratingKind,'creator-review');
 });
 
@@ -88,7 +89,7 @@ test('similar names cannot reuse another person’s EA identity',()=>{
 
 test('unverified eras are explicitly editorial and never borrow an OVR from a different edition',()=>{
  for(const squad of allSquads)for(const p of squad.jogadores){
-  if(CREATOR_RATINGS_BY_SQUAD[squad.id]?.[p.id]||RELEASE_RATINGS_BY_SQUAD[squad.id]?.[p.id])continue;
+  if(IMPORTED_OVR_BY_SQUAD[squad.id]?.[p.id]||CREATOR_RATINGS_BY_SQUAD[squad.id]?.[p.id]||RELEASE_RATINGS_BY_SQUAD[squad.id]?.[p.id])continue;
   const review=SEASON_RATINGS_BY_SQUAD[squad.id]?.[p.id];
   assert.equal(p.ratingKind,review?'season-review':'editorial-estimate');
   assert.equal(p.ratingEdition,undefined);
@@ -122,9 +123,9 @@ test('saved draft selections adopt the new edition while retaining skips, positi
  }
 });
 
-test('the audit accounts for every player and the 92 creator overrides',()=>{
+test('the audit accounts for every player and the 93 creator overrides',()=>{
  const audit=JSON.parse(fs.readFileSync(new URL('../data/release-rating-audit.json',import.meta.url),'utf8'));
- assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,92);
+ assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,93);
  assert.equal(audit.verifiedReleaseRecords,RELEASE_RATING_POLICY.verifiedRecords);
  assert.equal(new Set(audit.rows.map(row=>row.squadId+'/'+row.playerId)).size,2365);
  for(const row of audit.rows){const p=player(row.squadId,row.playerId);assert.ok(p);

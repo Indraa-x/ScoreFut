@@ -47,7 +47,7 @@ test('World Cup OVRs identify the exact released FIFA edition and explicitly dis
    assert.equal(p.releaseRating.ovr,p.ovr);assert.ok(p.ratingSource.startsWith('https://'));
   }else if(p.ratingKind==='creator-review'){
    assert.equal(p.creatorReview.squadId,squad.id);assert.equal(p.creatorReview.playerId,p.id);
-   assert.equal(p.creatorReview.ovr,p.ovr);assert.equal(p.ratingSource,'data/world-cup-ratings.js');
+   assert.equal(p.creatorReview.ovr,p.ovr);assert.ok(['data/world-cup-ratings.js','data/imported-ovr-review.js'].includes(p.ratingSource));
   }else{assert.equal(p.ratingKind,'editorial-estimate');assert.match(p.ratingReason,/Estimativa/);}
   if(squad.ano<1993)assert.equal(p.ratingExpectedEdition,null);
  }
@@ -56,17 +56,17 @@ test('World Cup OVRs identify the exact released FIFA edition and explicitly dis
  assert.equal(player('nation-argentina-2022',158023).ovr,91);
  assert.equal(player('nation-cameroon-2010',9676).ovr,84);
  const brazil94=worldCupSquads.find(s=>s.id==='nation-brazil-1994').jogadores;
- assert.equal(brazil94.find(p=>p.nome==='Romário').ovr,96);
+ assert.equal(brazil94.find(p=>p.nome==='Romário').ovr,94);
  assert.equal(brazil94.find(p=>p.nome==='Bebeto').ovr,91);
 });
-test('Hungary 1954 and Germany 1974 average 88.5, preserve their stars and refresh unfinished saved picks',()=>{
+test('Hungary 1954 and Germany 1974 keep earlier reductions, adopt the newer star OVRs and refresh saved picks',()=>{
  const cases=[
-  {id:'nation-hungary-1954',before:91.2,stars:{'ferenc-puskas':98,'sandor-kocsis':95}},
-  {id:'nation-germany-1974',before:90.9,stars:{'franz-beckenbauer':96,'gerd-muller':96}},
+  {id:'nation-hungary-1954',before:91.2,stars:{'ferenc-puskas':95,'sandor-kocsis':95}},
+  {id:'nation-germany-1974',before:90.9,stars:{'franz-beckenbauer':94,'gerd-muller':95}},
  ];
  for(const item of cases){
   const squad=worldCupSquads.find(s=>s.id===item.id),team=squadTeam(squad);
-  assert.equal(team.strength.overall,88.5);assert.equal(squad.jogadores.reduce((sum,p)=>sum+p.ovr,0),974);
+  assert.equal(team.strength.overall,88.3);assert.equal(squad.jogadores.reduce((sum,p)=>sum+p.ovr,0),971);
   for(const [id,ovr]of Object.entries(item.stars))assert.equal(squad.jogadores.find(p=>p.id===id).ovr,ovr);
   for(const p of squad.jogadores){
    assert.deepEqual(applyWorldCupRatingReview(p,item.id),p);
@@ -75,7 +75,7 @@ test('Hungary 1954 and Germany 1974 average 88.5, preserve their stars and refre
   const draft={...createDraft(42,'2026-10-26','world-cup'),picks:team.lineup.map(pick=>({...pick,squadId:item.id,player:{...pick.player,ovr:pick.player.creatorReview?.previousOvr??pick.player.ovr}}))};
   const original=structuredClone(draft);assert.equal(calculateTeam(draft.picks).overall,item.before);
   const updated=refreshDraftRatings(draft,allSquads);
-  assert.equal(calculateTeam(updated.picks).overall,88.5);assert.deepEqual(draft,original);
+  assert.equal(calculateTeam(updated.picks).overall,88.3);assert.deepEqual(draft,original);
   assert.deepEqual({...updated,picks:[]},{...draft,picks:[]});
  }
  const unchanged=worldCupSquads.find(s=>s.id==='nation-hungary-1962').jogadores;

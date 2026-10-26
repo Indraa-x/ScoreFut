@@ -1,7 +1,7 @@
 import { MODES,LEGACY_QUICK_MODE } from './state.js?v=world-cup-20261026';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=world-cup-20261026';
-import { clubs, allSquads, worldCupNations, worldCupSquads } from '../data/game-squads.js?v=national-balance-20261026';
-import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=simulation-gap-20261026';
+import { clubs, allSquads, worldCupNations, worldCupSquads } from '../data/game-squads.js?v=creator-import-20261026';
+import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=creator-import-20261026';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=simulation-gap-20261026';
 import { FORMATIONS, TEAM_SIZE, POSITION_MAP, positionFit, calculateTeam } from './engine.js?v=simulation-gap-20261026';

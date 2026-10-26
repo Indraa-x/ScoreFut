@@ -1,4 +1,4 @@
-import {clubs, allSquads} from '../data/clubs.js?v=world-cup-20261026';
+import {clubs, allSquads} from '../data/clubs.js?v=creator-import-20261026';
 import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=world-cup-20261026';
 import {squadTeam,FORMATIONS} from './engine.js?v=simulation-gap-20261026';
 
