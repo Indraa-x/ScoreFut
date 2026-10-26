@@ -126,6 +126,7 @@ test('saved draft selections adopt the new edition while retaining skips, positi
 test('the audit accounts for every player and the 93 creator overrides',()=>{
  const audit=JSON.parse(fs.readFileSync(new URL('../data/release-rating-audit.json',import.meta.url),'utf8'));
  assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,93);
+ assert.equal(audit.creatorImportedOverrides+audit.creatorDirectOverrides,audit.creatorOverrides);
  assert.equal(audit.verifiedReleaseRecords,RELEASE_RATING_POLICY.verifiedRecords);
  assert.equal(new Set(audit.rows.map(row=>row.squadId+'/'+row.playerId)).size,2365);
  for(const row of audit.rows){const p=player(row.squadId,row.playerId);assert.ok(p);
