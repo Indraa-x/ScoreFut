@@ -8,7 +8,7 @@ import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, si
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=euro-20261023';
 import {cryptoRandomIndex} from './random.js?v=uniform-draw-20261022';
 import * as storage from './storage.js?v=browser-achievements-20261025';
-import * as ui from './ui.js?v=browser-achievements-20261025';
+import * as ui from './ui.js?v=achievements-style-20261026';
 import {updateAchievementLedger} from './achievements.js?v=browser-achievements-20261025';
 import {saveCampaignProgress} from './campaign-progress.js?v=browser-achievements-20261025';
 import {downloadResult} from './share.js?v=euro-20261023';
