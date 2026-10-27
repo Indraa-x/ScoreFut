@@ -539,7 +539,18 @@ export function upgradeChampionsTournament(tournament) {
   return next;
 }
 
-function playCupRound(tournament) {
+function applyUserShootoutResult(tournament,match,override){
+  if(!override||override.matchId!==match.id)return false;
+  const result=override.result,score=result?.penalties;
+  if(!match.result.penalties||![match.homeId,match.awayId].includes(tournament.userTeamId)||
+    result.homeGoals!==match.result.homeGoals||result.awayGoals!==match.result.awayGoals||
+    !Array.isArray(score)||score.length!==2||score.some(value=>!Number.isInteger(value)||value<0)||score[0]===score[1]||
+    result.winnerId!==(score[0]>score[1]?match.homeId:match.awayId))throw new Error('Resultado de pênaltis inválido.');
+  match.result=structuredClone(result);
+  return true;
+}
+
+function playCupRound(tournament,options={}) {
   const next = {...tournament, matches:tournament.matches.map(match => ({...match})),
     bracket:tournament.bracket.map(stage => ({...stage, ties:stage.ties.map(tie => ({...tie}))}))};
   const rng = mulberry32(next.rngState);
@@ -566,6 +577,7 @@ function playCupRound(tournament) {
       tie.winnerId = resolved.winnerId;
       tie.aggregate = [...resolved.aggregate].reverse(); // tie.teamIds follow the first leg
     }
+    if(applyUserShootoutResult(next,match,options.userShootoutResult))tie.winnerId=match.result.winnerId;
   }
   next.progressRound += 1;
   if (stage.ties.every(tie => tie.winnerId)) {
@@ -673,10 +685,10 @@ function campaignFor(tournament) {
 }
 
 /** Play one group round or one knockout stage; input remains untouched. */
-export function playNextRound(tournament) {
+export function playNextRound(tournament,options={}) {
   if (tournament.complete) return tournament;
   tournament = upgradeChampionsTournament(tournament);
-  if (tournament.mode === 'copa-do-brasil' || tournament.knockoutFormat === 'two-legged' && tournament.progressRound >= (tournament.groupRounds || 3)) return playCupRound(tournament);
+  if (tournament.mode === 'copa-do-brasil' || tournament.knockoutFormat === 'two-legged' && tournament.progressRound >= (tournament.groupRounds || 3)) return playCupRound(tournament,options);
   const next = { ...tournament, teams: [...tournament.teams], matches: tournament.matches.map(match => ({ ...match })), groups: tournament.groups.map(group => ({ ...group, teamIds: [...group.teamIds], standings: group.standings.map(row => ({ ...row })) })), bracket: tournament.bracket.map(stage => ({ ...stage, matches: [...stage.matches] })) };
   const rng = mulberry32(next.rngState);
   const league = next.mode === 'brasileirao';
@@ -693,6 +705,7 @@ export function playNextRound(tournament) {
     const away = next.teams.find(team => team.id === match.awayId);
     match.result = simulateMatch(home, away, rng, { knockout: !league && !groupRound,
       stoppageTimeAllowed:['champions','world-cup'].includes(next.mode), settings: next.settings });
+    applyUserShootoutResult(next,match,options.userShootoutResult);
   });
   next.progressRound += 1;
   next.rngState = rng.getState();

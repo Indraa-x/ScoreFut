@@ -1,4 +1,5 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=simulation-gap-20261026';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=interactive-penalties-20261027';
+import {createPenaltyShootout} from './penalty-shootout.js?v=interactive-penalties-20261027';
 
 export const MATCH_FLOW_VERSION = 1;
 
@@ -9,6 +10,29 @@ export function currentMatch(state) {
 
 export function canContinueTournament(tournament) {
   return !tournament.complete && !tournament.campaign?.eliminated;
+}
+
+/** Only a new, uncommitted user fixture becomes interactive; old replays stay intact. */
+export function ensurePenaltyShootout(state){
+  const match=currentMatch(state);
+  if(!state.tournament||!state.pendingRound||state.userMatchIndex!==state.tournament.userMatches.length||!match?.result.penalties)return null;
+  if(!match.result.interactiveShootout||match.result.interactiveShootout.version!==2){
+    const home=state.tournament.teams.find(team=>team.id===match.homeId),away=state.tournament.teams.find(team=>team.id===match.awayId);
+    match.result.interactiveShootout=createPenaltyShootout(home,away,state.tournament.userTeamId,`${state.tournament.seed}:${match.id}`);
+  }
+  return match.result.interactiveShootout;
+}
+
+/** Rebuild the pending round from its original RNG state so every bracket uses the played winner. */
+export function finishPenaltyShootout(state){
+  const match=currentMatch(state),shootout=match?.result.interactiveShootout;
+  if(!state.pendingRound||!shootout?.complete||state.matchMinute<match.result.duration)return false;
+  const result={...match.result,penalties:[...shootout.scores],winnerId:shootout.winnerId,
+    events:[...match.result.events.filter(event=>!event.shootout),...shootout.kicks.map(kick=>({
+      type:'penalty',shootout:true,minute:match.result.duration,team:kick.side?'away':'home',player:kick.player,converted:kick.converted,x:.5,y:kick.side?.85:.15,
+    }))]};
+  state.pendingRound=playNextRound(state.tournament,{userShootoutResult:{matchId:match.id,result}});
+  return commitUserRound(state);
 }
 
 /** Keep completed games when an active Champions save adopts two-legged ties. */
@@ -41,7 +65,8 @@ export function prepareUserRound(tournament) {
 export function commitUserRound(state) {
   const match = currentMatch(state);
   if (!match || state.matchMinute < match.result.duration || !state.pendingRound
-    || state.userMatchIndex !== state.tournament.userMatches.length) return false;
+    || state.userMatchIndex !== state.tournament.userMatches.length
+    || match.result.interactiveShootout&&!match.result.interactiveShootout.complete) return false;
   state.tournament = state.pendingRound;
   state.pendingRound = null;
   state.matchUnlockedIndex = state.userMatchIndex;
@@ -90,7 +115,7 @@ export function upcomingFixtures(tournament, match) {
 export function nextFixturePreview(state) {
   const match=currentMatch(state);
   if(!match)return {kind:'complete'};
-  const ended=state.matchMinute>=match.result.duration;
+  const ended=state.matchMinute>=match.result.duration&&!state.penaltyBusy&&(!match.result.interactiveShootout||match.result.interactiveShootout.complete);
   const t=ended&&state.pendingRound?state.pendingRound:state.tournament;
   const fixture=[...(t.matches||[]),...(t.userMatches||[])]
     .filter(next=>next.id!==match.id&&next.round>match.round&&[next.homeId,next.awayId].includes(t.userTeamId))

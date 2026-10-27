@@ -4,17 +4,18 @@ import {filterQuickClubs} from './quick-catalog.js?v=creator-import-20261026';
 import { clubs, allSquads, validateData } from '../data/game-squads.js?v=hungary-puskas-20261027';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=world-cup-20261026';
 import { state, MODES } from './state.js?v=world-cup-20261026';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=simulation-gap-20261026';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=interactive-penalties-20261027';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=simulation-gap-20261026';
 import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
 import * as storage from './storage.js?v=world-cup-20261026';
-import * as ui from './ui.js?v=no-winner-caption-20261027';
+import * as ui from './ui.js?v=interactive-penalties-20261027';
 import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
 import {downloadResult} from './share.js?v=world-cup-20261026';
 import {initPlayerDrag} from './player-drag.js?v=world-cup-20261026';
 import {initSkipFeedback} from './skip-feedback.js?v=world-cup-20261026';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=simulation-gap-20261026';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,ensurePenaltyShootout,finishPenaltyShootout,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=interactive-penalties-20261027';
+import {takePenalty,penaltyTurn,PENALTY_TARGETS} from './penalty-shootout.js?v=interactive-penalties-20261027';
 import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=position-movement-20261027';
 import {initMatchPlayback} from './match-playback.js?v=position-movement-20261027';
 import {initCelebration} from './celebration.js?v=world-cup-20261026';
@@ -23,6 +24,19 @@ const browserProgressReady=storage.initializeBrowserProgress();
 const competitionProgressReady=storage.archiveRetiredCompetition();
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0;
 let pendingAchievementLedger=null;
+let penaltyAnimationId=0;
+let penaltyOpponentTimer=null,penaltyOpponentKey='';
+let penaltyAssetPromise=null;
+function preloadPenaltyAssets(){
+  if(penaltyAssetPromise)return;
+  state.penaltyAssetsReady=false;
+  penaltyAssetPromise=Promise.all(['shooter-ready','shooter-kick','keeper-ready','keeper-dive'].map(name=>new Promise(resolve=>{
+    const image=new Image();let timeout;
+    const done=()=>{clearTimeout(timeout);resolve();};
+    image.onload=image.onerror=done;timeout=setTimeout(done,15000);image.src=`assets/penalties/${name}.png`;
+    if(image.complete)done();
+  }))).then(()=>{state.penaltyAssetsReady=true;if(state.screen==='match')render();});
+}
 const navigationSessions=new Map();
 const gameScreens=new Set(['draft','summary','match','bracket']);
 const sessionId=draft=>draft?`${draft.mode}:${draft.date}:${draft.seed}`:null;
@@ -68,11 +82,12 @@ function browserAchievements(history){
   if(pendingAchievementLedger||JSON.stringify(saved)!==JSON.stringify(ledger))pendingAchievementLedger=storage.write('achievements',ledger)?null:ledger;
   return ledger;
 }
-function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
+function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();ensurePenaltyShootout(state);if(!state.penaltyBusy)finishPenaltyShootout(state);if(state.screen==='match'&&currentMatch(state)?.result.interactiveShootout)preloadPenaltyAssets();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
   app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
+  queueOpponentPenalty();
   if(focusInApp){let target=focusId?document.getElementById(focusId):[...app.querySelectorAll('[data-action]')].find(el=>el.dataset.action===focusAction&&el.dataset.value===focusValue);if(target?.disabled)target=app.querySelector('[data-action="next-match"],[data-action="player"]:not(:disabled),[data-action="draw"]');target?.focus({preventScroll:true});}
 }
 function restore(saved){
@@ -81,7 +96,7 @@ function restore(saved){
   const mode=saved?.mode==='brasileirao'?'copa-do-brasil':saved?.mode==='daily'?'cup':saved?.mode;
   if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||mode==='legends'||mode==='quick'||MODES.some(m=>m.id===mode)))return false;
   const upgrade=saved.rulesVersion!==2||!!legacy[saved.formation];
-  Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=normalizeMatchSpeed(saved.matchSpeed);
+  Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'?(saved.teamName||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.penaltyBusy=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=normalizeMatchSpeed(saved.matchSpeed);
   if (saved.mode === 'brasileirao') {
     state.draft = {...state.draft, mode};
     state.tournament=null;state.pendingRound=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;
@@ -99,7 +114,7 @@ function restore(saved){
   state.matchFlowVersion=MATCH_FLOW_VERSION;
   Object.assign(state,migrateNeutralSimulation(state));
   Object.assign(state,migrateChampionsFormat(state));
-  if(state.tournament)commitUserRound(state);
+  if(state.tournament){ensurePenaltyShootout(state);finishPenaltyShootout(state);commitUserRound(state);}
   if(!state.tournament)state.draft=refreshDraftRatings(state.draft,allSquads);
   delete state.draft.selectedId;delete state.draft.selectedSlotId;delete state.draft.selectedPickId;
   hydrateDraft();if(state.screen==='bracket')state.screen='match';persist();render();return true;
@@ -224,9 +239,50 @@ function startTournament(){
   }
   Object.assign(state,prepareUserRound(createTournament(user,allSquads,{mode:state.mode,seed,excludeSquadIds:state.draft.picks.map(p=>p.squadId)})));
   state.matchFlowVersion=MATCH_FLOW_VERSION;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('match');}
-function finishCurrentMatch(){stopPlayback();commitUserRound(state);persist();render();}
+function finishCurrentMatch(){stopPlayback();ensurePenaltyShootout(state);commitUserRound(state);persist();render();}
+function penaltyAim(value){
+  const match=currentMatch(state),shootout=match?.result.interactiveShootout;
+  if(state.screen!=='match'||state.penaltyBusy||state.penaltyAssetsReady===false||!shootout||shootout.complete||state.matchMinute<match.result.duration)return;
+  const home=state.tournament.teams.find(team=>team.id===match.homeId),away=state.tournament.teams.find(team=>team.id===match.awayId);
+  if(!penaltyTurn(shootout,home,away).attacking||!PENALTY_TARGETS.some(option=>option.id===value))return;
+  shootout.selection=value;persist();render();
+}
+function queueOpponentPenalty(){
+  const match=currentMatch(state),shootout=match?.result.interactiveShootout;
+  const home=state.tournament?.teams.find(team=>team.id===match?.homeId),away=state.tournament?.teams.find(team=>team.id===match?.awayId);
+  const eligible=state.screen==='match'&&!document.hidden&&!state.penaltyBusy&&state.penaltyAssetsReady!==false&&shootout&&!shootout.complete&&state.matchMinute>=match.result.duration&&!penaltyTurn(shootout,home,away).attacking;
+  const key=eligible?`${state.tournament.seed}:${match.id}:${shootout.kicks.length}`:'';
+  if(key===penaltyOpponentKey)return;
+  clearTimeout(penaltyOpponentTimer);penaltyOpponentTimer=null;penaltyOpponentKey=key;
+  if(key)penaltyOpponentTimer=setTimeout(()=>{
+    penaltyOpponentTimer=null;penaltyOpponentKey='';
+    const current=currentMatch(state),active=current?.result.interactiveShootout;
+    if(!document.hidden&&state.screen==='match'&&active&&`${state.tournament.seed}:${current.id}:${active.kicks.length}`===key)penaltyConfirm(true);
+  },650);
+}
+function penaltyConfirm(automatic=false){
+  const match=currentMatch(state),shootout=match?.result.interactiveShootout;
+  if(state.screen!=='match'||state.penaltyBusy||state.penaltyAssetsReady===false||!shootout||shootout.complete||state.matchMinute<match.result.duration)return;
+  const home=state.tournament.teams.find(team=>team.id===match.homeId),away=state.tournament.teams.find(team=>team.id===match.awayId);
+  const attacking=penaltyTurn(shootout,home,away).attacking;
+  if(automatic===attacking||attacking&&!shootout.selection)return;
+  match.result.interactiveShootout=takePenalty(shootout,home,away,attacking?shootout.selection:null);
+  state.penaltyBusy=true;state.penaltyReveal=false;const animation=++penaltyAnimationId,seed=state.tournament.seed;
+  persist();render();
+  setTimeout(()=>{
+    if(animation!==penaltyAnimationId||state.tournament?.seed!==seed||currentMatch(state)?.id!==match.id)return;
+    state.penaltyReveal=true;if(state.screen==='match')render();
+  },800);
+  setTimeout(()=>{
+    if(animation!==penaltyAnimationId)return;
+    state.penaltyBusy=false;
+    if(state.tournament?.seed!==seed||currentMatch(state)?.id!==match.id)return;
+    finishPenaltyShootout(state);persist();if(state.screen==='match'){render();app.querySelector('.penalty-instructions h2')?.focus({preventScroll:true});}
+  },1450);
+}
 function nextMatch(){
   const match=currentMatch(state);if(!match||state.matchMinute<match.result.duration)return;
+  if(state.penaltyBusy||match.result.interactiveShootout&&!match.result.interactiveShootout.complete)return;
   stopPlayback();
   if(state.userMatchIndex<state.tournament.userMatches.length-1)state.userMatchIndex++;
   else if(canContinueTournament(state.tournament)){
@@ -273,6 +329,7 @@ case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value)
 case'quick-region':if(['all','brasil','europa'].includes(value)){state.quickRegion=value;render();}break;
 case'quick-clear':state.quickSearch='';state.quickRegion='all';render();app.querySelector('#quick-search')?.focus();break;
 case'next-match':nextMatch();break;
+case'penalty-aim':penaltyAim(value);break;case'penalty-confirm':penaltyConfirm();break;
 case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();if(speed===8)app.querySelector('.match-speed-fast')?.classList.add('is-activating');}break;}
 case'bracket':state.returnScreen=state.screen;navigate('bracket');break;case'back-match':navigate(state.returnScreen==='result'?'result':'match');break;
 case'champions-view':{if(!['champions','world-cup'].includes(state.tournament?.mode))break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
