@@ -7,6 +7,7 @@
 .match-score-goals .match-scorers strong{font-weight:600;overflow-wrap:anywhere;min-width:0}
 .match-score-goals .match-scorers span{color:var(--muted);font-size:11px;white-space:normal;font-variant-numeric:tabular-nums}
 .match-score-goals .match-scorers.away p{justify-content:flex-end;text-align:right}
+.match-score-details{display:contents}
 @media(max-width:600px){.match-card .match-score-goals{gap:10px 16px;padding-top:6px}.match-score-goals .match-scorers p{font-size:11px;gap:1px 5px}.match-score-goals .match-scorers span{font-size:10px}}
 #app[data-screen="match"] .match-layout{grid-template-columns:minmax(0,1fr) 350px;gap:20px}
 #app[data-screen="match"] .match-page-title>div:first-child{background:transparent;padding:0}
@@ -86,3 +87,32 @@
 @media(min-width:901px) and (max-height:740px){.match-card .live-scoreboard{padding-top:12px;padding-bottom:12px}.match-card .score-numbers{font-size:48px;margin:3px 0 6px}.match-card .score-clock{font-size:16px}.match-goals-panel{height:210px;flex-basis:210px}.match-card .live-field-wrap{padding-top:10px}}
 @media(max-width:900px){#app[data-screen="match"] .match-layout{grid-template-columns:minmax(0,1fr)}.match-calendar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;align-items:start;padding:0}.match-calendar .recent-panel{grid-column:1/-1}.match-goals-panel{height:260px}.match-card .live-scoreboard{grid-template-columns:minmax(0,1fr) 160px minmax(0,1fr)}}
 @media(max-width:600px){.match-card .live-scoreboard{grid-template-columns:minmax(0,1fr) 112px minmax(0,1fr);padding:14px 10px;gap:6px}.match-card .match-team,.match-card .match-team.away{flex-direction:column;gap:6px;text-align:center}.match-card .match-team-side{display:flex;justify-content:center;font-size:10px}.match-card .match-team>.club-badge{width:38px;height:38px;flex-basis:38px}.match-card .match-team h2{font-size:14px}.match-card .match-team small{font-size:10px;margin-top:4px}.match-card .score-numbers{font-size:44px;gap:8px}.match-card .score-numbers i{font-size:22px}.match-card .score-clock{font-size:16px}.match-clock-row{flex-direction:column;gap:0}.match-clock-row>small{font-size:10px}.match-card .live-field-wrap{padding:10px}.match-field-legend{padding:4px 12px 9px;gap:10px}.match-field-legend>span{font-size:10px;gap:5px}.match-field-legend i{width:11px;height:11px;flex-basis:11px}.match-calendar{grid-template-columns:minmax(0,1fr)}.match-speed{width:100%;justify-content:center;gap:8px}.match-speed>span{width:100%;text-align:center}.match-speed button{padding:8px}.match-goals-panel{height:230px}}
+
+/* Reserve clock and knockout details before kickoff, independently of the score. */
+#app[data-screen="match"] .match-card .live-scoreboard{position:relative;grid-template-rows:124px 96px;padding:12px 20px;row-gap:12px}
+#app[data-screen="match"] .match-card .score-center{height:124px;display:flex;flex-direction:column;justify-content:center}
+#app[data-screen="match"] .match-card .match-status{align-self:center;max-width:100%;font-size:11px;line-height:16px;min-height:22px;padding:2px 6px;white-space:nowrap}
+#app[data-screen="match"] .match-card .score-numbers{font-size:50px;line-height:1.15;margin:4px 0}
+#app[data-screen="match"] .match-card .match-clock-row{height:32px;flex-shrink:0}
+#app[data-screen="match"] .match-card [data-match-phase]{font-size:10px;line-height:12px;max-width:100%}
+#app[data-screen="match"] .match-card .match-score-details{position:absolute;inset-inline:20px;top:148px;height:32px;display:flex;align-content:center;align-items:center;justify-content:center;flex-wrap:wrap;gap:0 12px;overflow:hidden}
+#app[data-screen="match"] .match-score-details :is(.match-aggregate,.match-penalties,.match-cup-outcome){margin:0;max-width:100%;font-size:11px;line-height:15px;text-align:center}
+#app[data-screen="match"] .match-score-details .match-aggregate b{font-size:12px}
+#app[data-screen="match"] .match-card .match-score-goals{block-size:96px;padding-top:40px;contain:size;overflow-anchor:none}
+/* Phones retain a compact two-line clock and the same reserved goal area. */
+@media(max-width:900px){
+ #app[data-screen="match"] .match-card .live-scoreboard{position:relative;grid-template-rows:124px 96px;padding:12px 10px;row-gap:6px}
+ #app[data-screen="match"] .match-card .score-center{height:124px;display:flex;flex-direction:column;justify-content:center}
+ #app[data-screen="match"] .match-card .match-status{align-self:center;max-width:100%;font-size:11px;line-height:16px;min-height:22px;padding:2px 6px;white-space:nowrap}
+ #app[data-screen="match"] .match-card .score-numbers{font-size:42px;line-height:1.15;margin:4px 0}
+ #app[data-screen="match"] .match-card .match-clock-row{height:46px;flex-direction:column;gap:0}
+ #app[data-screen="match"] .match-card .score-clock{font-size:16px;line-height:22px}
+ #app[data-screen="match"] .match-card .match-clock-time{height:22px}
+ #app[data-screen="match"] .match-card [data-match-phase]{display:block;block-size:24px;font-size:10px;line-height:12px;max-width:100%}
+ #app[data-screen="match"] .match-card .match-score-details{position:absolute;inset-inline:10px;top:142px;height:32px;display:flex;align-content:center;align-items:center;justify-content:center;flex-wrap:wrap;gap:0 12px;overflow:hidden}
+ #app[data-screen="match"] .match-score-details :is(.match-aggregate,.match-penalties,.match-cup-outcome){margin:0;max-width:100%;font-size:10px;line-height:15px;text-align:center}
+ #app[data-screen="match"] .match-score-details .match-aggregate b{font-size:11px}
+ #app[data-screen="match"] .match-card .match-score-goals{block-size:96px;padding-top:40px;contain:size;overflow-anchor:none}
+ #app[data-screen="match"] .match-card .match-team h2{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+ #app[data-screen="match"] .match-card .live-field-wrap{flex:0 0 auto}
+}
