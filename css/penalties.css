@@ -12,6 +12,8 @@
 .penalty-instructions{text-align:center;min-height:57px}.penalty-instructions h2{font:750 20px/1.2 var(--body);letter-spacing:-.4px}.penalty-instructions p{font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.4}
 .penalty-instructions h2:focus{outline:none}
 .penalty-stage{position:relative;isolation:isolate;width:100%;max-width:620px;aspect-ratio:1552/1013;margin:8px auto 0;overflow:hidden;border-radius:10px;background:#071420;border:1px solid #77b78b40}
+.penalty-auto-stage{display:grid;place-items:center;background:linear-gradient(180deg,#07131d55,#07131d99),url(../assets/penalties/stadium.png) center/cover no-repeat}
+.penalty-auto-message{padding:9px 16px;border:1px solid #a9cbb955;border-radius:999px;background:#10271fdd;color:#e4f1e8;font-size:12px;font-weight:750;letter-spacing:.2px;box-shadow:0 3px 14px #06120c66}
 /* Crop the entire scene together so the goal, players and shot stay aligned. */
 .penalty-scene{position:absolute;left:-16%;top:-21%;width:132%;height:132%;background:url(../assets/penalties/stadium.png) center/cover no-repeat}
 .penalty-keeper{position:absolute;z-index:3;left:50%;top:57%;height:18%;aspect-ratio:2/3;transform:translate(-50%,-50%);filter:drop-shadow(0 2px 2px #0004);pointer-events:none}

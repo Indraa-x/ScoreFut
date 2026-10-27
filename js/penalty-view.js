@@ -17,22 +17,23 @@ export function renderPenaltyShootout(state,match,home,away,{esc,icon}){
     const kicks=visibleKicks.filter(kick=>kick.side===side),count=Math.max(5,kicks.length),start=Math.max(0,count-8);
     return Array.from({length:count-start},(_,i)=>{const kick=kicks[i+start];return `<span class="penalty-mark ${kick?kick.converted?'scored':'missed':'waiting'}" aria-label="Cobrança ${i+start+1}: ${kick?kick.converted?'gol':'perdida':finished?'não necessária':'a cobrar'}">${kick?(kick.converted?'✓':'×'):''}</span>`;}).join('');
   };
-  const header=finished?(shootout.winnerId===shootout.userTeamId?'Você venceu nos pênaltis':'Fim da disputa'):busy?'A cobrança…':attacking?'Escolha onde bater':'Cobrança do adversário';
+  const header=finished?(shootout.winnerId===shootout.userTeamId?'Você venceu nos pênaltis':'Fim da disputa'):busy&&!attacking?'Aguarde sua vez':busy?'A cobrança…':attacking?'Escolha onde bater':'Sua vez em instantes';
   const prompt=finished?'A decisão está no placar. Continue sua campanha pelo botão acima.':busy
-    ?last.player.nome+(attacking?' cobra para o seu time.':' cobra para o adversário.')
-    :attacking?`${turn.player.nome} na bola. Escolha esquerda ou direita.`:`${turn.player.nome} vai cobrar automaticamente.`;
-  const feedback=loading?'Preparando os jogadores…':busy?(revealed?last.outcome==='goal'?'Gol!':last.outcome==='saved'?'Defendeu!':'Para fora!':'A cobrança…'):finished?'Disputa encerrada':attacking?'':'O adversário está se preparando…';
+    ?attacking?`${last.player.nome} cobra para o seu time.`:'O placar da disputa será atualizado automaticamente.'
+    :attacking?`${turn.player.nome} na bola. Escolha esquerda ou direita.`:'A próxima cobrança do seu time será liberada em seguida.';
+  const resultLabel=last?.outcome==='goal'?'marcou':last?.outcome==='saved'?'foi defendida':'foi para fora';
+  const feedback=loading?'Preparando os jogadores…':busy?(revealed?(attacking?last.outcome==='goal'?'Gol!':last.outcome==='saved'?'Defendeu!':'Para fora!':`Adversário ${resultLabel}.`):attacking?'A cobrança…':'Atualizando o placar…'):finished?'Disputa encerrada':attacking?'':'Sua vez chega em instantes…';
   return `<section class="penalty-game ${busy?'is-resolving':''} ${busy&&revealed?'is-revealed':''} ${finished?'is-complete':''} ${last?.dive==='left'?'dive-left':'dive-right'}" aria-label="Disputa interativa de pênaltis" style="--shot-x:${ballX}%;--shot-y:${ballY}%;--dive-x:${diveX}%">
     <div class="penalty-heading"><span class="penalty-eyebrow">${icon('ball')} DECISÃO NOS PÊNALTIS</span><span class="penalty-round">Jogo ${match.result.homeGoals}–${match.result.awayGoals} · ${finished?'Encerrada':number>5?'Alternadas':`${number||5}ª cobrança`}</span></div>
     <div class="penalty-score"><div><strong>${esc(teamName(home))}</strong><div class="penalty-attempts">${marks(0)}</div></div><b aria-label="Placar dos pênaltis">${scores[0]} <i>–</i> ${scores[1]}</b><div><strong>${esc(teamName(away))}</strong><div class="penalty-attempts">${marks(1)}</div></div></div>
     <div class="penalty-instructions"><h2 tabindex="-1">${header}</h2><p>${esc(prompt)}</p></div>
-    <div class="penalty-stage" aria-label="Cobrança de pênalti, visão de trás do batedor">
+    ${attacking?`<div class="penalty-stage" aria-label="Cobrança de pênalti, visão de trás do batedor">
       <div class="penalty-scene" aria-hidden="true">
       <div class="penalty-keeper" aria-hidden="true"><img class="penalty-pose-ready" src="assets/penalties/keeper-ready.png" alt="" decoding="async"><img class="penalty-pose-action" src="assets/penalties/keeper-dive.png" alt="" decoding="async"></div>
       <div class="penalty-shooter" aria-hidden="true"><img class="penalty-pose-ready" src="assets/penalties/shooter-ready.png" alt="" decoding="async"><img class="penalty-pose-action" src="assets/penalties/shooter-kick.png" alt="" decoding="async"></div>
       <div class="penalty-ball">${icon('ball')}</div>
       </div>
-    </div>
+    </div>`:`<div class="penalty-stage penalty-auto-stage" role="status" aria-label="Sua próxima cobrança será liberada em seguida"><span class="penalty-auto-message">${finished?'Disputa encerrada':'Aguarde sua cobrança'}</span></div>`}
     <div class="penalty-feedback ${busy&&revealed?last.outcome:''}" role="status" aria-live="polite">${esc(feedback)}</div>
     ${!finished?`<div class="penalty-directions" role="group" aria-label="Escolha o lado da cobrança">${PENALTY_TARGETS.map(target=>`<button type="button" class="btn btn-primary penalty-direction penalty-direction-${target.id}" data-action="penalty-shoot" data-value="${target.id}" aria-label="Cobrar para a ${target.label.toLowerCase()}" ${loading||busy||!attacking?'disabled':''}>${target.id==='left'?icon('arrow'):''}<span>${target.label}</span>${target.id==='right'?icon('arrow'):''}</button>`).join('')}</div><p class="penalty-tip">${attacking?'Toque em um dos botões para cobrar.':'Você joga apenas as cobranças do seu time.'}</p>`:''}
   </section>`;
