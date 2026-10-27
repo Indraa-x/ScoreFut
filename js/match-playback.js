@@ -1,6 +1,6 @@
 import { currentMatch } from './match-session.js?v=simulation-gap-20261026';
 import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=simulation-gap-20261026';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=simulation-gap-20261026';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;
@@ -25,7 +25,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
       const count=goalsAt(match.result,state.matchMinute).length;
       if(count!==nodes.goalCount){
         const data=nodes.goals.dataset||{};
-        nodes.goals.innerHTML=renderMatchGoals(match.result,state.matchMinute,{home:data.homeName,away:data.awayName},{home:[data.homeColor1,data.homeColor2],away:[data.awayColor1,data.awayColor2]});nodes.goalCount=count;
+        nodes.goals.innerHTML=renderMatchGoals(match.result,state.matchMinute,{home:data.homeName,away:data.awayName});nodes.goalCount=count;
       }
     }
     if (nodes.aggregate) nodes.aggregate.textContent = `${Number(nodes.aggregate.dataset.home)+score[0]} – ${Number(nodes.aggregate.dataset.away)+score[1]}`;

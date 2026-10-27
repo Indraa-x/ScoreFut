@@ -12,13 +12,12 @@ test('only goals reached by the clock appear; incidents and shootouts cannot lea
     {type:'goal',minute:35,team:'home',player:player('scorer','Nome <seguro>')},
   ]};
   const before=structuredClone(result);
-  assert.ok(renderMatchGoals(result,0).includes('Nenhum gol marcado'));
+  assert.equal(renderMatchGoals(result,0),'');
   const html=renderMatchGoals(result,35,{home:'Meu time',away:'Adversário'},{home:['#2bb777','#174b2e'],away:['#ffffff','#c9a247']});
-  assert.ok(html.includes('>Meu time</h3>'));
-  assert.ok(html.includes('>Adversário</h3>'));
-  assert.ok(html.includes('--team-color-1:#2bb777;--team-color-2:#174b2e'));
-  assert.ok(html.includes('--team-color-1:#ffffff;--team-color-2:#c9a247'));
+  assert.ok(html.includes('aria-label="Gols de Meu time"'));
+  assert.ok(html.includes('aria-label="Gols de Adversário"'));
   assert.ok(html.includes('Nome &lt;seguro&gt;'));
+  assert.ok(!/scorer-team-name|match-no-scorer|<h3/.test(html));
   assert.equal((html.match(/Nome &lt;seguro&gt;/g)||[]).length,1);
   assert.ok(html.includes('12′, 35′'));
   assert.ok(!/future|corner taker|penalty taker/.test(html));

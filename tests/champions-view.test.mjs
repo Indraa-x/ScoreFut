@@ -110,7 +110,7 @@ test('the next game replaces the group card only after the last group result is 
   assert.ok(finishedGroups.includes('champions-next-game'));
   assert.equal((finishedGroups.match(/aria-label="Próximo jogo"/g)||[]).length,1);
   assert.equal((finishedGroups.match(/class="upcoming-game"/g)||[]).length,1);
-  assert.ok(finishedGroups.indexOf('champions-next-game')<finishedGroups.indexOf('data-match-goals'));
+  assert.ok(finishedGroups.indexOf('data-match-goals')<finishedGroups.indexOf('champions-next-game'));
   Object.assign(s,prepareUserRound(s.tournament),{matchMinute:0});
   assert.equal(currentMatch(s).stage,'round16');
   const knockout=renderMatch(s);

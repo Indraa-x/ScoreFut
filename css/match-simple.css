@@ -1,4 +1,13 @@
-/* The current match is the focus; goals and future fixtures stay beside it. */
+/* Scorers stay directly beneath their own team in the scoreboard. */
+.match-card .match-score-goals{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px;align-items:start;padding-top:4px;min-width:0}
+.match-card .match-score-goals:empty{display:none}
+.match-score-goals .match-scorers{min-width:0}
+.match-score-goals .match-scorers p{display:flex;align-items:baseline;gap:4px 8px;flex-wrap:wrap;font-size:12px;line-height:1.5;margin:0;color:var(--text)}
+.match-score-goals .match-scorers p+p{margin-top:5px}
+.match-score-goals .match-scorers strong{font-weight:600;overflow-wrap:anywhere;min-width:0}
+.match-score-goals .match-scorers span{color:var(--muted);font-size:11px;white-space:normal;font-variant-numeric:tabular-nums}
+.match-score-goals .match-scorers.away p{justify-content:flex-end;text-align:right}
+@media(max-width:600px){.match-card .match-score-goals{gap:10px 16px;padding-top:6px}.match-score-goals .match-scorers p{font-size:11px;gap:1px 5px}.match-score-goals .match-scorers span{font-size:10px}}
 #app[data-screen="match"] .match-layout{grid-template-columns:minmax(0,1fr) 350px;gap:20px}
 #app[data-screen="match"] .match-page-title>div:first-child{background:transparent;padding:0}
 #app[data-screen="match"] .match-page-title h1{font-size:21px;font-weight:800}

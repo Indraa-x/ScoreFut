@@ -20,12 +20,13 @@ test('the match screen shows 22 numbered circles, a real calendar and speed cont
   assert.ok(html.includes('data-match-goals'));
   assert.ok(html.includes('Seu grupo na Champions'));
   assert.ok(!html.includes('Próximo jogo'));
-  assert.ok(html.includes('Gols da partida'));
+  assert.ok(!/Gols da partida|match-goals-panel/.test(html));
+  assert.ok(html.includes('class="match-score-goals"'));
   assert.ok(!html.includes('match-field-legend'));
   assert.ok(!html.includes('Ver próximos jogos'));
   for(const label of ['Normal','Rápido'])assert.ok(html.includes(label));
   assert.ok(!/Muito rápido|Ritmo da partida|<small>[148]×<\/small>/.test(html));
-  assert.ok(html.indexOf('data-live-pitch')<html.indexOf('data-match-goals'));
+  assert.ok(html.indexOf('data-match-goals')<html.indexOf('data-live-pitch'));
   assert.ok(!html.includes('Confronto a definir'));
   assert.ok(html.includes('assets/competitions/champions-trophy.png'));
   assert.ok(!/Estatísticas|Lances|Escanteios|Cartões|match-statistics|match-feed|campaign-strip/.test(html));
@@ -72,7 +73,7 @@ test('fractional minutes show seconds and reveal only goals already reached',()=
   assert.equal(score(html),'0–1');
   assert.ok(html.includes('15:30'));
   assert.ok(!html.includes('70′'));
-  const goals=html.match(/data-match-goals[^>]*>(.*?)<\/section>/s)[1];
+  const goals=html.match(/data-match-goals[^>]*>(.*?)<div class="live-field-wrap"/s)[1];
   assert.ok(goals.includes(away.lineup[0].player.nome));
   assert.ok(!goals.includes(home.lineup[0].player.nome));
 });

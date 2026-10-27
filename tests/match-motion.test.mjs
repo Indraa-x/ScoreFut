@@ -94,7 +94,7 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
   const liveMatch={...match,result:{...match.result,homeGoals:1,awayGoals:0,events:[{type:'goal',minute:.5,team:'home',player:home.lineup[10].player,x:.5,y:.2}]}};
   const state={screen:'match',mode:'champions',formation:home.formation,matchMinute:0,matchSpeed:1,matchPlaying:false,userMatchIndex:0,tournament:{seed:39,mode:'champions',userTeamId:'user',teams:[home,away],userMatches:[liveMatch],matches:[liveMatch],bracket:[]}};
   // DOMStringMap removes a dash only when it precedes a lowercase letter.
-  const attributes=renderMatch(state).match(/<div class="match-goals"[^>]*>/)[0];
+  const attributes=renderMatch(state).match(/<div class="match-score-goals"[^>]*>/)[0];
   scorers.dataset=Object.fromEntries([...attributes.matchAll(/data-([\w-]+)="([^"]*)"/g)].map(([,key,value])=>[key.replace(/-([a-z])/g,(_,letter)=>letter.toUpperCase()),value]));
   const tick=time=>{const [id,callback]=callbacks.entries().next().value;callbacks.delete(id);callback(time);};
   try{
@@ -102,15 +102,15 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
     playback.attach();assert.equal(state.matchPlaying,true);playback.start();tick(0);tick(100);
     assert.equal(state.matchSpeed,4);assert.equal(state.matchMinute,.4);assert.equal(clock.textContent,'00:24');
     assert.equal(addedTime.hidden,true);
-    assert.ok(scorers.innerHTML.includes('Nenhum gol marcado'));
+    assert.equal(scorers.innerHTML,'');
     const before=players[5].style.transform;
     tick(200);assert.notEqual(players[5].style.transform,before);
     globalThis.document.hidden=true;playback.attach();assert.equal(state.matchPlaying,false);assert.equal(callbacks.size,0);assert.equal(state.matchMinute,.8);
     globalThis.document.hidden=false;state.matchSpeed=8;playback.attach();assert.equal(state.matchPlaying,true);playback.start();tick(300);tick(400);
     assert.equal(state.matchMinute,1.6);assert.equal(callbacks.size,1);
     assert.ok(scorers.innerHTML.includes(home.lineup[10].player.nome));
-    assert.ok(scorers.innerHTML.includes('--team-color-1:#2bb777;--team-color-2:#174b2e'));
-    assert.ok(scorers.innerHTML.includes(`--team-color-1:${away.cores[0]};--team-color-2:${away.cores[1]}`));
+    assert.ok(scorers.innerHTML.includes('class="match-scorers home"'));
+    assert.ok(scorers.innerHTML.includes('class="match-scorers away"'));
     Object.assign(liveMatch.result,{duration:95,extraTime:false,regulationStoppageTime:5});
     state.matchMinute=90;tick(500);
     assert.equal(addedTime.hidden,false);assert.equal(addedTime.textContent,'+5');
@@ -119,7 +119,7 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
     assert.equal(state.matchMinute,95);assert.equal(finish,1);assert.equal(callbacks.size,0);
     assert.equal(addedTime.hidden,false);assert.equal(addedTime.textContent,'+5');
     assert.equal(state.matchPlaying,false);assert.equal(saves,0);
-    assert.ok(scorers.innerHTML.includes(`--team-color-1:${away.cores[0]};--team-color-2:${away.cores[1]}`));
+    assert.ok(scorers.innerHTML.includes('class="match-scorers away"'));
     playback.attach();assert.equal(state.matchPlaying,false);playback.start();assert.equal(callbacks.size,0);
   }finally{for(const [key,value] of Object.entries(originals)){if(value===undefined)delete globalThis[key];else globalThis[key]=value;}}
 });

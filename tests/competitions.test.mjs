@@ -13,7 +13,7 @@ test('the categories keep their home logos and use trophy backgrounds in mode se
   assert.deepEqual(MODES.map(mode=>mode.id),['world-cup','copa-do-brasil','champions']);
   const home=renderHome({clubs,stats:{titles:0,best:'—',streak:0,winRate:0}});
   assert.ok(home.includes('Copa do Mundo'));
-  assert.ok(home.includes('assets/competitions/world-cup-trophy.png'));
+  assert.ok(home.includes('assets/competitions/world-cup-logo-white.jpg'));
   assert.ok(home.includes('assets/competitions/copa-do-brasil.png'));
   assert.ok(home.includes('assets/competitions/champions-league.png'));
   for(const mode of ['copa-do-brasil','champions']){
