@@ -1,4 +1,7 @@
 /* Live match: neutral panels, a continuous pitch, and the actual fixture calendar. */
+body:has(#app[data-screen="match"]){min-height:100dvh;display:flex;flex-direction:column}
+body:has(#app[data-screen="match"])>footer{display:none}
+#app[data-screen="match"]{flex:1}
 #app[data-screen="match"]{max-width:1640px;width:100%;padding:20px 28px 26px}
 .match-page-title{align-items:center;gap:16px;margin-bottom:16px}
 .match-page-title>div:first-child{display:flex;align-items:center;gap:12px;background:var(--soft);padding:10px 14px;border-radius:9px}
@@ -97,11 +100,6 @@
  body:has(#app[data-screen="match"]){height:100dvh;display:flex;flex-direction:column}
  body:has(#app[data-screen="match"]) .site-header{height:56px;flex:0 0 56px}
  body:has(#app[data-screen="match"]) .header-inner{max-width:1640px;padding:0 28px}
- body:has(#app[data-screen="match"]) footer{flex:0 0 24px}
- body:has(#app[data-screen="match"]) .footer-inner{height:24px;min-height:0;padding:0 28px;max-width:1640px}
- body:has(#app[data-screen="match"]) .footer-brand{display:none}
- body:has(#app[data-screen="match"]) .footer-inner p,body:has(#app[data-screen="match"]) .footer-dot{font-size:9px}
- body:has(#app[data-screen="match"]) .footer-dot{margin-left:auto}
  #app[data-screen="match"]{flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 28px}
  .match-page-title{flex:0 0 auto;margin-bottom:14px}
  .match-layout{flex:1}.live-field-wrap{min-height:0}
