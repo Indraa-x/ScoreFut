@@ -105,14 +105,14 @@ body:has(#app[data-screen="draft"]){min-height:100dvh;height:auto;display:flex;f
  #app[data-screen="draft"] .pitch-slot[data-slot-label="GOL"]{--draft-slot-y:91%}
  #app[data-screen="draft"] .draft-right{height:100%;align-self:stretch}
  #app[data-screen="draft"] .draft-box{display:flex;height:100%;overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain}
- #app[data-screen="draft"] .box-title{min-height:44px;padding:10px 12px}
- #app[data-screen="draft"] .strength-block{padding:6px 12px 8px}
- #app[data-screen="draft"] .strength-label strong{font-size:26px}
- #app[data-screen="draft"] .strength-progress{height:4px;margin-top:6px}
- #app[data-screen="draft"] .draft-box .box-row{min-height:34px;padding:3px 10px;border-right:0}
- #app[data-screen="draft"] .box-row b{font-size:11px;line-height:1.2}
- #app[data-screen="draft"] .box-player-club{font-size:9px;line-height:1.2;margin-top:1px}
- #app[data-screen="draft"] .box-row>strong{font-size:16px}
+ #app[data-screen="draft"] .box-title{min-height:48px;padding:12px 14px}
+ #app[data-screen="draft"] .strength-block{padding:8px 14px 12px}
+ #app[data-screen="draft"] .strength-label strong{font-size:28px}
+ #app[data-screen="draft"] .strength-progress{height:5px;margin-top:8px}
+ #app[data-screen="draft"] .draft-box .box-row{flex:1 0 auto;min-height:36px;padding:4px 12px;border-right:0}
+ #app[data-screen="draft"] .box-row b{font-size:clamp(12px,1.5vh,13px);line-height:1.25}
+ #app[data-screen="draft"] .box-player-club{font-size:10px;line-height:1.2;margin-top:2px}
+ #app[data-screen="draft"] .box-row>strong{font-size:18px}
  @container(max-width:340px){
   #app[data-screen="draft"] .pitch-slot small{display:block;white-space:nowrap;text-overflow:ellipsis;font-size:10px;line-height:1.2}
  }
