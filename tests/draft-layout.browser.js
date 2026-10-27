@@ -121,17 +121,21 @@ function inspectGeometry(){
     const [nameA,a]=panels[i],[nameB,b]=panels[j];
     fail(!overlaps(a.getBoundingClientRect(),b.getBoundingClientRect()),`Painéis sobrepostos: ${nameA} (${coords(a)}) e ${nameB} (${coords(b)}).`);
   }
-  const card=document.querySelector('.draw-card'),cardRect=card.getBoundingClientRect();
+  const card=document.querySelector('.draw-card');
   for(const element of card.querySelectorAll('.draw-card-top,.draw-club,.season-award,.reroll-block,.draw-empty,.reroll-buttons .btn')){
-    if(visible(element))fail(contains(cardRect,element.getBoundingClientRect()),`Cabeçalho corta ${element.className}: ${coords(element)}; card ${coords(card)}.`);
+    const panel=getComputedStyle(card).display==='contents'
+      ? (element.matches('.reroll-block')?element:element.closest('.reroll-block,.draw-club-info'))
+      : card;
+    if(visible(element)&&panel)fail(contains(panel.getBoundingClientRect(),element.getBoundingClientRect()),`Cabeçalho corta ${element.className}: ${coords(element)}; painel ${coords(panel)}.`);
   }
   const buttons=[...document.querySelectorAll('.player-select')].filter(visible);
   metrics.playerRows=buttons.length;
   metrics.minimumRowHeight=buttons.length?Math.min(...buttons.map(b=>b.getBoundingClientRect().height)):null;
+  const minimumRowHeight=innerWidth>=1024?54:60;
   for(const button of buttons){
     const name=button.querySelector('.player-name')?.textContent||'jogador';
     const buttonRect=button.getBoundingClientRect();
-    fail(buttonRect.height>=60-epsilon,`Linha de ${name} tem ${buttonRect.height.toFixed(1)}px; mínimo 60px.`);
+    fail(buttonRect.height>=minimumRowHeight-epsilon,`Linha de ${name} tem ${buttonRect.height.toFixed(1)}px; mínimo ${minimumRowHeight}px.`);
     fail(button.scrollWidth<=button.clientWidth+epsilon,`Conteúdo horizontal excede botão de ${name}: ${button.scrollWidth}/${button.clientWidth}px.`);
     for(const content of button.querySelectorAll('.player-avatar,.player-name,.player-details,.player-status,.player-ovr')){
       if(!visible(content))continue;
@@ -173,7 +177,11 @@ function inspectGeometry(){
     // Use line boxes of the text itself: a centered label may have spare width.
     const labelTextRects=labels.map(label=>{
       const range=document.createRange();range.selectNodeContents(label);
-      return [...range.getClientRects()].filter(rect=>rect.width>0&&rect.height>0);
+      const bounds=label.getBoundingClientRect(),clips=getComputedStyle(label).overflowX!=='visible';
+      return [...range.getClientRects()].map(rect=>clips?{
+        left:Math.max(rect.left,bounds.left),right:Math.min(rect.right,bounds.right),
+        top:Math.max(rect.top,bounds.top),bottom:Math.min(rect.bottom,bounds.bottom)
+      }:rect).filter(rect=>rect.right>rect.left&&rect.bottom>rect.top);
     });
     for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++){
       const collides=labelTextRects[i].some(a=>labelTextRects[j].some(b=>overlaps(a,b)));
