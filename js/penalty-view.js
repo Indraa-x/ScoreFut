@@ -1,4 +1,4 @@
-import {PENALTY_TARGETS,penaltyTurn} from './penalty-shootout.js?v=interactive-penalties-20261027';
+import {PENALTY_TARGETS,penaltyTurn} from './penalty-shootout.js?v=penalty-direction-fix-20261027';
 
 export function renderPenaltyShootout(state,match,home,away,{esc,icon}){
   const shootout=match.result.interactiveShootout,turn=penaltyTurn(shootout,home,away);

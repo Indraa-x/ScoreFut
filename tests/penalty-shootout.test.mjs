@@ -37,6 +37,32 @@ test('left/right choices affect conversion and the opponent takes its kicks auto
   assert.deepEqual(PENALTY_TARGETS.map(target=>target.id),['left','right']);
 });
 
+test('a goalkeeper diving to the opposite side cannot save an on-target kick for either team',()=>{
+  const oppositeSides=new Set(),outcomes=new Set();
+  for(let seed=0;seed<4096;seed++)for(const firstSide of [0,1]){
+    const shootout={...createPenaltyShootout(home,away,'user',seed),firstSide};
+    for(const choice of firstSide?[null]:['left','right']){
+      const played=takePenalty(shootout,home,away,choice),shot=played.kicks[0];
+      outcomes.add(shot.outcome);
+      if(shot.target!==shot.dive){
+        oppositeSides.add(`${shot.side}:${shot.target}`);
+        assert.notEqual(shot.outcome,'saved',`seed ${seed}, team ${shot.side}: shot ${shot.target}, dive ${shot.dive}`);
+        if(shot.outcome!=='wide'){
+          assert.equal(shot.outcome,'goal');
+          assert.equal(shot.converted,true);
+          assert.equal(played.scores[shot.side],1);
+        }
+      }
+      if(shot.outcome==='saved'){
+        assert.equal(shot.target,shot.dive);
+        assert.equal(played.scores[shot.side],0);
+      }
+    }
+  }
+  assert.deepEqual([...oppositeSides].sort(),['0:left','0:right','1:left','1:right']);
+  assert.deepEqual([...outcomes].sort(),['goal','saved','wide']);
+});
+
 test('a saved shootout resumes deterministically without repeating kicks or resetting its score',()=>{
   let live=createPenaltyShootout(home,away,'user',91);
   const play=s=>takePenalty(s,home,away,penaltyTurn(s,home,away).attacking?'right':null);

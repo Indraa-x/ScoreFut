@@ -51,7 +51,7 @@ export function takePenalty(shootout,home,away,choice){
   const accuracy=clamp(.94+(finishing-80)*.0025-(target.high?.10:0),.72,.985);
   const saveChance=dive===target.column
     ?clamp(.48+(reflexes-finishing)*.004,.28,.82)
-    :clamp(.035+(reflexes-finishing)*.001,.01,.09);
+    :0;
   const outcome=accuracyRoll>accuracy?'wide':saveRoll<saveChance?'saved':'goal';
   const kick={side:turn.side,player:turn.player,target:target.id,dive,outcome,converted:outcome==='goal'};
   const kicks=[...shootout.kicks,kick],scores=[...shootout.scores];
