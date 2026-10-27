@@ -1,5 +1,5 @@
 import { currentMatch } from './match-session.js?v=simulation-gap-20261026';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=simulation-gap-20261026';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=position-movement-20261027';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
@@ -59,7 +59,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     state.matchPlaying=!document.hidden && state.matchMinute < match.result.duration;
     const home = state.tournament.teams.find(team => team.id === match.homeId), away = state.tournament.teams.find(team => team.id === match.awayId);
     const key = `${state.tournament.seed}:${match.id}:${home.id}:${away.id}`;
-    if (key !== motionKey) { motion = createMatchMotion(home, away, match); motionKey = key; }
+    if (key !== motionKey) { motion = createMatchMotion(home, away, match, {seed:state.tournament.seed}); motionKey = key; }
     nodes = {
       players: [...pitch.querySelectorAll('[data-match-player]')], ball: pitch.querySelector('[data-match-ball]'),
       scores: [...app.querySelectorAll('.score-numbers>span')], clock: app.querySelector('.score-clock'),
