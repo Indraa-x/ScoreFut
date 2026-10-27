@@ -35,6 +35,5 @@ export function renderAchievementsView(records,stats,ledger,{icon}){
       <section class="panel achievements-journey" aria-labelledby="achievement-collection-title"><header class="achievement-section-heading"><div><h2 id="achievement-collection-title">Sua trajetória</h2><p>Do primeiro jogo à sequência de vitórias.</p></div><span>${milestones.filter(item=>item.unlocked).length} / ${milestones.length}</span></header><div class="achievement-milestones">${milestones.map(item=>milestone(item,icon)).join('')}</div></section>
       <section class="panel achievements-titles" aria-labelledby="achievement-titles-title"><header class="achievement-section-heading"><div><h2 id="achievement-titles-title">As grandes taças</h2><p>O topo de cada competição.</p></div><span>${titles.filter(item=>item.unlocked).length} / ${titles.length}</span></header><div class="achievement-competitions">${titles.map(item=>competitionTitle(item,icon)).join('')}</div></section>
     </div>
-    <p class="achievements-save-note">${icon('shield')} Suas conquistas são salvas automaticamente neste navegador.</p>
   </div>`;
 }

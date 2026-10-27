@@ -8,12 +8,12 @@ import { statistics } from '../js/storage.js';
 const helpers={icon:name=>`<svg data-icon="${name}" aria-hidden="true"></svg>`};
 const history=Array.from({length:12},(_,i)=>({id:`record-${i}`,teamName:'<script>private name</script>',mode:'quick',champion:i===4||i===10}));
 
-test('achievements are a full page with browser save information and no account or campaign list',()=>{
+test('achievements are a full page without the browser save notice, account or campaign list',()=>{
   const html=renderAchievementsView(history,statistics(history),updateAchievementLedger(history),helpers);
   assert.match(html,/<h1>Conquistas<\/h1>/);
   assert.equal((html.match(/data-achievement="/g)||[]).length,10);
   assert.equal((html.match(/achievement-tile is-earned/g)||[]).length,4);
-  assert.match(html,/salvas automaticamente neste navegador/);
+  assert.doesNotMatch(html,/achievements-save-note|salvas automaticamente neste navegador/);
   assert.doesNotMatch(html,/<form|password|username|account-|login|Histórico|history-result|private name|<script>/i);
 });
 
