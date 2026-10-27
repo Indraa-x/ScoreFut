@@ -112,7 +112,7 @@ test('the live Champions keeps a losing first leg alive, schedules its return an
   state.matchMinute=currentMatch(state).result.duration;commitUserRound(state);
   const tie=state.tournament.bracket[0].ties.find(tie=>tie.teamIds.includes('user'));
   assert.equal(state.tournament.campaign.eliminated,tie.winnerId!=='user');
-  assert.ok(renderMatch(state).includes('Classificado:'));
+  assert.ok(!renderMatch(state).includes('match-cup-outcome'));
   const bracket=renderBracket(state);
   assert.ok(bracket.includes('CHAMPIONS LEAGUE')&&bracket.includes('Placar agregado'));
   const details=renderChampionsTie(state.tournament,tie.id);

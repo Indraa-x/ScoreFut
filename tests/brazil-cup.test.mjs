@@ -88,7 +88,7 @@ test('losing the first leg allows a return match; results and qualifiers stay pr
   s.matchMinute=currentMatch(s).result.duration;assert.equal(commitUserRound(s),true);
   const tie=s.tournament.bracket[0].ties.find(tie=>tie.teamIds.includes('user'));
   assert.equal(s.tournament.campaign.eliminated,tie.winnerId!=='user');
-  assert.ok(renderMatch(s).includes('Classificado:'));
+  assert.ok(!renderMatch(s).includes('match-cup-outcome'));
   assert.ok(!s.tournament.matches.some(match=>match.round>2&&match.result));
 });
 
