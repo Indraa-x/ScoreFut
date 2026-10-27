@@ -85,3 +85,31 @@ export function upcomingFixtures(tournament, match) {
     && [fixture.homeId, fixture.awayId].includes(tournament.userTeamId))
     .sort((a, b) => a.round - b.round);
 }
+
+/** Preview known fixtures, including replays, without reading an unfinished round's outcomes. */
+export function nextFixturePreview(state) {
+  const match=currentMatch(state);
+  if(!match)return {kind:'complete'};
+  const ended=state.matchMinute>=match.result.duration;
+  const t=ended&&state.pendingRound?state.pendingRound:state.tournament;
+  const fixture=[...(t.matches||[]),...(t.userMatches||[])]
+    .filter(next=>next.id!==match.id&&next.round>match.round&&[next.homeId,next.awayId].includes(t.userTeamId))
+    .sort((a,b)=>a.round-b.round)[0];
+  // Replaying an earlier game of a finished campaign still has a next opponent.
+  if(fixture)return {kind:'fixture',fixture:{...fixture,result:null}};
+  if(ended&&!canContinueTournament(t))return {kind:'complete'};
+  if(match.stage==='final'||t.mode==='brasileirao')return {kind:ended?'complete':'final'};
+  const stages=['round16','quarter','semi','final'];
+  const labels=['Oitavas de final','Quartas de final','Semifinal','Final'];
+  const nextIndex=match.stage==='group'?0:stages.indexOf(match.stage)+1;
+  const draw=t.mode==='copa-do-brasil'&&match.stage==='round16';
+  const stage=t.bracket?.find(stage=>stage.stage===match.stage);
+  const ties=stage?.ties||stage?.matches||[];
+  const index=ties.findIndex(tie=>match.tieId?tie.id===match.tieId:tie.id===match.id);
+  const neighbor=index>=0&&!draw?ties[index^1]:null;
+  const neighborResult=neighbor&&!neighbor.teamIds?t.matches.find(f=>f.id===neighbor.id)?.result:null;
+  const winner=neighbor?.winnerId||neighborResult?.winnerId;
+  const opponentIds=(winner?[winner]:neighbor?.teamIds||[neighbor?.homeId,neighbor?.awayId])
+    .filter(id=>id&&t.teams.some(team=>team.id===id));
+  return {kind:'pending',stageLabel:labels[nextIndex]||'Próxima etapa',draw,opponentIds};
+}

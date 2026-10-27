@@ -70,7 +70,9 @@
 .match-calendar .fixture-opponent>.club-badge{width:36px;height:36px;flex-basis:36px}
 .match-calendar .fixture-round{font-size:11px;margin-bottom:10px}
 .match-calendar .fixture-opponent>div>span{font-size:11px}
-.match-calendar .fixture-pending{padding:12px;gap:9px}
+#app .match-calendar .fixture-pending{padding:12px;gap:9px;background:var(--soft);border-color:var(--border);color:var(--text)}
+#app .match-calendar .fixture-pending strong{color:var(--text)}
+#app .match-calendar .fixture-pending span,#app .match-calendar .fixture-pending small{color:var(--muted)}
 .match-calendar .fixture-pending strong{font-size:13px}
 .match-calendar .fixture-pending span{font-size:12px}
 .match-calendar .fixture-pending small{font-size:11px}

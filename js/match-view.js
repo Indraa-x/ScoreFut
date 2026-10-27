@@ -1,7 +1,7 @@
 import {renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
 import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=simulation-gap-20261026';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';
-import { currentMatch, canContinueTournament, upcomingFixtures } from './match-session.js?v=simulation-gap-20261026';
+import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=knockout-next-game-20261027';
 import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=position-movement-20261027';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
@@ -28,15 +28,17 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
     const [r,g,b]=rgb(kit), numberColor=r*.299+g*.587+b*.114>160?'#17232b':'#fff';
     return `<span class="match-player ${side}" data-match-player style="left:${anchor.x}%;top:${anchor.y}%;--kit:${esc(kit)};--number-color:${numberColor}" title="Nº ${esc(entry.player.camisa || index + 1)} · ${esc(displayName(team))}"><b>${esc(entry.player.camisa || index + 1)}</b></span>`;
   };
-  const upcoming = upcomingFixtures(t, match), recent = t.userMatches.map((fixture, index) => ({fixture, index})).filter(({fixture}) => fixture.id !== match.id).slice(-3).reverse();
-  const pendingPhase = t.mode !== 'brasileirao' && canContinueTournament(t)
-    && match.stage !== 'final' && !upcoming.some(fixture => fixture.stage !== 'group');
+  const preview=nextFixturePreview(s), upcoming=preview.fixture?[preview.fixture]:[];
+  const recent = t.userMatches.map((fixture, index) => ({fixture, index})).filter(({fixture}) => fixture.id !== match.id).slice(-3).reverse();
   const fixtures = upcoming.slice(0, 1).map(fixture => {
     const isHome = fixture.homeId === t.userTeamId, opponent = t.teams.find(team => team.id === (isHome ? fixture.awayId : fixture.homeId));
     return `<article class="upcoming-game"><div class="fixture-round"><span>${esc(fixture.stageLabel)}</span><small>${fixture.neutral?'Campo neutro':isHome?'Casa':'Fora'}</small></div><div class="fixture-opponent">${badge(opponent)}<div><strong>${esc(displayName(opponent))}</strong><span>Temporada ${esc(opponent.ano || '')}</span></div>${icon('arrow')}</div></article>`;
   });
-  const nextGamePanel = fixtures.length || !pendingPhase ? `<section class="fixtures-panel panel ${t.mode === 'brasileirao' ? 'league-campaign' : ['champions','world-cup'].includes(t.mode) ? 'champions-next-game' : ''}" aria-label="Próximo jogo"><div class="calendar-heading"><div>${icon('calendar')}<h2>Próximo jogo</h2></div></div><div class="fixture-list">${fixtures[0] || `<div class="calendar-empty">${icon('trophy')}<strong>${ended && !canContinueTournament(t) ? 'Campanha encerrada' : 'Último jogo'}</strong><p>${ended ? 'Confira o resultado da sua campanha.' : 'Tudo se decide em campo.'}</p></div>`}</div></section>` : '';
-  const championsPanel=['champions','world-cup'].includes(t.mode)?(championsGroup(t)?.complete?nextGamePanel:renderChampionsSidebar(t,{esc,icon,badge})):'';
+  const possible=preview.opponentIds?.map(id=>t.teams.find(team=>team.id===id)).filter(Boolean)||[];
+  const pendingText=possible.length?`Se avançar: ${possible.length>1?'vencedor de ':''}${possible.map(team=>displayName(team)).join(' × ')}`:preview.draw?'Adversário definido no sorteio após esta fase.':'Adversário definido após a classificação.';
+  const nextContent=fixtures[0]||(preview.kind==='pending'?`<div class="fixture-pending">${icon('bracket')}<div><strong>${esc(preview.stageLabel)}</strong><span>${esc(pendingText)}</span></div></div>`:`<div class="calendar-empty">${icon('trophy')}<strong>${preview.kind==='complete'?'Campanha encerrada':'Último jogo'}</strong><p>${preview.kind==='complete'?'Confira o resultado da sua campanha.':'Tudo se decide em campo.'}</p></div>`);
+  const nextGamePanel = `<section class="fixtures-panel panel ${t.mode === 'brasileirao' ? 'league-campaign' : ['champions','world-cup'].includes(t.mode) ? 'champions-next-game' : ''}" aria-label="Próximo jogo"><div class="calendar-heading"><div>${icon('calendar')}<h2>Próximo jogo</h2></div></div><div class="fixture-list">${nextContent}</div></section>`;
+  const championsPanel=['champions','world-cup'].includes(t.mode)?(match.stage!=='group'||championsGroup(t)?.complete?nextGamePanel:renderChampionsSidebar(t,{esc,icon,badge})):'';
   const phase = matchPhase(result,s.matchMinute);
   const addedMinutes = matchAddedMinutes(result,s.matchMinute);
   const morePlayed = s.userMatchIndex < t.userMatches.length - 1;
