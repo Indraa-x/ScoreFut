@@ -8,7 +8,7 @@ import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, si
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=simulation-gap-20261026';
 import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
 import * as storage from './storage.js?v=world-cup-20261026';
-import * as ui from './ui.js?v=interactive-penalties-20261027';
+import * as ui from './ui.js?v=direct-penalty-buttons-20261027';
 import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
 import {downloadResult} from './share.js?v=world-cup-20261026';
@@ -240,12 +240,12 @@ function startTournament(){
   Object.assign(state,prepareUserRound(createTournament(user,allSquads,{mode:state.mode,seed,excludeSquadIds:state.draft.picks.map(p=>p.squadId)})));
   state.matchFlowVersion=MATCH_FLOW_VERSION;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('match');}
 function finishCurrentMatch(){stopPlayback();ensurePenaltyShootout(state);commitUserRound(state);persist();render();}
-function penaltyAim(value){
+function penaltyShoot(value){
   const match=currentMatch(state),shootout=match?.result.interactiveShootout;
   if(state.screen!=='match'||state.penaltyBusy||state.penaltyAssetsReady===false||!shootout||shootout.complete||state.matchMinute<match.result.duration)return;
   const home=state.tournament.teams.find(team=>team.id===match.homeId),away=state.tournament.teams.find(team=>team.id===match.awayId);
   if(!penaltyTurn(shootout,home,away).attacking||!PENALTY_TARGETS.some(option=>option.id===value))return;
-  shootout.selection=value;persist();render();
+  shootout.selection=value;penaltyConfirm();
 }
 function queueOpponentPenalty(){
   const match=currentMatch(state),shootout=match?.result.interactiveShootout;
@@ -329,7 +329,7 @@ case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value)
 case'quick-region':if(['all','brasil','europa'].includes(value)){state.quickRegion=value;render();}break;
 case'quick-clear':state.quickSearch='';state.quickRegion='all';render();app.querySelector('#quick-search')?.focus();break;
 case'next-match':nextMatch();break;
-case'penalty-aim':penaltyAim(value);break;case'penalty-confirm':penaltyConfirm();break;
+case'penalty-shoot':penaltyShoot(value);break;
 case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();if(speed===8)app.querySelector('.match-speed-fast')?.classList.add('is-activating');}break;}
 case'bracket':state.returnScreen=state.screen;navigate('bracket');break;case'back-match':navigate(state.returnScreen==='result'?'result':'match');break;
 case'champions-view':{if(!['champions','world-cup'].includes(state.tournament?.mode))break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}

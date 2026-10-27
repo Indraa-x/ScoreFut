@@ -75,17 +75,20 @@ function reversePlayedWinner(state){
   return shootout.winnerId;
 }
 
-test('the screen offers only left/right shots and no goalkeeper controls during the automatic opponent turn',()=>{
+test('two direct shot buttons sit below the pitch and wait during the automatic opponent turn',()=>{
   const state=finalState('world-cup'),match=currentMatch(state),shootout=ensurePenaltyShootout(state);
   state.matchMinute=match.result.duration;shootout.firstSide=0;
   let html=renderMatch(state);
-  assert.equal((html.match(/data-action="penalty-aim"/g)||[]).length,2);
+  const buttons=()=>html.match(/<button[^>]*data-action="penalty-shoot"[^>]*>/g)||[];
+  assert.equal(buttons().length,2);
+  assert.ok(buttons().every(button=>!button.includes('disabled')));
   assert.ok(html.includes('Cobrar para a esquerda')&&html.includes('Cobrar para a direita'));
-  assert.ok(!/Defender cobrança|Pular à|Alto|Baixo/.test(html));
+  assert.ok(html.indexOf('penalty-directions')>html.indexOf('penalty-feedback'));
+  assert.ok(!/Defender cobrança|Pular à|Alto|Baixo|penalty-targets|penalty-confirm|Bater pênalti/.test(html));
   shootout.firstSide=1;html=renderMatch(state);
-  assert.equal((html.match(/data-action="penalty-aim"/g)||[]).length,0);
+  assert.equal(buttons().length,2);
   assert.ok(html.includes('vai cobrar automaticamente'));
-  assert.ok(html.match(/<button[^>]*data-action="penalty-confirm"[^>]*>/)[0].includes('disabled'));
+  assert.ok(buttons().every(button=>button.includes('disabled')));
 });
 
 for(const mode of ['world-cup','champions','copa-do-brasil'])test(mode+': interactive winner replaces the simulated winner in the final, campaign and history',()=>{
