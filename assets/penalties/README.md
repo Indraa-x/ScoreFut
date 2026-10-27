@@ -6,6 +6,9 @@ Created for ScoreFut with the built-in ImageGen tool on 2026-10-27. These are fi
 - `shooter-kick.png`: matching footballer striking the ball.
 - `keeper-ready.png`: goalkeeper in a ready stance.
 - `keeper-dive.png`: matching goalkeeper diving to the viewer's right.
+- `stadium.png`: unmodified stadium background supplied by the user ("Gol Sob as Luzes do Estádio.png"). The stage preserves its aspect ratio so the players and ball stay aligned with the photographed goal.
+
+The two goalkeeper poses use the same source-pixel scale: the dive image is 1774×887, compared with the standing image at 1024×1536. Its rendered width and height therefore use those ratios rather than stretching the horizontal pose to the standing pose's height.
 
 ## Final prompts
 

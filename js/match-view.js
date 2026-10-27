@@ -1,4 +1,4 @@
-import {renderPenaltyShootout} from './penalty-view.js?v=direct-penalty-buttons-20261027';
+import {renderPenaltyShootout} from './penalty-view.js?v=stadium-penalties-20261027';
 import {renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
 import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=simulation-gap-20261026';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';

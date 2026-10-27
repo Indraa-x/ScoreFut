@@ -9,9 +9,9 @@ export function renderPenaltyShootout(state,match,home,away,{esc,icon}){
   const attacking=busy&&last?(last.side?away:home).id===shootout.userTeamId:turn?.attacking;
   const finished=shootout.complete&&!busy;
   const shotTarget=last&&PENALTY_TARGETS.find(target=>target.id===last.target);
-  const ballX=last?.outcome==='wide'?(shotTarget?.column==='left'?3:97):shotTarget?.x||50;
-  const ballY=last?.outcome==='wide'?57:shotTarget?.y||88;
-  const diveX=last?.dive==='left'?25:75;
+  const ballX=last?.outcome==='wide'?(shotTarget?.column==='left'?26:74):shotTarget?.column==='left'?35:65;
+  const ballY=last?.outcome==='wide'?63:56.5;
+  const diveX=last?.dive==='left'?40:60;
   const teamName=team=>team.ano&&team.name.endsWith(` ${team.ano}`)?team.name.slice(0,-String(team.ano).length-1):team.name;
   const marks=side=>{
     const kicks=visibleKicks.filter(kick=>kick.side===side),count=Math.max(5,kicks.length),start=Math.max(0,count-8);
@@ -27,7 +27,6 @@ export function renderPenaltyShootout(state,match,home,away,{esc,icon}){
     <div class="penalty-score"><div><strong>${esc(teamName(home))}</strong><div class="penalty-attempts">${marks(0)}</div></div><b aria-label="Placar dos pênaltis">${scores[0]} <i>–</i> ${scores[1]}</b><div><strong>${esc(teamName(away))}</strong><div class="penalty-attempts">${marks(1)}</div></div></div>
     <div class="penalty-instructions"><h2 tabindex="-1">${header}</h2><p>${esc(prompt)}</p></div>
     <div class="penalty-stage" aria-label="Cobrança de pênalti, visão de trás do batedor">
-      <div class="penalty-goal"><div class="penalty-net"></div></div><div class="penalty-spot"></div>
       <div class="penalty-keeper" aria-hidden="true"><img class="penalty-pose-ready" src="assets/penalties/keeper-ready.png" alt="" decoding="async"><img class="penalty-pose-action" src="assets/penalties/keeper-dive.png" alt="" decoding="async"></div>
       <div class="penalty-shooter" aria-hidden="true"><img class="penalty-pose-ready" src="assets/penalties/shooter-ready.png" alt="" decoding="async"><img class="penalty-pose-action" src="assets/penalties/shooter-kick.png" alt="" decoding="async"></div>
       <div class="penalty-ball">${icon('ball')}</div>
