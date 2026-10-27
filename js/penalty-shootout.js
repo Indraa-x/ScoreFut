@@ -37,22 +37,17 @@ export function penaltyWinner(kicks,homeId,awayId){
   return null;
 }
 
-/** The same independent random draws are used for every possible player choice. */
+/** A save happens only when the goalkeeper dives toward the chosen side. */
 export function takePenalty(shootout,home,away,choice){
   if(shootout.complete)return shootout;
   const turn=penaltyTurn(shootout,home,away);
   if(turn.attacking&&!PENALTY_TARGETS.some(option=>option.id===choice))throw new Error('Escolha um canto válido.');
   if(!turn.attacking&&choice!=null)throw new Error('A cobrança adversária é automática.');
   const rng=mulberry32(hashSeed(`${shootout.seed}:kick:${shootout.kicks.length}`));
-  const targetRoll=rng(),diveRoll=rng(),accuracyRoll=rng(),saveRoll=rng();
+  const targetRoll=rng(),diveRoll=rng();
   const target=turn.attacking?PENALTY_TARGETS.find(target=>target.id===choice):PENALTY_TARGETS[Math.floor(targetRoll*PENALTY_TARGETS.length)];
   const dive=diveRoll<.5?'left':'right';
-  const finishing=rating(turn.player,'finalizacao'),reflexes=rating(turn.goalkeeper,'reflexo');
-  const accuracy=clamp(.94+(finishing-80)*.0025-(target.high?.10:0),.72,.985);
-  const saveChance=dive===target.column
-    ?clamp(.48+(reflexes-finishing)*.004,.28,.82)
-    :0;
-  const outcome=accuracyRoll>accuracy?'wide':saveRoll<saveChance?'saved':'goal';
+  const outcome=dive===target.column?'saved':'goal';
   const kick={side:turn.side,player:turn.player,target:target.id,dive,outcome,converted:outcome==='goal'};
   const kicks=[...shootout.kicks,kick],scores=[...shootout.scores];
   if(kick.converted)scores[turn.side]++;

@@ -20,24 +20,26 @@ test('five-kick clinches and sudden death require the right number of attempts, 
   assert.equal(penaltyWinner([...tied,kick(1,true),kick(0,false)],'h','a'),'a');
 });
 
-test('left/right choices affect conversion and the opponent takes its kicks automatically',()=>{
-  let differentShots=0;
+test('shot direction and goalkeeper direction deterministically decide goals and saves',()=>{
   for(let seed=0;seed<250;seed++){
     const shootout={...createPenaltyShootout(home,away,'user',seed),firstSide:0};
     const attempts=PENALTY_TARGETS.map(target=>takePenalty(shootout,home,away,target.id).kicks[0]);
-    if(new Set(attempts.map(k=>k.outcome)).size>1)differentShots++;
     assert.equal(new Set(attempts.map(k=>k.dive)).size,1);
+    for(const shot of attempts){
+      assert.equal(shot.outcome,shot.dive===shot.target?'saved':'goal');
+      assert.equal(shot.converted,shot.dive!==shot.target);
+    }
     const defending={...shootout,firstSide:1};
     const automatic=takePenalty(defending,home,away,null);
     assert.deepEqual(automatic,takePenalty(defending,home,away,null));
+    assert.equal(automatic.kicks[0].outcome,automatic.kicks[0].dive===automatic.kicks[0].target?'saved':'goal');
     assert.equal(automatic.kicks.length,1);
     assert.throws(()=>takePenalty(defending,home,away,'left'),/automática/);
   }
-  assert.ok(differentShots>40);
   assert.deepEqual(PENALTY_TARGETS.map(target=>target.id),['left','right']);
 });
 
-test('a goalkeeper diving to the opposite side cannot save an on-target kick for either team',()=>{
+test('same-side dives save every kick and opposite-side dives always concede',()=>{
   const oppositeSides=new Set(),outcomes=new Set();
   for(let seed=0;seed<4096;seed++)for(const firstSide of [0,1]){
     const shootout={...createPenaltyShootout(home,away,'user',seed),firstSide};
@@ -47,20 +49,19 @@ test('a goalkeeper diving to the opposite side cannot save an on-target kick for
       if(shot.target!==shot.dive){
         oppositeSides.add(`${shot.side}:${shot.target}`);
         assert.notEqual(shot.outcome,'saved',`seed ${seed}, team ${shot.side}: shot ${shot.target}, dive ${shot.dive}`);
-        if(shot.outcome!=='wide'){
-          assert.equal(shot.outcome,'goal');
-          assert.equal(shot.converted,true);
-          assert.equal(played.scores[shot.side],1);
-        }
+        assert.equal(shot.outcome,'goal');
+        assert.equal(shot.converted,true);
+        assert.equal(played.scores[shot.side],1);
       }
-      if(shot.outcome==='saved'){
-        assert.equal(shot.target,shot.dive);
+      if(shot.target===shot.dive){
+        assert.equal(shot.outcome,'saved');
+        assert.equal(shot.converted,false);
         assert.equal(played.scores[shot.side],0);
       }
     }
   }
   assert.deepEqual([...oppositeSides].sort(),['0:left','0:right','1:left','1:right']);
-  assert.deepEqual([...outcomes].sort(),['goal','saved','wide']);
+  assert.deepEqual([...outcomes].sort(),['goal','saved']);
 });
 
 test('a saved shootout resumes deterministically without repeating kicks or resetting its score',()=>{

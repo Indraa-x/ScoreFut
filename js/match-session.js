@@ -1,5 +1,5 @@
 import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=interactive-penalties-20261027';
-import {createPenaltyShootout} from './penalty-shootout.js?v=penalty-direction-fix-20261027';
+import {createPenaltyShootout} from './penalty-shootout.js?v=penalty-side-match-20261027';
 
 export const MATCH_FLOW_VERSION = 1;
 
