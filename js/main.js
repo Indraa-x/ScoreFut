@@ -8,7 +8,7 @@ import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, si
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=simulation-gap-20261026';
 import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
 import * as storage from './storage.js?v=world-cup-20261026';
-import * as ui from './ui.js?v=stadium-penalties-20261027';
+import * as ui from './ui.js?v=penalty-closeup-20261027';
 import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
 import {downloadResult} from './share.js?v=world-cup-20261026';

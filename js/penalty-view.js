@@ -27,9 +27,11 @@ export function renderPenaltyShootout(state,match,home,away,{esc,icon}){
     <div class="penalty-score"><div><strong>${esc(teamName(home))}</strong><div class="penalty-attempts">${marks(0)}</div></div><b aria-label="Placar dos pênaltis">${scores[0]} <i>–</i> ${scores[1]}</b><div><strong>${esc(teamName(away))}</strong><div class="penalty-attempts">${marks(1)}</div></div></div>
     <div class="penalty-instructions"><h2 tabindex="-1">${header}</h2><p>${esc(prompt)}</p></div>
     <div class="penalty-stage" aria-label="Cobrança de pênalti, visão de trás do batedor">
+      <div class="penalty-scene" aria-hidden="true">
       <div class="penalty-keeper" aria-hidden="true"><img class="penalty-pose-ready" src="assets/penalties/keeper-ready.png" alt="" decoding="async"><img class="penalty-pose-action" src="assets/penalties/keeper-dive.png" alt="" decoding="async"></div>
       <div class="penalty-shooter" aria-hidden="true"><img class="penalty-pose-ready" src="assets/penalties/shooter-ready.png" alt="" decoding="async"><img class="penalty-pose-action" src="assets/penalties/shooter-kick.png" alt="" decoding="async"></div>
       <div class="penalty-ball">${icon('ball')}</div>
+      </div>
     </div>
     <div class="penalty-feedback ${busy&&revealed?last.outcome:''}" role="status" aria-live="polite">${esc(feedback)}</div>
     ${!finished?`<div class="penalty-directions" role="group" aria-label="Escolha o lado da cobrança">${PENALTY_TARGETS.map(target=>`<button type="button" class="btn btn-primary penalty-direction penalty-direction-${target.id}" data-action="penalty-shoot" data-value="${target.id}" aria-label="Cobrar para a ${target.label.toLowerCase()}" ${loading||busy||!attacking?'disabled':''}>${target.id==='left'?icon('arrow'):''}<span>${target.label}</span>${target.id==='right'?icon('arrow'):''}</button>`).join('')}</div><p class="penalty-tip">${attacking?'Toque em um dos botões para cobrar.':'Você joga apenas as cobranças do seu time.'}</p>`:''}
