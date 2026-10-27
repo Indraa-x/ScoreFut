@@ -3,8 +3,9 @@ import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js?v=creator-import-2
 const reviews=[
  ['nation-hungary-1954',[
   ['gyula-grosics',92,88],['jeno-buzanszky',86,82],['gyula-lorant',88,85],
-  ['mihaly-lantos',88,85],['jozsef-bozsik',93,91],['jozsef-zakarias',87,82],
-  ['nandor-hidegkuti',94,93],['zoltan-czibor',94,92],['laszlo-budai',88,83],
+  ['mihaly-lantos',88,85],['jozsef-bozsik',93,89],['jozsef-zakarias',87,82],
+  ['nandor-hidegkuti',94,90],['zoltan-czibor',94,89],['laszlo-budai',88,83],
+  ['sandor-kocsis',95,91],
  ]],
  ['nation-germany-1974',[
   ['sepp-maier',93,90],['berti-vogts',91,89],['paul-breitner',91,89],
@@ -15,8 +16,10 @@ const reviews=[
 ];
 export const WORLD_CUP_CREATOR_REVIEWS=Object.freeze(Object.fromEntries(reviews.map(([squadId,players])=>[
  squadId,Object.freeze(Object.fromEntries(players.map(([playerId,previousOvr,ovr])=>[playerId,Object.freeze({
-  squadId,playerId,previousOvr,ovr,reviewedAt:'2026-10-26',source:'data/world-cup-ratings.js',
-  reason:'Reequilíbrio solicitado pelo criador em 26/10/2026: OVR geral calculado de 88,5, preservando os principais craques.',
+  squadId,playerId,previousOvr,ovr,reviewedAt:squadId==='nation-hungary-1954'?'2026-10-27':'2026-10-26',source:'data/world-cup-ratings.js',
+  reason:squadId==='nation-hungary-1954'
+   ?'Revisão solicitada pelo criador em 27/10/2026: reduzir os demais destaques e manter Puskás isolado como maior OVR do elenco.'
+   :'Reequilíbrio solicitado pelo criador em 26/10/2026: OVR geral calculado de 88,5, preservando os principais craques.',
  })]))),
 ])));
 export function applyWorldCupRatingReview(player,squadId){

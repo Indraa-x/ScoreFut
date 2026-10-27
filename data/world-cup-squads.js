@@ -1,7 +1,7 @@
 /** Historical World Cup XIs. Roster derivative: © 2023 Joshua C. Fjelstul, Ph.D., CC-BY-SA 4.0.
  * Modifications: selected eras/XIs, canonical identities, translated names/roles and FIFA-edition ratings.
  * Attribution, license and rating limitations: WORLD-CUP-SOURCES.md. */
-import {applyWorldCupRatingReview} from './world-cup-ratings.js?v=creator-import-20261026';
+import {applyWorldCupRatingReview} from './world-cup-ratings.js?v=hungary-puskas-20261027';
 export const worldCupNations = [
   {
     "id": "nation-brazil",

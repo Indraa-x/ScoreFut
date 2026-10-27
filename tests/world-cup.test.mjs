@@ -59,14 +59,14 @@ test('World Cup OVRs identify the exact released FIFA edition and explicitly dis
  assert.equal(brazil94.find(p=>p.nome==='Romário').ovr,94);
  assert.equal(brazil94.find(p=>p.nome==='Bebeto').ovr,91);
 });
-test('Hungary 1954 and Germany 1974 keep earlier reductions, adopt the newer star OVRs and refresh saved picks',()=>{
+test('Hungary 1954 keeps Puskás alone at the top, Germany 1974 stays balanced, and saved picks refresh',()=>{
  const cases=[
-  {id:'nation-hungary-1954',before:91.2,stars:{'ferenc-puskas':95,'sandor-kocsis':95}},
-  {id:'nation-germany-1974',before:90.9,stars:{'franz-beckenbauer':94,'gerd-muller':95}},
+  {id:'nation-hungary-1954',before:91.2,overall:87.2,total:959,stars:{'ferenc-puskas':95,'sandor-kocsis':91,'nandor-hidegkuti':90,'zoltan-czibor':89,'jozsef-bozsik':89}},
+  {id:'nation-germany-1974',before:90.9,overall:88.3,total:971,stars:{'franz-beckenbauer':94,'gerd-muller':95}},
  ];
  for(const item of cases){
   const squad=worldCupSquads.find(s=>s.id===item.id),team=squadTeam(squad);
-  assert.equal(team.strength.overall,88.3);assert.equal(squad.jogadores.reduce((sum,p)=>sum+p.ovr,0),971);
+  assert.equal(team.strength.overall,item.overall);assert.equal(squad.jogadores.reduce((sum,p)=>sum+p.ovr,0),item.total);
   for(const [id,ovr]of Object.entries(item.stars))assert.equal(squad.jogadores.find(p=>p.id===id).ovr,ovr);
   for(const p of squad.jogadores){
    assert.deepEqual(applyWorldCupRatingReview(p,item.id),p);
@@ -75,11 +75,13 @@ test('Hungary 1954 and Germany 1974 keep earlier reductions, adopt the newer sta
   const draft={...createDraft(42,'2026-10-26','world-cup'),picks:team.lineup.map(pick=>({...pick,squadId:item.id,player:{...pick.player,ovr:pick.player.creatorReview?.previousOvr??pick.player.ovr}}))};
   const original=structuredClone(draft);assert.equal(calculateTeam(draft.picks).overall,item.before);
   const updated=refreshDraftRatings(draft,allSquads);
-  assert.equal(calculateTeam(updated.picks).overall,88.3);assert.deepEqual(draft,original);
+  assert.equal(calculateTeam(updated.picks).overall,item.overall);assert.deepEqual(draft,original);
   assert.deepEqual({...updated,picks:[]},{...draft,picks:[]});
  }
  const unchanged=worldCupSquads.find(s=>s.id==='nation-hungary-1962').jogadores;
  assert.ok(unchanged.every(p=>p.ratingKind!=='creator-review'));
+ const hungary=worldCupSquads.find(s=>s.id==='nation-hungary-1954').jogadores;
+ assert.deepEqual(hungary.filter(p=>p.ovr===Math.max(...hungary.map(p=>p.ovr))).map(p=>p.id),['ferenc-puskas']);
 });
 
 test('all eight formations can complete a national draft with four shared skips and no duplicate people',()=>{
