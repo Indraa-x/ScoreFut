@@ -11,3 +11,6 @@
  #app[data-screen="match"] .match-card .match-added-time{font-size:12px;min-width:23px;padding-inline:3px}
  #app[data-screen="match"] .match-card [data-match-phase]{font-size:9px;line-height:10px;min-height:16px;padding:2px 6px}
 }
+
+#app[data-screen="match"] .match-score-goals .match-scorers p>span{font-family:var(--body);font-size:12px;font-weight:650;line-height:1.5;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1;letter-spacing:0;white-space:normal}
+@media(max-width:600px){#app[data-screen="match"] .match-score-goals .match-scorers p>span{font-size:11px}}
