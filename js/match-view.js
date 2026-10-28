@@ -1,8 +1,8 @@
 import {renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
-import {matchHasEnded,renderPenaltyMarks,penaltyProgress} from './match-penalties.js?v=penalty-dots-20261028';
+import {matchHasEnded,renderPenaltyMarks,penaltyProgress} from './match-penalties.js?v=penalty-dots-clean-20261028';
 import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=simulation-gap-20261026';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';
-import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=penalty-dots-20261028';
+import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=penalty-dots-clean-20261028';
 import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=position-movement-20261027';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;

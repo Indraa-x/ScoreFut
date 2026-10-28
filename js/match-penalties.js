@@ -47,7 +47,6 @@ export function renderPenaltyMarks(state,match,names,esc){
       const label=event?(event.converted?'acertou':'errou'):waiting?'aguardando':'não cobrada';
       return `<span class="shootout-dot ${event?event.converted?'scored':'missed':'waiting'}${latest?' is-latest':''}${nextKick?' is-next':''}" aria-label="${esc(names[side])}, ${i+1}ª cobrança: ${label}">${event?(event.converted?'✓':'×'):''}</span>`;
     }).join('');
-    const feedback=last?.team===side?(last.converted?'Acertou':'Errou'):'';
-    return `<div class="shootout-team ${side}"><div class="shootout-team-label"><strong title="${esc(names[side])}">${esc(names[side])}</strong><b aria-label="${progress.scores[index]} gols nos pênaltis">${progress.scores[index]}</b><span class="shootout-outcome ${last?.team===side?(last.converted?'scored':'missed'):''}" role="status">${feedback}</span></div><div class="shootout-dots" aria-label="Cobranças de ${esc(names[side])}">${marks}</div></div>`;
+    return `<div class="shootout-team ${side}"><div class="shootout-team-label"><strong title="${esc(names[side])}">${esc(names[side])}</strong><b aria-label="${progress.scores[index]} gols nos pênaltis">${progress.scores[index]}</b></div><div class="shootout-dots" aria-label="Cobranças de ${esc(names[side])}">${marks}</div></div>`;
   }).join('');
 }

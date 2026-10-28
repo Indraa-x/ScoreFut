@@ -11,9 +11,6 @@
 .shootout-team-label{display:flex;align-items:center;gap:7px;min-width:0;font-size:11px;line-height:13px}
 .shootout-team-label>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}
 .shootout-team-label>b{font-size:12px;font-variant-numeric:tabular-nums}
-.shootout-outcome{font-size:10px;font-weight:750;margin-left:auto;white-space:nowrap}
-.shootout-outcome.scored{color:var(--green)}
-.shootout-outcome.missed{color:#df7c76}
 .shootout-dots{display:flex;gap:5px;min-height:15px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
 .shootout-dots::-webkit-scrollbar{display:none}
 .shootout-dot{display:grid;place-items:center;flex:0 0 14px;width:14px;height:14px;box-sizing:border-box;border:1px solid var(--border);border-radius:50%;background:var(--soft);color:var(--muted);font-size:10px;font-weight:800;line-height:1}
@@ -26,7 +23,6 @@
  #app[data-screen="match"] .match-penalty-marks{gap:10px}
  .shootout-team.away{padding-left:10px}
  .shootout-team-label{font-size:10px;gap:5px}
- .shootout-outcome{font-size:9px}
  .shootout-dots{gap:4px}
  .shootout-dot{width:13px;height:13px;flex-basis:13px;font-size:9px}
 }
