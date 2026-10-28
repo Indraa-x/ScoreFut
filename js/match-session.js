@@ -1,5 +1,5 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=penalty-dots-title-20261028';
-import {matchHasEnded} from './match-penalties.js?v=penalty-dots-title-20261028';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=no-end-label-20261028';
+import {matchHasEnded} from './match-penalties.js?v=no-end-label-20261028';
 
 export const MATCH_FLOW_VERSION = 1;
 

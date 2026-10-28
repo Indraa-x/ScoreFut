@@ -42,7 +42,7 @@ export function formatMatchEventMinute(result, minute) {
 }
 
 export function matchPhase(result, minute) {
-  if (minute >= result.duration) return 'Fim de jogo';
+  if (minute >= result.duration) return '';
   if (result.extraTime) {
     const extraStart = Number.isFinite(result.extraTimeStart) ? result.extraTimeStart : 90;
     const extraEnd = Number.isFinite(result.extraTimeEnd) ? result.extraTimeEnd : 120;
