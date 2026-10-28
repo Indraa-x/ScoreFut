@@ -1,4 +1,5 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=automatic-penalties-20261028';
+import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js?v=penalty-dots-20261028';
+import {matchHasEnded} from './match-penalties.js?v=penalty-dots-20261028';
 
 export const MATCH_FLOW_VERSION = 1;
 
@@ -40,7 +41,7 @@ export function prepareUserRound(tournament) {
 
 export function commitUserRound(state) {
   const match = currentMatch(state);
-  if (!match || state.matchMinute < match.result.duration || !state.pendingRound
+  if (!match || !matchHasEnded(state,match) || !state.pendingRound
     || state.userMatchIndex !== state.tournament.userMatches.length) return false;
   state.tournament = state.pendingRound;
   state.pendingRound = null;
@@ -90,7 +91,7 @@ export function upcomingFixtures(tournament, match) {
 export function nextFixturePreview(state) {
   const match=currentMatch(state);
   if(!match)return {kind:'complete'};
-  const ended=state.matchMinute>=match.result.duration;
+  const ended=matchHasEnded(state,match);
   const t=ended&&state.pendingRound?state.pendingRound:state.tournament;
   const fixture=[...(t.matches||[]),...(t.userMatches||[])]
     .filter(next=>next.id!==match.id&&next.round>match.round&&[next.homeId,next.awayId].includes(t.userTeamId))

@@ -4,19 +4,20 @@ import {filterQuickClubs} from './quick-catalog.js?v=creator-import-20261026';
 import { clubs, allSquads, validateData } from '../data/game-squads.js?v=hungary-puskas-20261027';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=world-cup-20261026';
 import { state, MODES } from './state.js?v=world-cup-20261026';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=automatic-penalties-20261028';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=penalty-dots-20261028';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=simulation-gap-20261026';
 import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
 import * as storage from './storage.js?v=world-cup-20261026';
-import * as ui from './ui.js?v=automatic-penalties-20261028';
+import * as ui from './ui.js?v=penalty-dots-20261028';
 import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
 import {downloadResult} from './share.js?v=world-cup-20261026';
 import {initPlayerDrag} from './player-drag.js?v=world-cup-20261026';
 import {initSkipFeedback} from './skip-feedback.js?v=world-cup-20261026';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=automatic-penalties-20261028';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=penalty-dots-20261028';
+import {beginPenaltyReplay,matchHasEnded} from './match-penalties.js?v=penalty-dots-20261028';
 import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=position-movement-20261027';
-import {initMatchPlayback} from './match-playback.js?v=position-movement-20261027';
+import {initMatchPlayback} from './match-playback.js?v=penalty-dots-20261028';
 import {initCelebration} from './celebration.js?v=world-cup-20261026';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 const browserProgressReady=storage.initializeBrowserProgress();
@@ -54,7 +55,7 @@ if(!validation.valid) console.error('Base ScoreFut inválida',validation.errors)
 function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3400);}
 function savedDraft(){const saved=storage.read('active');return saved?.draft?.picks?.length<TEAM_SIZE||saved?.screen==='summary'||saved?.screen==='match'?saved:null;}
 function hydrateDraft(){if(!state.draft)return;const pool=squadsForMode(allSquads,state.mode);state.draft.currentSquad=pool.find(s=>s.id===state.draft.currentSquadId)||null;state.draft.otherSeasonAvailable=pool.some(s=>s.clubId===state.draft.currentSquad?.clubId&&!state.draft.seen.includes(s.id));}
-function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed};}
+function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed,penaltyReplay:state.penaltyReplay||null};}
 function persist(){rememberSession();if(!state.draft)return;const saved=snapshot();const ok=storage.write('active',saved);if(!ok&&!storageWarning){storageWarning=true;toast('Este navegador não permite salvar o progresso. Você pode continuar jogando.');}}
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
 function navigate(screen){navigationVersion++;rememberSession();if(state.screen==='match'&&['home','achievements','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
@@ -224,16 +225,16 @@ function startTournament(){
   }
   Object.assign(state,prepareUserRound(createTournament(user,allSquads,{mode:state.mode,seed,excludeSquadIds:state.draft.picks.map(p=>p.squadId)})));
   state.matchFlowVersion=MATCH_FLOW_VERSION;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('match');}
-function finishCurrentMatch(){stopPlayback();commitUserRound(state);persist();render();}
+function finishCurrentMatch(){stopPlayback();const match=currentMatch(state);if(match&&beginPenaltyReplay(state,match)){persist();render();return;}commitUserRound(state);persist();render();}
 function nextMatch(){
-  const match=currentMatch(state);if(!match||state.matchMinute<match.result.duration)return;
+  const match=currentMatch(state);if(!match||!matchHasEnded(state,match))return;
   stopPlayback();
   if(state.userMatchIndex<state.tournament.userMatches.length-1)state.userMatchIndex++;
   else if(canContinueTournament(state.tournament)){
     Object.assign(state,prepareUserRound(state.tournament));
     if(!state.pendingRound){finishTournament();return;}
   }else{finishTournament();return;}
-  state.matchMinute=0;persist();render();
+  state.matchMinute=0;state.penaltyReplay=null;persist();render();
 }
 function finishTournament(){
   stopPlayback();
@@ -279,7 +280,7 @@ case'champions-view':{if(!['champions','world-cup'].includes(state.tournament?.m
 case'champions-group':if(state.screen==='bracket'&&['champions','world-cup'].includes(state.tournament?.mode)&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;
 case'champions-round':if(state.screen==='bracket'&&['champions','world-cup'].includes(state.tournament?.mode)&&['round16','quarter','semi','final'].includes(value)){state.championsRound=value;render();}break;
 case'champions-tie':{if(!['champions','world-cup'].includes(state.tournament?.mode))break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
-case'match-index':{const i=Number(value);if(!state.pendingRound&&Number.isInteger(i)&&i>=0&&i<state.tournament.userMatches.length){stopPlayback();state.userMatchIndex=i;state.matchMinute=state.tournament.userMatches[i].result.duration;persist();render();}break;}
+case'match-index':{const i=Number(value);if(!state.pendingRound&&Number.isInteger(i)&&i>=0&&i<state.tournament.userMatches.length){stopPlayback();state.userMatchIndex=i;state.penaltyReplay=null;state.matchMinute=state.tournament.userMatches[i].result.duration;persist();render();}break;}
 case'result-lineup':if(state.screen==='result'&&state.resultRecord){document.getElementById('modal-content').innerHTML=ui.renderResultLineup(state.resultRecord);modal.showModal();}break;case'download':downloadResult(state.resultRecord);toast('Seu resultado em PNG está pronto.');break;
 }}
 document.addEventListener('click',event=>{const element=event.target.closest('[data-action]');if(element&&!element.disabled)action(element.dataset.action,element.dataset.value,element).catch(error=>{console.error(error);toast('Não foi possível completar a ação. '+error.message);});});

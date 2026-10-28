@@ -1,6 +1,9 @@
-import { currentMatch } from './match-session.js?v=simulation-gap-20261026';
+import { currentMatch } from './match-session.js?v=penalty-dots-20261028';
 import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=position-movement-20261027';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
+import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=penalty-dots-20261028';
+
+const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;
@@ -39,7 +42,17 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
         nodes.addedTime.setAttribute('aria-label', `${added} minutos de acréscimo`);
       }
     }
-    const phase = matchPhase(match.result,state.matchMinute);
+    const progress=penaltyProgress(state,match);
+    if(nodes.penalties){
+      nodes.penalties.hidden=state.matchMinute<match.result.duration;
+      if(nodes.penaltyCount!==progress.revealed){
+        const data=nodes.penalties.dataset;
+        nodes.penalties.innerHTML=renderPenaltyMarks(state,match,{home:data.homeName,away:data.awayName},escapeHtml);
+        nodes.penaltyCount=progress.revealed;
+        for(const row of nodes.penalties.querySelectorAll('.shootout-dots'))row.scrollLeft=row.scrollWidth;
+      }
+    }
+    const phase = progress.playing?'Pênaltis':matchPhase(match.result,state.matchMinute);
     if (nodes.phase.textContent !== phase) nodes.phase.textContent = phase;
     const goal = match.result.events.filter(event => event.type === 'goal' && event.minute <= state.matchMinute).at(-1);
     const showGoal = goal && state.matchMinute - goal.minute < 1.4 * normalizeMatchSpeed(state.matchSpeed) && state.matchMinute < match.result.duration;
@@ -56,7 +69,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     if (state.screen !== 'match') return;
     const match = currentMatch(state), pitch = app.querySelector('[data-live-pitch]');
     if (!match || !pitch) return;
-    state.matchPlaying=!document.hidden && state.matchMinute < match.result.duration;
+    state.matchPlaying=!document.hidden && !matchHasEnded(state,match);
     const home = state.tournament.teams.find(team => team.id === match.homeId), away = state.tournament.teams.find(team => team.id === match.awayId);
     const key = `${state.tournament.seed}:${match.id}:${home.id}:${away.id}`;
     if (key !== motionKey) { motion = createMatchMotion(home, away, match, {seed:state.tournament.seed}); motionKey = key; }
@@ -68,6 +81,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
       addedTime: app.querySelector('[data-match-added-time]'),
       aggregate: app.querySelector('[data-match-aggregate]'),
       goals: app.querySelector('[data-match-goals]'), goalCount:-1,
+      penalties:app.querySelector('[data-penalty-marks]'),penaltyCount:-1,
       activeOwner: -1,
     };
     [...nodes.players, nodes.ball].forEach(element => { element.style.left = '0'; element.style.top = '0'; });
@@ -79,9 +93,13 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     if (!state.matchPlaying || state.screen !== 'match') return;
     const match = currentMatch(state);
     if (!match) return;
-    if (previousTime !== null) state.matchMinute = advanceMatchMinute(state.matchMinute, Math.min(250, timestamp - previousTime), state.matchSpeed, match.result.duration);
+    if (previousTime !== null){
+      const elapsed=Math.min(250,timestamp-previousTime);
+      if(state.matchMinute<match.result.duration)state.matchMinute=advanceMatchMinute(state.matchMinute,elapsed,state.matchSpeed,match.result.duration);
+      else advancePenaltyReplay(state,match,elapsed);
+    }
     previousTime = timestamp; paint();
-    if (state.matchMinute >= match.result.duration) { stop(); state.matchPlaying = false; onFinish(); return; }
+    if (matchHasEnded(state,match)) { stop(); state.matchPlaying = false; onFinish(); return; }
     if (timestamp - savedAt >= 5000) { savedAt = timestamp; onSave(); }
     frame = requestAnimationFrame(tick);
   }
