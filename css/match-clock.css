@@ -1,6 +1,6 @@
 #app[data-screen="match"] .match-card .match-clock-time{display:inline-flex;align-items:center;gap:7px;height:28px;padding:3px 7px 3px 10px;border:1px solid var(--border);border-radius:8px;background:var(--soft);box-sizing:border-box;font-variant-numeric:tabular-nums}
 #app[data-screen="match"] .match-card .score-clock{font-size:18px;line-height:20px;letter-spacing:.2px;font-weight:800;margin:0;color:var(--text)}
-#app[data-screen="match"] .match-card .match-added-time{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:auto;min-width:25px;height:20px;padding:0 5px;border:1px solid #36976b55;border-radius:5px;background:#2283591a;color:var(--green);font-size:11px;line-height:1;font-weight:800}
+#app[data-screen="match"] .match-card .match-added-time{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:auto;min-width:28px;height:22px;padding:0 5px;border:1px solid #36976b55;border-radius:5px;background:#2283591a;color:var(--green);font-size:13px;line-height:1;font-weight:800}
 #app[data-screen="match"] .match-card .match-added-time[hidden]{display:none}
 #app[data-screen="match"] .match-card [data-match-phase]{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;height:auto;min-height:18px;padding:2px 7px;border:1px solid var(--border);border-radius:5px;background:var(--soft);color:var(--muted);font-size:10px;line-height:12px;font-weight:700;white-space:nowrap;flex-shrink:0;box-sizing:border-box}
 #app[data-screen="match"] .match-card [data-match-phase]:empty{visibility:hidden}
@@ -8,6 +8,6 @@
  #app[data-screen="match"] .match-card .match-clock-row{gap:2px}
  #app[data-screen="match"] .match-card .match-clock-time{gap:5px;padding-inline:7px}
  #app[data-screen="match"] .match-card .score-clock{font-size:17px}
- #app[data-screen="match"] .match-card .match-added-time{font-size:10px;min-width:23px;padding-inline:4px}
+ #app[data-screen="match"] .match-card .match-added-time{font-size:12px;min-width:26px;padding-inline:4px}
  #app[data-screen="match"] .match-card [data-match-phase]{font-size:9px;line-height:10px;min-height:16px;padding:2px 6px}
 }
