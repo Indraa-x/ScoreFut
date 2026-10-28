@@ -1,6 +1,7 @@
 const keyFor=(state,match)=>`${state.tournament?.seed}:${match.id}`;
 export const penaltyEvents=result=>(result.events||[]).filter(event=>event.type==='penalty'&&event.shootout);
-export const penaltyInterval=speed=>speed===8?650:1800;
+// Shootouts keep the same readable cadence at either match speed.
+export const penaltyInterval=()=>1800;
 
 export function penaltyProgress(state,match){
   const events=penaltyEvents(match.result),replay=state.penaltyReplay;

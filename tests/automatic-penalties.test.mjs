@@ -77,13 +77,15 @@ for(const mode of ['world-cup','champions','copa-do-brasil'])test(mode+': reveal
   assert.equal(commitUserRound(state),true);
 });
 
-test('normal has a readable cadence; fast stays sequential and long suspended frames never reveal a burst',()=>{
-  assert.equal(penaltyInterval(4),1800);assert.equal(penaltyInterval(8),650);
+test('both match speeds keep the normal penalty cadence and suspended frames never reveal a burst',()=>{
+  assert.equal(penaltyInterval(4),1800);assert.equal(penaltyInterval(8),1800);
   const state=penaltyFinal('world-cup'),match=currentMatch(state);
   state.matchMinute=match.result.duration;beginPenaltyReplay(state,match);
   advancePenaltyReplay(state,match,60000);
   assert.equal(penaltyProgress(state,match).revealed,0);
   state.matchSpeed=8;elapse(state,match,400);
+  assert.equal(penaltyProgress(state,match).revealed,0);
+  elapse(state,match,1150);
   assert.equal(penaltyProgress(state,match).revealed,1);
 });
 
