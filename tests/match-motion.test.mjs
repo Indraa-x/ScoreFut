@@ -33,6 +33,17 @@ test('added minutes appear for the active period and remain at the final whistle
   assert.equal(matchAddedMinutes({duration:120,extraTime:true},120),0);
 });
 
+test('the displayed extra-time clock ends at 120 plus its own added time, without carrying regulation stoppage',()=>{
+  const result={extraTime:true,regulationStoppageTime:6,extraTimeStart:96,extraTimeEnd:126,extraTimeStoppageTime:4,duration:130};
+  for(const [minute,clock,added] of [[89.5,'89:30',0],[95,'90:00',6],[96,'90:00',0],[111,'105:00',0],[125.5,'119:30',0],[126,'120:00',4],[130,'120:00',4]]){
+    assert.equal(formatMatchClock(minute,result),clock);
+    assert.equal(matchAddedMinutes(result,minute),added);
+  }
+  assert.equal(formatMatchClock(130,{extraTime:true,duration:130}),'120:00');
+  assert.equal(formatMatchClock(95,{duration:95,regulationStoppageTime:5}),'90:00');
+  assert.equal(result.duration,130);
+});
+
 test('all formations retain 22 distinct shirts in bounds and move smoothly between pass keyframes',()=>{
   for(const formation of Object.keys(FORMATIONS)){
     const team={...home,lineup:home.lineup.map((entry,index)=>({...entry,slot:FORMATIONS[formation].slots[index]}))};

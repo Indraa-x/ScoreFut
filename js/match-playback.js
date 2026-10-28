@@ -1,7 +1,7 @@
-import { currentMatch } from './match-session.js?v=penalty-fixed-pace-20261028';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=penalty-fixed-pace-20261028';
+import { currentMatch } from './match-session.js?v=match-clock-120-20261028';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=match-clock-120-20261028';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
-import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=penalty-fixed-pace-20261028';
+import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=match-clock-120-20261028';
 
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -32,7 +32,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
       }
     }
     if (nodes.aggregate) nodes.aggregate.textContent = `${Number(nodes.aggregate.dataset.home)+score[0]} – ${Number(nodes.aggregate.dataset.away)+score[1]}`;
-    const clock = formatMatchClock(state.matchMinute);
+    const clock = formatMatchClock(state.matchMinute,match.result);
     if (nodes.clock.textContent !== clock) nodes.clock.textContent = clock;
     if (nodes.addedTime) {
       const added = matchAddedMinutes(match.result, state.matchMinute), label = `+${added}`;

@@ -13,8 +13,13 @@ export function advanceMatchMinute(minute, milliseconds, speed, duration) {
   return Math.min(duration, minute + Math.max(0, milliseconds) / 1000 * normalizeMatchSpeed(speed));
 }
 
-export function formatMatchClock(minute) {
-  const seconds = Math.floor(Math.max(0, minute) * 60 + .00001);
+export function formatMatchClock(minute,result) {
+  let displayed=Math.max(0,minute);
+  if(result){
+    const extraStart=Number.isFinite(result.extraTimeStart)?result.extraTimeStart:90+(Number(result.regulationStoppageTime)||0);
+    displayed=result.extraTime&&minute>=extraStart?90+Math.min(30,Math.max(0,minute-extraStart)):Math.min(90,displayed);
+  }
+  const seconds = Math.floor(displayed * 60 + .00001);
   return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
