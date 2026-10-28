@@ -5,6 +5,8 @@
 #app[data-screen="match"] .match-penalty-marks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;width:100%;min-width:0;line-height:1.2}
 #app[data-screen="match"] .match-penalty-marks[hidden]{display:none}
 .shootout-team{min-width:0;display:flex;flex-direction:column;gap:4px}
+.shootout-team.home{align-items:flex-end}
+.shootout-team.home :is(.shootout-team-label,.shootout-dots){max-width:100%}
 .shootout-team.away{border-left:1px solid var(--border);padding-left:20px}
 .shootout-team-label{display:flex;align-items:center;gap:7px;min-width:0;font-size:11px;line-height:13px}
 .shootout-team-label>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}
