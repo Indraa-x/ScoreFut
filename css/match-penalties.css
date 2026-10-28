@@ -9,11 +9,10 @@
 .shootout-team.home :is(.shootout-team-label,.shootout-dots){max-width:100%}
 .shootout-team.away{border-left:1px solid var(--border);padding-left:20px}
 .shootout-team-label{display:flex;align-items:center;gap:7px;min-width:0;font-size:13px;line-height:16px}
-.shootout-team-label>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}
-.shootout-team-label>b{font-size:14px;font-variant-numeric:tabular-nums}
-.shootout-dots{display:flex;gap:6px;min-height:19px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+.shootout-team-label>b{font-size:16px;font-variant-numeric:tabular-nums}
+.shootout-dots{display:flex;gap:6px;min-height:21px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
 .shootout-dots::-webkit-scrollbar{display:none}
-.shootout-dot{display:grid;place-items:center;flex:0 0 18px;width:18px;height:18px;box-sizing:border-box;border:1px solid var(--border);border-radius:50%;background:var(--soft);color:var(--muted);font-size:12px;font-weight:800;line-height:1}
+.shootout-dot{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;box-sizing:border-box;border:1px solid var(--border);border-radius:50%;background:var(--soft);color:var(--muted);font-size:13px;font-weight:800;line-height:1}
 .shootout-dot.scored{background:#197b50;border-color:#4dbe8b;color:#fff}
 .shootout-dot.missed{background:#b7463a20;border-color:#cd7169;color:#e4847c}
 .shootout-dot.is-next{border-color:var(--green);box-shadow:inset 0 0 0 2px var(--surface)}
@@ -23,8 +22,8 @@
  #app[data-screen="match"] .match-penalty-marks{gap:10px}
  .shootout-team.away{padding-left:10px}
  .shootout-team-label{font-size:12px;line-height:15px;gap:5px}
- .shootout-team-label>b{font-size:13px}
- .shootout-dots{gap:5px;min-height:18px}
- .shootout-dot{width:17px;height:17px;flex-basis:17px;font-size:11px}
+ .shootout-team-label>b{font-size:15px}
+ .shootout-dots{gap:5px;min-height:20px}
+ .shootout-dot{width:19px;height:19px;flex-basis:19px;font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){.shootout-dot.is-latest{animation:none}}
