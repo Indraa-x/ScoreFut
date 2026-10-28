@@ -1,7 +1,7 @@
-import { currentMatch } from './match-session.js?v=match-clock-120-20261028';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=match-clock-120-20261028';
+import { currentMatch } from './match-session.js?v=single-penalty-title-20261028';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=single-penalty-title-20261028';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
-import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=match-clock-120-20261028';
+import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=single-penalty-title-20261028';
 
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -52,7 +52,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
         for(const row of nodes.penalties.querySelectorAll('.shootout-dots'))row.scrollLeft=row.scrollWidth;
       }
     }
-    const phase = progress.playing?'Pênaltis':matchPhase(match.result,state.matchMinute);
+    const phase = progress.playing?'':matchPhase(match.result,state.matchMinute);
     if (nodes.phase.textContent !== phase) nodes.phase.textContent = phase;
     const goal = match.result.events.filter(event => event.type === 'goal' && event.minute <= state.matchMinute).at(-1);
     const showGoal = goal && state.matchMinute - goal.minute < 1.4 * normalizeMatchSpeed(state.matchSpeed) && state.matchMinute < match.result.duration;
