@@ -1,7 +1,7 @@
-import { currentMatch } from './match-session.js?v=penalty-dots-minimal-20261028';
+import { currentMatch } from './match-session.js?v=penalty-dots-title-20261028';
 import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=position-movement-20261027';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=scoreboard-scorers-20261027';
-import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=penalty-dots-minimal-20261028';
+import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=penalty-dots-title-20261028';
 
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 

@@ -39,7 +39,7 @@ export function advancePenaltyReplay(state,match,milliseconds){
 export function renderPenaltyMarks(state,match,names,esc){
   const progress=penaltyProgress(state,match),last=progress.visible.at(-1);
   const next=progress.playing?progress.events[progress.revealed]:null;
-  return ['home','away'].map((side,index)=>{
+  return '<span class="shootout-title">Pênaltis</span>'+['home','away'].map((side,index)=>{
     const kicks=progress.visible.filter(event=>event.team===side),count=Math.max(5,kicks.length);
     const marks=Array.from({length:count},(_,i)=>{
       const event=kicks[i],latest=event&&event===last;
@@ -47,6 +47,6 @@ export function renderPenaltyMarks(state,match,names,esc){
       const label=event?(event.converted?'acertou':'errou'):waiting?'aguardando':'não cobrada';
       return `<span class="shootout-dot ${event?event.converted?'scored':'missed':'waiting'}${latest?' is-latest':''}${nextKick?' is-next':''}" aria-label="${esc(names[side])}, ${i+1}ª cobrança: ${label}">${event?(event.converted?'✓':'×'):''}</span>`;
     }).join('');
-    return `<div class="shootout-team ${side}"><div class="shootout-team-label"><b aria-label="${progress.scores[index]} gols nos pênaltis">${progress.scores[index]}</b></div><div class="shootout-dots" aria-label="Cobranças de ${esc(names[side])}">${marks}</div></div>`;
+    return `<div class="shootout-team ${side}" aria-label="${progress.scores[index]} gols nos pênaltis"><div class="shootout-dots" aria-label="Cobranças de ${esc(names[side])}">${marks}</div></div>`;
   }).join('');
 }
