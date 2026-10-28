@@ -1,7 +1,7 @@
 /* Keep the same reserved scoreboard height before and throughout the shootout. */
 #app[data-screen="match"] .match-card .live-scoreboard{grid-template-rows:124px 124px}
-#app[data-screen="match"] .match-card .match-score-goals{block-size:124px;padding-top:68px}
-#app[data-screen="match"] .match-card .match-score-details{height:60px;gap:3px 12px}
+#app[data-screen="match"] .match-card .match-score-goals{block-size:124px;padding-top:68px;transform:translateY(-10px)}
+#app[data-screen="match"] .match-card .match-score-details{height:60px;gap:3px 12px;transform:translateY(-10px)}
 #app[data-screen="match"] .match-penalty-marks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3px 20px;width:100%;min-width:0;line-height:1.2}
 #app[data-screen="match"] .match-penalty-marks[hidden]{display:none}
 .shootout-title{grid-column:1/-1;text-align:center;font-size:12px;font-weight:750;line-height:14px;color:var(--muted)}
