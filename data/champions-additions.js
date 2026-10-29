@@ -1,7 +1,7 @@
 /* Featured European clubs add more variety to the Champions draft.
  * Lineups follow club and competition records; ratings use the shared scale.
  */
-import { recalibratePlayer } from './ratings.js?v=ovr-import-20261029';
+import { recalibratePlayer } from './ratings.js?v=recent-club-eras-20261029';
 
 const clamp = value => Math.max(1, Math.min(99, Math.round(value)));
 const slug = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')

@@ -1,6 +1,6 @@
-import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=ovr-import-20261029';
+import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=recent-club-eras-20261029';
 import {worldCupNations,worldCupSquads} from './world-cup-squads.js?v=recent-world-cup-eras-20261029';
-export {clubs} from './clubs.js?v=ovr-import-20261029';
+export {clubs} from './clubs.js?v=recent-club-eras-20261029';
 export {worldCupNations,worldCupSquads};
 export const allSquads=[...clubSquads,...worldCupSquads];
 export function validateData(){

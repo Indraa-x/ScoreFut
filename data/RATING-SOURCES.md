@@ -82,3 +82,7 @@ As treze alterações têm procedência em `CREATOR_DIRECT_RATING_REVIEWS` e na 
 ## Importação do editor acima de 93 — 26/10/2026
 
 As 18 alterações do JSON enviado são aplicadas por jogador e época em `imported-ovr-review.js`: 15 de seleções e três de clubes (Messi no Barcelona 2011: 96; Messi no Barcelona 2015: 95; Pelé no Santos 1963: 95). Os registros anteriores e fontes EA continuam preservados. O Santos 1963 soma agora 951 pontos e mantém média arredondada 86,5. As demais 4.052 entradas mantêm os mesmos OVRs e atributos.
+
+## Atualização de épocas em 29/10/2026
+
+Tottenham 2011 e Celtic 2013 acrescentam 22 registros de edição, elevando o total de notas de edição verificadas para 1.091. Bahia 2024 contém onze estimativas editoriais explícitas. A auditoria JSON anterior é preservada como registro histórico. Fontes e decisões: [RECENT-CLUB-ERAS.md](RECENT-CLUB-ERAS.md).

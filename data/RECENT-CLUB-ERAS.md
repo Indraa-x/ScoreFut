@@ -1,0 +1,18 @@
+# Novas épocas de clubes — 29/10/2026
+
+A pedido do criador, Bahia 1959 foi substituído por Bahia 2024; Tottenham 1961 por Tottenham 2011; e Celtic 1967 por Celtic 2013. O Celtic de 1970 e as outras quatro épocas de cada clube permanecem. O catálogo ativo mantém 43 clubes e 215 elencos, com onze pessoas por elenco. `club-era-replacements.js` aplica as substituições antes da classificação das notas e da montagem do catálogo; os dados-fonte das épocas retiradas são preservados para auditoria.
+
+## Elencos
+
+- **Bahia 2024:** Marcos Felipe; Santiago Arias, Gabriel Xavier, Kanu, Luciano Juba; Caio Alexandre, Jean Lucas, Everton Ribeiro, Cauly; Thaciano e Everaldo. Convocados e participações: [guia oficial de 2024](https://esporteclubebahia.com.br/wp-content/uploads/2024/10/Guia_Esquadrao_2024_BR-26.pdf). Campanha: [Bahia confirma oitavo lugar e vaga na Libertadores](https://www.esporteclubebahia.com.br/evolucao/).
+- **Tottenham 2011 (2010/11):** Heurelho Gomes; Vedran Ćorluka, Michael Dawson, William Gallas, Benoît Assou-Ekotto; Tom Huddlestone, Luka Modrić, Aaron Lennon, Gareth Bale; Rafael van der Vaart e Peter Crouch. Referências do próprio clube: [classificação às quartas](https://www.tottenhamhotspur.com/news/1023255/quarter-finals-here-we-come/), [jogo de volta contra o Real Madrid](https://www.tottenhamhotspur.com/news/1032261/end-of-the-road/). Não inclui jogadores que só chegaram depois daquela temporada, como Lloris.
+- **Celtic 2013 (2012/13):** Fraser Forster; Mikael Lustig, Efe Ambrose, Kelvin Wilson, Emilio Izaguirre; Scott Brown, Victor Wanyama, Joe Ledley, Kris Commons; Georgios Samaras e Gary Hooper. [Arquivo oficial de resultados](https://www.celticfc.com/history/results-archive/), [relatório anual de 2013](https://cdn.celticfc.com/assets/downloads/AnnualReport_2013.pdf), [retrospectiva UEFA](https://www.uefa.com/news-media/news/0209-0f887cc4c719-05a5ef05ce3b-1000--season-review-scotland/). Campeão escocês, campeão da Copa da Escócia e oitavas da Champions. Não inclui Van Dijk, que chegou no verão europeu seguinte.
+
+Os onzes são seleções representativas da época, e não uma afirmação de que todos iniciaram cada partida juntos. IDs existentes são reutilizados para a mesma pessoa; os homônimos são separados. Everaldo Stum, atacante do Bahia, tem ID diferente de Everaldo Marques da Silva, lateral do Brasil de 1970.
+
+## Notas
+
+- Tottenham 2011 utiliza 11 registros de **FIFA 12** e Celtic 2013 utiliza 11 de **FIFA 14**, seguindo o ano de lançamento adotado pelo jogo: [arquivo FIFA 12](https://github.com/lbenz730/fifa_model/blob/master/stats/player_stats_2012.csv), [arquivo FIFA 14](https://github.com/lbenz730/fifa_model/blob/master/stats/player_stats_2014.csv). A associação usa o ID EA específico e preserva data de nascimento, edição e URL individual, inclusive depois de transferências. Não se usa o campo de potencial.
+- As onze notas do Bahia 2024 são **estimativas editoriais**, identificadas como tal no jogo. Não há alegação de notas oficiais FC 25 verificadas para esse onze. A escala conservadora usa avaliação individual e referências dos jogadores da base: Marcos Felipe 74, Arias 75, Gabriel Xavier 73, Kanu 73, Juba 74, Caio Alexandre 76, Jean Lucas 75, Everton Ribeiro 79, Cauly 76, Thaciano 74 e Everaldo 73.
+
+Os 22 novos registros verificáveis são incorporados a `RELEASE_RATINGS_BY_SQUAD`, mantendo prioridade dos ajustes pessoais. `RELEASE_RATING_POLICY.verifiedRecords` passa de 1.069 a 1.091. O arquivo `release-rating-audit.json` permanece como fotografia da auditoria original, incluindo os registros de épocas posteriormente retiradas. As demais notas e elencos não foram recalculados pela substituição.

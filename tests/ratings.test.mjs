@@ -1,3 +1,4 @@
+import {RECENT_CLUB_ERAS,RECENT_CLUB_RELEASE_RATINGS} from '../data/club-era-replacements.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -127,9 +128,11 @@ test('the archived audit accounts for all players and later imports take precede
  const audit=JSON.parse(fs.readFileSync(new URL('../data/release-rating-audit.json',import.meta.url),'utf8'));
  assert.equal(audit.rows.length,players.length);assert.equal(audit.creatorOverrides,93);
  assert.equal(audit.creatorImportedOverrides+audit.creatorDirectOverrides,audit.creatorOverrides);
- assert.equal(audit.verifiedReleaseRecords,RELEASE_RATING_POLICY.verifiedRecords);
+ assert.equal(audit.verifiedReleaseRecords+Object.values(RECENT_CLUB_RELEASE_RATINGS).reduce((n,rows)=>n+Object.keys(rows).length,0),RELEASE_RATING_POLICY.verifiedRecords);
  assert.equal(new Set(audit.rows.map(row=>row.squadId+'/'+row.playerId)).size,2365);
- for(const row of audit.rows){const p=player(row.squadId,row.playerId);assert.ok(p);
+ for(const row of audit.rows){const p=player(row.squadId,row.playerId);
+  if(!p){assert.ok(RECENT_CLUB_ERAS.some(era=>row.squadId===era.clubId+'-'+era.replaceYear));continue;}
+  assert.ok(p);
   assert.equal(row.expectedEdition,edition(row.year+1));
   const imported=IMPORTED_OVR_BY_SQUAD[row.squadId]?.[row.playerId];
   if(imported){assert.equal(p.ratingKind,'creator-review');assert.equal(p.ovr,imported.ovr);}

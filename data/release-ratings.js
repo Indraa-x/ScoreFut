@@ -1,3 +1,4 @@
+import {RECENT_CLUB_RELEASE_RATINGS} from './club-era-replacements.js?v=recent-club-eras-20261029';
 /** Verified OVRs from the edition released in the season year: 2015 -> FIFA 16.
  * Each record identifies its edition and source. Unverified seasons are not invented.
  * Creator JSON edits keep priority. Research and coverage: RATING-SOURCES.md.
@@ -7827,9 +7828,11 @@ const importedRatings = {
   }
 };
 
+Object.assign(importedRatings,RECENT_CLUB_RELEASE_RATINGS);
+
 export const RELEASE_RATINGS_BY_SQUAD = Object.freeze(Object.fromEntries(
   Object.entries(importedRatings).map(([squadId,ratings])=>[squadId,Object.freeze(Object.fromEntries(
     Object.entries(ratings).map(([playerId,rating])=>[playerId,Object.freeze(rating)])
   ))])
 ));
-export const RELEASE_RATING_POLICY = Object.freeze({editionOffset:1,verifiedRecords:1069,checkedAt:"2026-10-22"});
+export const RELEASE_RATING_POLICY = Object.freeze({editionOffset:1,verifiedRecords:1091,checkedAt:"2026-10-29"});
