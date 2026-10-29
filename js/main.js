@@ -10,6 +10,7 @@ import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirm
 import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
 import * as storage from './storage.js?v=world-cup-20261026';
 import * as ui from './ui.js?v=bellingham-home-20261029';
+import {renderReleaseDetails} from './release-notice.js?v=beta-details-20261029';
 import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
 import {downloadResult} from './share.js?v=leverkusen-20261029';
@@ -268,6 +269,7 @@ async function launchFromHome(button){
   if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('world-cup');
 }
 async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
+case'release-notes':document.getElementById('modal-content').innerHTML=renderReleaseDetails();modal.showModal();break;
 case'home':navigate('home');break;case'achievements':navigate('achievements');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
 case'setup':openSetup(value||'world-cup');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
 case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}break;}

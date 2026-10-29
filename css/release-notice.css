@@ -1,22 +1,29 @@
-/* Release status stays quiet beside the navigation, with a direct feedback link. */
+/* A plain version label opens the current release notes. */
 .site-header .header-tools{gap:20px;min-width:0}
-.release-notice{display:inline-flex;align-items:center;gap:10px;color:var(--muted);text-decoration:none;min-height:34px;line-height:1.4;border-radius:6px;flex-shrink:0}
-.release-badge{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:5px 8px;border:1px solid color-mix(in srgb,var(--gold) 35%,var(--border));border-radius:6px;background:color-mix(in srgb,var(--gold) 7%,var(--surface));color:var(--gold)}
-.release-badge svg{width:16px;height:16px;flex:0 0 16px}
-.release-badge strong{font-size:11px;font-weight:750;font-variant-numeric:tabular-nums}
-.release-copy{font-size:11px;white-space:nowrap}
-.release-github{color:var(--text);font-weight:650;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
-.release-notice:hover .release-github{color:var(--green);text-decoration-color:currentColor}
+.release-notice{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;min-height:34px;padding:4px 0;border:0;border-radius:3px;background:none;color:var(--gold);font:750 11px/1.4 var(--body);font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer}
+.release-notice:hover{text-decoration:underline;text-underline-offset:4px}
 .release-notice:focus-visible{outline:2px solid var(--green);outline-offset:5px}
+.release-details .modal-head{align-items:center;margin-bottom:12px}
+.release-eyebrow{display:block;margin-bottom:6px;color:var(--green);font-size:10px;font-weight:750;letter-spacing:1px}
+.release-details h2{font-family:var(--body);font-size:27px;font-weight:800;line-height:1.25}
+.release-details .icon-button{flex-shrink:0}
+.release-details .icon-button svg{width:18px;height:18px}
+.release-description{font-size:13px;line-height:1.65;color:var(--muted);margin:0 0 8px}
+.release-changes{list-style:none;padding:0;margin:0}
+.release-changes li{padding:15px 0;border-bottom:1px solid var(--border)}
+.release-changes strong{display:block;font-size:13px;font-weight:750;color:var(--text)}
+.release-changes p{margin:5px 0 0;font-size:12px;line-height:1.65;color:var(--muted)}
+.release-feedback{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:18px;font-size:11px;line-height:1.5;color:var(--muted)}
+.release-feedback a{color:var(--green);font-weight:750;text-decoration:underline;text-underline-offset:3px}
+dialog:has(.release-details){max-height:calc(100dvh - 32px);overflow-y:auto}
 @media(max-width:1200px){.site-header .header-tools>.edition{display:none}}
-@media(min-width:761px) and (max-width:1000px){.release-development{display:none}.site-header .header-tools{margin-left:auto}}
+@media(min-width:761px) and (max-width:1000px){.site-header .header-tools{margin-left:auto}}
 @media(max-width:760px){
  .site-header,body:has(#app[data-screen="match"]) .site-header{height:auto;flex-basis:auto}
- .site-header .header-inner{height:auto;flex-wrap:wrap;row-gap:6px;padding-top:10px;padding-bottom:7px}
+ .site-header .header-inner{height:auto;flex-wrap:wrap;row-gap:3px;padding-top:10px;padding-bottom:5px}
  .site-header .header-tools{display:flex;flex:0 0 100%;margin:0;justify-content:center}
- .release-notice{min-height:26px;gap:8px}
- .release-badge{padding:3px 6px;gap:5px}
- .release-badge svg{width:13px;height:13px;flex-basis:13px}
- .release-badge strong,.release-copy{font-size:10px}
- .release-development{display:none}
+ .release-notice{min-height:24px;font-size:10px}
+ dialog:has(.release-details){padding:20px;max-height:calc(100dvh - 24px)}
+ .release-details h2{font-size:24px}
+ .release-changes li{padding:12px 0}
 }
