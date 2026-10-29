@@ -1,3 +1,4 @@
+import {OVR_REVIEW_20261029} from './ovr-review-20261029.js?v=ovr-import-20261029';
 /** Exact local-editor export approved by the creator. */
 export const IMPORTED_OVR_REVIEW=Object.freeze({
   "format": "scorefut-ovr-review",
@@ -207,11 +208,12 @@ export const IMPORTED_OVR_REVIEW=Object.freeze({
   "sourceFile": "scorefut-overs-acima-93-2026-10-26 (1).json"
 });
 const bySquad={};
-for(const change of IMPORTED_OVR_REVIEW.changes){
+export const IMPORTED_OVR_REVIEWS=Object.freeze([IMPORTED_OVR_REVIEW,OVR_REVIEW_20261029]);
+for(const review of IMPORTED_OVR_REVIEWS)for(const change of review.changes){
  (bySquad[change.squadId]??={})[change.playerId]=Object.freeze({
   squadId:change.squadId,playerId:change.playerId,ovr:change.toOvr,previousOvr:change.fromOvr,
-  source:'data/imported-ovr-review.js',sourceFile:IMPORTED_OVR_REVIEW.sourceFile,exportedAt:IMPORTED_OVR_REVIEW.exportedAt,
-  reason:'Ajuste do criador importado de '+IMPORTED_OVR_REVIEW.sourceFile+' em 26/10/2026.',
+  source:'data/imported-ovr-review.js',sourceFile:review.sourceFile,exportedAt:review.exportedAt,
+  reason:'Ajuste do criador importado de '+review.sourceFile+' em '+review.exportedAt.slice(0,10).split('-').reverse().join('/')+'.',
  });
 }
 export const IMPORTED_OVR_BY_SQUAD=Object.freeze(Object.fromEntries(Object.entries(bySquad).map(([id,values])=>[id,Object.freeze(values)])));

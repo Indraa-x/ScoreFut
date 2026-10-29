@@ -20,10 +20,11 @@ test('the vintage review covers the exact 275 players without affecting other er
     assert.equal(Object.keys(reviewed).length,11);
     assert.deepEqual(new Set(Object.keys(reviewed)),new Set(s.jogadores.map(p=>p.id)));
     for(const p of s.jogadores){
-      const personal=CREATOR_RATINGS_BY_SQUAD[s.id]?.[p.id];
+      const imported=IMPORTED_OVR_BY_SQUAD[s.id]?.[p.id];
+      const personal=imported??CREATOR_RATINGS_BY_SQUAD[s.id]?.[p.id];
       assert.equal(p.ovr,personal?.ovr??reviewed[p.id].ovr);
       assert.equal(p.ratingKind,personal?'creator-review':'season-review');
-      assert.equal(p.ratingSource,personal?'data/creator-ratings.js':'data/VINTAGE-RATINGS.md');
+      assert.equal(p.ratingSource,imported?'data/imported-ovr-review.js':personal?'data/creator-ratings.js':'data/VINTAGE-RATINGS.md');
       assert.equal(p.ratingEdition,undefined);
       if(!personal)assert.match(p.ratingReason,/editorial individual/);
     }
@@ -60,7 +61,7 @@ test('the before/after audit has 250 reductions, no increases and all personal e
   assert.equal(rows.filter(row=>row.currentOvr<row.previousOvr).length,250);
   for(const row of rows){
     assert.ok(row.currentOvr<=row.previousOvr);
-    assert.equal(player(row.squadId,row.playerId).ovr,row.creatorOvr??row.currentOvr);
+    assert.equal(player(row.squadId,row.playerId).ovr,IMPORTED_OVR_BY_SQUAD[row.squadId]?.[row.playerId]?.ovr??row.creatorOvr??row.currentOvr);
     assert.ok(row.year>=1970&&row.year<1990);
   }
   let personal=0;

@@ -1,6 +1,6 @@
 import {HISTORICAL_NATIONAL_REVIEWS} from './historical-national-review.js?v=historical-review-20261029';
 /** Direct creator reviews apply only to the requested national team and era. */
-import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js?v=creator-import-20261026';
+import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js?v=ovr-import-20261029';
 const reviews=[
  ['nation-hungary-1954',[
   ['gyula-grosics',92,88],['jeno-buzanszky',86,82],['gyula-lorant',88,85],

@@ -5,12 +5,12 @@
  * Ajustes do criador têm prioridade; lacunas usam estimativas identificadas.
  * Cada temporada oferece onze candidatos, incluindo um goleiro.
  */
-import { clubsA } from './clubs-a.js?v=creator-import-20261026';
-import { clubsB } from './clubs-b.js?v=creator-import-20261026';
-import { clubsC } from './clubs-c.js?v=creator-import-20261026';
-import { championsAdditions } from './champions-additions.js?v=creator-import-20261026';
+import { clubsA } from './clubs-a.js?v=ovr-import-20261029';
+import { clubsB } from './clubs-b.js?v=ovr-import-20261029';
+import { clubsC } from './clubs-c.js?v=ovr-import-20261029';
+import { championsAdditions } from './champions-additions.js?v=ovr-import-20261029';
 import { expandClubSeasons } from './season-expansion.js?v=world-cup-20261026';
-import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=creator-import-20261026';
+import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=ovr-import-20261029';
 export const ELENCO_TAMANHO = 11;
 export const clubs = expandClubSeasons([...clubsA, ...clubsB, ...clubsC, ...championsAdditions]);
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);

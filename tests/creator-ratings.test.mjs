@@ -51,9 +51,9 @@ test('Arsenal 2004 averages exactly 88 while preserving its leading players and 
   assert.deepEqual({...refreshed,picks:[]},{...saved,picks:[]});assert.deepEqual(draft,saved);
 });
 
-test('Brazilian 1960s squads reach the requested overall ratings and refresh saved picks without changing their stars',()=>{
+test('Brazilian 1960s squads include the latest creator edits and refresh saved picks',()=>{
   const cases=[
-    {id:'botafogo-1962',overall:85.5,previous:87.2,sum:941,stars:{'manuel-francisco-dos-santos':95,'nilton-santos':92,'waldyr-pereira':92}},
+    {id:'botafogo-1962',overall:85,previous:87.2,sum:935,stars:{'manuel-francisco-dos-santos':95,'nilton-santos':88,'waldyr-pereira':90}},
     {id:'santos-1963',overall:86.5,previous:87.5,sum:951,stars:{pele:95,'gilmar-dos-santos-neves':90,'jose-ely-de-miranda':89,'jose-macia':89,'antonio-wilson-vieira-honorio':89,'mauro-ramos':88}},
   ];
   for(const item of cases){
@@ -99,13 +99,13 @@ test('all 45 new OVR edits and 22 earlier edits reach their exact player and sea
 });
 
 test('new increases and decreases affect only the specified seasons',()=>{
-  assert.equal(player('barcelona-2009','lionel-messi').ovr,93);
-  assert.equal(player('barcelona-2011','lionel-messi').ovr,96);
+  assert.equal(player('barcelona-2009','lionel-messi').ovr,94);
+  assert.equal(player('barcelona-2011','lionel-messi').ovr,97);
   assert.equal(player('barcelona-2015','lionel-messi').ovr,95);
   assert.equal(player('real-madrid-2017','cristiano-ronaldo').ovr,93);
   assert.equal(player('manchester-united-2009','cristiano-ronaldo').ovr,93);
-  assert.equal(player('manchester-united-2008','cristiano-ronaldo').ovr,91);
-  assert.equal(player('real-madrid-2014','cristiano-ronaldo').ovr,92);
+  assert.equal(player('manchester-united-2008','cristiano-ronaldo').ovr,95);
+  assert.equal(player('real-madrid-2014','cristiano-ronaldo').ovr,93);
   assert.equal(player('corinthians-2012','cassio').ovr,78);
   assert.equal(player('corinthians-2015','cassio').ovr,78);
   assert.equal(player('fluminense-2023','german-cano').ovr,86);

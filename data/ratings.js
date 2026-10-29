@@ -3,7 +3,7 @@ import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js?v=world-cup-2026102
 import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=world-cup-20261026';
 export {RELEASE_RATINGS_BY_SQUAD};
 import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=world-cup-20261026';
-import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js?v=creator-import-20261026';
+import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js?v=ovr-import-20261029';
 import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js?v=world-cup-20261026';
 export { SEASON_RATINGS_BY_SQUAD };
 
@@ -11,7 +11,7 @@ export { SEASON_RATINGS_BY_SQUAD };
  * Historical FIFA/EA SPORTS FC OVRs, with explicit reviews for exceptional
  * seasons and a conservative fallback where no archived rating is available.
  */
-export const RATINGS_VERSION = 20;
+export const RATINGS_VERSION = 21;
 export const MAX_OVR = 99;
 
 // Legacy same-year records are retained only as provenance. Active ratings
