@@ -233,6 +233,12 @@
       "source": "https://en.wikipedia.org/wiki/RB_Leipzig",
       "imageUrl": "https://thumb.wikimedia.org/wikipedia/en/thumb/0/04/RB_Leipzig_2014_logo.svg/330px-RB_Leipzig_2014_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "sha256": "13574690a397e5d34774db6530726a412d31213f64bcfed84f6a8531d5e3f68a"
+    },
+    {
+      "clubId": "leverkusen",
+      "file": "leverkusen.png",
+      "source": "https://assets.football-logos.cc/logos/germany/256x256/bayer-leverkusen.72f211d8.png",
+      "sha256": "083d5538d94d5287d491b1d7bf26e91370205106a9bd237fc6066395e5ee379f"
     }
   ]
 }

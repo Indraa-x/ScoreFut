@@ -16,3 +16,5 @@ Os onzes são seleções representativas da época, e não uma afirmação de qu
 - As onze notas do Bahia 2024 são **estimativas editoriais**, identificadas como tal no jogo. Não há alegação de notas oficiais FC 25 verificadas para esse onze. A escala conservadora usa avaliação individual e referências dos jogadores da base: Marcos Felipe 74, Arias 75, Gabriel Xavier 73, Kanu 73, Juba 74, Caio Alexandre 76, Jean Lucas 75, Everton Ribeiro 79, Cauly 76, Thaciano 74 e Everaldo 73.
 
 Os 22 novos registros verificáveis são incorporados a `RELEASE_RATINGS_BY_SQUAD`, mantendo prioridade dos ajustes pessoais. `RELEASE_RATING_POLICY.verifiedRecords` passa de 1.069 a 1.091. O arquivo `release-rating-audit.json` permanece como fotografia da auditoria original, incluindo os registros de épocas posteriormente retiradas. As demais notas e elencos não foram recalculados pela substituição.
+
+Atualização posterior de 29/10/2026: o Celtic foi retirado do catálogo ativo e substituído pelo Bayer Leverkusen. Registros anteriores de épocas e notas do Celtic são históricos. Os dados atuais e a contagem de 1.102 notas de edição estão documentados em [LEVERKUSEN.md](LEVERKUSEN.md).

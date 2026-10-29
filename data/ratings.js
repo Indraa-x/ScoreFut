@@ -1,6 +1,6 @@
 import { ARCHIVED_RATINGS_BY_SQUAD } from './fifa-archive-ratings.js?v=world-cup-20261026';
 import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js?v=world-cup-20261026';
-import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=recent-club-eras-20261029';
+import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js?v=leverkusen-20261029';
 export {RELEASE_RATINGS_BY_SQUAD};
 import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js?v=world-cup-20261026';
 import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js?v=ovr-import-20261029';

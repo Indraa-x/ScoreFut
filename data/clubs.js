@@ -1,3 +1,4 @@
+import {createLeverkusenClub} from './leverkusen.js?v=leverkusen-20261029';
 import {replaceClubEras} from './club-era-replacements.js?v=recent-club-eras-20261029';
 /**
  * Fonte central de dados do ScoreFut. Edite os elencos nos lotes importados
@@ -6,14 +7,14 @@ import {replaceClubEras} from './club-era-replacements.js?v=recent-club-eras-202
  * Ajustes do criador têm prioridade; lacunas usam estimativas identificadas.
  * Cada temporada oferece onze candidatos, incluindo um goleiro.
  */
-import { clubsA } from './clubs-a.js?v=recent-club-eras-20261029';
-import { clubsB } from './clubs-b.js?v=recent-club-eras-20261029';
-import { clubsC } from './clubs-c.js?v=recent-club-eras-20261029';
-import { championsAdditions } from './champions-additions.js?v=recent-club-eras-20261029';
+import { clubsA } from './clubs-a.js?v=leverkusen-20261029';
+import { clubsB } from './clubs-b.js?v=leverkusen-20261029';
+import { clubsC } from './clubs-c.js?v=leverkusen-20261029';
+import { championsAdditions } from './champions-additions.js?v=leverkusen-20261029';
 import { expandClubSeasons } from './season-expansion.js?v=world-cup-20261026';
-import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=recent-club-eras-20261029';
+import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=leverkusen-20261029';
 export const ELENCO_TAMANHO = 11;
-export const clubs = replaceClubEras(expandClubSeasons([...clubsA, ...clubsB, ...clubsC, ...championsAdditions]));
+export const clubs = replaceClubEras(expandClubSeasons([...clubsA, ...clubsB, ...clubsC, ...championsAdditions])).map(club=>club.id==='celtic'?createLeverkusenClub():club);
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
 // Uma pessoa conserva o mesmo ID mesmo quando o nome de exibição muda.
 const aliases = {'mancini':'amantino-mancini','di-maria':'angel-di-maria','jorginho':'jorginho-frello','falcao':'radamel-falcao','mbappe':'kylian-mbappe','gundogan':'ilkay-gundogan','thiago':'thiago-alcantara','eto-o':'samuel-etoo','samuel-eto-o':'samuel-etoo','luis-suarez':'luis-suarez','luis-figo':'luis-figo'};

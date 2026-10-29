@@ -42,7 +42,7 @@ A seleção prioriza títulos continentais e nacionais, campanhas internacionais
 | Athletico-PR | 2001, 2005, 2018, 2019, 2021 |
 | Bahia | 1988, 2001, 2017, 2024, 2025 |
 | Fortaleza | 2018, 2021, 2022, 2023, 2024 |
-| Celtic | 1970, 2001, 2003, 2013, 2017 |
+| Bayer Leverkusen | 1988, 2002, 2011, 2015, 2024 |
 | Olympique de Marseille | 1989, 1991, 1993, 2010, 2018 |
 | PSV Eindhoven | 1978, 1988, 2005, 2007, 2024 |
 | Roma | 1983, 2001, 2007, 2018, 2022 |
@@ -61,3 +61,5 @@ As referências originais continuam em [VERIFICACAO-A.md](VERIFICACAO-A.md), [fo
 Nomes e IDs são da pessoa: a mesma identidade é compartilhada entre épocas; homônimos usam IDs diferentes. Camisas desconhecidas permanecem vazias. Nenhuma foto é necessária para cadastrar um atleta.
 
 Substituições de 29/10/2026: Bahia 1959 → 2024, Tottenham 1961 → 2011 e Celtic 1967 → 2013. Elencos e notas documentados em [RECENT-CLUB-ERAS.md](RECENT-CLUB-ERAS.md).
+
+O Celtic foi substituído integralmente pelo Bayer Leverkusen em 29/10/2026. Fontes e notas: [LEVERKUSEN.md](LEVERKUSEN.md).

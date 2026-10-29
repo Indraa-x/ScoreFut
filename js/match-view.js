@@ -1,9 +1,9 @@
-import {renderMatchGoals} from './match-goals.js?v=ovr-gap-20261029';
+import {renderMatchGoals} from './match-goals.js?v=leverkusen-20261029';
 import {matchHasEnded,renderPenaltyMarks,penaltyProgress} from './match-penalties.js?v=single-penalty-title-20261028';
-import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=ovr-gap-20261029';
-import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';
-import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=ovr-gap-20261029';
-import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=ovr-gap-20261029';
+import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=leverkusen-20261029';
+import { competitionName, competitionLogo } from '../data/competitions.js?v=leverkusen-20261029';
+import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=leverkusen-20261029';
+import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=leverkusen-20261029';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {

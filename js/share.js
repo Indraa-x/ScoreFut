@@ -1,4 +1,4 @@
-import { competitionName } from '../data/competitions.js?v=world-cup-20261026';
+import { competitionName } from '../data/competitions.js?v=leverkusen-20261029';
 
 export function resultText(record) {
   return `⚽ ScoreFut · ${record.teamName}\n${record.champion?'🏆 Campeão!':record.stageLabel}\n${record.picks.length} jogadores · ${record.formation}\nForça ${Math.round(record.strength)} · ${record.goalsFor} gols marcados · ${record.goalsAgainst} sofridos\n${competitionName(record.mode)} · ${record.date}`;

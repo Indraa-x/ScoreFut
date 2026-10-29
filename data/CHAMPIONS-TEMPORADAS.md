@@ -21,3 +21,5 @@ As notas seguem [RATING-SOURCES.md](RATING-SOURCES.md): ajustes do criador têm 
 ## Escudos e seleção
 
 Os 43 clubes têm escudos locais com fontes e hashes em `assets/logos/sources.json`. O draft usa posições, nome e OVR, sem fotos nem cartinhas. Novos jogadores não dependem de cobertura no catálogo antigo de imagens.
+
+Atualização posterior de 29/10/2026: o Celtic foi retirado do catálogo ativo e substituído pelo Bayer Leverkusen. Registros anteriores de épocas e notas do Celtic são históricos. Os dados atuais e a contagem de 1.102 notas de edição estão documentados em [LEVERKUSEN.md](LEVERKUSEN.md).

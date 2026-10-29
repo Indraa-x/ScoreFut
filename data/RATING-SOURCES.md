@@ -86,3 +86,5 @@ As 18 alterações do JSON enviado são aplicadas por jogador e época em `impor
 ## Atualização de épocas em 29/10/2026
 
 Tottenham 2011 e Celtic 2013 acrescentam 22 registros de edição, elevando o total de notas de edição verificadas para 1.091. Bahia 2024 contém onze estimativas editoriais explícitas. A auditoria JSON anterior é preservada como registro histórico. Fontes e decisões: [RECENT-CLUB-ERAS.md](RECENT-CLUB-ERAS.md).
+
+Atualização posterior de 29/10/2026: o Celtic foi retirado do catálogo ativo e substituído pelo Bayer Leverkusen. Registros anteriores de épocas e notas do Celtic são históricos. Os dados atuais e a contagem de 1.102 notas de edição estão documentados em [LEVERKUSEN.md](LEVERKUSEN.md).

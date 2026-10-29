@@ -4,7 +4,7 @@
  * OVR and attributes drive the bounded Poisson equation, with modest player assistance.
  */
 
-import { squadsForMode } from '../data/competitions.js?v=world-cup-20261026';
+import { squadsForMode } from '../data/competitions.js?v=leverkusen-20261029';
 import {worldCupGroupOrder,worldCupRound16Pairings} from './world-cup.js?v=world-cup-20261026';
 
 export const POSITION_MAP = Object.freeze({

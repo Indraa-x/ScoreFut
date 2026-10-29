@@ -9,12 +9,12 @@ import {applyHistoricalFifaRating} from '../data/ratings.js';
 import {FORMATIONS,positionFit} from '../js/engine.js';
 import {refreshDraftRatings} from '../js/draft.js';
 
-const vintage=allSquads.filter(s=>s.ano>=1970&&s.ano<1990);
+const vintage=allSquads.filter(s=>s.ano>=1970&&s.ano<1990&&VINTAGE_RATINGS_BY_SQUAD[s.id]);
 const player=(squad,id)=>allSquads.find(s=>s.id===squad)?.jogadores.find(p=>p.id===id);
 
-test('the vintage review covers the exact 275 players without affecting other eras',()=>{
-  assert.equal(vintage.length,25);
-  assert.deepEqual(new Set(Object.keys(VINTAGE_RATINGS_BY_SQUAD)),new Set(vintage.map(s=>s.id)));
+test('the original vintage review retains 264 active players after the Celtic replacement',()=>{
+  assert.equal(vintage.length,24);
+  assert.deepEqual(new Set(Object.keys(VINTAGE_RATINGS_BY_SQUAD).filter(id=>!id.startsWith('celtic-'))),new Set(vintage.map(s=>s.id)));
   for(const s of vintage){
     const reviewed=VINTAGE_RATINGS_BY_SQUAD[s.id];
     assert.equal(Object.keys(reviewed).length,11);
@@ -61,12 +61,14 @@ test('the before/after audit has 250 reductions, no increases and all personal e
   assert.equal(rows.filter(row=>row.currentOvr<row.previousOvr).length,250);
   for(const row of rows){
     assert.ok(row.currentOvr<=row.previousOvr);
+    if(row.squadId.startsWith('celtic-')){assert.equal(player(row.squadId,row.playerId),undefined);continue;}
     assert.equal(player(row.squadId,row.playerId).ovr,IMPORTED_OVR_BY_SQUAD[row.squadId]?.[row.playerId]?.ovr??row.creatorOvr??row.currentOvr);
     assert.ok(row.year>=1970&&row.year<1990);
   }
   let personal=0;
   for(const [squad,ratings]of Object.entries(CREATOR_RATINGS_BY_SQUAD))for(const [id,review]of Object.entries(ratings)){
-    personal++;assert.equal(player(squad,id).ovr,IMPORTED_OVR_BY_SQUAD[squad]?.[id]?.ovr??review.ovr);
+    personal++;if(squad.startsWith('celtic-')){assert.equal(player(squad,id),undefined);continue;}
+    assert.equal(player(squad,id).ovr,IMPORTED_OVR_BY_SQUAD[squad]?.[id]?.ovr??review.ovr);
     assert.equal(player(squad,id).ratingKind,'creator-review');
   }
   assert.equal(personal,92);

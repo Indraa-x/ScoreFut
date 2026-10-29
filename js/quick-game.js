@@ -1,5 +1,5 @@
-import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=ovr-gap-20261029';
-import {createDraft} from './draft.js?v=ovr-gap-20261029';
+import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=leverkusen-20261029';
+import {createDraft} from './draft.js?v=leverkusen-20261029';
 
 /** Select one historical club's complete lineup; simulation is a separate action. */
 export function selectQuickTeam({squadId,seed,date,squads,formation=null}){

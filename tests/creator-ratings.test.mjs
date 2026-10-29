@@ -83,6 +83,7 @@ test('all 45 new OVR edits and 22 earlier edits reach their exact player and sea
   assert.equal(Object.keys(CREATOR_RATINGS_BY_SQUAD).length,new Set([...changes,...CREATOR_DIRECT_RATING_REVIEWS].map(change=>change.squadId)).size);
   for(const review of CREATOR_RATING_REVIEWS)for(const change of review.changes){
     const found=player(change.squadId,change.playerId);
+    if(change.squadId.startsWith('celtic-')){assert.equal(found,undefined);continue;}
     assert.ok(found,`${change.squadId}/${change.playerId}`);
     const newer=IMPORTED_OVR_BY_SQUAD[change.squadId]?.[change.playerId];
     if(newer){assert.equal(found.ovr,newer.ovr);assert.deepEqual(found.creatorReview,newer);continue;}
@@ -109,7 +110,8 @@ test('new increases and decreases affect only the specified seasons',()=>{
   assert.equal(player('corinthians-2012','cassio').ovr,78);
   assert.equal(player('corinthians-2015','cassio').ovr,78);
   assert.equal(player('fluminense-2023','german-cano').ovr,86);
-  assert.equal(player('celtic-2003','henrik-larsson').ovr,85);
+  assert.equal(player('celtic-2003','henrik-larsson'),undefined);
+  assert.equal(CREATOR_RATINGS_BY_SQUAD['celtic-2003']['henrik-larsson'].ovr,85);
   const messi=player('barcelona-2011','lionel-messi');
   assert.equal(messi.priorSeasonReview.ovr,96);
   assert.equal(messi.archivedRating.ovr,90);
@@ -151,6 +153,7 @@ test('lowered OVRs reduce simulation attributes and remain safe to reapply',()=>
 
 test('existing draft picks receive every imported rating without losing positions, skips or state',()=>{
   for(const review of CREATOR_RATING_REVIEWS)for(const change of review.changes){
+    if(change.squadId.startsWith('celtic-')){assert.equal(player(change.squadId,change.playerId),undefined);continue;}
     const latest=player(change.squadId,change.playerId),slot=FORMATIONS['4-3-3'].slots.find(slot=>positionFit(latest,slot)!==null);
     const draft={seed:42,rngState:90,rerolls:2,seen:[change.squadId],currentSquadId:change.squadId,picks:[{player:{...latest,ovr:change.fromOvr},squadId:change.squadId,slot}]};
     const original=structuredClone(draft),refreshed=refreshDraftRatings(draft,allSquads);

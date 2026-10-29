@@ -1,3 +1,4 @@
+import {LEVERKUSEN_RELEASE_RATINGS} from './leverkusen.js?v=leverkusen-20261029';
 import {RECENT_CLUB_RELEASE_RATINGS} from './club-era-replacements.js?v=recent-club-eras-20261029';
 /** Verified OVRs from the edition released in the season year: 2015 -> FIFA 16.
  * Each record identifies its edition and source. Unverified seasons are not invented.
@@ -7828,11 +7829,13 @@ const importedRatings = {
   }
 };
 
-Object.assign(importedRatings,RECENT_CLUB_RELEASE_RATINGS);
+Object.assign(importedRatings,RECENT_CLUB_RELEASE_RATINGS,LEVERKUSEN_RELEASE_RATINGS);
+// Retired club ratings remain in the source archive, outside the active catalog.
+for(const id of Object.keys(importedRatings))if(id.startsWith('celtic-'))delete importedRatings[id];
 
 export const RELEASE_RATINGS_BY_SQUAD = Object.freeze(Object.fromEntries(
   Object.entries(importedRatings).map(([squadId,ratings])=>[squadId,Object.freeze(Object.fromEntries(
     Object.entries(ratings).map(([playerId,rating])=>[playerId,Object.freeze(rating)])
   ))])
 ));
-export const RELEASE_RATING_POLICY = Object.freeze({editionOffset:1,verifiedRecords:1091,checkedAt:"2026-10-29"});
+export const RELEASE_RATING_POLICY = Object.freeze({editionOffset:1,verifiedRecords:1102,checkedAt:"2026-10-29"});

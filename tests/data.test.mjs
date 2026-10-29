@@ -110,13 +110,7 @@ test('cada clube mantém as temporadas históricas declaradas', () => {
     2023,
     2025
   ],
-  "tottenham": [
-    1961,
-    2016,
-    2017,
-    2019,
-    2025
-  ],
+  "tottenham": [2011, 2016, 2017, 2019, 2025],
   "atletico-madrid": [
     1996,
     2014,
@@ -257,13 +251,7 @@ test('cada clube mantém as temporadas históricas declaradas', () => {
     2019,
     2021
   ],
-  "bahia": [
-    1959,
-    1988,
-    2001,
-    2017,
-    2025
-  ],
+  "bahia": [1988, 2001, 2017, 2024, 2025],
   "fortaleza": [
     2018,
     2021,
@@ -271,13 +259,7 @@ test('cada clube mantém as temporadas históricas declaradas', () => {
     2023,
     2024
   ],
-  "celtic": [
-    1967,
-    1970,
-    2001,
-    2003,
-    2017
-  ],
+  "leverkusen": [1988, 2002, 2011, 2015, 2024],
   "marseille": [
     1989,
     1991,
