@@ -21,6 +21,7 @@
 }
 
 @media(min-width:761px){
- #app[data-screen="home"] .hero-actions{justify-content:center}
- #app[data-screen="home"] .hero-steps{margin-inline:auto}
+ #app[data-screen="home"] .hero-steps{margin-inline:0;padding-inline:0}
+ #app[data-screen="home"] .hero-steps li{align-items:flex-start;text-align:left;padding-inline:0}
+ #app[data-screen="home"] .hero-steps li+li{padding-left:16px}
 }
