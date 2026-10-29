@@ -1,0 +1,50 @@
+name: Relatar um bug
+description: Algo não funcionou como esperado no ScoreFut.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Descreva o problema e, se possível, anexe uma imagem. Não inclua senhas ou dados pessoais.
+  - type: textarea
+    id: problem
+    attributes:
+      label: O que aconteceu?
+      description: Conte o que esperava e o que aconteceu no lugar.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Como reproduzir
+      placeholder: |
+        1. Entrei na competição...
+        2. Cliquei em...
+        3. O problema apareceu quando...
+    validations:
+      required: true
+  - type: dropdown
+    id: competition
+    attributes:
+      label: Onde aconteceu?
+      options:
+        - Página inicial ou formação
+        - Copa do Mundo
+        - Copa do Brasil
+        - Champions League
+        - Conquistas
+        - Outra parte
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Dispositivo e navegador
+      placeholder: "Ex.: Android com Chrome, iPhone com Safari ou PC com Firefox"
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Imagens e detalhes adicionais
+      description: Se possível, informe também o link utilizado e se acontece sempre ou só em uma campanha.

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+<title id="title">ScoreFut — Seu time. Outra história.</title>
+<desc id="desc">Capa verde escura com a marca ScoreFut e um campo de futebol ilustrado com jogadores em verde, azul e dourado.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#192d25"/><stop offset="1" stop-color="#0d1713"/></linearGradient>
+ <linearGradient id="grass" x2="1" y2="1"><stop stop-color="#1e6748"/><stop offset="1" stop-color="#164332"/></linearGradient>
+ <linearGradient id="accent" x2="1"><stop stop-color="#81edb9"/><stop offset="1" stop-color="#63c8c0"/></linearGradient>
+ <clipPath id="field"><rect x="820" y="34" width="334" height="352" rx="12"/></clipPath>
+</defs>
+<rect width="1280" height="420" rx="22" fill="url(#bg)"/>
+<rect x=".5" y=".5" width="1279" height="419" rx="21.5" fill="none" stroke="#32483c"/>
+<g transform="translate(54 43) scale(.92)">  <defs>
+    <linearGradient id="turf" x1="4" y1="4" x2="61" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#149464"/><stop offset="1" stop-color="#075139"/></linearGradient>
+    <linearGradient id="word" x1="0%" y1="0%" x2="100%" y2="65%"><stop stop-color="#7be4b4"/><stop offset="1" stop-color="#55c7bd"/></linearGradient>
+  </defs>
+  <path d="M17 2H52a10 10 0 0 1 10 10v35L47 62H12A10 10 0 0 1 2 52V17Z" fill="url(#turf)"/>
+  <path d="M18 4H52a8 8 0 0 1 8 8v34L46 60H12a8 8 0 0 1-8-8V18Z" stroke="#fff" stroke-opacity=".16"/>
+  <path d="M9 23h12M7 32h11M9 41h12" stroke="#a7e4c0" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="37" cy="32" r="18" fill="#fff"/>
+  <path d="m37 23 8 6-3 9H32l-3-9 8-6Zm-1-9h2v9h-2Zm19 12v2l-10 2-.4-2ZM48 46l-1.6 1.2-6.2-9 1.6-1.2ZM25 46l1.6 1.2 6.2-9-1.6-1.2ZM19 26v2l10 2 .4-2Z" fill="#08734e"/>
+  <path d="m37 14-5 4h10Zm18 14-4-3 1 9Zm-7 18-1-6-6 7Zm-22 0 1-6 6 7Zm-7-18 4-3-1 9Z" fill="#08734e"/>
+  <!-- Lettering drawn as outlines: the logo never depends on a loaded font. -->
+  <g transform="translate(79 17) scale(.79 1) skewX(-9)" fill="#edf5f0" fill-rule="evenodd">
+    <path d="M24 0H8C2 0 0 4 0 9s4 8 10 8h6v5H0v8h18c6 0 9-4 9-9s-4-9-10-9H9V8h15Z"/>
+    <path transform="translate(32)" d="M25 0H10C3 0 0 5 0 12v6c0 7 3 12 10 12h15v-8H11c-2 0-3-1-3-4v-6c0-3 1-4 3-4h14Z"/>
+    <path transform="translate(63)" d="M10 0h8c7 0 10 4 10 10v10c0 6-3 10-10 10h-8C3 30 0 26 0 20V10C0 4 3 0 10 0Zm1 8c-2 0-3 1-3 4v6c0 3 1 4 3 4h6c2 0 3-1 3-4v-6c0-3-1-4-3-4Z"/>
+    <path transform="translate(97)" d="M0 0h18c6 0 9 4 9 9v2c0 4-2 6-7 8l9 11H19l-8-10H8v10H0Zm8 8v5h9c2 0 2-1 2-2.5S19 8 17 8Z"/>
+    <path transform="translate(132)" d="M0 0h24v8H8v3h13v8H8v3h16v8H0Z"/>
+    <g fill="url(#word)">
+      <path transform="translate(166)" d="M0 0h24v8H8v4h13v8H8v10H0Z"/>
+      <path transform="translate(195)" d="M0 0h8v19c0 2 1 3 4 3h3c3 0 4-1 4-3V0h8v20c0 7-3 10-10 10h-7C3 30 0 27 0 20Z"/>
+      <path transform="translate(228)" d="M0 0h28v8H18v22h-8V8H0Z"/>
+    </g>
+  </g>
+</g>
+<g font-family="Inter,Segoe UI,Arial,sans-serif">
+ <text x="55" y="182" fill="#edf5f0" font-size="57" font-weight="750" letter-spacing="-2">Seu time.</text>
+ <text x="55" y="246" fill="url(#accent)" font-size="57" font-weight="750" letter-spacing="-2">Outra história.</text>
+ <text x="57" y="290" fill="#a9beb2" font-size="20">Monte seu elenco. Dispute a taça.</text>
+ <path d="M57 330h645" stroke="#32483c"/>
+ <g fill="#b7c9be" font-size="14"><text x="57" y="365">COPA DO MUNDO</text><text x="263" y="365">COPA DO BRASIL</text><text x="460" y="365">CHAMPIONS LEAGUE</text></g>
+</g>
+<rect x="820" y="34" width="334" height="352" rx="12" fill="url(#grass)"/>
+<g clip-path="url(#field)" fill="#fff" opacity=".025"><path d="M820 34h334v58H820zM820 151h334v59H820zM820 269h334v59H820z"/></g>
+<g fill="none" stroke="#b5e3c6" stroke-opacity=".4" stroke-width="1.5">
+ <rect x="837" y="51" width="300" height="318" rx="3"/>
+ <path d="M837 210h300M909 51v64h156V51M952 51v25h70V51M909 369v-64h156v64M952 369v-25h70v25"/>
+ <circle cx="987" cy="210" r="39"/><path d="M962 115a30 30 0 0 0 50 0m-50 190a30 30 0 0 1 50 0"/>
+</g>
+<g stroke-width="2">
+ <g fill="#157f56" stroke="#8ee5b7"><circle cx="987" cy="146" r="15"/><circle cx="904" cy="181" r="15"/><circle cx="1068" cy="181" r="15"/><circle cx="948" cy="243" r="15"/><circle cx="1026" cy="243" r="15"/></g>
+ <g fill="#2861b5" stroke="#8fbaf6"><circle cx="902" cy="279" r="15"/><circle cx="1068" cy="279" r="15"/><circle cx="947" cy="101" r="15"/><circle cx="1027" cy="101" r="15"/></g>
+ <circle cx="987" cy="340" r="15" fill="#e7bc47" stroke="#ffdf83"/>
+</g>
+<g fill="#fff" font-family="Segoe UI,Arial,sans-serif" font-size="11" font-weight="700" text-anchor="middle"><text x="987" y="150">9</text><text x="904" y="185">7</text><text x="1068" y="185">11</text><text x="948" y="247">8</text><text x="1026" y="247">10</text><text x="902" y="283">2</text><text x="1068" y="283">6</text><text x="947" y="105">3</text><text x="1027" y="105">4</text></g>
+<circle cx="987" cy="210" r="5" fill="#edf5f0"/>
+<circle cx="987" cy="210" r="2" fill="#284c39"/>
+</svg>

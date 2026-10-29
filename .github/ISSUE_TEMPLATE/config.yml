@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Jogar ScoreFut
+    url: https://indraa-x.github.io/ScoreFut/
+    about: Abra a versão pública do jogo.
+  - name: Guia de contribuição
+    url: https://github.com/Indraa-x/ScoreFut/blob/main/CONTRIBUTING.md
+    about: Confira os critérios para código, elencos e referências.

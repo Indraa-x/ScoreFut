@@ -1,0 +1,23 @@
+name: Sugerir uma melhoria
+description: Uma ideia para melhorar o jogo, a interface ou os elencos.
+title: "[Sugestão] "
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: O que você gostaria de melhorar?
+      description: Explique o problema ou a oportunidade que percebeu no jogo.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Como seria a melhoria?
+      description: Descreva a ideia e em que parte do site ela apareceria.
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Exemplos ou referências
+      description: Para correções de elenco ou OVR, inclua a equipe, a época, o jogador e as fontes.
