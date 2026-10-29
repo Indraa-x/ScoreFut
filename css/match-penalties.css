@@ -1,6 +1,9 @@
 /* Keep the same reserved scoreboard height before and throughout the shootout. */
 #app[data-screen="match"] .match-card .live-scoreboard{grid-template-rows:124px 124px}
-#app[data-screen="match"] .match-card .match-score-goals{block-size:124px;padding-top:68px;transform:translateY(-10px)}
+#app[data-screen="match"] .match-card .match-score-goals{block-size:124px;padding-top:12px;transform:translateY(-10px)}
+/* Use the open space for scorers; reserve extra room only for visible knockout details. */
+#app[data-screen="match"] .match-card .live-scoreboard:has(.match-aggregate) .match-score-goals{padding-top:40px}
+#app[data-screen="match"] .match-card .live-scoreboard:has(.match-penalty-marks:not([hidden])) .match-score-goals{padding-top:68px}
 #app[data-screen="match"] .match-card .match-score-details{height:60px;gap:3px 12px;transform:translateY(-10px)}
 #app[data-screen="match"] .match-penalty-marks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3px 20px;width:100%;min-width:0;line-height:1.2}
 #app[data-screen="match"] .match-penalty-marks[hidden]{display:none}
