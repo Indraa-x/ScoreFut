@@ -1,6 +1,6 @@
 import {clubs, allSquads} from '../data/clubs.js?v=ovr-import-20261029';
 import {BRAZIL_CLUB_IDS} from '../data/competitions.js?v=world-cup-20261026';
-import {squadTeam,FORMATIONS} from './engine.js?v=simulation-gap-20261026';
+import {squadTeam,FORMATIONS} from './engine.js?v=ovr-gap-20261029';
 
 const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 

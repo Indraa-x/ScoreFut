@@ -47,13 +47,13 @@ test('World Cup OVRs identify the exact released FIFA edition and explicitly dis
    assert.equal(p.releaseRating.ovr,p.ovr);assert.ok(p.ratingSource.startsWith('https://'));
   }else if(p.ratingKind==='creator-review'){
    assert.equal(p.creatorReview.squadId,squad.id);assert.equal(p.creatorReview.playerId,p.id);
-   assert.equal(p.creatorReview.ovr,p.ovr);assert.ok(['data/world-cup-ratings.js','data/imported-ovr-review.js'].includes(p.ratingSource));
+   assert.equal(p.creatorReview.ovr,p.ovr);assert.ok(['data/world-cup-ratings.js','data/imported-ovr-review.js','data/historical-national-review.js'].includes(p.ratingSource));
   }else{assert.equal(p.ratingKind,'editorial-estimate');assert.match(p.ratingReason,/Estimativa/);}
   if(squad.ano<1993)assert.equal(p.ratingExpectedEdition,null);
  }
  const player=(s,id)=>worldCupSquads.find(x=>x.id===s).jogadores.find(x=>x.eaId===id);
  assert.equal(player('nation-spain-2010',5479).ovr,89);
- assert.equal(player('nation-argentina-2022',158023).ovr,91);
+ assert.equal(player('nation-argentina-2022',158023).ovr,92);
  assert.equal(player('nation-cameroon-2010',9676).ovr,84);
  const brazil94=worldCupSquads.find(s=>s.id==='nation-brazil-1994').jogadores;
  assert.equal(brazil94.find(p=>p.nome==='Romário').ovr,94);
@@ -61,7 +61,7 @@ test('World Cup OVRs identify the exact released FIFA edition and explicitly dis
 });
 test('Hungary 1954 keeps Puskás alone at the top, Germany 1974 stays balanced, and saved picks refresh',()=>{
  const cases=[
-  {id:'nation-hungary-1954',before:91.2,overall:87.2,total:959,stars:{'ferenc-puskas':95,'sandor-kocsis':91,'nandor-hidegkuti':90,'zoltan-czibor':89,'jozsef-bozsik':89}},
+  {id:'nation-hungary-1954',before:90.5,overall:86.2,total:948,stars:{'ferenc-puskas':95,'sandor-kocsis':85,'nandor-hidegkuti':85,'zoltan-czibor':89,'jozsef-bozsik':89}},
   {id:'nation-germany-1974',before:90.9,overall:88.3,total:971,stars:{'franz-beckenbauer':94,'gerd-muller':95}},
  ];
  for(const item of cases){
@@ -78,15 +78,15 @@ test('Hungary 1954 keeps Puskás alone at the top, Germany 1974 stays balanced, 
   assert.equal(calculateTeam(updated.picks).overall,item.overall);assert.deepEqual(draft,original);
   assert.deepEqual({...updated,picks:[]},{...draft,picks:[]});
  }
- const unchanged=worldCupSquads.find(s=>s.id==='nation-hungary-1962').jogadores;
- assert.ok(unchanged.every(p=>p.ratingKind!=='creator-review'));
+ const hungary1962=worldCupSquads.find(s=>s.id==='nation-hungary-1962').jogadores;
+ assert.equal(hungary1962.find(p=>p.nome==='Flórián Albert').ovr,88);
  const hungary=worldCupSquads.find(s=>s.id==='nation-hungary-1954').jogadores;
  assert.deepEqual(hungary.filter(p=>p.ovr===Math.max(...hungary.map(p=>p.ovr))).map(p=>p.id),['ferenc-puskas']);
 });
 
-test('all eight formations can complete a national draft with four shared skips and no duplicate people',()=>{
+test('all eight formations can complete a national draft with three shared skips and no duplicate people',()=>{
  for(const formation of Object.keys(FORMATIONS))for(let seed=0;seed<8;seed++){
-  let draft=createDraft(seed,'2026-10-26','world-cup');assert.equal(draft.rerolls,4);
+  let draft=createDraft(seed,'2026-10-26','world-cup');assert.equal(draft.rerolls,3);
   for(let round=0;round<11;round++){
    draft=drawSquad(draft,worldCupSquads,formation);
    const squad=worldCupSquads.find(x=>x.id===draft.currentSquadId);

@@ -8,5 +8,5 @@ const strengths = [76, 82, 88, 94];
 console.log('Copa completa de 32 times; 4–3–3 sem química; atributos relativos à posição derivados da base.');
 console.log(`Cada força usa ${runs} sementes. Margem aproximada de 95% em pontos percentuais.`);
 console.log(`Modelo ${SIMULATION_SETTINGS.modelVersion}: ajuste leve para o usuário: xG a favor ×${SIMULATION_SETTINGS.userAttackMultiplier}, xG do adversário ÷${SIMULATION_SETTINGS.userDefenseMultiplier}.`);
-console.log(`OVR do usuário >${SIMULATION_SETTINGS.dominantUserMinOverall} contra adversário <${SIMULATION_SETTINGS.weakOpponentMaxOverall}: xG a favor ×${SIMULATION_SETTINGS.dominanceAttackMultiplier}, xG contra ÷${SIMULATION_SETTINGS.dominanceDefenseMultiplier} adicionais.`);
+console.log(`Vantagem adicional cresce entre ${SIMULATION_SETTINGS.dominanceStartGap} e ${SIMULATION_SETTINGS.dominanceFullGap} pontos de OVR: até xG a favor ×${SIMULATION_SETTINGS.dominanceAttackMultiplier} e xG contra ÷${SIMULATION_SETTINGS.dominanceDefenseMultiplier}.`);
 console.table(calibrateChampionship(squads, { runs, strengths }));

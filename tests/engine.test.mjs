@@ -100,8 +100,8 @@ test('seed generators are stable and resume from explicit state', () => {
 });
 
 test('xG keeps OVR relevant, applies modest assistance and ignores the old large familiarity bonus', () => {
-  const home={...user,isUser:false,strength:{...user.strength,attack:90}};
-  const away={...squadTeam(squads[0]),isUser:false,strength:{...squadTeam(squads[0]).strength,defense:80}};
+  const home={...user,isUser:false,strength:{...user.strength,overall:85,attack:90}};
+  const away={...squadTeam(squads[0]),isUser:false,strength:{...squadTeam(squads[0]).strength,overall:85,defense:80}};
   const base=1.3*(90/80)**1.6;
   assert.equal(expectedGoals(home,away),base);
   assert.equal(expectedGoals({...home,isUser:true},away),base*SIMULATION_SETTINGS.userAttackMultiplier);

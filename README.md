@@ -35,7 +35,7 @@ Conquistas e estatísticas são salvas no navegador, sem cadastro. A Copa do Mun
 - **3 skips por draft**, compartilhados entre clube/seleção e temporada/edição.
 - Partidas com placar, relógio, bolinhas numeradas e autores dos gols.
 - Simulação baseada em OVR e atributos, com uma pequena ajuda de dificuldade e sem vitória garantida.
-- Quando o OVR calculado do jogador é maior que 85 e o adversário tem menos de 72, a vantagem é reforçada: xG a favor ×1,4 e xG contra ÷1,25, além do ajuste básico. Vale em todas as competições, em casa ou fora; empates e derrotas continuam possíveis.
+- A vantagem adicional usa a diferença real de OVR entre seu time e o adversário: até 5 pontos, mantém a fórmula padrão; acima disso, cresce gradualmente, ficando forte acima de 10 e atingindo o limite aos 15 pontos (xG a favor ×1,9 e xG contra ÷1,7). Vale contra adversários de qualquer OVR, em todas as competições e em casa ou fora; empates e derrotas continuam possíveis.
 - Conquistas permanentes, estatísticas e taças das três competições.
 - Celebração com troféus, confetes e som de torcida em volume baixo.
 - Resultado para baixar em PNG e progresso salvo no navegador.

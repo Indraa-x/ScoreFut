@@ -1,4 +1,4 @@
-import {hashSeed,mulberry32} from './engine.js?v=simulation-gap-20261026';
+import {hashSeed,mulberry32} from './engine.js?v=ovr-gap-20261029';
 
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const aliases={GK:'GOL',CB:'ZAG',RB:'LD',LB:'LE',CDM:'VOL',DM:'VOL',CM:'MC',CAM:'MEI',AM:'MEI',RM:'MD',LM:'ME',LW:'PE',RW:'PD',ST:'CA',SS:'SA'};

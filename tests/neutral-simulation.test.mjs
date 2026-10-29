@@ -14,7 +14,7 @@ test('without assistance equal teams remain balanced and higher OVR raises the w
   for(const ovr of [70,85,99]){
     let wins=0,draws=0,losses=0;
     for(let seed=0;seed<4000;seed++){
-      const result=simulateMatch(team('user',ovr),opponent,mulberry32(seed),{settings:{...SIMULATION_SETTINGS,userAttackMultiplier:1,userDefenseMultiplier:1}});
+      const result=simulateMatch(team('user',ovr),opponent,mulberry32(seed),{settings:{...SIMULATION_SETTINGS,userAttackMultiplier:1,userDefenseMultiplier:1,dominanceAttackMultiplier:1,dominanceDefenseMultiplier:1}});
       if(result.winnerId==='user')wins++;else if(result.winnerId)losses++;else draws++;
     }
     rates.push({ovr,wins,draws,losses});
@@ -52,10 +52,10 @@ test('legacy biased saves keep finished matches and regenerate only the unfinish
   assert.ok(!Object.hasOwn(completedMigration,'matchMinute'));
 });
 
-test('the small assistance improves wins at home and away while preserving draws, losses and OVR ordering',()=>{
+test('the small assistance in close matchups improves wins at home and away while preserving draws and losses',()=>{
   const neutral={...SIMULATION_SETTINGS,userAttackMultiplier:1,userDefenseMultiplier:1};
   const opponent=team('opponent',85),counts=[];
-  for(const ovr of [70,85,99]){
+  for(const ovr of [70,85,90]){
     const user=team('user',ovr),before=structuredClone(user);
     let assistedWins=0,neutralWins=0,draws=0,losses=0;
     for(let seed=0;seed<4000;seed++){
