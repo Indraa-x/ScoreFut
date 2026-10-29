@@ -1,0 +1,16 @@
+name: Tirar uma dúvida
+description: Pergunte sobre o jogo, suas regras, elencos ou versões.
+title: "[Dúvida] "
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Qual é a sua dúvida?
+      description: Conte em que parte do ScoreFut você precisa de ajuda.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto ou imagem
+      description: Se ajudar, informe a competição, a época e o dispositivo. Não compartilhe senhas ou dados pessoais.

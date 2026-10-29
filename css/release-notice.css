@@ -1,0 +1,22 @@
+/* Release status stays quiet beside the navigation, with a direct feedback link. */
+.site-header .header-tools{gap:20px;min-width:0}
+.release-notice{display:inline-flex;align-items:center;gap:10px;color:var(--muted);text-decoration:none;min-height:34px;line-height:1.4;border-radius:6px;flex-shrink:0}
+.release-badge{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:5px 8px;border:1px solid color-mix(in srgb,var(--gold) 35%,var(--border));border-radius:6px;background:color-mix(in srgb,var(--gold) 7%,var(--surface));color:var(--gold)}
+.release-badge svg{width:16px;height:16px;flex:0 0 16px}
+.release-badge strong{font-size:11px;font-weight:750;font-variant-numeric:tabular-nums}
+.release-copy{font-size:11px;white-space:nowrap}
+.release-github{color:var(--text);font-weight:650;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.release-notice:hover .release-github{color:var(--green);text-decoration-color:currentColor}
+.release-notice:focus-visible{outline:2px solid var(--green);outline-offset:5px}
+@media(max-width:1200px){.site-header .header-tools>.edition{display:none}}
+@media(min-width:761px) and (max-width:1000px){.release-development{display:none}.site-header .header-tools{margin-left:auto}}
+@media(max-width:760px){
+ .site-header,body:has(#app[data-screen="match"]) .site-header{height:auto;flex-basis:auto}
+ .site-header .header-inner{height:auto;flex-wrap:wrap;row-gap:6px;padding-top:10px;padding-bottom:7px}
+ .site-header .header-tools{display:flex;flex:0 0 100%;margin:0;justify-content:center}
+ .release-notice{min-height:26px;gap:8px}
+ .release-badge{padding:3px 6px;gap:5px}
+ .release-badge svg{width:13px;height:13px;flex-basis:13px}
+ .release-badge strong,.release-copy{font-size:10px}
+ .release-development{display:none}
+}

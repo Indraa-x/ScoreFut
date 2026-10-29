@@ -40,3 +40,7 @@ npm test
 Execute os testes pertinentes à mudança e informe eventuais limitações. Se alterou a home, rode também `npm run prepare:site` e revise os arquivos gerados antes de enviar. Mudanças apenas em documentação podem ser conferidas revisando o texto e os links.
 
 O envio de uma contribuição não publica automaticamente o jogo. A incorporação em `main` é revisada pelo mantenedor e atualiza o site no GitHub Pages.
+
+## Versões durante o beta
+
+A versão é definida em `data/release.js`. Funcionalidades novas, mudanças relevantes nas regras e reformulações amplas da interface incrementam a revisão beta uma vez por atualização publicada. Ajustes pontuais mantêm a revisão. Registre as mudanças importantes em [CHANGELOG.md](CHANGELOG.md) e sincronize o cabeçalho com `node scripts/prerender-home.mjs`. A versão final `1.0` depende da decisão do criador.

@@ -20,6 +20,8 @@ O **ScoreFut** é um jogo de futebol para navegador criado por **[Indraa](https:
 | :---: | :---: | :---: | :---: |
 | **8** | **43** | **32** | **370** |
 
+**Em beta.** Veja as [atualizações](CHANGELOG.md) e envie [dúvidas ou bugs](https://github.com/Indraa-x/ScoreFut/issues/new/choose).
+
 Funciona no **celular e no PC**, com temas claro e escuro. Você joga sem cadastro; as conquistas e o progresso ficam no navegador utilizado.
 
 ## Competições
