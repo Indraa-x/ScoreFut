@@ -1,20 +1,20 @@
 /* Three competition palettes; each takes a two-second turn. */
-@property --home-competition-a{syntax:"<color>";inherits:false;initial-value:#f7da68}
-@property --home-competition-b{syntax:"<color>";inherits:false;initial-value:#e8b936}
-@property --home-competition-c{syntax:"<color>";inherits:false;initial-value:#4ed49b}
+@property --home-competition-a{syntax:"<color>";inherits:false;initial-value:#ffe13a}
+@property --home-competition-b{syntax:"<color>";inherits:false;initial-value:#ffc400}
+@property --home-competition-c{syntax:"<color>";inherits:false;initial-value:#00e88c}
 html #app[data-screen="home"] .hero-copy h1>span{
- --world-a:#f7da68;--world-b:#e8b936;--world-c:#4ed49b;
- --brazil-a:#4c9ffb;--brazil-b:#48d199;--brazil-c:#efce60;
- --champions-a:#9b93ff;--champions-b:#547ffd;--champions-c:#55b7ff;
+ --world-a:#ffe13a;--world-b:#ffc400;--world-c:#00e88c;
+ --brazil-a:#278bff;--brazil-b:#00ec88;--brazil-c:#ffda24;
+ --champions-a:#b06cff;--champions-b:#4869ff;--champions-c:#00d9ff;
  --home-competition-a:var(--world-a);--home-competition-b:var(--world-b);--home-competition-c:var(--world-c);
  background-image:linear-gradient(110deg,var(--home-competition-a),var(--home-competition-b) 55%,var(--home-competition-c));
  background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
  animation:home-competition-colors 6s linear infinite;
 }
 html[data-theme="light"] #app[data-screen="home"] .hero-copy h1>span{
- --world-a:#9f6d08;--world-b:#a5760d;--world-c:#146c48;
- --brazil-a:#164baf;--brazil-b:#166d46;--brazil-c:#9f6d08;
- --champions-a:#4f35a0;--champions-b:#244fb9;--champions-c:#076f9f;
+ --world-a:#9b6100;--world-b:#ad7400;--world-c:#00844c;
+ --brazil-a:#0755df;--brazil-b:#00864d;--brazil-c:#9b6100;
+ --champions-a:#7730cf;--champions-b:#244ddd;--champions-c:#007baf;
 }
 @keyframes home-competition-colors{
  0%,23.333%,100%{--home-competition-a:var(--world-a);--home-competition-b:var(--world-b);--home-competition-c:var(--world-c)}
