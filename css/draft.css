@@ -84,11 +84,15 @@ body:has(#app[data-screen="draft"]){min-height:100dvh;height:auto;display:flex;f
  #app[data-screen="draft"] .draft-layout:has(.reroll-block){grid-template-areas:"draw draw" "skips pitch" "players pitch" "team team";grid-template-rows:auto max-content minmax(0,1fr) auto}
 }
 
-/* Fit the desktop workspace to the window; keep the entire pitch and panel edges visible. */
+/* Fit the desktop workspace to the window; keep the entire pitch and panel edges visible.
+ * Reserve the same 108px header before and after a draw, so container-based
+ * pitch sizing does not change when the club identity replaces the placeholder. */
 @media(min-width:1024px){
  #app[data-screen="draft"]{padding:16px 24px 24px}
- #app[data-screen="draft"] .draft-layout{height:calc(100dvh - 116px);min-height:520px;grid-template-areas:"draw draw draw" "players pitch team";grid-template-columns:clamp(250px,22vw,340px) minmax(0,1fr) clamp(210px,18vw,270px);grid-template-rows:auto minmax(0,1fr);gap:12px}
- #app[data-screen="draft"] .draft-layout:has(.reroll-block){grid-template-areas:"draw draw draw" "skips pitch team" "players pitch team";grid-template-rows:auto max-content minmax(0,1fr)}
+ #app[data-screen="draft"] .draft-layout{height:calc(100dvh - 116px);min-height:520px;grid-template-areas:"draw draw draw" "players pitch team";grid-template-columns:clamp(250px,22vw,340px) minmax(0,1fr) clamp(210px,18vw,270px);grid-template-rows:108px minmax(0,1fr);gap:12px}
+ #app[data-screen="draft"] .draft-layout:has(.reroll-block){grid-template-areas:"draw draw draw" "skips pitch team" "players pitch team";grid-template-rows:108px max-content minmax(0,1fr)}
+ #app[data-screen="draft"] .draw-card:not(:has(.reroll-block)),
+ #app[data-screen="draft"] .draw-card:has(.reroll-block) .draw-club-info{height:100%;min-height:0;align-content:center}
  #app[data-screen="draft"] .draw-card:has(.reroll-block) .draw-club-info{padding:12px 16px}
  #app[data-screen="draft"] .draw-card .reroll-block{padding:12px}
  #app[data-screen="draft"] .draft-left{height:100%;display:flex;flex-direction:column}
