@@ -19,3 +19,8 @@
  #app[data-screen="home"] .hero-steps li{font-size:11px;padding:2px 3px;gap:6px}
  #app[data-screen="home"] .hero-steps li>span{font-size:24px}
 }
+
+@media(min-width:761px){
+ #app[data-screen="home"] .hero-actions{justify-content:center}
+ #app[data-screen="home"] .hero-steps{margin-inline:auto}
+}
