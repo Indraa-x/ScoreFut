@@ -1,6 +1,6 @@
 import { MODES,LEGACY_QUICK_MODE } from './state.js?v=world-cup-20261026';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=world-cup-20261026';
-import { clubs, allSquads, worldCupNations, worldCupSquads } from '../data/game-squads.js?v=hungary-puskas-20261027';
+import { clubs, allSquads, worldCupNations, worldCupSquads } from '../data/game-squads.js?v=historical-review-20261029';
 import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=creator-import-20261026';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=world-cup-20261026';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=simulation-gap-20261026';

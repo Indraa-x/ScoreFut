@@ -1,14 +1,14 @@
 import {initBrowserNavigation} from './browser-navigation.js?v=world-cup-20261026';
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=simulation-gap-20261026';
 import {filterQuickClubs} from './quick-catalog.js?v=creator-import-20261026';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=hungary-puskas-20261027';
+import { clubs, allSquads, validateData } from '../data/game-squads.js?v=historical-review-20261029';
 import { squadsForMode, competitionName } from '../data/competitions.js?v=world-cup-20261026';
 import { state, MODES } from './state.js?v=world-cup-20261026';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=single-penalty-title-20261028';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=simulation-gap-20261026';
 import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
 import * as storage from './storage.js?v=world-cup-20261026';
-import * as ui from './ui.js?v=single-penalty-title-20261028';
+import * as ui from './ui.js?v=historical-review-20261029';
 import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
 import {downloadResult} from './share.js?v=world-cup-20261026';
