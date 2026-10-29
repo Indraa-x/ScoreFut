@@ -1,3 +1,4 @@
+import {initHomeCounters} from './home-counters.js?v=home-count-up-20261029';
 import {initBrowserNavigation} from './browser-navigation.js?v=world-cup-20261026';
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=ovr-gap-20261029';
 import {filterQuickClubs} from './quick-catalog.js?v=ovr-gap-20261029';
@@ -20,6 +21,7 @@ import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=ovr-gap-2026
 import {initMatchPlayback} from './match-playback.js?v=ovr-gap-20261029';
 import {initCelebration} from './celebration.js?v=world-cup-20261026';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
+const homeCounters=initHomeCounters();
 const browserProgressReady=storage.initializeBrowserProgress();
 const competitionProgressReady=storage.archiveRetiredCompetition();
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0;
@@ -71,7 +73,7 @@ function browserAchievements(history){
 }
 function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
+  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');homeCounters.update(app,state.screen);document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
   if(focusInApp){let target=focusId?document.getElementById(focusId):[...app.querySelectorAll('[data-action]')].find(el=>el.dataset.action===focusAction&&el.dataset.value===focusValue);if(target?.disabled)target=app.querySelector('[data-action="next-match"],[data-action="player"]:not(:disabled),[data-action="draw"]');target?.focus({preventScroll:true});}
