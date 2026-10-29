@@ -2,7 +2,7 @@
 #app[data-screen="home"] .hero-steps{
  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;
  margin:18px 0 0;padding:15px 4px;list-style:none;
- background:var(--surface);border:1px solid var(--border);border-radius:12px;
+ background:transparent;border:0;border-radius:0;
 }
 #app[data-screen="home"] .hero-steps li{
  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
