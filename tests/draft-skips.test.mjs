@@ -7,11 +7,11 @@ import {renderDraft,renderSetup} from '../js/ui.js';
 test('the shared count decreases to zero and exhausted controls remain clickable for feedback without allowing another draw',()=>{
   let draft=createDraft(42,'2026-10-12','champions');
   assert.equal(draft.rerolls,DEFAULT_REROLLS);
-  assert.equal(DEFAULT_REROLLS,4);
-  assert.ok(renderSetup({mode:'champions',formation:'4-3-3'}).includes('4 skips por draft'));
-  for(const [index,kind] of ['new','season','club','season','club'].entries()){
+  assert.equal(DEFAULT_REROLLS,3);
+  assert.ok(renderSetup({mode:'champions',formation:'4-3-3'}).includes('3 skips por draft'));
+  for(const [index,kind] of ['new','season','club','season'].entries()){
     draft=drawSquad(draft,allSquads,'4-3-3',kind);
-    const remaining=4-index;
+    const remaining=3-index;
     const html=renderDraft({mode:'champions',formation:'4-3-3',teamName:'Meu time',rolling:false,draft:{...draft,currentSquad:allSquads.find(squad=>squad.id===draft.currentSquadId),otherSeasonAvailable:true}});
     assert.equal(draft.rerolls,remaining);
     assert.ok(html.includes(`<strong>${remaining}</strong> ${remaining===1?'skip restante':'skips restantes'}`));
@@ -29,7 +29,7 @@ test('the shared count decreases to zero and exhausted controls remain clickable
 
 test('an unavailable season stays disabled while skips remain, but both exhausted controls can explain the limit',()=>{
   const squad=allSquads[0],draft={...createDraft(42,'2026-10-21','champions'),currentSquad:squad,currentSquadId:squad.id,otherSeasonAvailable:false};
-  for(const remaining of [4,0]){
+  for(const remaining of [3,0]){
     const html=renderDraft({mode:'champions',formation:'4-3-3',teamName:'Meu time',rolling:false,draft:{...draft,rerolls:remaining}});
     const season=html.match(/<button[^>]*data-action="reroll-season"[^>]*>/)[0];
     assert.equal(/\sdisabled(?:[\s=>])/.test(season),remaining>0);
@@ -37,13 +37,20 @@ test('an unavailable season stays disabled while skips remain, but both exhauste
   }
 });
 
-test('old drafts gain the fourth skip once and keep the skips already spent',()=>{
-  for(const remaining of [3,2,1,0]){
-    const legacy={...createDraft(2,'date','champions'),rerolls:remaining};delete legacy.rerollLimit;
-    const upgraded=refreshDraftSkips(legacy);
-    assert.equal(upgraded.rerolls,remaining+1);assert.equal(upgraded.rerollLimit,4);
-    assert.deepEqual(refreshDraftSkips(upgraded),upgraded);
-    assert.equal(legacy.rerolls,remaining);
+test('all competitions have three shared skips and saved drafts keep skips already spent',()=>{
+  for(const mode of ['world-cup','champions','copa-do-brasil']){
+    assert.equal(createDraft(2,'date',mode).rerolls,3);
+    assert.ok(renderSetup({mode,formation:'4-3-3'}).includes('3 skips por draft'));
+    for(const oldLimit of [3,4])for(let remaining=0;remaining<=oldLimit;remaining++){
+      const legacy={...createDraft(2,'date',mode),rerollLimit:oldLimit,rerolls:remaining};
+      const refreshed=refreshDraftSkips(legacy);
+      assert.equal(refreshed.rerolls,Math.max(0,3-(oldLimit-remaining)));
+      assert.equal(refreshed.rerollLimit,3);
+      assert.deepEqual(refreshDraftSkips(refreshed),refreshed);
+      assert.equal(legacy.rerolls,remaining);
+    }
+    const oldest={...createDraft(2,'date',mode),rerolls:2};delete oldest.rerollLimit;
+    assert.equal(refreshDraftSkips(oldest).rerolls,2);
   }
   const daily=createDraft(2,'date','daily');assert.equal(refreshDraftSkips(daily).rerolls,0);
 });
@@ -61,7 +68,7 @@ test('a reroll keeps both controls and the previous club visible while preventin
     assert.match(buttons[0][0],/\sdisabled(?:[\s=>])/);
   }
   for(const button of html.matchAll(/<button[^>]*data-action="player"[^>]*>/g))assert.match(button[0],/\sdisabled(?:[\s=>])/);
-  assert.equal(draft.rerolls,4);
+  assert.equal(draft.rerolls,3);
   const first=renderDraft({...state,draft:{...draft,currentSquad:null,currentSquadId:null}});
   assert.ok(first.includes('Buscando time…'));
   assert.ok(!first.includes('data-action="reroll-club"'));
