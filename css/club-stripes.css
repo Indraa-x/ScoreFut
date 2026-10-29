@@ -1,4 +1,4 @@
-/* The club crest identifies each pick; only the image is translucent. */
+/* Show the crest clearly above a compact rating, including while dragging. */
 .draft-pitch .pitch-slot.picked .slot-circle,.player-drag .slot-circle{
   position:relative;
   isolation:isolate;
@@ -11,20 +11,25 @@
 }
 .draft-pitch .slot-club-crest,.player-drag .slot-club-crest{
   position:absolute;
-  inset:5%;
-  width:90%;
-  height:90%;
+  top:3%;
+  left:7%;
+  width:86%;
+  height:76%;
   object-fit:contain;
-  opacity:.58;
+  opacity:1;
   pointer-events:none;
   user-select:none;
 }
 .draft-pitch .slot-ovr,.player-drag .slot-ovr{
-  position:relative;
+  position:absolute;
+  bottom:3%;
+  left:50%;
+  transform:translateX(-50%);
   z-index:1;
   display:block;
-  min-width:1.65em;
-  padding:.08em .18em;
+  min-width:1.4em;
+  padding:.04em .12em;
+  font-size:.86em;
   border-radius:.3em;
   background:#ffffffed;
   color:#102b25;
