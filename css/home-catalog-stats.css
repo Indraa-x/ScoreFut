@@ -1,0 +1,21 @@
+/* One readable catalog strip below the primary play action. */
+#app[data-screen="home"] .hero-steps{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;
+ margin:18px 0 0;padding:15px 4px;list-style:none;
+ background:var(--surface);border:1px solid var(--border);border-radius:12px;
+}
+#app[data-screen="home"] .hero-steps li{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+ min-width:0;padding:2px 6px;font-family:var(--body);font-size:12px;font-weight:500;
+ line-height:1.4;white-space:normal;color:var(--muted);text-align:center;
+}
+#app[data-screen="home"] .hero-steps li+li{border-left:1px solid var(--border)}
+#app[data-screen="home"] .hero-steps li>span{
+ color:var(--green);font-size:25px;font-weight:800;line-height:1.1;letter-spacing:-.6px;
+ font-variant-numeric:lining-nums tabular-nums;
+}
+@media(max-width:520px){
+ #app[data-screen="home"] .hero-steps{margin-top:16px;padding:14px 2px}
+ #app[data-screen="home"] .hero-steps li{font-size:11px;padding:2px 3px;gap:6px}
+ #app[data-screen="home"] .hero-steps li>span{font-size:24px}
+}
