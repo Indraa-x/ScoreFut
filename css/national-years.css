@@ -1,0 +1,9 @@
+/* Keep national colors vivid, with a light lift for dark kits and deep blue. */
+#app[data-screen="draft"] .season-year.national-year{
+ background-image:linear-gradient(115deg,color-mix(in srgb,var(--year-color-1) 90%,#17352c) 8%,color-mix(in srgb,var(--year-color-2) 90%,#17352c) 92%);
+ filter:saturate(1.35);
+}
+html[data-theme="dark"] #app[data-screen="draft"] .season-year.national-year{
+ background-image:linear-gradient(115deg,color-mix(in srgb,var(--year-color-1) 85%,#fff) 8%,color-mix(in srgb,var(--year-color-2) 85%,#fff) 92%);
+ filter:saturate(1.4) brightness(1.12);
+}
