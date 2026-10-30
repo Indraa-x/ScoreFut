@@ -39,7 +39,7 @@ function homePlayers(){
       {name:'Ronaldinho Gaúcho',src:'ronaldinho.png',head:{x:341,y:188,height:260}},
     ]},
     {className:'next',players:[
-      {name:'Erling Haaland',src:'haaland.png?v=home-duo-20261024',width:485,height:567,fadeStops:[[.94,1],[1,0]],head:{x:282,y:11,height:210}},
+      {name:'Erling Haaland',src:'haaland-city-20261030.png',width:649,height:900,fadeStops:[[.94,1],[1,0]],head:{x:330,y:180,height:245}},
       {name:'Jude Bellingham',src:'bellingham-real-madrid-20261029.png',width:644,height:900,fadeStops:[[.93,1],[1,0]],head:{x:402,y:101,height:220}},
       {name:'Harry Kane',src:'harry-kane-bayern-20261029.png',width:485,height:673,fadeStops:[[.93,1],[1,0]],head:{x:256,y:118,height:175}},
       {name:'Lamine Yamal',src:'group-3-player-4.png',width:649,height:900,offsetX:20,head:{x:351,y:208,height:206}},
