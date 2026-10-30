@@ -60,8 +60,11 @@ test('all formations retain 22 distinct shirts in bounds and move smoothly betwe
       scene.players.forEach((point,index)=>assert.ok(Math.hypot(point.x-next.players[index].x,point.y-next.players[index].y)<.5));
       assert.ok(Math.hypot(scene.ball.x-next.ball.x,scene.ball.y-next.ball.y)<1);
     }
-    assert.notDeepEqual(motion.at(15.1).players,motion.at(15.12).players);
-    assert.notDeepEqual(motion.at(15.1).ball,motion.at(15.12).ball);
+    // A restart may deliberately hold the ball; sample open play for continuous movement.
+    const openPlay=Array.from({length:400},(_,i)=>5+i*.17).find(t=>!motion.at(t).setPiece&&!motion.at(t+.02).setPiece&&['pass','carry','cross','switch'].includes(motion.at(t).kind));
+    assert.ok(Number.isFinite(openPlay));
+    assert.notDeepEqual(motion.at(openPlay).players,motion.at(openPlay+.02).players);
+    assert.notDeepEqual(motion.at(openPlay).ball,motion.at(openPlay+.02).ball);
     for(const frame of motion.frames.filter(frame=>frame.kind==='goal')){
       assert.equal(motion.at(frame.at).ball.x,frame.side==='home'?97:3);
       assert.equal(motion.at(frame.at).ball.y,50);

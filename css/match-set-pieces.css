@@ -1,0 +1,7 @@
+.set-piece-notice{position:absolute;z-index:6;left:50%;top:10px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;max-width:calc(100% - 24px);padding:7px 11px;border:1px solid #ffffff3b;border-radius:7px;background:#10251fee;color:#f2fbf5;box-shadow:0 2px 9px #0002;font:600 11px/1.4 var(--body);pointer-events:none}
+.set-piece-notice[hidden]{display:none}
+.set-piece-notice::before{content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--restart-color);box-shadow:0 0 0 1px #ffffff70}
+.set-piece-notice strong{font-weight:750;white-space:nowrap}
+.set-piece-notice span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c5d8cc}
+.live-pitch .match-ball.set-piece-ball{filter:drop-shadow(0 0 4px #fff)}
+@media(max-width:600px){.set-piece-notice{top:7px;padding:5px 8px;gap:6px;font-size:10px}}

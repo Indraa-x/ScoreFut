@@ -1,5 +1,5 @@
 import { currentMatch } from './match-session.js?v=leverkusen-20261029';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=leverkusen-20261029';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=set-pieces-20261030';
 import {goalsAt,renderMatchGoals} from './match-goals.js?v=leverkusen-20261029';
 import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=single-penalty-title-20261028';
 
@@ -22,6 +22,20 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
       nodes.activeOwner = scene.owner;
     }
     position(nodes.ball, scene.ball);
+    if(nodes.setPiece){
+      const event=scene.setPiece,key=event?`${event.type}:${event.side}:${event.at}`:'';
+      nodes.setPiece.hidden=!event;
+      if(key!==nodes.setPieceKey){
+        nodes.setPieceKey=key;
+        nodes.ball.classList.toggle('set-piece-ball',!!event);
+        if(event){
+          const team=state.tournament.teams.find(t=>t.id===(event.side==='home'?match.homeId:match.awayId));
+          nodes.setPiece.style.setProperty('--restart-color',team?.id===state.tournament.userTeamId?'#13754b':'#3169b8');
+          nodes.setPieceTitle.textContent=`${event.type==='corner'?'Escanteio':'Falta'} · ${formatMatchEventMinute(match.result,event.at)}′`;
+          nodes.setPieceTeam.textContent=team?.ano&&team.name.endsWith(` ${team.ano}`)?team.name.slice(0,-String(team.ano).length-1):team?.name||'';
+        }
+      }
+    }
     const score = scoreAt(match.result, state.matchMinute);
     nodes.scores.forEach((element, index) => { const value = String(score[index]); if (element.textContent !== value) element.textContent = value; });
     if(nodes.goals){
@@ -82,6 +96,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
       aggregate: app.querySelector('[data-match-aggregate]'),
       goals: app.querySelector('[data-match-goals]'), goalCount:-1,
       penalties:app.querySelector('[data-penalty-marks]'),penaltyCount:-1,
+      setPiece:pitch.querySelector('[data-set-piece-notice]'),setPieceTitle:pitch.querySelector('[data-set-piece-title]'),setPieceTeam:pitch.querySelector('[data-set-piece-team]'),setPieceKey:null,
       activeOwner: -1,
     };
     [...nodes.players, nodes.ball].forEach(element => { element.style.left = '0'; element.style.top = '0'; });

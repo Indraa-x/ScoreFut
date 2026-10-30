@@ -1,3 +1,4 @@
+import {createSetPieceMotion} from './match-set-pieces.js?v=set-pieces-20261030';
 import {movementRole,movementProfile,chooseMovement,sampleMovement} from './match-movement-library.js?v=leverkusen-20261029';
 import { hashSeed, mulberry32 } from './engine.js?v=leverkusen-20261029';
 
@@ -84,6 +85,7 @@ export function createMatchMotion(home,away,match,options={}){
   const profiles=entries.map(movementProfile);
   const seed=hashSeed(`${options.seed??match.seed??''}:${match.id}:${home.id}:${away.id}:${entries.map(e=>e.player.id||e.player.nome).join('|')}:${match.result.events.filter(e=>e.type==='goal'&&!e.shootout).map(e=>e.minute+e.team).join('|')}:movement-v2`);
   const rng=mulberry32(seed);
+  const setPieces=createSetPieceMotion(anchors,profiles,match,seed);
   const goals=match.result.events.filter(e=>e.type==='goal'&&!e.shootout).slice().sort((a,b)=>a.minute-b.minute);
   const plays={
     patient:[[27,50,'pass'],[38,42,'pass'],[33,65,'pass'],[47,60,'pass'],[60,43,'carry'],[74,50,'shot']],
@@ -214,7 +216,7 @@ export function createMatchMotion(home,away,match,options={}){
     const ball=receiver&&controlled?{x:receiver.x+(action.side==='home'?1.2:-1.2),y:receiver.y+1.1}:{x:action.x,y:action.y};
     frames.push({...action,players,ball,movements:action.runs||anchors.map(p=>p.role==='GOL'?'keeperSet':'hold')});
   }
-  return {anchors,profiles,frames,at(minute){
+  return {anchors,profiles,frames,setPieces:setPieces.events,at(minute){
     const time=clamp(minute,0,duration);
     let low=0,high=frames.length-1;
     while(low<high){const mid=Math.ceil((low+high)/2);if(frames[mid].at<=time)low=mid;else high=mid-1;}
@@ -235,6 +237,6 @@ export function createMatchMotion(home,away,match,options={}){
     const ball=carry?{x:carrier.x+(first.side==='home'?1.2:-1.2),y:carrier.y+1.1+Math.sin(time*9)*.45}:
       {x:mix(first.ball.x,target.x,travel),y:mix(first.ball.y,target.y,travel)+bend};
     ball.x=clamp(ball.x,3,97);ball.y=clamp(ball.y,5,95);
-    return {players,ball,possession:fraction<.5?first.side:second.side,owner:carry?first.owner:fraction<.78?first.owner:second.owner,style:second.style,kind:second.kind};
+    return setPieces.apply({players,ball,possession:fraction<.5?first.side:second.side,owner:carry?first.owner:fraction<.78?first.owner:second.owner,style:second.style,kind:second.kind},time);
   }};
 }

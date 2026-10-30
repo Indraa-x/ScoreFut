@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.2 — 30/10/2026
+
+Faltas com barreira e escanteios agora são encenados no campo da simulação, com identificação da equipe e do minuto. Os lances se repetem ao longo da partida e usam o mesmo comportamento nas três competições. As animações preservam placares e resultados já simulados.
+
 ## Beta 0.1 — 29/10/2026
 
 Início da numeração pública do jogo. Esta versão reúne a Copa do Mundo, a Copa do Brasil e a Champions League; draft com oito formações e três skips; simulação de partidas; conquistas e progresso salvos no navegador.

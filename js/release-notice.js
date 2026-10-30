@@ -1,4 +1,4 @@
-import {GAME_RELEASE} from '../data/release.js?v=beta-0-1-clean-notes-20261030';
+import {GAME_RELEASE} from '../data/release.js?v=beta-0-2-20261030';
 
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
