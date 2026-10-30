@@ -4,26 +4,35 @@
 .release-maintenance-icon{width:18px;height:18px;flex:0 0 18px}
 .release-notice:hover{text-decoration:underline;text-underline-offset:4px}
 .release-notice:focus-visible{outline:2px solid var(--green);outline-offset:5px}
-dialog:has(.release-details){width:min(548px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border-radius:16px;overflow-y:auto;overscroll-behavior:contain}
-.release-details .modal-head{align-items:flex-start;gap:16px;padding:24px 24px 0;margin:0}
-.release-eyebrow{display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:500;line-height:1.4}
-.release-details h2{font-family:var(--body);font-size:26px;font-weight:750;letter-spacing:-.5px;line-height:1.3}
-.release-details .icon-button{width:32px;height:32px;min-width:32px;min-height:32px;flex-shrink:0;margin:0;padding:6px;border:0;border-radius:8px;background:transparent;color:var(--muted)}
-.release-details .icon-button:hover{background:var(--soft);color:var(--text)}
-.release-details .icon-button svg{width:18px;height:18px}
-.release-description{font-size:13px;line-height:1.6;color:var(--muted);margin:12px 24px 8px}
-.release-changes{list-style:none;padding:0 24px 10px;margin:0}
-.release-changes li{display:flex;align-items:flex-start;gap:13px;padding:15px 0}
-.release-changes li+li{border-top:1px solid color-mix(in srgb,var(--border) 55%,transparent)}
-.release-change-icon{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;margin-top:1px;color:var(--green)}
-.release-change-icon svg{width:21px;height:21px}
-.release-changes li>div{min-width:0}
-.release-changes strong{display:block;font-size:14px;font-weight:650;line-height:1.45;color:var(--text)}
-.release-changes p{margin:4px 0 0;font-size:13px;line-height:1.6;color:var(--muted)}
-.release-feedback{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:17px 24px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--soft) 45%,var(--surface));font-size:12px;line-height:1.5;color:var(--muted)}
-.release-feedback a{display:inline-flex;align-items:center;gap:4px;min-height:28px;color:var(--green);font-weight:650;text-decoration:none}
+
+dialog:has(.release-details){width:min(510px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border-radius:14px;overflow:hidden}
+.release-details{display:flex;flex-direction:column;max-height:min(680px,calc(100dvh - 32px))}
+.release-details .modal-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 24px 0;margin:0}
+.release-eyebrow{display:block;color:var(--green);font-size:10px;font-weight:750;letter-spacing:1.1px;margin-bottom:6px}
+.release-details h2{font-family:var(--body);font-size:24px;font-weight:750;letter-spacing:-.5px;line-height:1.3}
+.release-details .icon-button{display:grid;place-items:center;width:32px;height:32px;min-width:32px;min-height:32px;padding:6px;border:0;border-radius:50%;background:var(--soft);color:var(--muted)}
+.release-details .icon-button svg{width:17px;height:17px}
+.release-description{margin:8px 24px 18px;font-size:12px;line-height:1.5;color:var(--muted)}
+.release-history{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--border) transparent;padding:0 24px 8px}
+.release-entry{border-top:1px solid var(--border)}
+.release-entry summary{display:flex;align-items:center;flex-wrap:wrap;gap:8px;list-style:none;cursor:pointer;padding:15px 0;user-select:none}
+.release-entry summary::-webkit-details-marker{display:none}
+.release-entry summary:focus-visible{outline:2px solid var(--green);outline-offset:-2px;border-radius:4px}
+.release-version{font-size:14px;font-weight:750;color:var(--text);font-variant-numeric:tabular-nums}
+.release-current{font-size:9px;font-weight:750;padding:2px 6px;border-radius:4px;color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+.release-entry time{margin-left:auto;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.release-chevron{width:16px;height:16px;color:var(--muted);transition:transform .15s}
+.release-entry[open] .release-chevron{transform:rotate(180deg)}
+.release-entry-title{flex-basis:100%;font-size:12px;color:var(--muted);line-height:1.4}
+.release-changes{list-style:none;margin:0;padding:0 0 16px 0;display:grid;gap:14px}
+.release-changes li{display:flex;align-items:flex-start;gap:10px;padding:0}
+.release-change-icon{display:grid;place-items:center;flex:0 0 18px;width:18px;height:18px;margin-top:1px;color:var(--green)}
+.release-change-icon svg{width:17px;height:17px}
+.release-changes strong{display:block;font-size:12px;line-height:1.5;font-weight:650;color:var(--text)}
+.release-changes p{font-size:12px;line-height:1.6;margin:3px 0 0;color:var(--muted)}
+.release-feedback{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;margin-top:6px;padding:13px 24px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+.release-feedback a{display:inline-flex;align-items:center;min-height:28px;color:var(--green);font-weight:650;text-decoration:none}
 .release-feedback a:hover{text-decoration:underline;text-underline-offset:3px}
-.release-feedback a svg{width:15px;height:15px}
 @media(max-width:1200px){.site-header .header-tools>.edition{display:none}}
 @media(min-width:761px) and (max-width:1000px){.site-header .header-tools{margin-left:auto}}
 @media(max-width:760px){
@@ -31,11 +40,10 @@ dialog:has(.release-details){width:min(548px,calc(100% - 24px));max-width:none;m
  .site-header .header-inner{height:auto;flex-wrap:wrap;row-gap:3px;padding-top:10px;padding-bottom:5px}
  .site-header .header-tools{display:flex;flex:0 0 100%;margin:0;justify-content:center}
  .release-notice{min-height:24px;font-size:10px}
- dialog:has(.release-details){max-height:calc(100dvh - 24px)}
- .release-details .modal-head{padding:20px 20px 0}
- .release-description{margin:10px 20px 6px}
- .release-changes{padding:0 20px 8px}
- .release-changes li{padding:13px 0;gap:11px}
- .release-feedback{padding:14px 20px}
- .release-details h2{font-size:24px}
+ .release-details .modal-head{padding:18px 18px 0}
+ .release-description{margin:8px 18px 15px}
+ .release-history{padding-inline:18px}
+ .release-feedback{padding:10px 18px}
+ .release-details h2{font-size:22px}
 }
+@media(prefers-reduced-motion:reduce){.release-chevron{transition:none}}
