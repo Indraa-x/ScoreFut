@@ -1,4 +1,4 @@
-/* Show the crest clearly above a compact rating, including while dragging. */
+/* Center a lightly softened crest in every lineup and drag circle. */
 .draft-pitch .pitch-slot.picked .slot-circle,.player-drag .slot-circle{
   position:relative;
   isolation:isolate;
@@ -11,12 +11,13 @@
 }
 .draft-pitch .slot-club-crest,.player-drag .slot-club-crest{
   position:absolute;
-  top:3%;
-  left:7%;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
   width:86%;
   height:76%;
   object-fit:contain;
-  opacity:1;
+  opacity:.82;
   pointer-events:none;
   user-select:none;
 }
