@@ -51,16 +51,26 @@ export function createSetPieceMotion(anchors,profiles,match,seed){
         targets[index].y=clamp(targets[index].y+sign*Math.sin(angle)*force,7,93);
       }
     }
-    events.push({type:candidate.type,side,at,end:at+WINDOW,kickAt:at+2.8,taker,spot,targets,target:{x:50+direction*(rng()<.5?36:8),y:35+rng()*30}});
+    events.push({type:candidate.type,side,at,end:at+WINDOW,kickAt:at+1.65,taker,spot,targets,target:{x:50+direction*(rng()<.5?36:8),y:35+rng()*30}});
   }
   events.sort((a,b)=>a.at-b.at);
   return {events,apply(scene,time){
     const event=events.find(e=>time>=e.at&&time<e.end);
     if(!event)return {...scene,setPiece:null};
     const weight=Math.min(smooth((time-event.at)/1.4),smooth((event.end-time)/.9));
-    const players=scene.players.map((p,i)=>({x:mix(p.x,event.targets[i].x,weight),y:mix(p.y,event.targets[i].y,weight)}));
-    const flight=smooth((time-event.kickAt)/1.1);
-    const destination=time<event.kickAt?event.spot:{x:mix(event.spot.x,event.target.x,flight),y:mix(event.spot.y,event.target.y,flight)+(event.type==='corner'?Math.sin(flight*Math.PI)*(event.spot.y<50?5:-5):0)};
+    // Keep runs, marking and the taker's approach moving throughout the restart.
+    const elapsed=time-event.at,direction=event.side==='home'?1:-1;
+    const flight=smooth((time-event.kickAt)/(event.end-event.kickAt));
+    const players=scene.players.map((p,i)=>{
+      const target=event.targets[i],phase=elapsed*2.1+i*1.7;
+      const scale=anchors[i].role==='GOL'?.35:i===event.taker?.55:1;
+      const run=anchors[i].side===event.side&&i!==event.taker?direction*flight*2.4:0;
+      const x=clamp(target.x+Math.sin(phase)*scale+run,5,95);
+      const y=clamp(target.y+Math.cos(phase*.87)*scale*1.4,7,93);
+      return {x:mix(p.x,x,weight),y:mix(p.y,y,weight)};
+    });
+    const approach=1-smooth(elapsed/(event.kickAt-event.at));
+    const destination=time<event.kickAt?{x:event.spot.x-direction*1.6*approach,y:event.spot.y+approach*.6}:{x:mix(event.spot.x,event.target.x,flight),y:mix(event.spot.y,event.target.y,flight)+(event.type==='corner'?Math.sin(flight*Math.PI)*(event.spot.y<50?5:-5):0)};
     const ball={x:mix(scene.ball.x,destination.x,weight),y:mix(scene.ball.y,destination.y,weight)};
     return {...scene,players,ball,owner:weight>.5?(time<event.kickAt?event.taker:-1):scene.owner,possession:event.side,kind:event.type,setPiece:weight>.2?event:null};
   }};
