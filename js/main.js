@@ -10,7 +10,7 @@ import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirm
 import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
 import * as storage from './storage.js?v=world-cup-20261026';
 import * as ui from './ui.js?v=bellingham-home-20261029';
-import {renderReleaseDetails} from './release-notice.js?v=clean-beta-dialog-20261030';
+import {renderReleaseDetails} from './release-notice.js?v=beta-maintenance-icon-20261030';
 import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
 import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
 import {downloadResult} from './share.js?v=leverkusen-20261029';
