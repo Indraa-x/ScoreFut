@@ -57,3 +57,10 @@
  #app[data-screen="draft"] .draw-empty:has(.draw-empty-intro)>.btn{grid-column:1;width:100%;justify-self:stretch}
  #app[data-screen="draft"] .draw-empty-intro h2{font-size:21px}
 }
+
+/* Keep the desktop draw action close to its introduction and easy to hit. */
+@media(min-width:1024px){
+ #app[data-screen="draft"] .draw-empty:has(.draw-empty-intro){grid-template-columns:minmax(300px,440px) 220px minmax(0,1fr);gap:24px}
+ #app[data-screen="draft"] .draw-empty:has(.draw-empty-intro)>.btn{width:220px;min-width:220px;min-height:60px;padding:14px 22px;font-size:15px;border-radius:10px}
+ #app[data-screen="draft"] .draw-empty:has(.draw-empty-intro)>.btn svg{width:22px;height:22px}
+}
