@@ -23,8 +23,16 @@ export const WORLD_CUP_CREATOR_REVIEWS=Object.freeze(Object.fromEntries(reviews.
    :'Reequilíbrio solicitado pelo criador em 26/10/2026: OVR geral calculado de 88,5, preservando os principais craques.',
  })]))),
 ])));
+export const GOALKEEPER_CREATOR_REVIEWS=Object.freeze(Object.fromEntries([
+ ['nation-italy-2006','gianluigi-buffon',92,94],
+ ['nation-germany-2014','manuel-neuer',90,93],
+ ['nation-england-1966','gordon-banks',94,92],
+].map(([squadId,playerId,previousOvr,ovr])=>[squadId,Object.freeze({[playerId]:Object.freeze({
+ squadId,playerId,previousOvr,ovr,reviewedAt:'2026-10-30',source:'data/world-cup-ratings.js',
+ reason:'Ajuste de goleiro solicitado pelo criador em 30/10/2026, exclusivo desta seleção e época.',
+})})])));
 export function applyWorldCupRatingReview(player,squadId){
- const review=HISTORICAL_NATIONAL_REVIEWS[squadId]?.[player.id]??IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
+ const review=GOALKEEPER_CREATOR_REVIEWS[squadId]?.[player.id]??HISTORICAL_NATIONAL_REVIEWS[squadId]?.[player.id]??IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
  if(!review)return player;
  const delta=review.ovr-player.ovr;
  return {...player,ovr:review.ovr,ratingKind:'creator-review',creatorReview:review,

@@ -1,6 +1,6 @@
 import { MODES,LEGACY_QUICK_MODE } from './state.js?v=leverkusen-20261029';
 import { CLUB_LOGOS } from '../data/club-logos.js?v=leverkusen-20261029';
-import { clubs, allSquads, worldCupNations, worldCupSquads } from '../data/game-squads.js?v=leverkusen-20261029';
+import { clubs, allSquads, worldCupNations, worldCupSquads } from '../data/game-squads.js?v=keepers-20261030';
 import {filterQuickClubs,quickSeasons} from './quick-catalog.js?v=leverkusen-20261029';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=leverkusen-20261029';
 import { automaticSlot, movableSlots, DEFAULT_REROLLS } from './draft.js?v=leverkusen-20261029';
