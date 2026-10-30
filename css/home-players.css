@@ -54,6 +54,6 @@
 
 /* Soften Haaland's outer arm where it overlaps Bellingham. */
 #app .home-stars-group--next .home-star:first-child .home-star-portrait img{
- -webkit-mask-image:radial-gradient(ellipse 25% 30% at 92% 70%,rgba(0,0,0,.72) 0%,rgba(0,0,0,.85) 65%,#000 100%);
- mask-image:radial-gradient(ellipse 25% 30% at 92% 70%,rgba(0,0,0,.72) 0%,rgba(0,0,0,.85) 65%,#000 100%);
+ -webkit-mask-image:radial-gradient(ellipse 29% 33% at 89% 71%,rgba(0,0,0,.32) 0%,rgba(0,0,0,.52) 55%,rgba(0,0,0,.82) 80%,#000 100%);
+ mask-image:radial-gradient(ellipse 29% 33% at 89% 71%,rgba(0,0,0,.32) 0%,rgba(0,0,0,.52) 55%,rgba(0,0,0,.82) 80%,#000 100%);
 }
