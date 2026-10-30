@@ -32,11 +32,11 @@ function homePlayers(){
       {name:'Neymar Jr.',src:'neymar-santos-20261029.png',width:1084,height:1451,fadeStops:[[.93,1],[1,0]],head:{x:540,y:60,height:470}},
       {name:'Kylian Mbappé',src:'mbappe-real-madrid-20261029.png',width:649,height:900,fadeStops:[[.93,1],[1,0]],head:{x:332,y:193,height:245}},
     ]},
-    {className:'legends',width:649,height:900,players:[
-      {name:'Gianluigi Buffon',src:'buffon.png',head:{x:339,y:196,height:251}},
-      {name:'Zinedine Zidane',src:'zidane.png',head:{x:322,y:203,height:263}},
-      {name:'Ronaldo Nazário',src:'ronaldo-nazario.png',head:{x:342,y:207,height:227}},
-      {name:'Ronaldinho Gaúcho',src:'ronaldinho.png',head:{x:341,y:188,height:260}},
+    {className:'legends',width:1065,height:1477,players:[
+      {name:'Gianluigi Buffon',src:'buffon-color-20261030.png',fadeStops:[[.56,1],[.72,.85],[.86,.45],[1,0]],head:{x:570,y:235,height:455}},
+      {name:'Zinedine Zidane',src:'zidane-color-20261030.png',fadeStops:[[.56,1],[.72,.85],[.86,.45],[1,0]],head:{x:575,y:110,height:510}},
+      {name:'Ronaldo Nazário',src:'ronaldo-color-20261030.png',fadeStops:[[.56,1],[.72,.85],[.86,.45],[1,0]],head:{x:560,y:315,height:435}},
+      {name:'Ronaldinho Gaúcho',src:'ronaldinho-color-20261030.png',fadeStops:[[.56,1],[.72,.85],[.86,.45],[1,0]],head:{x:590,y:247,height:450}},
     ]},
     {className:'next',players:[
       {name:'Erling Haaland',src:'haaland-city-20261030.png',width:649,height:900,offsetX:-14,fadeStops:[[.94,1],[1,0]],head:{x:330,y:180,height:245}},

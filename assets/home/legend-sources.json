@@ -1,0 +1,27 @@
+{
+  "updatedAt": "2026-10-30",
+  "source": "Imagens fornecidas por Indraa na conversa do projeto.",
+  "processing": "Recorte do fundo com imagegen; composição e degradê do torso aplicados no site.",
+  "assets": [
+    {
+      "file": "buffon-color-20261030.png",
+      "player": "Gianluigi Buffon",
+      "input": "Gemini_Generated_Image_c9hov5c9hov5c9ho.jpg"
+    },
+    {
+      "file": "zidane-color-20261030.png",
+      "player": "Zinedine Zidane",
+      "input": "Gemini_Generated_Image_vcai9uvcai9uvcai.jpg"
+    },
+    {
+      "file": "ronaldo-color-20261030.png",
+      "player": "Ronaldo Nazário",
+      "input": "Gemini_Generated_Image_iv82e8iv82e8iv82.jpg"
+    },
+    {
+      "file": "ronaldinho-color-20261030.png",
+      "player": "Ronaldinho Gaúcho",
+      "input": "Gemini_Generated_Image_fi9ubnfi9ubnfi9u.jpg"
+    }
+  ]
+}
