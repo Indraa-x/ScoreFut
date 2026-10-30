@@ -63,3 +63,14 @@
  .achievements-layout{gap:20px}.achievement-section-heading{padding:20px 16px}.achievement-section-heading h2{font-size:16px}.achievement-section-heading p{font-size:10px}.achievement-milestones{padding:0 16px}.achievement-tile{grid-template-columns:36px minmax(0,1fr) 76px;gap:11px;padding:18px 0}.achievement-emblem{width:36px;height:36px;border-radius:10px}.achievement-emblem svg{width:21px;height:21px}.achievement-copy h3{font-size:12px}.achievement-copy p{font-size:10px}.achievement-state{font-size:9px;gap:3px}.achievement-state svg{width:11px;height:11px}.achievement-progress{gap:8px}
  .achievement-competitions{display:block;padding:0 16px}.competition-achievement{display:grid;grid-template-columns:70px minmax(0,1fr);text-align:left;gap:18px;padding:21px 0;min-height:129px}.competition-achievement+.competition-achievement{border-left:0;border-top:1px solid var(--border)}.competition-achievement .achievement-state{justify-content:flex-start;margin-top:10px}.competition-achievement h3{font-size:14px}.competition-achievement p{font-size:11px}.achievement-competition-name{font-size:10px}.achievement-cup{height:92px;width:70px}.achievement-cup img{width:64px;height:88px}.achievements-save-note{font-size:9px;align-items:flex-start}
 }
+
+/* Milestone illustrations: mint outlines, soft fills and restrained gold details. */
+.achievement-emblem .achievement-symbol{width:32px;height:32px;stroke-width:1.65}
+.achievement-symbol .emblem-wash{fill:currentColor;fill-opacity:.1;stroke:none}
+.achievement-symbol .emblem-solid{fill:currentColor;stroke-width:1.4}
+.achievement-symbol .emblem-accent{color:inherit;fill:currentColor;fill-opacity:.15}
+.achievement-symbol .emblem-cutout{stroke:var(--surface);stroke-width:1.2}
+.is-earned .achievement-symbol .emblem-accent{color:#a77c20;fill-opacity:.22}
+[data-theme="dark"] .is-earned .achievement-symbol .emblem-accent{color:#edc56f;fill-opacity:.28}
+.is-pending .achievement-emblem{color:var(--muted);background:color-mix(in srgb,var(--soft) 65%,transparent)}
+@media(max-width:520px){.achievement-emblem .achievement-symbol{width:28px;height:28px}}

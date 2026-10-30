@@ -1,3 +1,4 @@
+import {achievementEmblem} from './achievement-emblems.js?v=milestone-emblems-20261030';
 import { achievementsFor,achievementSummary } from './achievements.js?v=world-cup-20261026';
 
 const pad=value=>String(value).padStart(2,'0');
@@ -9,7 +10,7 @@ const competitions={
 
 function milestone(item,icon){
   return `<article class="achievement-tile ${item.unlocked?'is-earned':'is-pending'}" data-achievement="${item.id}">
-    <span class="achievement-emblem" aria-hidden="true">${icon(item.icon)}</span>
+    <span class="achievement-emblem" aria-hidden="true">${achievementEmblem(item.id)}</span>
     <div class="achievement-copy"><h3>${item.name}</h3><p>${item.description}</p></div>
     <div class="achievement-progress"><span class="achievement-state">${item.unlocked?`${icon('check')} Conquistada`:`<b>${item.value}</b> / ${item.target}`}</span><span class="achievement-track" role="progressbar" aria-label="${item.name}" aria-valuemin="0" aria-valuemax="${item.target}" aria-valuenow="${item.value}"><i style="width:${item.value/item.target*100}%"></i></span></div>
   </article>`;
