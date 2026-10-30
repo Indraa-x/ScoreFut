@@ -43,3 +43,17 @@
  #app[data-screen="draft"] .draw-empty h2{font-size:21px}
  #app[data-screen="draft"] .draw-empty .btn{grid-column:1/-1;justify-self:stretch;width:100%}
 }
+
+/* Center the initial action within the header while keeping the identity on the left. */
+#app[data-screen="draft"] .draw-empty:has(.draw-empty-intro){grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px}
+#app[data-screen="draft"] .draw-empty-intro{display:flex;align-items:center;gap:16px;min-width:0}
+#app[data-screen="draft"] .draw-empty-intro>svg{width:36px;height:36px;flex:0 0 36px;color:var(--green)}
+#app[data-screen="draft"] .draw-empty-intro h2{font-size:clamp(18px,1.5vw,23px)}
+#app[data-screen="draft"] .draw-empty-intro p{font-size:12px}
+#app[data-screen="draft"] .draw-empty:has(.draw-empty-intro)>.btn{grid-column:2;justify-self:center;min-width:160px;gap:9px}
+#app[data-screen="draft"] .draw-empty:has(.draw-empty-intro)>.btn svg{width:19px;height:19px}
+@media(max-width:760px){
+ #app[data-screen="draft"] .draw-empty:has(.draw-empty-intro){grid-template-columns:minmax(0,1fr);gap:16px}
+ #app[data-screen="draft"] .draw-empty:has(.draw-empty-intro)>.btn{grid-column:1;width:100%;justify-self:stretch}
+ #app[data-screen="draft"] .draw-empty-intro h2{font-size:21px}
+}
