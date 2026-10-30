@@ -12,7 +12,7 @@ import { clubsB } from './clubs-b.js?v=leverkusen-20261029';
 import { clubsC } from './clubs-c.js?v=leverkusen-20261029';
 import { championsAdditions } from './champions-additions.js?v=leverkusen-20261029';
 import { expandClubSeasons } from './season-expansion.js?v=world-cup-20261026';
-import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=leverkusen-20261029';
+import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=courtois-20261030';
 export const ELENCO_TAMANHO = 11;
 export const clubs = replaceClubEras(expandClubSeasons([...clubsA, ...clubsB, ...clubsC, ...championsAdditions])).map(club=>club.id==='celtic'?createLeverkusenClub():club);
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
