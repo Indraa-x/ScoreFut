@@ -37,13 +37,17 @@
 .hero-actions .btn svg{width:20px;height:20px}
 @media(max-width:480px){.hero-actions .btn{width:100%;min-width:0;min-height:58px;padding:16px 20px;font-size:15px}}
 
-/* Fade the legends after compositing, keeping overlapping jerseys opaque. */
-.home-stars-group--legends{width:106.4%;margin-inline:-3.2%;padding-inline:3.2%;-webkit-mask-image:linear-gradient(to bottom,#000 56%,rgba(0,0,0,.85) 72%,rgba(0,0,0,.45) 86%,transparent 100%);mask-image:linear-gradient(to bottom,#000 56%,rgba(0,0,0,.85) 72%,rgba(0,0,0,.45) 86%,transparent 100%)}
-.home-stars-group--legends .home-star-portrait img{-webkit-mask-image:none;mask-image:none;filter:url(#home-portrait-solid) saturate(.78)}
+/* Composite each lineup before fading: all torsos share the lower baseline. */
+.home-stars-group{width:106.4%;margin-inline:-3.2%;padding-inline:3.2%;--lineup-fade:linear-gradient(to bottom,#000 74%,rgba(0,0,0,.9) 84%,rgba(0,0,0,.45) 94%,transparent 100%);-webkit-mask-image:var(--lineup-fade);mask-image:var(--lineup-fade)}
+.home-stars-group--legends{--lineup-fade:linear-gradient(to bottom,#000 56%,rgba(0,0,0,.85) 72%,rgba(0,0,0,.45) 86%,transparent 100%)}
+#app .home-star-portrait img{-webkit-mask-image:none;mask-image:none}
+.home-stars-group--legends .home-star-portrait img{filter:url(#home-portrait-solid) saturate(.78)}
 
 /* The supplied pitch replaces the portrait card, fading gently into the page at either side. */
 #app .home-stars{border-color:transparent;box-shadow:none;background-image:linear-gradient(90deg,var(--bg),transparent 12%,transparent 88%,var(--bg)),linear-gradient(180deg,var(--bg),transparent 16%,transparent 84%,var(--bg)),linear-gradient(180deg,#09241945,#09241966 70%,#06170fbb),url('../assets/home/players-field-20261030.png');background-position:center;background-size:cover;background-repeat:no-repeat;background-clip:padding-box}
-/* Keep the existing portrait scale after removing the caption row. */
-#app .home-stars-lineup{padding-bottom:48.5px}
-@media(max-width:1000px){#app .home-stars-lineup{padding-bottom:41px}}
-@media(max-width:650px){#app .home-stars-lineup{padding-bottom:37px}}
+/* Reveal more torso while preserving the existing image size and hairline. */
+#app .home-stars{--portrait-old-reserve:48.5px;--portrait-bottom-gap:14px}
+#app .home-stars-lineup{padding-bottom:var(--portrait-bottom-gap)}
+#app .home-star-portrait{height:calc(100% - var(--portrait-old-reserve) + var(--portrait-bottom-gap))}
+@media(max-width:1000px){#app .home-stars{--portrait-old-reserve:41px}}
+@media(max-width:650px){#app .home-stars{--portrait-old-reserve:37px}}
