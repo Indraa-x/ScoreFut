@@ -16,3 +16,7 @@ body:has(#app) .footer-inner p.footer-credit{font-size:12px;line-height:1.5;max-
 .footer-credit a{color:var(--green);font-weight:600;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px}
 .footer-credit a:hover{text-decoration-color:currentColor}
 .footer-credit a:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+
+/* Flat custom crest for the user team, at the existing badge size. */
+.club-badge.user-team-badge{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;text-shadow:none}
+.user-team-badge img{display:block;width:100%;height:100%;object-fit:contain}

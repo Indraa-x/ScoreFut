@@ -19,6 +19,7 @@ const short = name => name.length>17 ? name.split(' ').slice(-1)[0] : name;
 export function badge(team,cls=''){
   const logo=CLUB_LOGOS[team?.clubId||team?.id];
   if(logo)return `<span class="club-badge club-logo ${cls}" aria-hidden="true"><img src="${logo}" width="256" height="256" alt="" decoding="async"></span>`;
+  if(team?.isUser||team?.id==='user'||team?.clubId==='user')return `<span class="club-badge club-logo user-team-badge ${cls}" aria-hidden="true"><img src="assets/my-team-crest.svg" width="64" height="64" alt="" decoding="async"></span>`;
   const colors=team?.cores||['#286947','#122b1c'];
   return `<span class="club-badge ${cls}" style="--club-1:${esc(colors[0])};--club-2:${esc(colors[1])}" aria-hidden="true">${esc(team?.monograma||initials(team?.name||team?.nome||'Futuro FC'))}</span>`;
 }
