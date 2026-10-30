@@ -1,4 +1,5 @@
-import {hashSeed,mulberry32} from './engine.js?v=set-piece-goals-20261030';
+import {playerSentOff} from './match-discipline.js?v=discipline-20261030';
+import {hashSeed,mulberry32} from './engine.js?v=discipline-20261030';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const mix=(a,b,t)=>a+(b-a)*t;
 const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
@@ -7,14 +8,15 @@ const WINDOW=4.4;
 /** Replay-only restarts: independent RNG preserves the simulated score and winner. */
 export function createSetPieceMotion(anchors,profiles,match,seed){
   const result=match.result,rng=mulberry32(hashSeed(`${seed}:${match.id}:set-pieces-v1`));
-  const goals=result.events.filter(e=>e.type==='goal'&&!e.shootout),candidates=result.events.filter(e=>e.type==='corner'||e.type==='foul').map(e=>({...e}));
+  const goals=result.events.filter(e=>e.type==='goal'&&!e.shootout),candidates=result.events.filter(e=>e.type==='corner'||e.type==='foul'&&!e.penaltyAwarded||e.type==='penalty'&&!e.shootout&&e.goalMinute>e.minute).map(e=>({...e}));
   for(const side of ['home','away']){
     if(candidates.some(e=>e.type==='foul'&&e.team===side))continue;
     for(let i=0;i<3;i++)candidates.push({type:'foul',team:side,minute:4+rng()*Math.max(1,result.duration-12)});
   }
   const events=[];
   for(const candidate of candidates.sort((a,b)=>Number(!!b.restartId)-Number(!!a.restartId)||a.minute-b.minute)){
-    let at=candidate.restartId?candidate.minute:null;
+    const card=result.events.find(e=>['yellow','red'].includes(e.type)&&e.foulId===candidate.foulId&&candidate.foulId);
+    let at=candidate.restartId||card?candidate.minute:null;
     for(let offset=0;at===null&&offset<result.duration;offset+=5){
       for(const delta of offset?[offset,-offset]:[0]){
         const start=candidate.minute+delta,end=start+WINDOW;
@@ -26,11 +28,14 @@ export function createSetPieceMotion(anchors,profiles,match,seed){
       if(at!==null)break;
     }
     if(at===null)continue;
+    const plannedEnd=candidate.type==='penalty'?candidate.goalMinute+.5:at+WINDOW;
+    if(events.some(e=>at<e.end+.45&&plannedEnd>e.at-.45))continue;
+    if(card&&!candidate.restartId&&goals.some(g=>at<g.minute+1.3&&plannedEnd>g.minute-1.8))continue;
     const side=candidate.team,direction=side==='home'?1:-1,flank=rng()<.5?7:93;
-    const own=anchors.map((p,i)=>({...p,i})).filter(p=>p.side===side&&p.role!=='GOL');
+    const own=anchors.map((p,i)=>({...p,i})).filter(p=>p.side===side&&p.role!=='GOL'&&!playerSentOff(result,side,p.id,at));
     const taker=own.find(p=>p.id===candidate.player?.id)?.i??own.slice().sort((a,b)=>profiles[b.i].mid-profiles[a.i].mid)[0]?.i;
     if(taker===undefined)continue;
-    const spot=candidate.type==='corner'?{x:side==='home'?95:5,y:flank}:{x:50+direction*(17+rng()*9),y:28+rng()*44};
+    const spot=candidate.type==='penalty'?{x:50+direction*33,y:50}:candidate.type==='corner'?{x:side==='home'?95:5,y:flank}:{x:50+direction*(17+rng()*9),y:28+rng()*44};
     let attack=0,defend=0;
     const targets=anchors.map((p,index)=>{
       if(index===taker)return {x:spot.x-direction*1.3,y:spot.y};
@@ -51,13 +56,13 @@ export function createSetPieceMotion(anchors,profiles,match,seed){
         targets[index].y=clamp(targets[index].y+sign*Math.sin(angle)*force,7,93);
       }
     }
-    events.push({type:candidate.type,side,at,end:at+WINDOW,kickAt:at+1.65,taker,spot,targets,goalMinute:candidate.goalMinute,origin:candidate.origin,scorer:anchors.findIndex(p=>p.side===side&&p.id===candidate.scorerId),target:{x:50+direction*(rng()<.5?36:8),y:35+rng()*30}});
+    events.push({type:candidate.type,side,at,end:candidate.type==='penalty'?candidate.goalMinute+.5:at+WINDOW,kickAt:candidate.type==='penalty'?at+(candidate.goalMinute-at)*.4:at+1.65,card:card?.type,cardTeam:card?.team,taker,spot,targets,goalMinute:candidate.goalMinute,origin:candidate.origin,scorer:anchors.findIndex(p=>p.side===side&&p.id===candidate.scorerId),target:{x:50+direction*(rng()<.5?36:8),y:35+rng()*30}});
   }
   events.sort((a,b)=>a.at-b.at);
   return {events,apply(scene,time){
     const event=events.find(e=>time>=e.at&&time<e.end);
     if(!event)return {...scene,setPiece:null};
-    const weight=Math.min(smooth((time-event.at)/1.4),smooth((event.end-time)/(event.goalMinute?.5:.9)));
+    const weight=Math.min(smooth((time-event.at)/(event.type==='penalty'?.3:1.4)),smooth((event.end-time)/(event.goalMinute?.5:.9)));
     // Keep runs, marking and the taker's approach moving throughout the restart.
     const elapsed=time-event.at,direction=event.side==='home'?1:-1;
     const header=event.origin?.endsWith('header'),finish=event.goalMinute??event.end;

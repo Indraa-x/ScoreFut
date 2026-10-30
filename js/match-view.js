@@ -1,9 +1,10 @@
-import {renderMatchGoals} from './match-goals.js?v=set-piece-goals-20261030';
+import {playerSentOff} from './match-discipline.js?v=discipline-20261030';
+import {renderMatchGoals} from './match-goals.js?v=discipline-20261030';
 import {matchHasEnded,renderPenaltyMarks,penaltyProgress} from './match-penalties.js?v=single-penalty-title-20261028';
-import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=set-piece-goals-20261030';
+import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=discipline-20261030';
 import { competitionName, competitionLogo } from '../data/competitions.js?v=leverkusen-20261029';
-import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=set-piece-goals-20261030';
-import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=set-piece-goals-20261030';
+import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=discipline-20261030';
+import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=discipline-20261030';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {
@@ -27,7 +28,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
     const anchor = anchors[(side === 'home' ? 0 : home.lineup.length) + index];
     const kit = entry.slot.position === 'GOL' ? team.id===t.userTeamId ? '#f0c757' : '#e99573' : side === 'home' ? homeKit : awayKit;
     const [r,g,b]=rgb(kit), numberColor=r*.299+g*.587+b*.114>160?'#17232b':'#fff';
-    return `<span class="match-player ${side}" data-match-player style="left:${anchor.x}%;top:${anchor.y}%;--kit:${esc(kit)};--number-color:${numberColor}" title="Nº ${esc(entry.player.camisa || index + 1)} · ${esc(displayName(team))}"><b>${esc(entry.player.camisa || index + 1)}</b></span>`;
+    return `<span class="match-player ${side}${playerSentOff(result,side,entry.player.id,s.matchMinute)?' sent-off':''}" data-match-player style="left:${anchor.x}%;top:${anchor.y}%;--kit:${esc(kit)};--number-color:${numberColor}" title="Nº ${esc(entry.player.camisa || index + 1)} · ${esc(displayName(team))}"><b>${esc(entry.player.camisa || index + 1)}</b></span>`;
   };
   const preview=nextFixturePreview(s), upcoming=preview.fixture?[preview.fixture]:[];
   const recent = t.userMatches.map((fixture, index) => ({fixture, index})).filter(({fixture}) => fixture.id !== match.id).slice(-3).reverse();

@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.4 — 30/10/2026
+
+Cartões amarelos e vermelhos vinculados às faltas, com expulsões raras. Faltas na área originam as cobranças de pênalti da partida. O placar identifica gols de pênalti com (pen) e exibe os jogadores expulsos, que saem do campinho.
+
 ## Beta 0.3 — 30/10/2026
 
 A simulação inclui gols de falta, gols olímpicos e cabeçadas após escanteios ou faltas. A cobrança, o cruzamento e a finalização aparecem no campinho; o aviso do gol identifica o tipo de lance. Os resultados seguem o equilíbrio de OVR existente. Faltas e escanteios mantêm movimentos contínuos na velocidade escolhida.

@@ -1,7 +1,8 @@
-import {goalOriginLabel} from './match-goal-origins.js?v=set-piece-goals-20261030';
-import { currentMatch } from './match-session.js?v=set-piece-goals-20261030';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=set-piece-goals-20261030';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=set-piece-goals-20261030';
+import {matchIncidentsAt,playerSentOff} from './match-discipline.js?v=discipline-20261030';
+import {goalOriginLabel} from './match-goal-origins.js?v=discipline-20261030';
+import { currentMatch } from './match-session.js?v=discipline-20261030';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=discipline-20261030';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=discipline-20261030';
 import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=single-penalty-title-20261028';
 
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -16,7 +17,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     const match = currentMatch(state);
     if (!nodes || !match || !motion) return;
     const scene = motion.at(state.matchMinute);
-    nodes.players.forEach((element, index) => { if (scene.players[index]) position(element, scene.players[index]); });
+    nodes.players.forEach((element, index) => { element.classList.toggle('booked',match.result.events.some(e=>e.type==='yellow'&&e.team===motion.anchors[index].side&&e.player.id===motion.anchors[index].id&&e.minute<=state.matchMinute));element.classList.toggle('sent-off',playerSentOff(match.result,motion.anchors[index].side,motion.anchors[index].id,state.matchMinute)); if (scene.players[index]) position(element, scene.players[index]); });
     if (scene.owner !== nodes.activeOwner) {
       nodes.players[nodes.activeOwner]?.classList.toggle('on-ball', false);
       nodes.players[scene.owner]?.classList.toggle('on-ball', true);
@@ -30,9 +31,9 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
         nodes.setPieceKey=key;
         nodes.ball.classList.toggle('set-piece-ball',!!event);
         if(event){
-          const team=state.tournament.teams.find(t=>t.id===(event.side==='home'?match.homeId:match.awayId));
+          const team=state.tournament.teams.find(t=>t.id===((event.cardTeam||event.side)==='home'?match.homeId:match.awayId));
           nodes.setPiece.style.setProperty('--restart-color',team?.id===state.tournament.userTeamId?'#13754b':'#3169b8');
-          nodes.setPieceTitle.textContent=`${event.type==='corner'?'Escanteio':'Falta'} · ${formatMatchEventMinute(match.result,event.at)}′`;
+          nodes.setPieceTitle.textContent=`${event.card==='red'?'Cartão vermelho':event.card==='yellow'?'Cartão amarelo':event.type==='penalty'?'Pênalti':event.type==='corner'?'Escanteio':'Falta'} · ${formatMatchEventMinute(match.result,event.at)}′`;
           nodes.setPieceTeam.textContent=team?.ano&&team.name.endsWith(` ${team.ano}`)?team.name.slice(0,-String(team.ano).length-1):team?.name||'';
         }
       }
@@ -40,7 +41,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     const score = scoreAt(match.result, state.matchMinute);
     nodes.scores.forEach((element, index) => { const value = String(score[index]); if (element.textContent !== value) element.textContent = value; });
     if(nodes.goals){
-      const count=goalsAt(match.result,state.matchMinute).length;
+      const count=matchIncidentsAt(match.result,state.matchMinute).length;
       if(count!==nodes.goalCount){
         const data=nodes.goals.dataset||{};
         nodes.goals.innerHTML=renderMatchGoals(match.result,state.matchMinute,{home:data.homeName,away:data.awayName});nodes.goalCount=count;

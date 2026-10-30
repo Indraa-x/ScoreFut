@@ -1,10 +1,11 @@
+import {assignMatchDiscipline} from './match-discipline.js?v=discipline-20261030';
 /**
  * ScoreFut: pure, seeded eleven-player match and tournament simulation.
  * Ratings are editorial estimates, not a prediction about real football.
  * OVR and attributes drive the bounded Poisson equation, with modest player assistance.
  */
 
-import {assignSetPieceGoals} from './match-goal-origins.js?v=set-piece-goals-20261030';
+import {assignSetPieceGoals} from './match-goal-origins.js?v=discipline-20261030';
 import { squadsForMode } from '../data/competitions.js?v=leverkusen-20261029';
 import {worldCupGroupOrder,worldCupRound16Pairings} from './world-cup.js?v=world-cup-20261026';
 
@@ -346,6 +347,7 @@ export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllo
     winnerId = penalties[0] > penalties[1] ? home.id : away.id;
   }
   assignSetPieceGoals(events,home,away,mulberry32(hashSeed(`${home.id}:${away.id}:${events.filter(e=>e.type==='goal').map(e=>e.minute+e.team).join('|')}:goal-origins-v1`)));
+  assignMatchDiscipline(events,home,away,duration,mulberry32(hashSeed(`${home.id}:${away.id}:${events.filter(e=>e.type==='goal').map(e=>e.minute+e.team).join('|')}:discipline-v1`)));
   events.sort((a, b) => a.minute - b.minute);
   const scorerMap = new Map();
   events.filter(event => event.type === 'goal').forEach(event => {

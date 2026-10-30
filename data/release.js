@@ -1,10 +1,11 @@
 /** Public release metadata and the notes shown inside the game. */
 export const GAME_RELEASE = Object.freeze({
   stage: 'Beta',
-  version: '0.3',
+  version: '0.4',
   feedbackUrl: 'https://github.com/Indraa-x/ScoreFut/issues/new/choose',
   description: 'Veja o que melhorou nesta versão do ScoreFut.',
   changes: Object.freeze([
+    {icon:'shield',title:'Cartões e pênaltis',detail:'Faltas podem render amarelos ou, raramente, vermelhos. Gols de pênalti recebem (pen), e expulsões aparecem junto aos gols.'},
     {icon:'ball',title:'Novas maneiras de marcar',detail:'Gols de falta, olímpicos e de cabeça após escanteios ou faltas, com a jogada no campinho.'},
     {icon:'clock',title:'Cobranças sem pausa',detail:'Bola e jogadores continuam em movimento nas faltas e escanteios, na velocidade escolhida.'},
     {icon:'field',title:'Faltas e escanteios no campo',detail:'Os jogadores se posicionam para cobranças que podem acontecer várias vezes na partida.'},

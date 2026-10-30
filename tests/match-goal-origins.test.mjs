@@ -46,7 +46,7 @@ test('seeded matches reconcile scores and show all origins with Olympic goals ra
    counts[goal.origin]=(counts[goal.origin]||0)+1;
    const team=goal.team==='home'?home:away;
    assert.ok(team.lineup.some(e=>e.slot.position!=='GOL'&&e.player.id===goal.player.id));
-   assert.equal(result.events.filter(e=>e.type!=='goal'&&e.restartId===goal.restartId).length,1);
+   assert.equal(result.events.filter(e=>e.type!=='goal'&&!e.penaltyAwarded&&e.restartId===goal.restartId).length,1);
   }
  }
  for(const origin of ['olympic','free-kick','corner-header','free-kick-header'])assert.ok(counts[origin]>0,origin);

@@ -33,6 +33,6 @@ export function assignSetPieceGoals(events,home,away,rng){
 }
 
 export const goalOriginLabel=origin=>({
- 'olympic':'Gol olímpico','free-kick':'Gol de falta',
+ 'penalty':'Gol de pênalti','olympic':'Gol olímpico','free-kick':'Gol de falta',
  'corner-header':'Gol de cabeça · escanteio','free-kick-header':'Gol de cabeça · falta',
 })[origin]||'';

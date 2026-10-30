@@ -1,6 +1,6 @@
 import {competitionName,competitionLogo} from '../data/competitions.js?v=leverkusen-20261029';
 import {WORLD_CUP_PENDING_PAIRS} from './world-cup.js?v=world-cup-20261026';
-import {hashSeed} from './engine.js?v=set-piece-goals-20261030';
+import {hashSeed} from './engine.js?v=discipline-20261030';
 const STAGES=[['round16','Oitavas de final',8],['quarter','Quartas de final',4],['semi','Semifinal',2],['final','Final',1]];
 const shortName=team=>team?.ano && team.name.endsWith(` ${team.ano}`)?team.name.slice(0,-String(team.ano).length-1):team?.name || 'A definir';
 const signed=value=>value>0?`+${value}`:String(value);

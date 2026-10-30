@@ -1,5 +1,5 @@
-import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=set-piece-goals-20261030';
-import {createDraft} from './draft.js?v=set-piece-goals-20261030';
+import {FORMATIONS,TEAM_SIZE,positionFit,calculateTeam,createTournament,simulateTournament,squadTeam} from './engine.js?v=discipline-20261030';
+import {createDraft} from './draft.js?v=discipline-20261030';
 
 /** Select one historical club's complete lineup; simulation is a separate action. */
 export function selectQuickTeam({squadId,seed,date,squads,formation=null}){

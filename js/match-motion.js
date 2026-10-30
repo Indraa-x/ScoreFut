@@ -1,6 +1,7 @@
-import {createSetPieceMotion} from './match-set-pieces.js?v=set-piece-goals-20261030';
-import {movementRole,movementProfile,chooseMovement,sampleMovement} from './match-movement-library.js?v=set-piece-goals-20261030';
-import { hashSeed, mulberry32 } from './engine.js?v=set-piece-goals-20261030';
+import {playerSentOff} from './match-discipline.js?v=discipline-20261030';
+import {createSetPieceMotion} from './match-set-pieces.js?v=discipline-20261030';
+import {movementRole,movementProfile,chooseMovement,sampleMovement} from './match-movement-library.js?v=discipline-20261030';
+import { hashSeed, mulberry32 } from './engine.js?v=discipline-20261030';
 
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const mix = (a, b, progress) => a + (b - a) * progress;
@@ -237,6 +238,8 @@ export function createMatchMotion(home,away,match,options={}){
     const ball=carry?{x:carrier.x+(first.side==='home'?1.2:-1.2),y:carrier.y+1.1+Math.sin(time*9)*.45}:
       {x:mix(first.ball.x,target.x,travel),y:mix(first.ball.y,target.y,travel)+bend};
     ball.x=clamp(ball.x,3,97);ball.y=clamp(ball.y,5,95);
-    return setPieces.apply({players,ball,possession:fraction<.5?first.side:second.side,owner:carry?first.owner:fraction<.78?first.owner:second.owner,style:second.style,kind:second.kind},time);
+    const scene=setPieces.apply({players,ball,possession:fraction<.5?first.side:second.side,owner:carry?first.owner:fraction<.78?first.owner:second.owner,style:second.style,kind:second.kind},time);
+    if(scene.owner>=0&&playerSentOff(match.result,anchors[scene.owner].side,anchors[scene.owner].id,time))scene.owner=-1;
+    return scene;
   }};
 }
