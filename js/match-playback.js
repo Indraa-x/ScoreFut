@@ -1,6 +1,7 @@
-import { currentMatch } from './match-session.js?v=leverkusen-20261029';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=flowing-restarts-20261030';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=leverkusen-20261029';
+import {goalOriginLabel} from './match-goal-origins.js?v=set-piece-goals-20261030';
+import { currentMatch } from './match-session.js?v=set-piece-goals-20261030';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=set-piece-goals-20261030';
+import {goalsAt,renderMatchGoals} from './match-goals.js?v=set-piece-goals-20261030';
 import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=single-penalty-title-20261028';
 
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -72,7 +73,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     const showGoal = goal && state.matchMinute - goal.minute < 1.4 * normalizeMatchSpeed(state.matchSpeed) && state.matchMinute < match.result.duration;
     nodes.goal.classList.toggle('visible', !!showGoal);
     if (showGoal) {
-      const text = `${formatMatchEventMinute(match.result,goal.minute)}′ · ${goal.player.nome}`;
+      const text = `${goalOriginLabel(goal.origin)?goalOriginLabel(goal.origin)+' · ':''}${formatMatchEventMinute(match.result,goal.minute)}′ · ${goal.player.nome}`;
       if (nodes.goalName.textContent !== text) nodes.goalName.textContent = text;
     }
   }

@@ -1,4 +1,4 @@
-import {hashSeed,mulberry32} from './engine.js?v=leverkusen-20261029';
+import {hashSeed,mulberry32} from './engine.js?v=set-piece-goals-20261030';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const mix=(a,b,t)=>a+(b-a)*t;
 const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
@@ -13,9 +13,9 @@ export function createSetPieceMotion(anchors,profiles,match,seed){
     for(let i=0;i<3;i++)candidates.push({type:'foul',team:side,minute:4+rng()*Math.max(1,result.duration-12)});
   }
   const events=[];
-  for(const candidate of candidates.sort((a,b)=>a.minute-b.minute)){
-    let at=null;
-    for(let offset=0;offset<result.duration;offset+=5){
+  for(const candidate of candidates.sort((a,b)=>Number(!!b.restartId)-Number(!!a.restartId)||a.minute-b.minute)){
+    let at=candidate.restartId?candidate.minute:null;
+    for(let offset=0;at===null&&offset<result.duration;offset+=5){
       for(const delta of offset?[offset,-offset]:[0]){
         const start=candidate.minute+delta,end=start+WINDOW;
         if(start<2||end>result.duration-.5)continue;
@@ -51,16 +51,18 @@ export function createSetPieceMotion(anchors,profiles,match,seed){
         targets[index].y=clamp(targets[index].y+sign*Math.sin(angle)*force,7,93);
       }
     }
-    events.push({type:candidate.type,side,at,end:at+WINDOW,kickAt:at+1.65,taker,spot,targets,target:{x:50+direction*(rng()<.5?36:8),y:35+rng()*30}});
+    events.push({type:candidate.type,side,at,end:at+WINDOW,kickAt:at+1.65,taker,spot,targets,goalMinute:candidate.goalMinute,origin:candidate.origin,scorer:anchors.findIndex(p=>p.side===side&&p.id===candidate.scorerId),target:{x:50+direction*(rng()<.5?36:8),y:35+rng()*30}});
   }
   events.sort((a,b)=>a.at-b.at);
   return {events,apply(scene,time){
     const event=events.find(e=>time>=e.at&&time<e.end);
     if(!event)return {...scene,setPiece:null};
-    const weight=Math.min(smooth((time-event.at)/1.4),smooth((event.end-time)/.9));
+    const weight=Math.min(smooth((time-event.at)/1.4),smooth((event.end-time)/(event.goalMinute?.5:.9)));
     // Keep runs, marking and the taker's approach moving throughout the restart.
     const elapsed=time-event.at,direction=event.side==='home'?1:-1;
-    const flight=smooth((time-event.kickAt)/(event.end-event.kickAt));
+    const header=event.origin?.endsWith('header'),finish=event.goalMinute??event.end;
+    const contact=header?finish-.55:finish;
+    const flight=smooth((time-event.kickAt)/(contact-event.kickAt));
     const players=scene.players.map((p,i)=>{
       const target=event.targets[i],phase=elapsed*2.1+i*1.7;
       const scale=anchors[i].role==='GOL'?.35:i===event.taker?.55:1;
@@ -70,7 +72,20 @@ export function createSetPieceMotion(anchors,profiles,match,seed){
       return {x:mix(p.x,x,weight),y:mix(p.y,y,weight)};
     });
     const approach=1-smooth(elapsed/(event.kickAt-event.at));
-    const destination=time<event.kickAt?{x:event.spot.x-direction*1.6*approach,y:event.spot.y+approach*.6}:{x:mix(event.spot.x,event.target.x,flight),y:mix(event.spot.y,event.target.y,flight)+(event.type==='corner'?Math.sin(flight*Math.PI)*(event.spot.y<50?5:-5):0)};
+    let destination=time<event.kickAt?{x:event.spot.x-direction*1.6*approach,y:event.spot.y+approach*.6}:{x:mix(event.spot.x,event.target.x,flight),y:mix(event.spot.y,event.target.y,flight)+(event.type==='corner'?Math.sin(flight*Math.PI)*(event.spot.y<50?5:-5):0)};
+    if(event.goalMinute){
+      const goal={x:50+direction*47,y:50},meet={x:50+direction*35,y:46};
+      if(time>=event.kickAt){
+        const target=header?meet:goal;
+        destination={x:mix(event.spot.x,target.x,flight),y:mix(event.spot.y,target.y,flight)+Math.sin(flight*Math.PI)*(event.type==='corner'?8:2)};
+        if(header&&time>=contact){const shot=smooth((time-contact)/(finish-contact));destination={x:mix(meet.x,goal.x,shot),y:mix(meet.y,goal.y,shot)};}
+      }
+      if(header&&event.scorer>=0){
+        const runner=players[event.scorer],arrive=smooth((time-event.at)/(contact-event.at));
+        runner.x=mix(runner.x,meet.x-direction*1.1,arrive*weight);runner.y=mix(runner.y,meet.y,arrive*weight);
+      }
+      if(time>=finish)destination=goal;
+    }
     const ball={x:mix(scene.ball.x,destination.x,weight),y:mix(scene.ball.y,destination.y,weight)};
     return {...scene,players,ball,owner:weight>.5?(time<event.kickAt?event.taker:-1):scene.owner,possession:event.side,kind:event.type,setPiece:weight>.2?event:null};
   }};

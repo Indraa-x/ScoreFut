@@ -1,6 +1,6 @@
-import {createSetPieceMotion} from './match-set-pieces.js?v=flowing-restarts-20261030';
-import {movementRole,movementProfile,chooseMovement,sampleMovement} from './match-movement-library.js?v=leverkusen-20261029';
-import { hashSeed, mulberry32 } from './engine.js?v=leverkusen-20261029';
+import {createSetPieceMotion} from './match-set-pieces.js?v=set-piece-goals-20261030';
+import {movementRole,movementProfile,chooseMovement,sampleMovement} from './match-movement-library.js?v=set-piece-goals-20261030';
+import { hashSeed, mulberry32 } from './engine.js?v=set-piece-goals-20261030';
 
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const mix = (a, b, progress) => a + (b - a) * progress;

@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.3 — 30/10/2026
+
+A simulação inclui gols de falta, gols olímpicos e cabeçadas após escanteios ou faltas. A cobrança, o cruzamento e a finalização aparecem no campinho; o aviso do gol identifica o tipo de lance. Os resultados seguem o equilíbrio de OVR existente. Faltas e escanteios mantêm movimentos contínuos na velocidade escolhida.
+
 ## Beta 0.2 — 30/10/2026
 
 Faltas com barreira e escanteios agora são encenados no campo da simulação, com identificação da equipe e do minuto. Os lances se repetem ao longo da partida e usam o mesmo comportamento nas três competições. As animações preservam placares e resultados já simulados.

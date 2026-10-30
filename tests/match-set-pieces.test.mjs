@@ -16,7 +16,7 @@ test('repeated corners and fouls are seeded, finite, separate and preserve resul
   for(const [i,event]of motion.setPieces.entries()){
    if(i)assert.ok(event.at>=motion.setPieces[i-1].end+.44);
    assert.ok(event.end<match.result.duration);
-   for(const goal of match.result.events.filter(e=>e.type==='goal'))assert.ok(event.at>=goal.minute+1.3||event.end<=goal.minute-1.8);
+   for(const goal of match.result.events.filter(e=>e.type==='goal'))assert.ok(event.goalMinute===goal.minute&&event.side===goal.team||event.at>=goal.minute+1.3||event.end<=goal.minute-1.8);
    const scene=motion.at(event.at+2);
    assert.equal(scene.setPiece.type,event.type);
    assert.equal(scene.possession,event.side);
