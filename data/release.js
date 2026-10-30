@@ -3,12 +3,12 @@ export const GAME_RELEASE = Object.freeze({
   stage: 'Beta',
   version: '0.1',
   feedbackUrl: 'https://github.com/Indraa-x/ScoreFut/issues/new/choose',
-  description: 'Melhorias e correções aplicadas nesta versão de testes.',
+  description: 'Veja o que melhorou nesta versão do ScoreFut.',
   changes: Object.freeze([
-    {title: 'Campo estável', detail: 'O campo mantém o tamanho após sortear um elenco e quando novos gols aparecem no placar.'},
-    {title: 'Gols mais fáceis de acompanhar', detail: 'Autores separados por equipe e mais espaço para os nomes, com rolagem sem a barra visível.'},
-    {title: 'Escudos mais visíveis', detail: 'As bolinhas mostram o escudo com mais clareza e o OVR abaixo, inclusive ao arrastar jogadores.'},
-    {title: 'Pênaltis e relógio', detail: 'Cobranças automáticas, uma de cada vez, no ritmo normal mesmo com a partida acelerada. Prorrogação até 120 minutos, com os acréscimos ao lado.'},
-    {title: 'Página inicial', detail: 'Novas imagens de jogadores com enquadramento ajustado para PC e celular.'},
+    {icon: 'field', title: 'Campo sem mudar de tamanho', detail: 'O campo fica estável ao sortear o elenco e quando sai um gol.'},
+    {icon: 'ball', title: 'Gols organizados por time', detail: 'Mais espaço no placar para ver quem marcou em cada equipe.'},
+    {icon: 'shield', title: 'Escudos mais nítidos', detail: 'O escudo aparece com clareza, com a nota abaixo da imagem.'},
+    {icon: 'clock', title: 'Pênaltis no ritmo certo', detail: 'Uma cobrança por vez, mesmo no modo rápido. Prorrogação até 120 minutos.'},
+    {icon: 'players', title: 'Novo visual na página inicial', detail: 'Fotos atualizadas e alinhadas no computador e no celular.'},
   ]),
 });

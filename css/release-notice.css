@@ -3,19 +3,26 @@
 .release-notice{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;min-height:34px;padding:4px 0;border:0;border-radius:3px;background:none;color:var(--gold);font:750 11px/1.4 var(--body);font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer}
 .release-notice:hover{text-decoration:underline;text-underline-offset:4px}
 .release-notice:focus-visible{outline:2px solid var(--green);outline-offset:5px}
-.release-details .modal-head{align-items:center;margin-bottom:12px}
-.release-eyebrow{display:block;margin-bottom:6px;color:var(--green);font-size:10px;font-weight:750;letter-spacing:1px}
-.release-details h2{font-family:var(--body);font-size:27px;font-weight:800;line-height:1.25}
-.release-details .icon-button{flex-shrink:0}
+dialog:has(.release-details){width:min(548px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border-radius:16px;overflow-y:auto;overscroll-behavior:contain}
+.release-details .modal-head{align-items:flex-start;gap:16px;padding:24px 24px 0;margin:0}
+.release-eyebrow{display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:500;line-height:1.4}
+.release-details h2{font-family:var(--body);font-size:26px;font-weight:750;letter-spacing:-.5px;line-height:1.3}
+.release-details .icon-button{width:32px;height:32px;min-width:32px;min-height:32px;flex-shrink:0;margin:0;padding:6px;border:0;border-radius:8px;background:transparent;color:var(--muted)}
+.release-details .icon-button:hover{background:var(--soft);color:var(--text)}
 .release-details .icon-button svg{width:18px;height:18px}
-.release-description{font-size:13px;line-height:1.65;color:var(--muted);margin:0 0 8px}
-.release-changes{list-style:none;padding:0;margin:0}
-.release-changes li{padding:15px 0;border-bottom:1px solid var(--border)}
-.release-changes strong{display:block;font-size:13px;font-weight:750;color:var(--text)}
-.release-changes p{margin:5px 0 0;font-size:12px;line-height:1.65;color:var(--muted)}
-.release-feedback{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:18px;font-size:11px;line-height:1.5;color:var(--muted)}
-.release-feedback a{color:var(--green);font-weight:750;text-decoration:underline;text-underline-offset:3px}
-dialog:has(.release-details){max-height:calc(100dvh - 32px);overflow-y:auto}
+.release-description{font-size:13px;line-height:1.6;color:var(--muted);margin:12px 24px 8px}
+.release-changes{list-style:none;padding:0 24px 10px;margin:0}
+.release-changes li{display:flex;align-items:flex-start;gap:13px;padding:15px 0}
+.release-changes li+li{border-top:1px solid color-mix(in srgb,var(--border) 55%,transparent)}
+.release-change-icon{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;margin-top:1px;color:var(--green)}
+.release-change-icon svg{width:21px;height:21px}
+.release-changes li>div{min-width:0}
+.release-changes strong{display:block;font-size:14px;font-weight:650;line-height:1.45;color:var(--text)}
+.release-changes p{margin:4px 0 0;font-size:13px;line-height:1.6;color:var(--muted)}
+.release-feedback{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:17px 24px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--soft) 45%,var(--surface));font-size:12px;line-height:1.5;color:var(--muted)}
+.release-feedback a{display:inline-flex;align-items:center;gap:4px;min-height:28px;color:var(--green);font-weight:650;text-decoration:none}
+.release-feedback a:hover{text-decoration:underline;text-underline-offset:3px}
+.release-feedback a svg{width:15px;height:15px}
 @media(max-width:1200px){.site-header .header-tools>.edition{display:none}}
 @media(min-width:761px) and (max-width:1000px){.site-header .header-tools{margin-left:auto}}
 @media(max-width:760px){
@@ -23,7 +30,11 @@ dialog:has(.release-details){max-height:calc(100dvh - 32px);overflow-y:auto}
  .site-header .header-inner{height:auto;flex-wrap:wrap;row-gap:3px;padding-top:10px;padding-bottom:5px}
  .site-header .header-tools{display:flex;flex:0 0 100%;margin:0;justify-content:center}
  .release-notice{min-height:24px;font-size:10px}
- dialog:has(.release-details){padding:20px;max-height:calc(100dvh - 24px)}
+ dialog:has(.release-details){max-height:calc(100dvh - 24px)}
+ .release-details .modal-head{padding:20px 20px 0}
+ .release-description{margin:10px 20px 6px}
+ .release-changes{padding:0 20px 8px}
+ .release-changes li{padding:13px 0;gap:11px}
+ .release-feedback{padding:14px 20px}
  .release-details h2{font-size:24px}
- .release-changes li{padding:12px 0}
 }
