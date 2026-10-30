@@ -40,3 +40,7 @@
 /* Fade the legends after compositing, keeping overlapping jerseys opaque. */
 .home-stars-group--legends{width:106.4%;margin-inline:-3.2%;padding-inline:3.2%;-webkit-mask-image:linear-gradient(to bottom,#000 56%,rgba(0,0,0,.85) 72%,rgba(0,0,0,.45) 86%,transparent 100%);mask-image:linear-gradient(to bottom,#000 56%,rgba(0,0,0,.85) 72%,rgba(0,0,0,.45) 86%,transparent 100%)}
 .home-stars-group--legends .home-star-portrait img{-webkit-mask-image:none;mask-image:none;filter:url(#home-portrait-solid) saturate(.78)}
+
+/* The supplied pitch replaces the portrait card, fading gently into the page at either side. */
+#app .home-stars{border-color:transparent;box-shadow:none;background-image:linear-gradient(90deg,var(--bg),transparent 12%,transparent 88%,var(--bg)),linear-gradient(180deg,#09241945,#09241966 70%,#06170fbb),url('../assets/home/players-field-20261030.png');background-position:center;background-size:cover;background-repeat:no-repeat}
+#app .home-stars-footer{background:transparent;border-top-color:transparent;color:#e4eee7;text-shadow:0 1px 3px #04140dc9}
