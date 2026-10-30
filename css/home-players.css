@@ -12,6 +12,9 @@
 @keyframes home-stars-legends{0%,23.8095%,66.6667%,100%{opacity:0}33.3333%,57.1429%{opacity:1}}
 @keyframes home-stars-next{0%,57.1429%,100%{opacity:0}66.6667%,90.4762%{opacity:1}}
 .home-star{margin:0;min-width:0;text-align:center;position:relative}
+/* Keep Bellingham behind the other portraits so his arm does not cover Haaland. */
+.home-stars-group--next .home-star{z-index:1}
+.home-stars-group--next .home-star:nth-child(2){z-index:0}
 .home-star-portrait{position:absolute;inset:0;width:100%;isolation:isolate}
 .home-star-portrait img{position:absolute;top:var(--portrait-top);left:50%;width:auto;height:var(--portrait-height);max-width:none;transform:translateX(calc(-1 * var(--portrait-center)));filter:url(#home-portrait-solid);-webkit-mask-image:var(--portrait-fade);mask-image:var(--portrait-fade);user-select:none;pointer-events:none}
 .home-portrait-filters{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
