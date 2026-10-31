@@ -1,0 +1,139 @@
+/* Full competition standings; the compact match sidebar keeps its own layout. */
+#app #champions-content:has(> .champions-group-picker) { max-width: 1100px; margin-inline: auto; }
+#app .champions-group-picker {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
+  width: min(100%, 640px);
+  margin-bottom: 20px;
+  padding: 0;
+  overflow: visible;
+}
+#app .champions-group-picker button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  min-height: 55px;
+  padding: 7px 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  transition: background .15s, border-color .15s;
+}
+#app .champions-group-picker button > span { font-size: 9px; font-weight: 550; line-height: 1.2; }
+#app .champions-group-picker button > b { font-size: 18px; font-weight: 750; line-height: 1.25; }
+#app .champions-group-picker button:hover { background: var(--surface-alt); border-color: var(--muted); }
+#app .champions-group-picker button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-color: var(--green);
+  color: var(--green);
+}
+#app .champions-group-picker i { position: absolute; top: 8px; right: 8px; width: 5px; height: 5px; }
+#app .champions-group-panel { border-radius: 14px; background: var(--surface); }
+#app .champions-group-panel .champions-group-heading { padding: 22px 24px; gap: 18px; }
+#app .champions-group-heading h2 { margin-top: 6px; font-size: 25px; letter-spacing: -.6px; }
+#app .champions-group-heading .eyebrow { color: var(--muted); font-size: 9px; letter-spacing: 1.2px; }
+#app .group-progress { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
+#app .group-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 650;
+  white-space: nowrap;
+}
+#app .group-status.is-complete { color: var(--green); background: var(--accent-soft); }
+#app .group-status svg { width: 14px; height: 14px; flex-shrink: 0; }
+#app .group-progress small { margin: 0; font-size: 11px; color: var(--muted); text-align: right; }
+#app .champions-group-panel .champions-table-scroll { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+#app .champions-group-panel .champions-table { font-size: 13px; }
+#app .champions-group-panel .champions-table th,
+#app .champions-group-panel .champions-table td { padding: 17px 10px; border-color: color-mix(in srgb, var(--border), transparent 30%); }
+#app .champions-group-panel .champions-table thead th { padding-block: 12px; background: var(--surface-alt); font-size: 10px; font-weight: 650; }
+#app .champions-group-panel .champions-table th:nth-child(2) { min-width: 220px; }
+#app .champions-group-panel .champions-table tbody tr { --champions-row-bg: var(--surface); }
+#app .champions-group-panel .champions-table tbody tr:hover { --champions-row-bg: var(--surface-alt); }
+#app .champions-group-panel .champions-table tbody tr.is-user { --champions-row-bg: color-mix(in srgb, var(--accent-soft), var(--surface) 35%); }
+#app .champions-group-panel .champions-table .position { width: 48px; padding-inline: 9px; }
+#app .champions-group-panel .qualification-zone .position { border-left-color: var(--green); }
+#app .group-rank { display: inline-grid; place-items: center; width: 26px; height: 28px; border-radius: 6px; font-size: 12px; color: var(--muted); }
+#app .qualification-zone .group-rank { color: var(--green); background: var(--accent-soft); font-weight: 750; }
+#app .champions-group-panel .qualification-zone:nth-child(2) > * { border-bottom: 1px solid color-mix(in srgb, var(--green) 35%, var(--border)); }
+#app .champions-group-panel .champions-team-name { gap: 12px; }
+#app .champions-group-panel .champions-team-name b { max-width: none; font-size: 14px; font-weight: 650; line-height: 1.35; }
+#app .champions-group-panel .champions-team-name small { margin-top: 4px; font-size: 11px; }
+#app .champions-group-panel .champions-table .club-badge { width: 34px; height: 36px; min-width: 34px; max-width: 34px; min-height: 36px; max-height: 36px; flex: 0 0 34px; }
+#app .champions-group-panel .champions-table .club-badge img { width: 32px; height: 34px; max-width: 32px; max-height: 34px; filter: drop-shadow(0 0 1px #ffffff25); }
+#app .champions-group-panel .points { font-size: 18px; color: var(--text); font-weight: 800; }
+#app .champions-group-panel .qualification-zone .points { color: var(--green); }
+#app .champions-group-panel .champions-form-list { gap: 5px; min-width: 90px; }
+#app .champions-group-panel .champions-form { width: 23px; height: 23px; flex: 0 0 23px; border-radius: 50%; font-size: 10px; font-weight: 750; }
+#app .champions-group-panel .champions-form.win { background: var(--accent-soft); color: var(--green); }
+#app .champions-group-panel .champions-form.draw { background: var(--soft); color: var(--muted); }
+#app .champions-group-panel .champions-form.loss { background: color-mix(in srgb, var(--red) 15%, var(--surface)); color: var(--red); }
+#app .champions-group-panel .champions-form.latest::after { display: none; }
+#app .champions-group-panel .champions-group-legend { padding: 17px 24px; font-size: 11px; gap: 14px; }
+#app .champions-group-panel .form-legend { gap: 6px; }
+#app .champions-group-panel .form-legend .champions-form { width: 17px; height: 17px; flex-basis: 17px; font-size: 9px; }
+#app .champions-table-toggle, #app .champions-table-hint { display: none; }
+@media (max-width: 980px) {
+  #app .champions-group-panel .champions-table:not(.compact) { min-width: 780px; }
+  #app .champions-group-panel .champions-table :is(th, td):first-child { min-width: 48px; width: 48px; }
+  #app .champions-group-panel .champions-table th:nth-child(2) { min-width: 220px; max-width: 220px; left: 48px; }
+  #app .champions-group-panel .champions-team-name b { white-space: normal; overflow-wrap: anywhere; }
+}
+@media (max-width: 650px) {
+  #app .champions-group-picker { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+  #app .champions-group-picker button { min-height: 49px; padding-block: 6px; }
+  #app .champions-group-picker button > b { font-size: 17px; }
+  #app .champions-group-panel .champions-group-heading { padding: 18px 16px; gap: 10px; }
+  #app .champions-group-heading h2 { font-size: 22px; gap: 6px; flex-wrap: wrap; }
+  #app .champions-group-heading h2 > span { font-size: 8px; padding: 3px 5px; }
+  #app .champions-group-heading .eyebrow { font-size: 8px; letter-spacing: .8px; }
+  #app .group-status { padding: 5px 7px; gap: 4px; font-size: 10px; }
+  #app .group-status svg { width: 12px; height: 12px; }
+  #app .group-progress small { font-size: 9px; max-width: 135px; }
+  #app .champions-group-panel .champions-table th,
+  #app .champions-group-panel .champions-table td { padding: 15px 6px; }
+  #app .champions-group-panel .champions-table .position { padding-inline: 2px; }
+  #app .group-rank { width: 23px; height: 26px; font-size: 11px; }
+  #app .champions-group-panel .champions-team-name { gap: 8px; }
+  #app .champions-group-panel .champions-team-name b { font-size: 12px; white-space: normal; text-overflow: clip; line-height: 1.4; }
+  #app .champions-group-panel .champions-team-name small { font-size: 10px; margin-top: 2px; }
+  #app .champions-group-panel .champions-table .club-badge { width: 28px; height: 30px; min-width: 28px; max-width: 28px; min-height: 30px; max-height: 30px; flex-basis: 28px; }
+  #app .champions-group-panel .champions-table .club-badge img { width: 27px; height: 29px; max-width: 27px; max-height: 29px; }
+  #app .champions-group-panel .points { font-size: 17px; }
+  /* Five primary columns fit without reducing type or clipping team names. */
+  #app .champions-group-panel[data-detailed="false"] .champions-table { width: 100%; min-width: 0; table-layout: fixed; }
+  #app .champions-group-panel[data-detailed="false"] .champions-table :is(th, td) { position: static; min-width: 0; max-width: none; width: auto; box-shadow: none; }
+  #app .champions-group-panel[data-detailed="false"] .champions-table :is(th, td):is(:nth-child(4), :nth-child(5), :nth-child(6), :nth-child(7), :nth-child(10)) { display: none; }
+  #app .champions-group-panel[data-detailed="false"] .champions-table :is(th, td):first-child { width: 30px; }
+  #app .champions-group-panel[data-detailed="false"] .champions-table :is(th, td):nth-child(3) { width: 30px; }
+  #app .champions-group-panel[data-detailed="false"] .champions-table :is(th, td):nth-child(8) { width: 37px; }
+  #app .champions-group-panel[data-detailed="false"] .champions-table :is(th, td):nth-child(9) { width: 43px; }
+  #app .champions-group-panel[data-detailed="false"] .form-legend { display: none; }
+  #app .champions-group-panel[data-detailed="true"] .champions-table { width: 760px; min-width: 760px; table-layout: fixed; }
+  #app .champions-group-panel[data-detailed="true"] .champions-table :is(th, td) { position: static; box-shadow: none; }
+  #app .champions-group-panel[data-detailed="true"] .champions-table :is(th, td):first-child { width: 32px; min-width: 32px; }
+  #app .champions-group-panel[data-detailed="true"] .champions-table th:nth-child(2) { width: 160px; min-width: 160px; max-width: 160px; }
+  #app .champions-group-panel[data-detailed="true"] .champions-table :is(th, td):nth-child(9) { min-width: 48px; }
+  #app .champions-group-panel[data-detailed="true"] .champions-table-hint { display: block; padding: 0 16px 12px; font-size: 10px; color: var(--muted); }
+  #app .champions-table-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 45px; background: transparent; color: var(--green); border-top: 1px solid var(--border); font-size: 11px; font-weight: 650; }
+  #app .champions-table-toggle svg { width: 15px; height: 15px; }
+  #app .champions-table-toggle svg:last-child { margin-left: auto; }
+  #app .champions-table-toggle svg:first-child { margin-right: auto; }
+  #app .champions-table-toggle { padding-inline: 16px; }
+  #app .champions-table-toggle:focus-visible { outline-offset: -4px; }
+  #app .champions-group-panel .champions-group-legend { padding: 14px 16px; font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #app .champions-group-picker button { transition: none; }
+}

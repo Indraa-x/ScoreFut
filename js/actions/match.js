@@ -72,6 +72,16 @@ export function matchActions({
       }
       return;
     },
+    "champions-table-detail": async (value, element) => {
+      const panel = app.querySelector('.champions-group-panel');
+      if (state.screen !== 'bracket' || !panel) return;
+      state.championsTableDetailed = !state.championsTableDetailed;
+      panel.dataset.detailed = String(state.championsTableDetailed);
+      element.setAttribute('aria-expanded', String(state.championsTableDetailed));
+      element.querySelector('span').textContent = state.championsTableDetailed ? 'Mostrar resumo' : 'Ver tabela completa';
+      const scroll = panel.querySelector('.champions-table-scroll');
+      if (scroll) scroll.scrollLeft = 0;
+    },
     "champions-round": async (value, element) => {
       if (
         state.screen === "bracket" &&
