@@ -1,3 +1,5 @@
+import {renderKnockoutBracket} from './champions-view.js';
+
 /** Only committed fixtures are passed here; undecided stages have no opponents. */
 export function renderCupStages(t, {esc, icon, badge}) {
   const team=id=>t.teams.find(team=>team.id===id);
@@ -22,9 +24,7 @@ export function renderCupStages(t, {esc, icon, badge}) {
     }).join('')}</div>`;
 }
 
-export function renderBrazilCupBracket(s, {esc, icon, badge, btn, competitionMark}) {
-  return `<div class="screen-title match-page-title"><div>${competitionMark('copa-do-brasil')}<div><span class="eyebrow accent">COPA DO BRASIL</span><h1>Chaveamento</h1><p>Ida e volta até a semifinal. Final em jogo único.</p></div></div>${btn(icon('back')+' Voltar ao jogo','back-match')}</div>
-    <p class="bracket-note">Cada partida pode ter de 1 a 9 minutos de acréscimo. Empate no agregado vai à prorrogação e, se necessário, aos pênaltis.</p>
-    ${renderCupStages(s.tournament,{esc,icon,badge})}
-    <p class="mode-note">Edição histórica com até 16 equipes: seu time e os clubes participantes disponíveis na base. Confrontos e mandos sorteados nas oitavas e quartas; semifinais seguem o chaveamento das quartas.</p>`;
+export function renderBrazilCupBracket(s, helpers) {
+  const {icon,btn,competitionMark}=helpers;
+  return `<div class="champions-competition brazil-cup-competition"><div class="screen-title champions-page-title"><div>${competitionMark('copa-do-brasil')}<div><span class="eyebrow accent">COPA DO BRASIL</span><h1>Chaveamento</h1><p>Ida e volta até a semifinal. Final em jogo único.</p></div></div>${btn(icon('back')+' Voltar ao jogo','back-match')}</div>${renderKnockoutBracket(s,helpers)}</div>`;
 }

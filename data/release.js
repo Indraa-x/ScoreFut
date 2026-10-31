@@ -4,6 +4,7 @@ export const RELEASE_HISTORY=Object.freeze([
   {icon:'bracket',title:'Novo chaveamento do mata-mata',detail:'Cartões compactos com escudos e placares, eliminados riscados, caminho do vencedor em azul e campeão no centro. Janela de cada confronto com ida, volta e épocas dos times.'},
   {icon:'field',title:'A chave inteira no celular',detail:'Deslize pelos confrontos ou toque na fase para acompanhar o mata-mata da Champions e da Copa do Mundo até a final.'},
   {icon:'calendar',title:'Grupos mais legíveis',detail:'Seleção de grupos renovada, classificados destacados e tabela com escudos e pontos maiores. No celular, resumo sem rolagem lateral e botão para todas as estatísticas.'},
+  {icon:'bracket',title:'Copa do Brasil no mesmo visual',detail:'Mata-mata conectado, campeão no centro e detalhes dos jogos com as épocas. A chave respeita o sorteio das quartas e classificações diretas.'},
  ]},
  {version:'0.5',date:'31/10/2026',title:'Mais leve e mais organizado',changes:[
   {icon:'clock',title:'Relógio contando os acréscimos',detail:'O tempo segue após 90 e 120 minutos, mantendo a indicação de acréscimos ao lado.'},

@@ -93,9 +93,9 @@ html[data-theme="dark"] #app .knockout-board {
 }
 #app .knockout-board .champions-tree {
   width: 100%;
-  min-width: 720px;
+  min-width: var(--tree-min-width, 720px);
   height: 560px;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--tree-columns, 7), minmax(0, 1fr));
   gap: 0;
 }
 #app .knockout-board .champions-tree-lines {
@@ -196,6 +196,10 @@ html[data-theme="dark"] #app .knockout-board {
   line-height: 1;
   color: var(--tree-text);
 }
+#app .knockout-board .tie-bye .champions-tie-teams { display: flex; justify-content: center; }
+#app .knockout-board .tie-bye .champions-tie-team { justify-content: flex-start; gap: 5px; }
+#app .knockout-board .tie-bye .champions-tie-team > strong { display: none; }
+#app .knockout-board .champions-bye-label { position: absolute; bottom: 0; font-size: 9px; color: var(--tree-muted); }
 #app .knockout-board .champions-tree-center > .champions-tie {
   left: 50%;
   transform: translate(-50%, -50%);
@@ -388,6 +392,10 @@ html[data-theme="dark"] #modal:has(.champions-tie-dialog) {
 .tie-fixture-score.is-pending { font-size: 9px; color: var(--tie-dialog-muted); white-space: normal; }
 .tie-fixture-decider { text-align: center; margin-top: 10px; color: var(--tie-dialog-muted); font-size: 11px; }
 .tie-fixture-decider b { margin-left: 4px; color: var(--text); }
+.champions-tie-dialog .tie-fixture-bye { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.tie-fixture-bye p { font-size: 12px; color: var(--tie-dialog-muted); }
+#modal .tie-fixture-bye .club-badge { width: 34px; height: 36px; min-width: 34px; min-height: 36px; }
+#modal .tie-fixture-bye .club-badge img { width: 32px; height: 34px; object-fit: contain; }
 .tie-detail-close {
   display: block;
   width: 100%;

@@ -49,14 +49,14 @@ export function matchActions({
     },
     "champions-view": async (value, element) => {
       {
-        if (!["champions", "world-cup"].includes(state.tournament?.mode))
+        if (!["champions", "world-cup", "copa-do-brasil"].includes(state.tournament?.mode))
           return;
         if (state.screen !== "bracket") {
           state.returnScreen = state.screen;
           state.championsGroupId = null;
           state.championsRound = null;
         }
-        state.championsView = value === "knockout" ? "knockout" : "groups";
+        state.championsView = state.tournament.mode === "copa-do-brasil" || value === "knockout" ? "knockout" : "groups";
         navigate("bracket");
         return;
       }
@@ -85,7 +85,7 @@ export function matchActions({
     "champions-round": async (value, element) => {
       if (
         state.screen === "bracket" &&
-        ["champions", "world-cup"].includes(state.tournament?.mode) &&
+        ["champions", "world-cup", "copa-do-brasil"].includes(state.tournament?.mode) &&
         ["round16", "quarter", "semi", "final"].includes(value)
       ) {
         state.championsRound = value;
@@ -96,7 +96,7 @@ export function matchActions({
     },
     "champions-tie": async (value, element) => {
       {
-        if (!["champions", "world-cup"].includes(state.tournament?.mode))
+        if (!["champions", "world-cup", "copa-do-brasil"].includes(state.tournament?.mode))
           return;
         const content = ui.renderChampionsTie(state.tournament, value);
         if (content) {
