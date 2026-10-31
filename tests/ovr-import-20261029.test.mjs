@@ -31,6 +31,6 @@ test('approved October 29 edits reach active eras while retired-era edits remain
 test('other eras and preceding historical rebalances retain their existing ratings',()=>{
  assert.equal(find('barcelona-2015','lionel-messi').ovr,95);
  assert.equal(find('real-madrid-2017','cristiano-ronaldo').ovr,93);
- assert.equal(find('nation-brazil-1958','pele').ovr,96);
+ assert.equal(find('nation-brazil-1958','pele').ovr,97);
  assert.equal(find('nation-hungary-1938','gyula-zsengeller').ovr,88);
 });

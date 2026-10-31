@@ -1,3 +1,4 @@
+import {OVR_REVIEW_20261031} from './ovr-review-20261031.js';
 import {OVR_REVIEW_20261029} from './ovr-review-20261029.js';
 /** Exact local-editor export approved by the creator. */
 export const IMPORTED_OVR_REVIEW=Object.freeze({
@@ -208,7 +209,7 @@ export const IMPORTED_OVR_REVIEW=Object.freeze({
   "sourceFile": "scorefut-overs-acima-93-2026-10-26 (1).json"
 });
 const bySquad={};
-export const IMPORTED_OVR_REVIEWS=Object.freeze([IMPORTED_OVR_REVIEW,OVR_REVIEW_20261029]);
+export const IMPORTED_OVR_REVIEWS=Object.freeze([IMPORTED_OVR_REVIEW,OVR_REVIEW_20261029,OVR_REVIEW_20261031]);
 for(const review of IMPORTED_OVR_REVIEWS)for(const change of review.changes){
  (bySquad[change.squadId]??={})[change.playerId]=Object.freeze({
   squadId:change.squadId,playerId:change.playerId,ovr:change.toOvr,previousOvr:change.fromOvr,
@@ -217,3 +218,6 @@ for(const review of IMPORTED_OVR_REVIEWS)for(const change of review.changes){
  });
 }
 export const IMPORTED_OVR_BY_SQUAD=Object.freeze(Object.fromEntries(Object.entries(bySquad).map(([id,values])=>[id,Object.freeze(values)])));
+
+/** Newest manual edits supersede historical and goalkeeper reviews for the exact era. */
+export const LATEST_IMPORTED_OVR_BY_SQUAD=Object.freeze(Object.fromEntries(Object.entries(IMPORTED_OVR_BY_SQUAD).map(([id,players])=>[id,Object.freeze(Object.fromEntries(Object.entries(players).filter(([,p])=>p.exportedAt===OVR_REVIEW_20261031.exportedAt)))])));

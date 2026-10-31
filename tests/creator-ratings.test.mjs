@@ -124,8 +124,8 @@ test('creator adjustments override season reviews while keeping the earlier revi
   const drogba=player('chelsea-2012','didier-drogba');
   assert.equal(drogba.ovr,88);assert.equal(drogba.archivedRating.ovr,86);
   assert.ok(drogba.archivedRating.source.startsWith('https://'));
-  assert.equal(player('santos-2010','neymar').ovr,78);
-  assert.equal(player('barcelona-2015','neymar').ovr,88);
+  assert.equal(player('santos-2010','neymar').ovr,86);
+  assert.equal(player('barcelona-2015','neymar').ovr,91);
   assert.equal(player('juventus-1998','zinedine-zidane').ovr,93);
   assert.equal(player('real-madrid-2002','zinedine-zidane').ovr,92);
 });

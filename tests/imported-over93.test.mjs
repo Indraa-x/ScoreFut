@@ -30,5 +30,5 @@ test('all eighteen local-editor changes reach their exact player and era, with s
   assert.deepEqual(JSON.parse(JSON.stringify(player)),player);
  }
  assert.equal(allSquads.find(s=>s.id==='barcelona-2009').jogadores.find(p=>p.id==='lionel-messi').ovr,94);
- assert.equal(allSquads.find(s=>s.id==='nation-brazil-1958').jogadores.find(p=>p.id==='pele').ovr,96);
+ assert.equal(allSquads.find(s=>s.id==='nation-brazil-1958').jogadores.find(p=>p.id==='pele').ovr,97);
 });

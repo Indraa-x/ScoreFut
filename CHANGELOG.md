@@ -48,3 +48,8 @@ Escape HTML centralizado; ações separadas em navegação, draft, partida e res
 ## Manutenção — 31/10/2026 — etapa 5
 
 Documentação atualizada para Copa do Mundo, três skips, 43 clubes, 32 seleções, 370 elencos e 4.070 registros. Licença MIT do código confirmada por Indraa; créditos distinguem OFL, CC0, CC-BY-SA e materiais com permissões pendentes. Robots, sitemap datado, imagem social 1200×630 e manifest adicionados. Escolha conservadora: sem service worker por enquanto, para não introduzir cache persistente sem política de atualização; nenhuma promessa de modo offline. Direitos de imagem/marcas e remoção definitiva de retratos do histórico continuam para revisão do autor.
+
+
+## Revisão de OVR — 31/10/2026
+
+Importadas 16 alterações exatas de scorefut-overs-todos-2026-10-31.json. Revisão 22 das notas; cada ajuste vale somente para a pessoa e época indicadas. As revisões manuais mais recentes têm prioridade sobre as anteriores.

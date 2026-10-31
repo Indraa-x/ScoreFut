@@ -27,7 +27,7 @@ test('ratings retain a varied scale and valid simulation attributes',()=>{
   assert.ok(Object.values(p.atributos).every(a=>Number.isInteger(a)&&a>=1&&a<=99),p.id);
   assert.deepEqual(JSON.parse(JSON.stringify(p)),p);
  }
- assert.equal(RATINGS_VERSION,21);
+ assert.equal(RATINGS_VERSION,22);
 });
 
 test('each verified rating identifies its exact player, source and following edition',()=>{
@@ -59,8 +59,8 @@ test('2015 uses FIFA 16, recent seasons use FC 26, and transfers keep the same p
   ['psg-2025','gianluigi-donnarumma',89,'FC 26'],
   ['tottenham-2025','son-heung-min',84,'FC 26'],
  ]){
-  const found=player(squad,id);assert.equal(found.ovr,ovr,`${squad}/${id}`);
-  assert.equal(found.ratingEdition,game);assert.equal(found.ratingKind,'release-rating');
+  const found=player(squad,id);const manual=creatorRatingReview(squad,id);assert.equal(found.ovr,manual?.ovr??ovr,`${squad}/${id}`);
+  assert.equal(found.releaseRating.edition,game);assert.equal(found.releaseRating.ovr,ovr);assert.equal(found.ratingKind,manual?'creator-review':'release-rating');
  }
  assert.equal(player('barcelona-2015','lionel-messi').ovr,95);
  assert.equal(player('barcelona-2015','lionel-messi').ratingKind,'creator-review');

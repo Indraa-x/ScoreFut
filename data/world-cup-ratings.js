@@ -1,6 +1,6 @@
 import {HISTORICAL_NATIONAL_REVIEWS} from './historical-national-review.js';
 /** Direct creator reviews apply only to the requested national team and era. */
-import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js';
+import {IMPORTED_OVR_BY_SQUAD,LATEST_IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js';
 const reviews=[
  ['nation-hungary-1954',[
   ['gyula-grosics',92,88],['jeno-buzanszky',86,82],['gyula-lorant',88,85],
@@ -32,7 +32,7 @@ export const GOALKEEPER_CREATOR_REVIEWS=Object.freeze(Object.fromEntries([
  reason:'Ajuste de goleiro solicitado pelo criador em 30/10/2026, exclusivo desta seleção e época.',
 })})])));
 export function applyWorldCupRatingReview(player,squadId){
- const review=GOALKEEPER_CREATOR_REVIEWS[squadId]?.[player.id]??HISTORICAL_NATIONAL_REVIEWS[squadId]?.[player.id]??IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
+ const review=LATEST_IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??GOALKEEPER_CREATOR_REVIEWS[squadId]?.[player.id]??HISTORICAL_NATIONAL_REVIEWS[squadId]?.[player.id]??IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
  if(!review)return player;
  const delta=review.ovr-player.ovr;
  return {...player,ovr:review.ovr,ratingKind:'creator-review',creatorReview:review,

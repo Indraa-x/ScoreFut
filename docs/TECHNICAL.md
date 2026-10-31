@@ -41,14 +41,14 @@ Não é necessário `npm install` para esses comandos ou para jogar. Para ferram
 
 Revisões manuais do criador vencem notas verificadas. Para clubes:
 
-1. Revisão direta mais recente (como Courtois, Real Madrid 2022, 92).
+1. Revisão manual de 31/10/2026 (`ovr-review-20261031.js`); depois revisões diretas anteriores, como Courtois, Real Madrid 2022, 92.
 2. `imported-ovr-review.js`, na ordem cronológica de suas importações, incluindo `ovr-review-20261029.js`.
 3. `creator-ratings.js` (edições do criador e revisões diretas desse arquivo).
 4. Nota da edição correta em `release-ratings.js` (FIFA/FC lançado no ano da temporada, nomeado pela edição seguinte).
 5. Revisão editorial de época em `season-ratings.js`, incluindo a revisão vintage.
 6. Estimativa original identificada.
 
-`fifa-archive-ratings.js` e `modern-ratings.js` preservam a nota da edição anterior como procedência, sem vencer uma revisão manual ou a edição correta. Para seleções: revisão direta dos goleiros, revisão histórica manual, importações recentes e revisões originais da Copa, nessa ordem. As datas e fontes ficam no registro; metadados originais não devem ser inventados.
+`fifa-archive-ratings.js` e `modern-ratings.js` preservam a nota da edição anterior como procedência, sem vencer uma revisão manual ou a edição correta. Para seleções: revisão manual de 31/10/2026, revisão direta dos goleiros, revisão histórica manual, importações anteriores e revisões originais da Copa, nessa ordem. As datas e fontes ficam no registro; metadados originais não devem ser inventados.
 
 **Nenhum OVR ativo mudou nesta manutenção.** Expectativas antigas dos testes passaram a respeitar revisões posteriores. `release-rating-audit.json` é um retrato histórico; não deve ser reescrito para fingir que ajustes recentes já existiam.
 

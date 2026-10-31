@@ -1,3 +1,4 @@
+import {LATEST_IMPORTED_OVR_BY_SQUAD} from '../data/imported-ovr-review.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {worldCupNations,worldCupSquads,allSquads} from '../data/game-squads.js';
@@ -5,7 +6,7 @@ import {squadTeam,FORMATIONS,positionFit} from '../js/engine.js';
 import {createDraft,drawSquad,refreshDraftRatings} from '../js/draft.js';
 const replacements=[
  ['nation-spain-1950','nation-spain-2006',[[49369,86],[113422,88]]],
- ['nation-sweden-1950','nation-sweden-2006',[[41236,86],[6975,83]]],
+ ['nation-sweden-1950','nation-sweden-2006',[[41236,87],[6975,83]]],
  ['nation-uruguay-1930','nation-uruguay-2014',[[176580,89],[179813,85]]],
  ['nation-uruguay-1950','nation-uruguay-2018',[[176580,91],[179813,89],[182493,90]]],
  ['nation-united-states-1930','nation-united-states-2022',[[227796,82],[233267,77],[229348,74]]],
@@ -27,8 +28,8 @@ test('all 55 replacements carry era-specific FIFA ratings and traceable player i
  for(const [,newId]of replacements){
   const s=worldCupSquads.find(s=>s.id===newId);assert.equal(s.jogadores.length,11);
   for(const p of s.jogadores){
-   assert.equal(p.ratingKind,'release-rating');assert.equal(p.releaseRating.releaseYear,s.ano);
-   assert.equal(p.releaseRating.edition,'FIFA '+String(s.ano+1).slice(-2));assert.equal(p.releaseRating.ovr,p.ovr);
+   const manual=LATEST_IMPORTED_OVR_BY_SQUAD[s.id]?.[p.id];assert.equal(p.ratingKind,manual?'creator-review':'release-rating');assert.equal(p.releaseRating.releaseYear,s.ano);
+   assert.equal(p.releaseRating.edition,'FIFA '+String(s.ano+1).slice(-2));assert.equal(p.ovr,manual?.ovr??p.releaseRating.ovr);
    assert.equal(p.releaseRating.eaId,p.eaId);assert.match(p.worldCupPlayerId,/^P-/);assert.match(p.birthDate,/^\d{4}-\d{2}-\d{2}$/);
    assert.ok(Object.values(p.atributos).every(v=>Number.isInteger(v)&&v>=1&&v<=99));
    for(const existing of allSquads.flatMap(t=>t.jogadores).filter(t=>t.worldCupPlayerId===p.worldCupPlayerId))assert.equal(existing.id,p.id);

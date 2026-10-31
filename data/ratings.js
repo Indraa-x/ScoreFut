@@ -3,7 +3,7 @@ import { MODERN_RATINGS_BY_SQUAD } from './modern-ratings.js';
 import { RELEASE_RATINGS_BY_SQUAD } from './release-ratings.js';
 export {RELEASE_RATINGS_BY_SQUAD};
 import { CREATOR_RATINGS_BY_SQUAD } from './creator-ratings.js';
-import {IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js';
+import {IMPORTED_OVR_BY_SQUAD,LATEST_IMPORTED_OVR_BY_SQUAD} from './imported-ovr-review.js';
 import { SEASON_RATINGS_BY_SQUAD } from './season-ratings.js';
 export { SEASON_RATINGS_BY_SQUAD };
 
@@ -11,7 +11,7 @@ export { SEASON_RATINGS_BY_SQUAD };
  * Historical FIFA/EA SPORTS FC OVRs, with explicit reviews for exceptional
  * seasons and a conservative fallback where no archived rating is available.
  */
-export const RATINGS_VERSION = 21;
+export const RATINGS_VERSION = 22;
 export const MAX_OVR = 99;
 
 // Legacy same-year records are retained only as provenance. Active ratings
@@ -256,7 +256,7 @@ export function recalibratePlayer(player, attributeFloor = 1) {
 export function creatorRatingReview(squadId,playerId){
   const player={id:playerId};
   const directReview = squadId==='real-madrid-2022'&&player.id==='thibaut-courtois' ? {squadId,playerId:player.id,previousOvr:90,ovr:92,reviewedAt:'2026-10-30',source:'data/ratings.js',reason:'Ajuste solicitado pelo criador: Courtois do Real Madrid 2022 com OVR 92.'} : undefined;
-  return directReview ?? IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id] ?? CREATOR_RATINGS_BY_SQUAD[squadId]?.[player.id];
+  return LATEST_IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id] ?? directReview ?? IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id] ?? CREATOR_RATINGS_BY_SQUAD[squadId]?.[player.id];
 }
 
 /** Creator JSON/direct edits > verified following edition > editorial season review. */
