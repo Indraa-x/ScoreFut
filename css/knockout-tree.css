@@ -1,3 +1,62 @@
+/* Phase navigation follows the same quiet underline used by the site header. */
+#app .champions-phase-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  width: min(100%, 340px);
+  margin: 0 0 24px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+}
+#app .champions-phase-picker button {
+  position: relative;
+  min-height: 49px;
+  padding: 12px 8px;
+  gap: 9px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 650;
+  transition: color .16s;
+}
+#app .champions-phase-picker button:hover { color: var(--text); }
+#app .champions-phase-picker button[aria-pressed="true"] {
+  color: var(--text);
+  background: transparent;
+  font-weight: 750;
+  box-shadow: none;
+}
+#app .champions-phase-picker button[aria-pressed="true"]::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--green);
+}
+#app .champions-phase-picker .competition-phase-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+#app .champions-phase-picker button[aria-pressed="true"] .competition-phase-icon { color: var(--green); }
+#app .champions-phase-picker button:focus-visible { outline-offset: -3px; border-radius: 5px; }
+@media (max-width: 650px) {
+  #app .champions-phase-picker { width: 100%; margin-bottom: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #app .champions-phase-picker button { transition: none; }
+}
+
 /* One connected tree on desktop and touch screens. Cards conceal the line ends. */
 #app .knockout-board {
   --tree-bg: #fff;
