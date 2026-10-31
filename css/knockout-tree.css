@@ -268,8 +268,9 @@ html[data-theme="dark"] #modal:has(.champions-tie-dialog) {
   padding: 16px 19px 20px;
   border-bottom: 1px solid var(--tie-dialog-border);
 }
-.tie-fixture-eras {
-  margin-bottom: 6px;
+.tie-fixture-era {
+  grid-column: 1 / -1;
+  text-align: center;
   color: var(--tie-dialog-muted);
   font-size: 11px;
   line-height: 1.4;
@@ -277,18 +278,19 @@ html[data-theme="dark"] #modal:has(.champions-tie-dialog) {
 .tie-fixture-line {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 52px minmax(0, 1fr);
-  align-items: center;
+  align-items: stretch;
   gap: 7px;
   min-height: 26px;
 }
 .tie-fixture-team {
-  display: flex;
+  display: grid;
+  grid-template-rows: 15px minmax(26px, 1fr);
   align-items: center;
-  gap: 6px;
+  gap: 5px 6px;
   min-width: 0;
 }
-.tie-fixture-home { justify-content: flex-end; text-align: right; }
-.tie-fixture-away { justify-content: flex-start; text-align: left; }
+.tie-fixture-home { grid-template-columns: minmax(0, auto) 24px; justify-self: end; text-align: right; }
+.tie-fixture-away { grid-template-columns: 24px minmax(0, auto); justify-self: start; text-align: left; }
 .tie-fixture-team b {
   min-width: 0;
   font-size: 13px;
@@ -313,6 +315,10 @@ html[data-theme="dark"] #modal:has(.champions-tie-dialog) {
   object-fit: contain;
 }
 .tie-fixture-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
   text-align: center;
   font-size: 14px;
   line-height: 1.2;
