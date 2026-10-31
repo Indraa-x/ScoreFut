@@ -118,3 +118,8 @@ Encontrou um erro ou teve uma ideia? Use os formulários de **[relato de bug](ht
 <p align="center">
   Projeto independente criado por <a href="https://github.com/Indraa-x/ScoreFut"><strong>Indraa</strong></a>, sem vínculo com clubes, ligas ou jogadores.
 </p>
+
+
+## Licença e créditos
+
+Código sob [MIT](LICENSE), © 2026 Indraa. Assets e dados de terceiros seguem as licenças e pendências de [CREDITS.md](CREDITS.md). Deploy: em Settings → Pages, escolha GitHub Actions; o workflow publica dist/.

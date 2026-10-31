@@ -43,3 +43,8 @@ WebP com dimensões originais e fallback PNG/JPG preservado. Fontes locais sob O
 ## Manutenção — 31/10/2026 — etapa 4
 
 Escape HTML centralizado; ações separadas em navegação, draft, partida e resultado. Anúncios acessíveis limitados a placar, resultado e avisos, sem aria-live em toda a aplicação. Migrações antigas documentadas com critérios de remoção. ESLint e Prettier são ferramentas opcionais de desenvolvimento: jogar, testar e preparar o site não exigem npm install. Sem alteração de regras ou aparência.
+
+
+## Manutenção — 31/10/2026 — etapa 5
+
+Documentação atualizada para Copa do Mundo, três skips, 43 clubes, 32 seleções, 370 elencos e 4.070 registros. Licença MIT do código confirmada por Indraa; créditos distinguem OFL, CC0, CC-BY-SA e materiais com permissões pendentes. Robots, sitemap datado, imagem social 1200×630 e manifest adicionados. Escolha conservadora: sem service worker por enquanto, para não introduzir cache persistente sem política de atualização; nenhuma promessa de modo offline. Direitos de imagem/marcas e remoção definitiva de retratos do histórico continuam para revisão do autor.

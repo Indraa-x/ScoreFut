@@ -1,204 +1,84 @@
 # Documentação técnica do ScoreFut
 
-Jogo de draft e simulação de futebol em português do Brasil. Monte uma escalação de **11 jogadores — um goleiro e dez de linha**. Cada sorteio oferece onze destaques de um clube ou seleção em uma época histórica; escolha um atleta por rodada e dispute a competição. Os modos visíveis são Euro, Copa do Brasil e Champions League; campanhas antigas do Modo rápido continuam legíveis.
+## Visão geral
 
-São 43 clubes, com cinco épocas distintas por clube: 215 elencos e 2.365 registros. A Euro acrescenta 24 seleções e 101 edições reais, totalizando 316 elencos e 3.476 registros. As épocas e notas da Euro estão em [EURO-SOURCES.md](../data/EURO-SOURCES.md). A Champions oferece 28 clubes europeus; a Copa do Brasil, 15 brasileiros. Todos os escudos são arquivos locais com fontes e hashes em `assets/logos/sources.json`. O projeto usa módulos JavaScript, HTML e CSS, sem dependências de execução. OVRs seguem a [política de edição e prioridades](../data/RATING-SOURCES.md). “Meu time” conserva seu símbolo genérico.
+Jogo em HTML, CSS e módulos JavaScript, sem framework e sem dependências de execução. Desenvolvimento e CI: Node 22. O navegador monta onze jogadores, um goleiro e dez de linha, em oito formações. **Três skips compartilhados** por draft; sorteio inicial gratuito. Sorteios dão a mesma chance a cada clube/seleção elegível e depois escolhem uma época elegível.
 
-A Copa do Brasil oferece Flamengo, Palmeiras, São Paulo, Corinthians, Santos, Grêmio, Internacional, Vasco, Fluminense, Botafogo, Cruzeiro, Atlético-MG, Athletico-PR, Bahia e Fortaleza. Boca Juniors e River Plate foram removidos da base ativa.
+Catálogo atual validado por `npm run check`: **43 clubes, 32 seleções, 370 elencos, 4.070 registros de jogadores**. Clubes: cinco épocas cada, 215 elencos. Seleções: até cinco épocas reais cada, 155 elencos. Não se deve duplicar pessoas com nomes parecidos ou reutilizar OVR de outra época.
 
-As quatro escalações europeias adicionais e suas referências estão em [VERIFICACAO-CHAMPIONS.md](../data/VERIFICACAO-CHAMPIONS.md).
+| Competição | Catálogo e formato |
+| --- | --- |
+| Copa do Mundo | 32 seleções; oito grupos de quatro, três jogos por seleção, dois classificados; oitavas até final em jogo único |
+| Copa do Brasil | 15 clubes brasileiros; oitavas, quartas e semifinais com ida/volta, final única |
+| Champions League | 28 clubes europeus; grupos e mata-mata de ida/volta até a semifinal, final única |
 
-## Executar localmente
+## Execução e verificação
 
-```powershell
+```sh
 npm run dev
-```
-
-Abra [http://127.0.0.1:4173](http://127.0.0.1:4173). Não é necessário executar `npm install`. O servidor está em `scripts/serve.mjs`; encerre com `Ctrl+C`.
-
-## Como jogar
-
-1. Escolha o modo e clique em uma das oito formações. O botão selecionado fica destacado e a prévia do campo muda imediatamente.
-2. Sorteie um clube e uma temporada. Arraste o jogador com o mouse para uma vaga livre destacada no campo. Também é possível clicar no jogador e depois na vaga.
-3. Ao soltar o jogador ou clicar na vaga, a escolha entra diretamente no time, sem botão de confirmação. São **onze rodadas**, em qualquer ordem. O mesmo jogador não pode entrar duas vezes, mesmo em temporadas diferentes.
-4. Os três re-sorteios valem para o draft inteiro. “Outro clube” e “Outra temporada” usam o mesmo saldo. Elencos sorteados ou descartados não voltam.
-5. Complete as onze vagas e entre na competição. Acompanhe a partida automática, avance pelo botão no topo ao fim de cada jogo e baixe o resultado como PNG.
-
-Nos modos de draft, o nome do time é “Meu time”, sem campo de edição. No Modo rápido, ele corresponde ao clube e à temporada escolhidos. Um draft salvo da versão anterior é adaptado para as novas formações, preservando o máximo de escolhas compatíveis. Histórico concluído anteriormente permanece disponível.
-
-Os sorteios de clubes são livres e uniformes: cada clube com jogadores compatíveis tem a mesma chance, independentemente do OVR, de quantas épocas ainda tem disponíveis ou de quantas vezes já apareceu. Depois de escolher o clube, cada época elegível dele também tem a mesma chance. Um clube pode voltar em outra época por acaso; o mesmo elenco já visto não volta. “Outro clube” exclui o atual, e “Outra temporada” mantém o clube. Não há o antigo peso de dificuldade na Champions. Cada clique usa novos valores de Web Crypto, com rejeição do excedente para evitar viés na conversão para índices. Os geradores por semente continuam no motor de partidas e nos drafts diários antigos; escolhas salvas permanecem preservadas.
-
-## Seleção leve de jogadores
-
-A lista mostra posição, nome e OVR. Ao arrastar, o cursor leva a própria bolinha visual do campo, com escudo do clube e OVR legível, sem retângulo de informações. O marcador compartilha o HTML e os estilos do campo, usa o mesmo tamanho e preserva o ponto em que foi segurado. Ao reposicionar um jogador, a bolinha original fica oculta até soltar ou cancelar; o arraste termina na vaga compatível ou volta à origem. Também funciona na revisão da escalação e nas trocas de posições ocupadas quando os dois jogadores são compatíveis. Não há fotos, cartinhas ou pré-carregamento de retratos; um novo atleta exige somente dados de elenco. O catálogo antigo em `assets/players/` é um arquivo de pesquisa e não é importado pelo jogo. As doze imagens da página inicial permanecem.
-
-## Partidas
-
-A central de partidas mostra o placar e as duas escalações de onze jogadores em um campo com movimentação contínua. As bolinhas numeradas usam as cores das equipes, acompanham as formações e avançam e recuam com a posse; a bola percorre passes e finalizações, com os gols sincronizados ao placar. Os autores dos gols aparecem no painel lateral “Gols da partida”, separados por equipe, com o nome completo e os minutos. Esse painel tem altura fixa e rolagem, sem ocupar o espaço do campo. A lista só revela gols que já aconteceram no relógio; os outros eventos e as cobranças da disputa de pênaltis não entram nela. O OVR das duas equipes aparece no placar. A disputa de pênaltis aparece separada do placar do jogo. Estatísticas, listas de lances, escanteios e cartões não aparecem nessa tela.
-
-A partida começa e continua automaticamente, inclusive ao retomar um save. O tempo aparece somente no relógio do placar, sem barra de progresso ou previsão de término abaixo do campo. Não há botões de assistir, pausar ou pular para o fim. O botão no topo libera a próxima partida, etapa ou resultado quando o jogo termina. O relógio avança continuamente em minutos e segundos, sem saltos por intervalos fixos. **Normal** usa 4×: o tempo regulamentar dura cerca de 22,5 segundos. **Rápido** usa 8× e dura cerca de 11,25 segundos. Saves antigos em 1× adotam o novo Normal; saves em 4× ou 8× conservam a velocidade efetiva. Alterar a velocidade preserva o minuto e a posição dos jogadores. Ao ocultar a aba, o jogo salva o progresso e suspende a animação; ela continua automaticamente ao voltar à aba.
-
-Na Champions, a coluna lateral começa com uma tabela de grupo legível: escudos maiores, nomes completos com quebra de linha, temporada de cada elenco, jogos, saldo e pontos. O seu time fica destacado em verde suave e as duas primeiras posições indicam a zona de classificação. A coluna também mostra os gols da partida e o próximo adversário. Os demais jogos do calendário e os resultados anteriores ficam em seções expansíveis. Cada campanha usa um novo sorteio, respeitando os clubes de seu modo. O calendário de grupos é conhecido após o sorteio; na Copa do Brasil, a volta é marcada junto da ida. Adversários de fases seguintes aparecem conforme a classificação e os sorteios. O site prepara somente a rodada atual e confirma seus resultados no apito final, sem calcular a Copa inteira antes de começar. Tabela e chaveamento mostram apenas rodadas encerradas. Saves antigos de Copa são reconstruídos até a partida que estava sendo acompanhada, preservando o draft e o minuto.
-
-A tela da simulação prioriza placar e relógio grandes, campo central e um único botão de avanço no topo. Seu time é verde e o adversário azul, inclusive fora de casa; a legenda abaixo do campo identifica as equipes e o sentido do ataque. O resultado mostra Vitória, Empate ou Derrota; no jogo de volta da Copa do Brasil, o agregado decide Classificado ou Eliminado. Os controles têm apenas **Normal** e **Rápido**, sem título ou multiplicadores visíveis. Normal selecionado é verde; Rápido selecionado é amarelo com um raio. Clicar em Rápido dispara uma tremida de 280 ms, com deslocamento máximo de 1,5 px e um pequeno pulso do raio; a preferência por movimento reduzido desativa esses efeitos. No computador, placar, campo e controles usam a altura disponível da tela; a coluna lateral tem rolagem própria quando necessário. Em telas menores, os próximos jogos ficam abaixo do campo. A movimentação é uma representação visual do resultado gerado pelo motor, sem física individual dos atletas.
-
-## Formações e posições
-
-| Formação | Defesa | Meio | Ataque |
-|---|---|---|---|
-| 4–3–3 | LD, ZAG, ZAG, LE | VOL, MC, MC | PE, CA, PD |
-| 4–4–2 | LD, ZAG, ZAG, LE | MD, MC, MC, ME | CA, CA |
-| 4–2–3–1 | LD, ZAG, ZAG, LE | VOL, VOL; ME, MEI, MD | CA |
-| 4–2–4 | LD, ZAG, ZAG, LE | MC, MC | PE, CA, CA, PD |
-| 3–5–2 | ZAG, ZAG, ZAG | MD, VOL, MC, MC, ME | CA, CA |
-| 5–3–2 | LD, ZAG, ZAG, ZAG, LE | VOL, MC, MC | CA, CA |
-| 4–5–1 | LD, ZAG, ZAG, LE | ME, MC, VOL, MC, MD | CA |
-| 3–4–3 | ZAG, ZAG, ZAG | ME, MC, MC, MD | PE, CA, PD |
-
-Todas incluem um GOL. As coordenadas e vagas estão em `FORMATIONS`, em `js/engine.js`.
-
-A compatibilidade considera a **posição específica da vaga**, além das tags secundárias do atleta. Posições naturais e semelhantes mantêm a nota e todos os atributos do jogador, sem redução. Ao arrastar ou selecionar um jogador, as vagas compatíveis ficam destacadas; posições ocupadas ou incompatíveis não recebem o jogador. Sem vaga compatível, a opção fica desabilitada. Exemplos: ZAG puro ocupa ZAG; CA puro ocupa CA; LD pode ocupar LE ou MD; VOL pode ocupar MC ou ZAG. As regras completas estão em `ROLE_COMPATIBILITY`; o valor 0 significa posição natural e 1 significa semelhante, usado somente para priorizar vagas no motor.
-
-As famílias GOL/DEF/MEI/ATA servem para calcular atributos e colorir os indicadores. Elas não liberam qualquer posição de uma mesma família.
-
-A força geral é a média do OVR dos jogadores escalados. Clube e temporada não acrescentam bônus de entrosamento ou alteram o OVR. A dificuldade aplica uma ajuda leve ao time do usuário na probabilidade de gols, sem mudar notas ou atributos.
-
-## Modos
-
-| Modo | Formato |
-|---|---|
-| Euro | 24 equipes em seis grupos, dois primeiros e quatro melhores terceiros; mata-mata em jogo único, até sete partidas |
-| Copa do Brasil | Até 16 equipes, uma temporada por clube brasileiro e Meu time; oitavas, quartas e semifinais em ida e volta; final em jogo único |
-| Champions League | 28 clubes europeus históricos da base; 32 elencos no formato clássico de grupos e mata-mata |
-| Modo Lendas | Copa com as notas ocultas durante o draft |
-
-Compatibilidade do Modo rápido antigo: a Euro o substitui nas escolhas de novos modos. O código antigo mantém as campanhas salvas legíveis, com a identidade original em amarelo, âmbar e laranja. A mesma identidade aparece nos botões, etapas, filtros, atributos, resultado e PNG da campanha rápida. Primeiro escolha uma das oito formações e clique em Escolher time. Depois escolha um dos 43 clubes; a temporada mais recente compatível com a formação escolhida aparece pronta no campinho. A formação não é substituída automaticamente. Clubes sem uma temporada compatível ficam identificados e desabilitados; use Alterar formação para escolher outro esquema. Essa escolha não inicia a simulação. Na prévia, é possível trocar entre temporadas compatíveis do clube ou voltar para escolher outro time mantendo a formação. Somente **Pular para simulação** calcula a campanha inteira, usando o motor por OVR e atributos com a ajuda leve de dificuldade. Escudo, nome do clube e jogadores são preservados no resultado e no histórico.
-
-A biblioteca do Modo rápido tem busca sem distinção de acentos ou maiúsculas, filtros Brasil/Europa e cards com temporada e OVR do mesmo elenco que será escolhido. A prévia mostra os titulares no campo, os quatro atributos do time, as conquistas da temporada e uma única ação principal para simular. O estado da busca é mantido ao voltar para escolher outro clube. As telas inicial, de revisão, de partida e de resultado compartilham superfícies claras, títulos fortes e divisores discretos em `css/design-system.css`; o fluxo rápido fica em `css/quick-game.css`.
-
-Referências de organização da interface: [hierarquia visual, Nielsen Norman Group](https://www.nngroup.com/articles/visual-hierarchy-ux-definition/) e [fluxo de jogo, 7a0](https://7a0.com.br/como-jogar). O projeto mantém seu próprio visual e regras de simulação.
-
-Campanhas antigas da Copa ScoreFut e Champions: os dois primeiros de cada grupo avançam, sem repetição de clube dentro do grupo. Empates eliminatórios passam por prorrogação e pênaltis. Elencos usados no draft são excluídos dos adversários em todas as categorias.
-
-Copa do Brasil: edição histórica adaptada aos 15 clubes da base, todos confirmados entre os participantes de 2026. Meu time completa até 16 equipes; não há estrangeiros, grupos ou pontos corridos. Cada clube entra com uma temporada disponível. Oitavas e quartas têm confrontos e mandos sorteados; semifinais seguem a chave das quartas, com sorteio do mando. A ida não elimina ninguém. Após a volta, a soma dos gols decide; empate leva diretamente aos pênaltis, sem gol fora ou prorrogação. A final é uma única partida em campo neutro, também com pênaltis se empatada. São até sete jogos por campanha. Se o draft consumir todas as temporadas de um clube, esse clube fica fora e vagas vazias dão acesso à próxima fase, sem duplicar clubes ou inventar jogos.
-
-Referências: [regulamento CBF 2026, artigos 12 e 18–24](https://stcbfsiteprdimgbrs.blob.core.windows.net/img-site/cdn/REC_Copa_do_Brasil_2026_66989a5426.pdf) e [clubes da quinta fase](https://www.cbf.com.br/futebol-brasileiro/noticias/undefined/sao-paulo-x-esporte-clube-bahia/sorteio-da-copa-do-brasil-define-confrontos-da-5-fase). A competição oficial completa tem 126 participantes; este modo começa nas oitavas com os elencos históricos disponíveis, sem representar a edição completa.
-
-Filtros e logos estão em `data/competitions.js`. As logos da Copa do Brasil e Champions foram baixadas do Football Logos para `assets/competitions/`, com origem em `sources.json`. O Brasileirão saiu das escolhas. Drafts antigos desse modo preservam a escalação para iniciar a Copa do Brasil; históricos concluídos mantêm os resultados originais. Drafts antigos do modo diário continuam como Copa ScoreFut; o identificador rápido agora corresponde ao Modo rápido. Campanhas antigas da Copa ScoreFut continuam disponíveis no histórico e podem ser retomadas.
-
-## Dados históricos
-
-`data/clubs.js` exporta `clubs`, `allSquads`, `ELENCO_TAMANHO = 11` e `validateData()`. Os registros estão em `clubs-a.js`, `clubs-b.js` e `clubs-c.js`. Cada temporada oferece um goleiro e dez jogadores de linha, ordenados por OVR.
-
-O helper de cada lote gera atributos por perfil. Um jogador exportado contém:
-
-```js
-{
-  id: 'identificador-da-pessoa',
-  nome: 'Nome do atleta',
-  camisa: '',
-  tags: ['MC', 'MEI'],
-  ovr: 88,
-  atributos: {
-    ataque: 81, meio: 89, defesa: 73,
-    finalizacao: 74, reflexo: 22, posicionamento: 85,
-  },
-  destaque: '',
-}
-```
-
-Mantenha o mesmo ID para a mesma pessoa em todos os clubes e anos; use IDs distintos para homônimos. Deixe a camisa vazia quando desconhecida. Notas de 90–99 representam elite excepcional; 80–89, bons titulares e grandes jogadores; 70–79, jogadores de apoio. A seleção dos onze é uma curadoria com cobertura de posições, não um ranking oficial nem necessariamente os titulares de uma única partida.
-
-`data/season-expansion.js` amplia e revisa o catálogo para cinco épocas por clube. `data/ratings.js` aplica, nessa ordem, os ajustes do criador, o OVR verificado da edição lançada naquele ano e a estimativa editorial. `data/release-ratings.js` registra edição e fonte por jogador/época. Notas legadas da edição de mesmo ano ficam apenas como histórico em `archivedRating`, sem substituir a regra atual. OVRs alteram os seis atributos pela diferença assinada da nota, com limites de 1–99; reaplicar a correção não acumula bônus.
-
-Ao retomar um draft, as notas são atualizadas pela mesma temporada. O limite passa para três skips, conservando quantos já foram usados e sem conceder saldo repetidamente. Competições iniciadas e resultados concluídos mantêm suas escalações e notas salvas.
-
-Na Europa, o ano indica o encerramento da temporada: 2024 significa 2023/24. Na América do Sul, segue a edição da competição; a edição 2020 da Libertadores terminou em 2021.
-
-As referências de vínculo, posição e conquistas estão em [VERIFICACAO-A.md](../data/VERIFICACAO-A.md) , [fontes-b.md](../data/fontes-b.md) e [fontes-c.md](../data/fontes-c.md).
-
-A validação confere 43 clubes, cinco temporadas únicas por clube, 215 elencos, **2.365 registros**, onze jogadores únicos por elenco, exatamente um goleiro, tags válidas, OVR e atributos obrigatórios. No console:
-
-```js
-const { validateData } = await import('./data/clubs.js');
-console.log(validateData());
-```
-
-## Motor e verificação
-
-`js/engine.js` calcula ataque, meio, defesa, goleiro e força geral. O motor recebe explicitamente o estado e o gerador aleatório e retorna novos resultados sem alterar os times e torneios recebidos.
-
-`squadTeam()` escala **onze atletas únicos**, com um goleiro, em uma das oito formações. Um algoritmo de atribuição por máscara de bits prioriza posições naturais e considera os atributos completos. Elencos sem uma formação válida geram um erro; não são preenchidos com atletas repetidos ou inventados.
-
-A equação é `xG = 1.3 × (ataque / defesa adversária)^1.6`, limitada a 0,2–4,5. Os gols são sorteados por Poisson. `hashSeed()` e `mulberry32()` permitem repetir sorteios e partidas por semente. Eventos carregam minuto, tipo, jogador e coordenadas para placar, campo e linha do tempo.
-
-O modelo 3 mantém a base por OVR e atributos e acrescenta uma ajuda leve de dificuldade: o xG do usuário é multiplicado por 1,12 e o xG do adversário contra ele é dividido por 1,06. As notas e atributos continuam iguais, as partidas entre adversários não recebem essa ajuda e os pênaltis mantêm a mesma regra. Não há o multiplicador antigo de 1,38 nem bônus de clube. OVR maior aumenta a chance de vitória; empates e derrotas continuam possíveis. Os testes com milhares de sementes verificam o aumento moderado das vitórias, a influência do OVR e a preservação dos registros. Campanhas em versões antigas mantêm as partidas já encerradas; somente rodadas pendentes são recalculadas ao migrar.
-
-Saves do modelo anterior preservam as rodadas encerradas; somente uma partida ainda não confirmada é recalculada e reiniciada a partir do minuto zero.
-
-```powershell
 npm test
 npm run check
-node tests/calibrate.mjs 1000
+npm run prepare:site
 ```
 
-Os testes cobrem onze escolhas, três re-sorteios compartilhados, impedimento de duplicatas, posições exatas, migração de saves antigos, as 215 escalações adversárias, simulação por semente, xG, eventos, pênaltis, grupos e chaveamento. Também verificam o avanço por rodada, a ausência de resultados futuros, continuidade das 22 bolinhas e da bola, relógio, velocidades e pausa da animação.
+Não é necessário `npm install` para esses comandos ou para jogar. Para ferramentas opcionais de desenvolvimento: `npm ci`, `npm run lint` e `npm run format`. ESLint e Prettier são somente devDependencies. O servidor local tem MIME para HTML, CSS, JS, JSON, SVG, PNG, JPG, WebP, MP3, WOFF2, XML e webmanifest.
 
-## Arquivos e persistência
+`npm run check` valida IDs, catálogos, onze jogadores compatíveis, um goleiro e atributos; faz verificação de sintaxe recursiva dos módulos. A suíte usa node:test, sem dependências. Em 31/10/2026: base com 237 testes, 226 aprovados e 11 falhas; após a manutenção, 238 aprovados (incluindo o teste de escape HTML compartilhado).
 
-| Pasta/arquivo | Função |
-|---|---|
-| `index.html` | Entrada semântica |
-| `css/` | Temas, componentes, layout e tipografia |
-| `js/main.js`, `state.js`, `draft.js` | Fluxo, estado e regras do draft |
-| `js/ui.js` | Telas e campos |
-| `js/engine.js` | Força, partidas e torneios |
-| `js/storage.js`, `share.js` | Persistência, texto e PNG |
-| `data/` | Clubes, jogadores e fontes históricas |
-| `tests/` | Testes e calibração |
-| `scripts/` | Servidor, verificação e preparação estática |
+## Organização
 
-Progresso, histórico e estatísticas ficam no `localStorage` do navegador. O armazenamento usa `try/catch` para permitir jogar quando estiver bloqueado; não há sincronização entre dispositivos. O histórico guarda as últimas 50 campanhas.
+- `data/clubs.js`: catálogo de clubes e épocas; `data/game-squads.js`: interface comum dos catálogos.
+- `data/world-cup-catalog.js`: metadados leves de 32 seleções. `loadWorldCupSquads()` importa os elencos em `data/world-cup-squads.js` sob demanda no navegador. No Node, carrega o catálogo completo para testes e pré-renderização.
+- `js/draft.js`: sorteio, três skips, posições, movimentação e atualização de notas em drafts.
+- `js/engine.js`: resultados por semente e força dos times, grupos e chaveamento. A manutenção não alterou fórmulas de vitória, balanceamento ou regras.
+- `js/match-motion.js`, `match-set-pieces.js`, `match-discipline.js`: reprodução de movimentação, bola parada e cartões. Resultados e eventos devem reconciliar com o placar.
+- `js/main.js`: ciclo de telas e serviços. `js/actions/`: handlers de navegação, draft, partida e resultado; contexto explícito, sem eval.
+- `js/html.js`: escape compartilhado para texto/atributos, inclusive nomes de jogadores.
+- `js/storage.js`, `campaign-progress.js`, `achievements.js`: persistência no navegador e conquistas. Sem contas ou login.
+- `data/release.js`: histórico público de versões; novos lançamentos são adicionados no início sem apagar os anteriores.
 
-O desafio diário usa o fuso **America/Sao_Paulo** e uma semente baseada na data. A versão de onze jogadores tem chaves próprias de progresso e resultado diário, preservando os registros antigos. A restrição diária é local; apagar os dados do navegador remove esse registro.
+## Precedência de notas
 
-A interface oferece temas claro e escuro, com o escuro como padrão inicial. O botão de sol/lua à direita de Histórico alterna sem recarregar a partida; a escolha fica em `scorefut.theme`, separada dos jogos salvos. `js/theme.js` restaura a preferência antes das folhas de estilo; `css/theme.css` adapta superfícies, textos e controles, preservando campos, uniformes e cores das competições. A escolha explícita prevalece sobre o tema do dispositivo. Permite navegação por teclado, foco visível e movimento reduzido. Projeto independente de fãs, sem vínculo com clubes, ligas ou jogadores.
+Revisões manuais do criador vencem notas verificadas. Para clubes:
 
-As doze imagens da página inicial em `assets/home/` foram fornecidas pelo usuário e preservadas sem alterações. O alinhamento dos jogadores considera as margens transparentes e as dimensões de cada PNG. Três grupos de quatro jogadores alternam a cada 3,5 segundos: 2,5 segundos de exibição e um segundo de fade. A animação pausa ao passar o mouse sobre o painel e respeita a preferência por movimento reduzido.
+1. Revisão direta mais recente (como Courtois, Real Madrid 2022, 92).
+2. `imported-ovr-review.js`, na ordem cronológica de suas importações, incluindo `ovr-review-20261029.js`.
+3. `creator-ratings.js` (edições do criador e revisões diretas desse arquivo).
+4. Nota da edição correta em `release-ratings.js` (FIFA/FC lançado no ano da temporada, nomeado pela edição seguinte).
+5. Revisão editorial de época em `season-ratings.js`, incluindo a revisão vintage.
+6. Estimativa original identificada.
 
-Os três grupos usam a mesma altura de retrato. Todos recebem um filtro SVG apenas no canal alfa para recuperar a opacidade dos uniformes já esmaecidos nos PNGs, seguido de uma máscara CSS que aplica o mesmo degradê suave nos últimos 32% da altura visível. A máscara acompanha o enquadramento individual sem cortar os braços nas bordas das colunas. Cores, proporções, enquadramento e arquivos originais são preservados.
+`fifa-archive-ratings.js` e `modern-ratings.js` preservam a nota da edição anterior como procedência, sem vencer uma revisão manual ou a edição correta. Para seleções: revisão direta dos goleiros, revisão histórica manual, importações recentes e revisões originais da Copa, nessa ordem. As datas e fontes ficam no registro; metadados originais não devem ser inventados.
 
-O grupo com Messi é a referência de altura visível e de grade. O enquadramento do terceiro grupo considera o alfa após o filtro, evitando que margens transparentes reduzam os jogadores. Todos compartilham as mesmas quatro colunas e as mesmas linhas superior e inferior.
+**Nenhum OVR ativo mudou nesta manutenção.** Expectativas antigas dos testes passaram a respeitar revisões posteriores. `release-rating-audit.json` é um retrato histórico; não deve ser reescrito para fingir que ajustes recentes já existiam.
 
-O degradê usa uma única curva compartilhada pelos três grupos, com início aos 68% e término aos 100% da altura visível. Não há corte antecipado ou curva específica para o terceiro grupo.
+## Build e publicação
 
-Jogadores já escalados podem mudar de posição no draft ou na escalação pronta, antes de iniciar a competição. Arraste a bolinha ou selecione o jogador e depois uma posição destacada. Vagas ocupadas permitem troca somente se os dois jogadores forem compatíveis com as novas posições. As mudanças preservam OVR, identidade, clube, temporada, sorteios e progresso.
+A home contém conteúdo público antes de JavaScript, gerado por `scripts/prerender-home.mjs`. `index.html` usa LF, inclusive no Windows. `prepare:site` sincroniza a home e reconstrói `dist/`, copiando o grafo de dependências, os assets usados e os avisos de licença/atribuição necessários. Não altera `.openai/hosting.json`.
 
-Nas telas de campeão da Champions e Copa do Brasil, o troféu genérico é substituído pelas imagens fornecidas pelo usuário. A comemoração usa 132 confetes de sete cores e 12 segundos de uma gravação real de torcida, com volume moderado e fade no final. O áudio local é “Crowd Cheer”, de FoolBoyMedia, gravado com Tascam DR-05 e disponibilizado sob CC0: https://freesound.org/people/FoolBoyMedia/sounds/397434/. Fonte, licença e hash constam em `assets/audio/sources.json`. O botão Som permite desligar ou repetir a comemoração; o áudio para ao sair da tela ou ocultar a página. A preferência de movimento reduzido desativa os confetes.
+Os CSS são concatenados **na ordem dos links**, em um bundle cujo nome contém o hash do conteúdo. Imports de módulos recebem hash do conteúdo do grafo para invalidar pais quando filhos mudam, sem manter queries manuais. Imagens da home usam WebP de menos de 200 KB, com dimensões originais e fallback PNG. URLs de assets geradas no build usam hash; fontes Inter e Barlow Condensed são WOFF2 locais sob OFL. Originais não foram removidos sem auditoria. !important essenciais para temas, animações e expulsões foram conservados.
 
-## Marca visual
+- `.github/workflows/ci.yml`: Node 22, npm test, npm run check, prepare:site e `git diff --exit-code index.html`.
+- `.github/workflows/deploy.yml`: prepara `dist/` e publica com upload-pages-artifact/deploy-pages.
+- **GitHub → Settings → Pages → Source: GitHub Actions.** Não publicar a raiz da branch no lugar do pacote preparado.
 
-A marca principal usa lettering vetorial original com inclinação esportiva e um símbolo de futebol em verde. `assets/scorefut-logo.svg` é aplicado ao cabeçalho e ao rodapé; `assets/scorefut-mark.svg` é o ícone da aba. Os contornos das letras estão no SVG e não dependem do carregamento de fontes. A marca se adapta às telas de jogo e a dispositivos menores em `css/brand.css`.
+O pacote não inclui qa/, testes, ferramentas, node_modules, documentos internos nem os retratos arquivados. O build falha quando encontra uma referência de runtime sem arquivo correspondente.
 
-## Histórico de campanhas
+## Saves, acessibilidade e compatibilidade
 
-O histórico mostra escudo do time, cores da competição, resultado, formação, data, OVR, gols a favor e sofridos e jogos disputados. A busca ignora maiúsculas e acentos; os filtros por competição e por títulos podem ser combinados. As campanhas aparecem da mais recente para a mais antiga, sem alterar os registros salvos. Competições antigas continuam disponíveis no filtro, e as estatísticas do topo representam todo o histórico, independentemente dos filtros. `js/history.js` concentra busca e datas; `css/history.css` organiza a apresentação responsiva.
+A Copa é carregada antes de retomar um save dela. A migração de contas antigas adota uma carreira e mescla conquistas de forma transacional; perfis e dados deslocados ficam arquivados. Saves da antiga Euro são preservados com seus bytes originais antes de liberar o slot ativo. Migrações de formação, regras, skips e torneios permanecem em draft/match-session. Critérios de remoção estão no comentário inicial de storage.js: somente após encerrar suporte às versões antigas e oferecer recuperação/exportação. Não apagar saves ou arquivos legados automaticamente.
 
-O Modo Lendas usa gradiente discreto de cinza claro para amarelo suave no card, na seleção, no histórico e no resultado. Os textos permanecem escuros para manter a legibilidade; a identidade está em `css/legends.css`.
+O elemento #app não é uma região aria-live. Anúncios se limitam a placar, gols, resultado e toasts, mantendo foco, navegação e as preferências de tema e movimento reduzido.
 
-No draft, os botões Outro clube e Outra temporada compartilham 3 skips por campanha. O contador acompanha o saldo real (3, 2, 1, 0). Ao esgotar, uma tentativa provoca feedback vermelho e uma breve tremida, sem sortear de novo. Cada troca consome um skip; o sorteio inicial não consome.
+## Arquivo, fontes e licença
 
-## Site publicado
+A branch **archive/portraits** preserva data/player-portraits.js, js/player-portraits.js, assets/players/ e os scripts collect-commons-portraits.mjs e prepare-player-portraits.mjs. A busca em js/, data/, css/ e index.html confirmou que somente os próprios módulos sem uso referenciavam esses retratos. Um sources.json mínimo permanece na versão ativa. A retirada do histórico Git não foi feita e depende do autor.
 
-O jogo é servido pelo GitHub Pages em https://indraa-x.github.io/ScoreFut/. A origem é a raiz da branch `main`; `.nojekyll` mantém os arquivos HTML, CSS, JavaScript e assets como arquivos estáticos. Novos commits em `main` atualizam a publicação.
+[LICENSE](../LICENSE): MIT para o código, © 2026 Indraa. [CREDITS.md](../CREDITS.md) consolida áudio, escudos, fontes, fotos e dados. Os dados derivados da base Fjelstul mantêm CC-BY-SA 4.0. Imagens de jogadores, competições e campo de banco de imagens exigem revisão de permissões e direito de imagem pelo autor.
 
-## Euro
+## Decisões conservadoras da manutenção
 
-`data/game-squads.js` agrega os clubes e as seleções sem alterar a base de clubes. `squadsForMode()` impede seleções de entrarem em competições de clubes. `createEuro()` cria seis grupos neutros com 23 seleções adversárias distintas e o time do usuário. `js/euro.js` ordena o confronto direto e os melhores terceiros e aplica a tabela das 15 combinações às oitavas. O fluxo de rodada pendente, salvamento, replay e histórico é compartilhado. `js/champions-view.js` adapta grupos e chaveamento às seis chaves e aos jogos únicos da Euro.
-
-
-## Precedência de OVR (auditoria de 31/10/2026)
-
-Clubes: revisão direta mais recente (Courtois 2022), depois `imported-ovr-review.js` (importações em ordem cronológica, incluindo `ovr-review-20261029.js`), depois `creator-ratings.js`, depois a nota da edição verificada em `release-ratings.js`, depois revisão editorial de época (`season-ratings.js`, incluindo estimativas vintage), depois a estimativa original. `fifa-archive-ratings.js` guarda a edição anterior como procedência; não substitui a edição correta nem uma revisão manual. Seleções: revisão direta de goleiros, revisão histórica manual, importações recentes e revisões originais da Copa, nessa ordem. Revisões manuais vencem notas verificadas.
-
-A etapa 1 preservou todos os OVRs em uso: nenhum jogador mudou de nota. Os testes de importações antigas consultam a revisão vencedora mais recente em vez de exigir valores substituídos. A auditoria arquivada continua histórica.
+- Preservar OVRs, regras, aparência e textos visíveis do jogo.
+- Preservar o arquivo histórico de notas e os originais das imagens como fallback.
+- Manter !important que protegem estados visuais e todas as migrações suportadas.
+- Oferecer manifest, sem service worker nesta etapa: evitar cache persistente de saves e versões antigas antes de definir uma política de atualização offline. O manifest não promete funcionamento offline.

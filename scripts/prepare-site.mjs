@@ -27,6 +27,8 @@ for(const logo of Object.values(CLUB_LOGOS))add(logo);
 const ui=fs.readFileSync(path.join(root,'js/ui.js'),'utf8');
 for(const match of ui.matchAll(/src:'([^']+)'/g)){add('assets/home/'+match[1]);add('assets/home/'+match[1].split('?')[0].replace(/\.png$/,'.webp'));}
 for(const name of ['sitemap.xml','robots.txt','manifest.webmanifest','service-worker.js'])if(fs.existsSync(path.join(root,name)))add(name);
+// Attribution and license notices accompany the redistributed runtime.
+for(const file of ['LICENSE','CREDITS.md','assets/fonts/inter-OFL.txt','assets/fonts/barlowcondensed-OFL.txt','assets/fonts/sources.json','assets/logos/sources.json','assets/logos/world-cup-sources.json','assets/audio/sources.json','assets/home/legend-sources.json','assets/home/webp-sources.json','assets/home/players-field-source.json','assets/competitions/sources.json','assets/competitions/trophies-sources.json','data/WORLD-CUP-SOURCES.md','data/RATING-SOURCES.md'])if(fs.existsSync(path.join(root,file)))add(file);
 for(const file of files){const target=path.join(dist,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(path.join(root,file),target);}
 console.log(`Arquivos estáticos preparados em dist/: ${files.size} arquivos.`);
 

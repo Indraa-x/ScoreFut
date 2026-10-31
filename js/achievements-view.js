@@ -19,7 +19,7 @@ function milestone(item,icon){
 function competitionTitle(item,icon){
   const competition=competitions[item.id];
   return `<article class="achievement-tile competition-achievement ${item.unlocked?'is-earned':'is-pending'}" data-achievement="${item.id}">
-    <div class="achievement-cup" aria-hidden="true"><img src="${competition.trophy}" alt="" width="76" height="92" draggable="false"></div>
+    <div class="achievement-cup" aria-hidden="true"><img src="${competition.trophy}" alt="" width="76" height="92" loading="lazy" decoding="async" draggable="false"></div>
     <div class="achievement-copy"><span class="achievement-competition-name">${competition.name}</span><h3>${item.name}</h3><p>${item.description}</p><span class="achievement-state">${icon(item.unlocked?'check':'shield')} ${item.unlocked?'Conquistada':'A conquistar'}</span></div>
   </article>`;
 }

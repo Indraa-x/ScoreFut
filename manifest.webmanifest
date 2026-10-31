@@ -1,0 +1,6 @@
+{
+ "name":"ScoreFut", "short_name":"ScoreFut", "lang":"pt-BR",
+ "start_url":"./", "scope":"./", "display":"standalone",
+ "background_color":"#101513", "theme_color":"#101513",
+ "icons":[{"src":"assets/scorefut-mark.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]
+}
