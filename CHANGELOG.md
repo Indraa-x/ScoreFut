@@ -24,3 +24,8 @@ Durante o beta, atualizações importantes incrementam a revisão (`0.2`, `0.3` 
 ## Manutenção — 31/10/2026 — etapa 1
 
 Testes atualizados para três skips, acréscimos à direita e pênaltis em bolinhas; posse sem portador após expulsão aceita. Precedência de revisões manuais documentada, sem alterar nenhum OVR ativo. Escolha conservadora: a auditoria de notas permanece um retrato histórico, e as expectativas antigas são reconciliadas com revisões mais recentes. A home usa LF para sincronização reproduzível no Windows e no CI. CI em Node 22.
+
+
+## Manutenção — 31/10/2026 — etapa 2
+
+Deploy explícito de `dist/` pelo GitHub Actions. A fonte do Pages deve ser GitHub Actions. A preparação não toca mais `.openai/hosting.json` e copia apenas dependências alcançáveis, escudos e retratos da home; referências dinâmicas são enumeradas explicitamente. A saída é reconstruída para não reter assets antigos.
