@@ -19,3 +19,8 @@ Início da numeração pública do jogo. Esta versão reúne a Copa do Mundo, a 
 O cabeçalho mostra somente Beta 0.1. Ao clicar, uma janela apresenta as correções e melhorias da versão, com acesso aos formulários do GitHub para dúvidas e bugs.
 
 Durante o beta, atualizações importantes incrementam a revisão (`0.2`, `0.3` e assim por diante). Pequenos ajustes não geram uma nova versão. A versão final será anunciada pelo criador do projeto.
+
+
+## Manutenção — 31/10/2026 — etapa 1
+
+Testes atualizados para três skips, acréscimos à direita e pênaltis em bolinhas; posse sem portador após expulsão aceita. Precedência de revisões manuais documentada, sem alterar nenhum OVR ativo. Escolha conservadora: a auditoria de notas permanece um retrato histórico, e as expectativas antigas são reconciliadas com revisões mais recentes. A home usa LF para sincronização reproduzível no Windows e no CI. CI em Node 22.

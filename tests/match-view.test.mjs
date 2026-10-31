@@ -78,7 +78,7 @@ test('fractional minutes show seconds and reveal only goals already reached',()=
   assert.ok(!goals.includes(home.lineup[0].player.nome));
 });
 
-test('a compact added-time badge precedes the clock, including after the final whistle',()=>{
+test('a compact added-time badge follows the clock, including after the final whistle',()=>{
   const state=view(),match=currentMatch(state);
   Object.assign(match.result,{duration:95,extraTime:false,regulationStoppageTime:5});
   for(const minute of [89,90,95]){
@@ -87,7 +87,7 @@ test('a compact added-time badge precedes the clock, including after the final w
     assert.ok(badge);
     assert.equal(badge[0].includes(' hidden'),minute<90);
     if(minute>=90){assert.equal(badge[1],'+5');assert.ok(badge[0].includes('aria-label="5 minutos de acréscimo"'));}
-    assert.ok(html.indexOf(badge[0])<html.indexOf('class="score-clock"'));
+    assert.ok(html.indexOf(badge[0])>html.indexOf('class="score-clock"'));
   }
   Object.assign(match.result,{extraTime:true,extraTimeStart:95,extraTimeEnd:125,extraTimeStoppageTime:7,duration:132});
   for(const [minute,hidden,label] of [[95,true,'+0'],[125,false,'+7'],[132,false,'+7']]){
@@ -139,7 +139,8 @@ test('the final displays shootout scores separately without a fictitious next st
   state.tournament.matches=[];
   const html=renderMatch(state);
   assert.equal(score(html),'1–1');
-  assert.ok(html.includes('Pênaltis <b>3 – 4</b>'));
+  assert.ok(html.includes('class="shootout-title">Pênaltis'));
+  assert.ok(html.includes('aria-label="3 gols nos pênaltis"'));assert.ok(html.includes('aria-label="4 gols nos pênaltis"'));
   assert.ok(!/match-end-label|Partida encerrada|Decidida nos pênaltis|Após prorrogação/.test(html));
   assert.ok(!html.includes('Confronto a definir'));
 });

@@ -21,7 +21,7 @@ Abra [http://127.0.0.1:4173](http://127.0.0.1:4173). Não é necessário executa
 1. Escolha o modo e clique em uma das oito formações. O botão selecionado fica destacado e a prévia do campo muda imediatamente.
 2. Sorteie um clube e uma temporada. Arraste o jogador com o mouse para uma vaga livre destacada no campo. Também é possível clicar no jogador e depois na vaga.
 3. Ao soltar o jogador ou clicar na vaga, a escolha entra diretamente no time, sem botão de confirmação. São **onze rodadas**, em qualquer ordem. O mesmo jogador não pode entrar duas vezes, mesmo em temporadas diferentes.
-4. Os quatro re-sorteios valem para o draft inteiro. “Outro clube” e “Outra temporada” usam o mesmo saldo. Elencos sorteados ou descartados não voltam.
+4. Os três re-sorteios valem para o draft inteiro. “Outro clube” e “Outra temporada” usam o mesmo saldo. Elencos sorteados ou descartados não voltam.
 5. Complete as onze vagas e entre na competição. Acompanhe a partida automática, avance pelo botão no topo ao fim de cada jogo e baixe o resultado como PNG.
 
 Nos modos de draft, o nome do time é “Meu time”, sem campo de edição. No Modo rápido, ele corresponde ao clube e à temporada escolhidos. Um draft salvo da versão anterior é adaptado para as novas formações, preservando o máximo de escolhas compatíveis. Histórico concluído anteriormente permanece disponível.
@@ -111,7 +111,7 @@ Mantenha o mesmo ID para a mesma pessoa em todos os clubes e anos; use IDs disti
 
 `data/season-expansion.js` amplia e revisa o catálogo para cinco épocas por clube. `data/ratings.js` aplica, nessa ordem, os ajustes do criador, o OVR verificado da edição lançada naquele ano e a estimativa editorial. `data/release-ratings.js` registra edição e fonte por jogador/época. Notas legadas da edição de mesmo ano ficam apenas como histórico em `archivedRating`, sem substituir a regra atual. OVRs alteram os seis atributos pela diferença assinada da nota, com limites de 1–99; reaplicar a correção não acumula bônus.
 
-Ao retomar um draft, as notas são atualizadas pela mesma temporada. O limite passa para quatro skips, conservando quantos já foram usados e sem conceder saldo repetidamente. Competições iniciadas e resultados concluídos mantêm suas escalações e notas salvas.
+Ao retomar um draft, as notas são atualizadas pela mesma temporada. O limite passa para três skips, conservando quantos já foram usados e sem conceder saldo repetidamente. Competições iniciadas e resultados concluídos mantêm suas escalações e notas salvas.
 
 Na Europa, o ano indica o encerramento da temporada: 2024 significa 2023/24. Na América do Sul, segue a edição da competição; a edição 2020 da Libertadores terminou em 2021.
 
@@ -142,7 +142,7 @@ npm run check
 node tests/calibrate.mjs 1000
 ```
 
-Os testes cobrem onze escolhas, quatro re-sorteios compartilhados, impedimento de duplicatas, posições exatas, migração de saves antigos, as 215 escalações adversárias, simulação por semente, xG, eventos, pênaltis, grupos e chaveamento. Também verificam o avanço por rodada, a ausência de resultados futuros, continuidade das 22 bolinhas e da bola, relógio, velocidades e pausa da animação.
+Os testes cobrem onze escolhas, três re-sorteios compartilhados, impedimento de duplicatas, posições exatas, migração de saves antigos, as 215 escalações adversárias, simulação por semente, xG, eventos, pênaltis, grupos e chaveamento. Também verificam o avanço por rodada, a ausência de resultados futuros, continuidade das 22 bolinhas e da bola, relógio, velocidades e pausa da animação.
 
 ## Arquivos e persistência
 
@@ -186,7 +186,7 @@ O histórico mostra escudo do time, cores da competição, resultado, formação
 
 O Modo Lendas usa gradiente discreto de cinza claro para amarelo suave no card, na seleção, no histórico e no resultado. Os textos permanecem escuros para manter a legibilidade; a identidade está em `css/legends.css`.
 
-No draft, os botões Outro clube e Outra temporada compartilham 4 skips por campanha. O contador acompanha o saldo real (4, 3, 2, 1, 0). Ao esgotar, uma tentativa provoca feedback vermelho e uma breve tremida, sem sortear de novo. Cada troca consome um skip; o sorteio inicial não consome.
+No draft, os botões Outro clube e Outra temporada compartilham 3 skips por campanha. O contador acompanha o saldo real (3, 2, 1, 0). Ao esgotar, uma tentativa provoca feedback vermelho e uma breve tremida, sem sortear de novo. Cada troca consome um skip; o sorteio inicial não consome.
 
 ## Site publicado
 
@@ -195,3 +195,10 @@ O jogo é servido pelo GitHub Pages em https://indraa-x.github.io/ScoreFut/. A o
 ## Euro
 
 `data/game-squads.js` agrega os clubes e as seleções sem alterar a base de clubes. `squadsForMode()` impede seleções de entrarem em competições de clubes. `createEuro()` cria seis grupos neutros com 23 seleções adversárias distintas e o time do usuário. `js/euro.js` ordena o confronto direto e os melhores terceiros e aplica a tabela das 15 combinações às oitavas. O fluxo de rodada pendente, salvamento, replay e histórico é compartilhado. `js/champions-view.js` adapta grupos e chaveamento às seis chaves e aos jogos únicos da Euro.
+
+
+## Precedência de OVR (auditoria de 31/10/2026)
+
+Clubes: revisão direta mais recente (Courtois 2022), depois `imported-ovr-review.js` (importações em ordem cronológica, incluindo `ovr-review-20261029.js`), depois `creator-ratings.js`, depois a nota da edição verificada em `release-ratings.js`, depois revisão editorial de época (`season-ratings.js`, incluindo estimativas vintage), depois a estimativa original. `fifa-archive-ratings.js` guarda a edição anterior como procedência; não substitui a edição correta nem uma revisão manual. Seleções: revisão direta de goleiros, revisão histórica manual, importações recentes e revisões originais da Copa, nessa ordem. Revisões manuais vencem notas verificadas.
+
+A etapa 1 preservou todos os OVRs em uso: nenhum jogador mudou de nota. Os testes de importações antigas consultam a revisão vencedora mais recente em vez de exigir valores substituídos. A auditoria arquivada continua histórica.

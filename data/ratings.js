@@ -253,14 +253,19 @@ export function recalibratePlayer(player, attributeFloor = 1) {
   };
 }
 
+export function creatorRatingReview(squadId,playerId){
+  const player={id:playerId};
+  const directReview = squadId==='real-madrid-2022'&&player.id==='thibaut-courtois' ? {squadId,playerId:player.id,previousOvr:90,ovr:92,reviewedAt:'2026-10-30',source:'data/ratings.js',reason:'Ajuste solicitado pelo criador: Courtois do Real Madrid 2022 com OVR 92.'} : undefined;
+  return directReview ?? IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id] ?? CREATOR_RATINGS_BY_SQUAD[squadId]?.[player.id];
+}
+
 /** Creator JSON/direct edits > verified following edition > editorial season review. */
 export function applyHistoricalFifaRating(player, squadId) {
   const editionRating = MODERN_RATINGS_BY_SQUAD[squadId]?.[player.id]
     ?? ARCHIVED_RATINGS_BY_SQUAD[squadId]?.[player.id];
   const archivedOvr = editionRating?.ovr ?? FIFA_OVR_BY_SQUAD[squadId]?.[player.id];
   const seasonReview = SEASON_RATINGS_BY_SQUAD[squadId]?.[player.id];
-  const directReview = squadId==='real-madrid-2022'&&player.id==='thibaut-courtois' ? {squadId,playerId:player.id,previousOvr:90,ovr:92,reviewedAt:'2026-10-30',source:'data/ratings.js',reason:'Ajuste solicitado pelo criador: Courtois do Real Madrid 2022 com OVR 92.'} : undefined;
-  const creatorReview = directReview ?? IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id] ?? CREATOR_RATINGS_BY_SQUAD[squadId]?.[player.id];
+  const creatorReview=creatorRatingReview(squadId,player.id);
   const releaseRating = RELEASE_RATINGS_BY_SQUAD[squadId]?.[player.id];
   const review = creatorReview ?? (releaseRating ? undefined : seasonReview);
   const rating = review?.ovr ?? releaseRating?.ovr ?? player.ovr;

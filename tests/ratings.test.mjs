@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {allSquads} from '../data/clubs.js';
-import {RATINGS_VERSION,MAX_OVR,RELEASE_RATINGS_BY_SQUAD,SEASON_RATINGS_BY_SQUAD,applyHistoricalFifaRating,FIFA_OVR_BY_SQUAD,FIFA_RATING_SOURCES} from '../data/ratings.js';
+import {creatorRatingReview,RATINGS_VERSION,MAX_OVR,RELEASE_RATINGS_BY_SQUAD,SEASON_RATINGS_BY_SQUAD,applyHistoricalFifaRating,FIFA_OVR_BY_SQUAD,FIFA_RATING_SOURCES} from '../data/ratings.js';
 import {ARCHIVED_RATINGS_BY_SQUAD} from '../data/fifa-archive-ratings.js';
 import {MODERN_RATINGS_BY_SQUAD} from '../data/modern-ratings.js';
 import {CREATOR_RATINGS_BY_SQUAD} from '../data/creator-ratings.js';
@@ -40,7 +40,7 @@ test('each verified rating identifies its exact player, source and following edi
    assert.ok(Number.isInteger(record.ovr)&&record.ovr>=40&&record.ovr<=99);
    assert.match(record.source,/^https:\/\//);
    assert.deepEqual(found.releaseRating,record);
-   const creator=IMPORTED_OVR_BY_SQUAD[squadId]?.[id]??CREATOR_RATINGS_BY_SQUAD[squadId]?.[id];
+   const creator=creatorRatingReview(squadId,id);
    assert.equal(found.ovr,creator?.ovr??record.ovr,`${squadId}/${id}`);
    assert.equal(found.ratingKind,creator?'creator-review':'release-rating');
    assert.equal(found.ratingEdition,creator?undefined:record.edition);
@@ -135,7 +135,7 @@ test('the archived audit accounts for all players and later imports take precede
   if(!p){assert.ok(row.squadId.startsWith('celtic-')||RECENT_CLUB_ERAS.some(era=>row.squadId===era.clubId+'-'+era.replaceYear));continue;}
   assert.ok(p);
   assert.equal(row.expectedEdition,edition(row.year+1));
-  const imported=IMPORTED_OVR_BY_SQUAD[row.squadId]?.[row.playerId];
+  const imported=creatorRatingReview(row.squadId,row.playerId);
   if(imported){assert.equal(p.ratingKind,'creator-review');assert.equal(p.ovr,imported.ovr);}
   else assert.equal(row.status,p.ratingKind==='creator-review'?'creator':p.ratingKind==='release-rating'?'verified-release':'editorial');
  }

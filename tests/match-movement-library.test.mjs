@@ -68,7 +68,9 @@ test('curved runs stay finite and a carried ball stays beside its carrier',()=>{
   for(let i=0;i<motion.frames.length-1;i++){
     const first=motion.frames[i],second=motion.frames[i+1];
     if(first.owner<0||first.owner!==second.owner||first.side!==second.side||second.kind!=='carry')continue;
-    const scene=motion.at((first.at+second.at)/2),p=scene.players[scene.owner];
+    const scene=motion.at((first.at+second.at)/2);
+    if(scene.owner<0||scene.setPiece||scene.kind!=='carry'){assert.ok(Number.isFinite(scene.ball.x)&&Number.isFinite(scene.ball.y));continue;}
+    const p=scene.players[scene.owner];
     assert.ok(Math.hypot(scene.ball.x-p.x,scene.ball.y-p.y)<2.1);carries++;
   }
   assert.ok(carries>0);
