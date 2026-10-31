@@ -1,6 +1,6 @@
+import {escapeHtml as escapeHtml} from './html.js';
 import {GAME_RELEASE,RELEASE_HISTORY} from '../data/release.js';
 
-const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 /** Shared by the static HTML generator. */
 export function renderReleaseNotice() {

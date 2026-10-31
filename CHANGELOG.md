@@ -38,3 +38,8 @@ Referências verificadas em js/, data/, css/ e index.html: somente os dois próp
 ### Etapa 3b — carregamento e distribuição
 
 WebP com dimensões originais e fallback PNG/JPG preservado. Fontes locais sob OFL. Catálogo leve de seleções na home; elencos carregam na escolha da Copa e antes da retomada de saves dela. No Node, carregamento completo preserva auditorias e testes. CSS é unido na ordem original no dist; queries manuais de módulos foram substituídas por hash do conteúdo do grafo e o bundle CSS usa seu próprio hash. Escolha conservadora: !important que protegem temas, expulsões e animações foram preservados para evitar regressões visuais.
+
+
+## Manutenção — 31/10/2026 — etapa 4
+
+Escape HTML centralizado; ações separadas em navegação, draft, partida e resultado. Anúncios acessíveis limitados a placar, resultado e avisos, sem aria-live em toda a aplicação. Migrações antigas documentadas com critérios de remoção. ESLint e Prettier são ferramentas opcionais de desenvolvimento: jogar, testar e preparar o site não exigem npm install. Sem alteração de regras ou aparência.

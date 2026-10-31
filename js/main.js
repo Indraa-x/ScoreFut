@@ -1,3 +1,7 @@
+import {navigationActions} from './actions/navigation.js';
+import {draftActions} from './actions/draft.js';
+import {matchActions} from './actions/match.js';
+import {resultActions} from './actions/result.js';
 import {initHomeCounters} from './home-counters.js';
 import {initBrowserNavigation} from './browser-navigation.js';
 import {selectQuickTeam,simulateQuickGame} from './quick-game.js';
@@ -74,9 +78,10 @@ function browserAchievements(history){
 }
 function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;app.setAttribute('aria-live',state.screen==='match'?'off':'polite');homeCounters.update(app,state.screen);document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
+  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;homeCounters.update(app,state.screen);document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
+  if(screenChanged&&state.screen==='result'){const notice=document.getElementById('game-announcement');if(notice)notice.textContent=state.resultRecord?.champion?'Campanha encerrada. Campeão!':'Campanha encerrada.';}
   if(focusInApp){let target=focusId?document.getElementById(focusId):[...app.querySelectorAll('[data-action]')].find(el=>el.dataset.action===focusAction&&el.dataset.value===focusValue);if(target?.disabled)target=app.querySelector('[data-action="next-match"],[data-action="player"]:not(:disabled),[data-action="draw"]');target?.focus({preventScroll:true});}
 }
 function restore(saved){
@@ -268,25 +273,11 @@ async function launchFromHome(button){
   }
   if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('world-cup');
 }
-async function action(name,value,element){if(['mode','start','setup','play-home','resume'].includes(name)){const mode=name==='resume'?savedDraft()?.mode:name==='play-home'?'world-cup':value||state.mode;if(mode==='world-cup')await loadWorldCupSquads();}if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
-case'release-notes':document.getElementById('modal-content').innerHTML=renderReleaseDetails();modal.showModal();break;
-case'home':navigate('home');break;case'achievements':navigate('achievements');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
-case'setup':openSetup(value||'world-cup');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
-case'formation':if(FORMATIONS[value]){state.formation=value;render();}break;case'start':if(state.mode==='quick'){state.quickStep='clubs';render();window.scrollTo({top:0,behavior:'instant'});}else startDraft();break;case'resume':{const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}break;}
-case'draw':await roll();break;case'reroll-club':await roll('club');break;case'reroll-season':await roll('season');break;case'player':selectPlayer(value);break;case'slot':slotAction(value);break;
-case'tournament':startTournament();break;case'quick-team':chooseQuickTeam(value);break;case'quick-choose-club':openSetup('quick','clubs');break;case'quick-formation':openSetup('quick');break;
-case'quick-region':if(['all','brasil','europa'].includes(value)){state.quickRegion=value;render();}break;
-case'quick-clear':state.quickSearch='';state.quickRegion='all';render();app.querySelector('#quick-search')?.focus();break;
-case'next-match':nextMatch();break;
-case'match-speed':{const speed=Number(value);if(MATCH_SPEEDS.includes(speed)){state.matchSpeed=speed;persist();render();if(speed===8)app.querySelector('.match-speed-fast')?.classList.add('is-activating');}break;}
-case'bracket':state.returnScreen=state.screen;navigate('bracket');break;case'back-match':navigate(state.returnScreen==='result'?'result':'match');break;
-case'champions-view':{if(!['champions','world-cup'].includes(state.tournament?.mode))break;if(state.screen!=='bracket'){state.returnScreen=state.screen;state.championsGroupId=null;state.championsRound=null;}state.championsView=value==='knockout'?'knockout':'groups';navigate('bracket');break;}
-case'champions-group':if(state.screen==='bracket'&&['champions','world-cup'].includes(state.tournament?.mode)&&state.tournament.groups.some(group=>group.id===value)){state.championsGroupId=value;render();}break;
-case'champions-round':if(state.screen==='bracket'&&['champions','world-cup'].includes(state.tournament?.mode)&&['round16','quarter','semi','final'].includes(value)){state.championsRound=value;render();}break;
-case'champions-tie':{if(!['champions','world-cup'].includes(state.tournament?.mode))break;const content=ui.renderChampionsTie(state.tournament,value);if(content){document.getElementById('modal-content').innerHTML=content;modal.showModal();}break;}
-case'match-index':{const i=Number(value);if(!state.pendingRound&&Number.isInteger(i)&&i>=0&&i<state.tournament.userMatches.length){stopPlayback();state.userMatchIndex=i;state.penaltyReplay=null;state.matchMinute=state.tournament.userMatches[i].result.duration;persist();render();}break;}
-case'result-lineup':if(state.screen==='result'&&state.resultRecord){document.getElementById('modal-content').innerHTML=ui.renderResultLineup(state.resultRecord);modal.showModal();}break;case'download':downloadResult(state.resultRecord);toast('Seu resultado em PNG está pronto.');break;
-}}
+function resumeGame(){const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}return;}
+const actionContext={state, MODES, FORMATIONS, MATCH_SPEEDS, modal, ui, storage, renderReleaseDetails, navigate, openSetup, launchFromHome, render, startDraft, resumeGame, roll, selectPlayer, slotAction, startTournament, chooseQuickTeam, nextMatch, persist, app, stopPlayback, downloadResult, toast};
+const actionHandlers={...navigationActions(actionContext), ...draftActions(actionContext), ...matchActions(actionContext), ...resultActions(actionContext)};
+async function action(name,value,element){if(['mode','start','setup','play-home','resume'].includes(name)){const mode=name==='resume'?savedDraft()?.mode:name==='play-home'?'world-cup':value||state.mode;if(mode==='world-cup')await loadWorldCupSquads();}if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;return actionHandlers[name]?.(value,element);
+}
 document.addEventListener('click',event=>{const element=event.target.closest('[data-action]');if(element&&!element.disabled)action(element.dataset.action,element.dataset.value,element).catch(error=>{console.error(error);toast('Não foi possível completar a ação. '+error.message);});});
 app.addEventListener('change',event=>{if(event.target.id==='quick-season')action('quick-team',event.target.value,event.target).catch(error=>toast(error.message));});
 app.addEventListener('input',event=>{if(event.target.id==='quick-search'&&state.mode==='quick'&&state.screen==='setup')updateQuickSearch(event.target.value);});

@@ -1,3 +1,14 @@
+/** Legacy compatibility (removal criteria):
+ * initializeBrowserProgress v1 adopts guest/account careers atomically, merges medals,
+ * archives displaced guest data and removes credentials. Keep until all supported
+ * pre-account-removal saves have an export/import path; never erase archives automatically.
+ * archiveRetiredCompetition copies Euro saves byte-for-byte before removing active.
+ * Keep while Euro saves may be restored; remove only after an explicit support cutoff
+ * and a recovery tool exists. Failed writes keep originals/routing in place.
+ * Formation, rules, skip and tournament migrations live in draft.js / match-session.js
+ * and are invoked by main.restore; do not remove while their old rulesVersion /
+ * matchFlowVersion / modelVersion snapshots are supported.
+ */
 import {updateAchievementLedger} from './achievements.js';
 
 const prefix = 'scorefut.';

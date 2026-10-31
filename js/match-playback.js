@@ -1,3 +1,4 @@
+import {escapeHtml as escapeHtml} from './html.js';
 import {matchIncidentsAt,playerSentOff} from './match-discipline.js';
 import {goalOriginLabel} from './match-goal-origins.js';
 import { currentMatch } from './match-session.js';
@@ -5,7 +6,6 @@ import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEve
 import {goalsAt,renderMatchGoals} from './match-goals.js';
 import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js';
 
-const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 export function initMatchPlayback({ app, state, onFinish, onSave }) {
   let frame = null, previousTime = null, observer = null, nodes = null, motion = null, motionKey = '', width = 0, height = 0, savedAt = 0;

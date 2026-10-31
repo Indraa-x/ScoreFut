@@ -1,7 +1,7 @@
+import {escapeHtml as escape} from './html.js';
 import {matchIncidentsAt} from './match-discipline.js';
 import { formatMatchEventMinute } from './match-motion.js';
 
-const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 export function goalsAt(result,minute){
   return result.events.filter(event=>event.type==='goal'&&!event.shootout&&event.minute<=minute).sort((a,b)=>a.minute-b.minute);
