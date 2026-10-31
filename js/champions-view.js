@@ -1,8 +1,10 @@
 import {competitionName,competitionLogo} from '../data/competitions.js';
 import {WORLD_CUP_PENDING_PAIRS} from './world-cup.js';
 import {hashSeed} from './engine.js';
+import {assetUrl} from './asset-url.js';
 const STAGES=[['round16','Oitavas de final',8],['quarter','Quartas de final',4],['semi','Semifinal',2],['final','Final',1]];
 const shortName=team=>team?.ano && team.name.endsWith(` ${team.ano}`)?team.name.slice(0,-String(team.ano).length-1):team?.name || 'A definir';
+const TREE_ABBREVIATIONS=Object.freeze({'real-madrid':'RMA','manchester-united':'MUN','manchester-city':'MCI','borussia-dortmund':'BVB',psg:'PSG',porto:'POR',benfica:'BEN',valencia:'VAL',monaco:'ASM',marseille:'MAR'});
 const signed=value=>value>0?`+${value}`:String(value);
 const teamFor=(t,id)=>t.teams.find(team=>team.id===id);
 
@@ -57,13 +59,19 @@ function groupTable(t,group,{esc,badge},compact=false) {
   }).join('')}</tbody></table>`;
 }
 
-function renderTie(t,node,{esc,badge},mobile=false) {
+function renderTie(t,node,{esc,badge}) {
   const entryName=entry=>entry.id?shortName(teamFor(t,entry.id)):entry.label;
-  const names=node.entries.map(entryName),hasUser=node.entries.some(entry=>entry.id===t.userTeamId);
-  return `<button class="champions-tie${hasUser?' user-tie':''}${node.winnerId?' resolved':''}${!node.known?' pending':''}" ${node.known?`data-action="champions-tie" data-value="${esc(node.id)}"`:'disabled'} aria-label="${esc(`${node.label}: ${names.join(' contra ')}${node.scores[0]!==null?`, placar ${node.scores.join(' a ')}`:', a definir'}`)}"><span class="champions-tie-code">${node.code}</span><span class="champions-tie-teams">${node.entries.map((entry,index)=>{
-    const team=entry.id?teamFor(t,entry.id):null,name=entryName(entry),abbr=team?.monograma || name;
-    return `<span class="champions-tie-team${node.winnerId===entry.id?' winner':node.winnerId?' eliminated':''}">${team?badge(team):'<span class="champions-unknown">?</span>'}<span class="tree-team-label"><b class="tree-abbr" title="${esc(name)}">${esc(abbr)}</b><b class="tree-full-name">${esc(name)}</b><small>${team?team.id===t.userTeamId?'Seu time':esc(team.ano || ''):''}</small></span><strong>${node.scores[index]??'—'}</strong></span>`;
-  }).join('')}</span><span class="champions-tie-note">${node.penalties?`Pên. ${node.penalties.join('–')}`:(t.mode==='world-cup'||node.stage==='final')?'Jogo único':node.known&&node.games.some(game=>game.result)?'Placar agregado':node.known?'Ida e volta':'A definir'}</span></button>`;
+  const hasUser=node.entries.some(entry=>entry.id===t.userTeamId);
+  const description=node.entries.map(entry=>{
+    const team=entry.id?teamFor(t,entry.id):null;
+    return `${entryName(entry)}${team?.ano?` · ${team.ano}`:''}`;
+  }).join(' contra ');
+  const note=node.penalties?`Pênaltis ${node.penalties.join('–')}`:(t.mode==='world-cup'||node.stage==='final')?'Jogo único':node.known&&node.games.some(game=>game.result)?'Placar agregado':node.known?'Ida e volta':'A definir';
+  const accessible=`${node.label}: ${description}${node.scores[0]!==null?`, placar ${node.scores.join(' a ')}`:', a definir'}. ${note}${node.winnerId?`. ${node.stage==='final'?'Campeão':'Classificado'}: ${shortName(teamFor(t,node.winnerId))}`:''}`;
+  return `<button class="champions-tie${hasUser?' user-tie':''}${node.winnerId?' resolved':''}${!node.known?' pending':''}${node.stage==='final'?' final-tie':''}" ${node.known?`data-action="champions-tie" data-value="${esc(node.id)}"`:'disabled'} title="${esc(accessible)}" aria-label="${esc(accessible)}"><span class="champions-tie-teams">${node.entries.map((entry,index)=>{
+    const team=entry.id?teamFor(t,entry.id):null,abbr=TREE_ABBREVIATIONS[team?.clubId] || team?.monograma || '?';
+    return `<span class="champions-tie-team${node.winnerId===entry.id?' winner':node.winnerId?' eliminated':''}">${team?badge(team):'<span class="champions-unknown" aria-hidden="true">?</span>'}<span class="tree-team-label"><b class="tree-abbr">${esc(abbr)}</b></span><strong>${node.scores[index]??'—'}</strong></span>`;
+  }).join('')}<span class="champions-score-dash" aria-hidden="true">–</span></span></button>`;
 }
 
 export function renderChampionsSidebar(t,helpers) {
@@ -82,21 +90,28 @@ function renderGroups(s,helpers) {
 }
 
 function renderKnockout(s,helpers) {
-  const t=s.tournament,{esc,icon,badge}=helpers,rounds=championsBracket(t);
+  const t=s.tournament,{esc,badge}=helpers,rounds=championsBracket(t);
   const currentStage=t.campaign?.eliminated?t.campaign.stage:t.bracket.at(-1)?.stage || t.campaign?.stage;
   const requested=STAGES.findIndex(([id])=>id===s.championsRound),active=requested>=0?requested:Math.max(0,STAGES.findIndex(([id])=>id===currentStage));
   const champion=t.championId?teamFor(t,t.championId):null;
-  const paths=[];
+  const paths=[],pathTeamId=t.championId || t.userTeamId;
   for(const side of ['left','right']) {
     const xs=side==='left'?[100,300,500,700]:[1300,1100,900,700];
     const ys=[[70,210,350,490],[140,420],[280],[280]];
-    for(let col=0;col<3;col++)for(let i=0;i<ys[col].length;i++)paths.push(`<path d="M${xs[col]} ${ys[col][i]} H${(xs[col]+xs[col+1])/2} V${ys[col+1][Math.floor(i/2)]} H${xs[col+1]}"/>`);
+    for(let col=0;col<3;col++)for(let i=0;i<ys[col].length;i++){
+      const node=rounds[col][i+(side==='right'?rounds[col].length/2:0)];
+      const x=xs[col],nextX=xs[col+1],y=ys[col][i],nextY=ys[col+1][Math.floor(i/2)];
+      const bend=(x+nextX)/2,dx=Math.sign(nextX-x),dy=Math.sign(nextY-y),r=10;
+      const line=dy?`M${x} ${y} H${bend-dx*r} Q${bend} ${y} ${bend} ${y+dy*r} V${nextY-dy*r} Q${bend} ${nextY} ${bend+dx*r} ${nextY} H${nextX}`:`M${x} ${y} H${nextX}`;
+      paths.push(`<path class="${node.winnerId===pathTeamId?'winning-path':'neutral-path'}" d="${line}"/>`);
+    }
   }
   const column=(round,side)=>{
     const nodes=side==='left'?round.slice(0,round.length/2):round.slice(round.length/2);
-    return `<div class="champions-tree-column stage-${round[0].stage} ${side}">${nodes.map(node=>renderTie(t,node,helpers)).join('')}</div>`;
+    return `<div class="champions-tree-column stage-${round[0].stage} ${side}" data-round="${round[0].stage}" role="group" aria-label="${esc(round[0].label)} · ${side==='left'?'lado esquerdo':'lado direito'}">${nodes.map(node=>renderTie(t,node,helpers)).join('')}</div>`;
   };
-  return `<section class="champions-knockout-panel panel"><div class="champions-knockout-heading"><div><span class="eyebrow accent">CAMINHO ATÉ A TAÇA</span><h2>O mata-mata</h2></div><span>${icon('bracket')} ${t.mode==='world-cup'?'Jogo único · Prorrogação e pênaltis':'Ida e volta · Final única'}</span></div>${!t.bracket.length?'<p class="champions-bracket-pending">Os confrontos serão definidos ao fim da fase de grupos.</p>':''}<div class="champions-desktop-bracket"><div class="champions-round-headings"><span>Oitavas de final</span><span>Quartas de final</span><span>Semifinal</span><span>Final</span><span>Semifinal</span><span>Quartas de final</span><span>Oitavas de final</span></div><div class="champions-tree"><svg class="champions-tree-lines" viewBox="0 0 1400 560" preserveAspectRatio="none" fill="none" aria-hidden="true">${paths.join('')}</svg>${column(rounds[0],'left')}${column(rounds[1],'left')}${column(rounds[2],'left')}<div class="champions-tree-center"><div class="champions-tree-trophy"><img src="${t.mode==='world-cup'?'assets/competitions/world-cup-trophy.png':'assets/competitions/champions-trophy.png'}" alt="" width="80" height="100">${champion?`${badge(champion)}<strong>${esc(shortName(champion))}</strong><span>CAMPEÃO</span>`:`<strong>${esc(competitionName(t.mode))}</strong><span>O CAMINHO ATÉ A GLÓRIA</span>`}</div>${renderTie(t,rounds[3][0],helpers)}<span class="champions-final-tag">FINAL</span></div>${column(rounds[2],'right')}${column(rounds[1],'right')}${column(rounds[0],'right')}</div></div><div class="champions-mobile-bracket"><div class="champions-round-picker" role="group" aria-label="Escolher fase do mata-mata">${STAGES.map(([id,label],index)=>`<button data-action="champions-round" data-value="${id}" aria-pressed="${index===active}">${esc(label.replace(' de final',''))}</button>`).join('')}</div>${champion?`<div class="champions-mobile-winner">${icon('trophy')}${badge(champion)}<span><b>${esc(shortName(champion))}</b><small>Campeão · ${esc(competitionName(t.mode))}</small></span></div>`:''}<div class="champions-mobile-stage" aria-label="${STAGES[active][1]}">${rounds[active].map(node=>renderTie(t,node,helpers,true)).join('')}</div></div><p class="champions-knockout-legend"><i></i>Seu time <span>${t.mode==='world-cup'?'Clique em um confronto para ver a partida.':'Placar agregado · Clique em um confronto para ver ida e volta.'}</span></p></section>`;
+  const trophy=assetUrl(t.mode==='world-cup'?'assets/competitions/world-cup-trophy.png':'assets/competitions/champions-trophy.png');
+  return `<section class="champions-knockout-panel panel knockout-board" aria-label="Chave do mata-mata"><h2 class="sr-only">O mata-mata · ${t.mode==='world-cup'?'Jogo único':'Ida e volta · Final única'}</h2>${!t.bracket.length?'<p class="champions-bracket-pending">Os confrontos serão definidos ao fim da fase de grupos.</p>':''}<div class="champions-mobile-bracket"><div class="champions-round-picker" role="group" aria-label="Escolher fase do mata-mata">${STAGES.map(([id,label],index)=>`<button data-action="champions-round" data-value="${id}" aria-pressed="${index===active}">${esc(label.replace(' de final',''))}</button>`).join('')}</div><p class="knockout-scroll-hint">Deslize para acompanhar a chave completa</p></div><div class="champions-desktop-bracket knockout-scroll" tabindex="0" role="region" aria-label="Todos os confrontos até o campeão. Use as setas para percorrer a chave."><div class="champions-tree"><svg class="champions-tree-lines" viewBox="0 0 1400 560" preserveAspectRatio="none" fill="none" aria-hidden="true">${paths.join('')}</svg>${column(rounds[0],'left')}${column(rounds[1],'left')}${column(rounds[2],'left')}<div class="champions-tree-center" data-round="final" role="group" aria-label="Final"><div class="champions-tree-trophy${champion?' champions-mobile-winner':''}"><div class="knockout-champion-cup"><img src="${esc(trophy)}" alt="" width="80" height="100">${champion?badge(champion):''}</div>${champion?`<strong>${esc(shortName(champion))}</strong><span>CAMPEÃO</span>`:`<strong>${esc(competitionName(t.mode))}</strong><span>À ESPERA DO CAMPEÃO</span>`}</div>${renderTie(t,rounds[3][0],helpers)}<span class="champions-final-tag">FINAL</span></div>${column(rounds[2],'right')}${column(rounds[1],'right')}${column(rounds[0],'right')}</div></div><p class="sr-only">${t.mode==='world-cup'?'Clique em um confronto para ver a partida.':'Placares agregados. Clique em um confronto para ver ida e volta.'} Os nomes riscados indicam equipes eliminadas.</p></section>`;
 }
 
 export function renderChampionsCompetition(s,helpers) {

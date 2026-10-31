@@ -1,4 +1,6 @@
 /** Actions belonging to the match flow. */
+import {scrollKnockoutRound} from '../knockout-scroll.js';
+
 export function matchActions({
   state,
   MATCH_SPEEDS,
@@ -77,7 +79,8 @@ export function matchActions({
         ["round16", "quarter", "semi", "final"].includes(value)
       ) {
         state.championsRound = value;
-        render();
+        const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+        if (!scrollKnockoutRound(app, value, behavior)) render();
       }
       return;
     },

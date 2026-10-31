@@ -89,6 +89,19 @@ test('finished ties show oriented aggregate scores, the correct qualifier and th
   }
   const html=renderBracket({...stateFor(t),championsView:'knockout'});
   assert.ok(html.includes('CAMPEÃO'));assert.ok(html.includes('champions-mobile-winner'));
+  // Desktop and touch screens share one tree; only the champion's route is blue.
+  assert.equal((html.match(/data-action="champions-tie"/g)||[]).length,15);
+  assert.equal((html.match(/class="winning-path"/g)||[]).length,3);
+  assert.equal((html.match(/class="neutral-path"/g)||[]).length,11);
+  assert.equal((html.match(/ final-tie"/g)||[]).length,1);
+  assert.ok(html.includes('knockout-scroll'));
+  for(const node of rounds.flat()){
+    assert.ok(html.includes(`data-value="${node.id}"`));
+    for(const entry of node.entries){
+      const team=t.teams.find(team=>team.id===entry.id);
+      if(team.ano)assert.ok(html.includes(` · ${team.ano}`),'eras stay available in the accessible match description');
+    }
+  }
   assert.equal(rounds[3][0].winnerId,t.championId);
   assert.equal(renderChampionsTie(t,'unknown'), '');
   assert.deepEqual(t,before);

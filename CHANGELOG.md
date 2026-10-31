@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.6 — 31/10/2026
+
+Novo mata-mata da Champions e da Copa do Mundo: chave simétrica com cartões compactos, escudos, siglas e placares. Equipes eliminadas aparecem riscadas, o caminho do vencedor fica azul e a final e o campeão ficam no centro. Os detalhes de ida, volta e pênaltis continuam acessíveis ao clicar. No celular, a chave completa tem rolagem horizontal e atalhos por fase. Resultados futuros permanecem ocultos.
+
 ## Beta 0.5 — 31/10/2026
 
 Consolida a otimização da distribuição e do carregamento, as 16 revisões de OVR, os refinamentos de ícones, escudo e botões, o resumo do time mais compacto e as melhorias de leitura no placar. O relógio continua contando durante os acréscimos, Casa/Fora identifica o mando e (Pen) identifica gols de pênalti. Histórico das versões anteriores preservado.

@@ -1,0 +1,238 @@
+/* One connected tree on desktop and touch screens. Cards conceal the line ends. */
+#app .knockout-board {
+  --tree-bg: #fff;
+  --tree-text: #17221c;
+  --tree-muted: #78817c;
+  --tree-border: #c9cfcb;
+  --tree-line: #a1aaa4;
+  border: 0;
+  border-radius: 18px;
+  max-width: 1100px;
+  margin-inline: auto;
+  background: var(--tree-bg);
+  color: var(--tree-text);
+  overflow: hidden;
+}
+html[data-theme="dark"] #app .knockout-board {
+  --tree-bg: #1e1e1e;
+  --tree-text: #fff;
+  --tree-muted: #979b9e;
+  --tree-border: #464646;
+  --tree-line: #898e92;
+}
+#app .knockout-board .knockout-scroll {
+  display: block;
+  padding: 22px 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tree-border) transparent;
+}
+#app .knockout-board .knockout-scroll:focus-visible {
+  outline: 2px solid #478cff;
+  outline-offset: -4px;
+}
+#app .knockout-board .champions-tree {
+  width: 100%;
+  min-width: 720px;
+  height: 560px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+}
+#app .knockout-board .champions-tree-lines {
+  stroke: var(--tree-line);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+#app .knockout-board .winning-path {
+  stroke: #2979ff;
+  stroke-width: 2;
+}
+#app .knockout-board .champions-tie {
+  justify-self: center;
+  width: 80px;
+  min-height: 0;
+  height: 80px;
+  padding: 8px 6px;
+  border: 1px solid var(--tree-border);
+  border-radius: 9px;
+  background: var(--tree-bg);
+  color: var(--tree-text);
+  box-shadow: none;
+  transition: border-color .16s, background .16s;
+}
+#app .knockout-board .champions-tie:hover:not(:disabled) {
+  border-color: #8c9aa3;
+  background: color-mix(in srgb, var(--tree-bg), #7d8b9a 8%);
+  transform: none;
+}
+#app .knockout-board .champions-tie:focus-visible {
+  outline: 2px solid #478cff;
+  outline-offset: 4px;
+}
+#app .knockout-board .champions-tie.pending:disabled {
+  border-style: dashed;
+  color: var(--tree-muted);
+  opacity: 1;
+  cursor: default;
+}
+#app .knockout-board .champions-tie-teams {
+  position: relative;
+  height: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+#app .knockout-board .champions-tie-team {
+  gap: 3px;
+  justify-content: space-between;
+}
+#app .knockout-board .champions-tie-team > .club-badge,
+#app .knockout-board .champions-unknown {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  max-width: 22px;
+  min-height: 22px;
+  max-height: 22px;
+  flex: 0 0 22px;
+  font-size: 9px;
+}
+#app .knockout-board .champions-tie-team > .club-badge img {
+  width: 21px;
+  height: 21px;
+  max-width: 21px;
+  max-height: 21px;
+  object-fit: contain;
+}
+#app .knockout-board .champions-unknown {
+  background: transparent;
+  border-color: var(--tree-border);
+  color: var(--tree-muted);
+}
+#app .knockout-board .tree-abbr {
+  display: block;
+  font-size: 12px;
+  line-height: 1.15;
+  font-weight: 750;
+  color: var(--tree-text);
+}
+#app .knockout-board .eliminated .tree-abbr {
+  color: var(--tree-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+#app .knockout-board .champions-tie-team > strong {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--tree-text);
+  margin: 0;
+}
+#app .knockout-board .champions-score-dash {
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  line-height: 1;
+  color: var(--tree-text);
+}
+#app .knockout-board .champions-tree-center > .champions-tie {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #22c86b;
+  padding: 7px 5px;
+}
+#app .knockout-board .champions-tree-center > .champions-tie:hover:not(:disabled) {
+  transform: translate(-50%, -50%);
+}
+#app .knockout-board .champions-final-tag {
+  top: calc(50% + 30px);
+  background: #ffd53d;
+  border: 0;
+  border-radius: 4px;
+  color: #191919;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0;
+  padding: 3px 5px;
+}
+#app .knockout-board .champions-tree-trophy {
+  top: 37px;
+  left: 50%;
+  width: 240px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  transform: translateX(-50%);
+  gap: 0;
+  pointer-events: none;
+}
+#app .knockout-champion-cup {
+  position: relative;
+  width: 84px;
+  height: 104px;
+}
+#app .knockout-champion-cup > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: .62;
+}
+#app .knockout-champion-cup > .club-badge {
+  position: absolute;
+  top: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  max-width: 30px;
+  max-height: 30px;
+}
+#app .knockout-champion-cup > .club-badge img {
+  width: 29px;
+  height: 29px;
+  object-fit: contain;
+}
+#app .knockout-board .champions-tree-trophy > strong {
+  margin-top: 12px;
+  max-width: 220px;
+  color: var(--tree-muted);
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 650;
+}
+#app .knockout-board .champions-tree-trophy > span:last-child {
+  margin-top: 5px;
+  color: var(--tree-muted);
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 1px;
+}
+#app .knockout-board .champions-bracket-pending {
+  margin: 20px 20px 0;
+  color: var(--tree-muted);
+  background: none;
+  border-color: var(--tree-border);
+}
+@media (max-width: 980px) {
+  #app .knockout-board .champions-mobile-bracket { display: block; padding: 14px 16px 0; }
+  #app .knockout-board .champions-round-picker { margin: 0; }
+  #app .knockout-board .champions-round-picker button { background: transparent; border-color: var(--tree-border); color: var(--tree-muted); }
+  #app .knockout-board .champions-round-picker button[aria-pressed="true"] { border-color: #22c86b; color: var(--tree-text); }
+  #app .knockout-scroll-hint { font-size: 10px; color: var(--tree-muted); text-align: center; margin-top: 10px; }
+  #app .knockout-board .knockout-scroll { padding-top: 6px; }
+}
+@media (max-width: 420px) {
+  #app .knockout-board .champions-mobile-bracket { padding-inline: 10px; }
+  #app .knockout-board .champions-round-picker { gap: 4px; }
+  #app .knockout-board .champions-round-picker button { min-width: 0; padding-inline: 7px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #app .knockout-board .champions-tie { transition: none; }
+}

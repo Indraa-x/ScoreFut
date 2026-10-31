@@ -1,5 +1,9 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.6',date:'31/10/2026',title:'O caminho até o campeão',changes:[
+  {icon:'bracket',title:'Novo chaveamento do mata-mata',detail:'Cartões compactos com escudos e placares, eliminados riscados, caminho do vencedor em azul e campeão no centro. Detalhes de cada confronto ao clicar.'},
+  {icon:'field',title:'A chave inteira no celular',detail:'Deslize pelos confrontos ou toque na fase para acompanhar o mata-mata da Champions e da Copa do Mundo até a final.'},
+ ]},
  {version:'0.5',date:'31/10/2026',title:'Mais leve e mais organizado',changes:[
   {icon:'clock',title:'Relógio contando os acréscimos',detail:'O tempo segue após 90 e 120 minutos, mantendo a indicação de acréscimos ao lado.'},
   {icon:'field',title:'Placar mais claro',detail:'Equipes identificadas como Casa e Fora e gols de pênalti marcados com (Pen). Avisos de falta e escanteio removidos do campinho.'},

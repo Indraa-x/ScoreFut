@@ -1,3 +1,4 @@
+import {scrollKnockoutRound} from './knockout-scroll.js';
 import {navigationActions} from './actions/navigation.js';
 import {draftActions} from './actions/draft.js';
 import {matchActions} from './actions/match.js';
@@ -79,6 +80,7 @@ function browserAchievements(history){
 function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
   switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
   app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;homeCounters.update(app,state.screen);document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
+  if(state.screen==='bracket'&&matchMedia('(max-width: 980px)').matches)scrollKnockoutRound(app,app.querySelector('.champions-round-picker [aria-pressed="true"]')?.dataset.value);
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
   if(screenChanged&&state.screen==='result'){const notice=document.getElementById('game-announcement');if(notice)notice.textContent=state.resultRecord?.champion?'Campanha encerrada. Campeão!':'Campanha encerrada.';}
