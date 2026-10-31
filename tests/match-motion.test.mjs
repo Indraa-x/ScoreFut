@@ -33,14 +33,14 @@ test('added minutes appear for the active period and remain at the final whistle
   assert.equal(matchAddedMinutes({duration:120,extraTime:true},120),0);
 });
 
-test('the displayed extra-time clock ends at 120 plus its own added time, without carrying regulation stoppage',()=>{
+test('the clock counts through added time and rebases extra time without carrying regulation stoppage',()=>{
   const result={extraTime:true,regulationStoppageTime:6,extraTimeStart:96,extraTimeEnd:126,extraTimeStoppageTime:4,duration:130};
-  for(const [minute,clock,added] of [[89.5,'89:30',0],[95,'90:00',6],[96,'90:00',0],[111,'105:00',0],[125.5,'119:30',0],[126,'120:00',4],[130,'120:00',4]]){
+  for(const [minute,clock,added] of [[89.5,'89:30',0],[95,'95:00',6],[96,'90:00',0],[111,'105:00',0],[125.5,'119:30',0],[126,'120:00',4],[130,'124:00',4]]){
     assert.equal(formatMatchClock(minute,result),clock);
     assert.equal(matchAddedMinutes(result,minute),added);
   }
-  assert.equal(formatMatchClock(130,{extraTime:true,duration:130}),'120:00');
-  assert.equal(formatMatchClock(95,{duration:95,regulationStoppageTime:5}),'90:00');
+  assert.equal(formatMatchClock(130,{extraTime:true,duration:130}),'130:00');
+  assert.equal(formatMatchClock(95,{duration:95,regulationStoppageTime:5}),'95:00');
   assert.equal(result.duration,130);
 });
 
@@ -136,4 +136,19 @@ test('matches start automatically, stop in a hidden tab, resume without a play b
     assert.ok(scorers.innerHTML.includes('class="match-scorers away"'));
     playback.attach();assert.equal(state.matchPlaying,false);playback.start();assert.equal(callbacks.size,0);
   }finally{for(const [key,value] of Object.entries(originals)){if(value===undefined)delete globalThis[key];else globalThis[key]=value;}}
+});
+
+
+test('all added-minute totals keep counting on the clock while retaining the badge',()=>{
+ for(let added=1;added<=9;added++){
+  const normal={duration:90+added,regulationStoppageTime:added};
+  assert.equal(formatMatchClock(90+added,normal),`${90+added}:00`);
+  assert.equal(formatMatchClock(90.5,normal),'90:30');
+  assert.equal(matchAddedMinutes(normal,90+added),added);
+  for(let extraAdded=1;extraAdded<=9;extraAdded++){
+   const extra={...normal,extraTime:true,extraTimeStart:90+added,extraTimeEnd:120+added,extraTimeStoppageTime:extraAdded,duration:120+added+extraAdded};
+   assert.equal(formatMatchClock(extra.duration,extra),`${120+extraAdded}:00`);
+   assert.equal(matchAddedMinutes(extra,extra.duration),extraAdded);
+  }
+ }
 });
