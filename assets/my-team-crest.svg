@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title"><title id="title">Meu time</title><path d="M10 6h44v27c0 13-12 21-22 26C22 54 10 46 10 33V6Z" fill="#125d45"/><path d="M12 8h40v25c0 11.6-10.6 19.1-20 23.8C22.6 52.1 12 44.6 12 33V8Z" stroke="#72d6a9" stroke-width="1.5"/><path d="M25 16h14" stroke="#72d6a9" stroke-width="2" stroke-linecap="round"/><path d="M17 39V24h4l5 7 5-7h4v15h-4v-8l-5 6-5-6v8h-4Zm21-15h15v4h-5.5v11h-4V28H38v-4Z" fill="#f4fff8" transform="translate(-2)"/><path d="m29 47 3-2 3 2-1 3h-4l-1-3Z" fill="#72d6a9"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Meu time</title>
+  <path d="M14 6h36a5 5 0 0 1 5 5v19c0 13-8.5 22.4-23 28.5C17.5 52.4 9 43 9 30V11a5 5 0 0 1 5-5Z" fill="#105f45" stroke="#6ed6ab" stroke-width="1.8"/>
+  <path d="M15 11h34v19c0 10-6.2 17.7-17 23-10.8-5.3-17-13-17-23V11Z" fill="#167452" fill-opacity=".3"/>
+  <g fill="#f3fff8" transform="translate(-.5)">
+    <path d="M17 37V22h4l4 6.5 4-6.5h4v15h-4v-8l-4 6-4-6v8h-4Z"/>
+    <path d="M35 22h13v4h-4.5v11h-4V26H35v-4Z"/>
+  </g>
+  <circle cx="32" cy="46" r="4" stroke="#8ce2bc" stroke-width="1.2"/>
+  <path d="m32 43.6 2.2 1.6-.8 2.5h-2.8l-.8-2.5 2.2-1.6Z" fill="#8ce2bc"/>
+</svg>
