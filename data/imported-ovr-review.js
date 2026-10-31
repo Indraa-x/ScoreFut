@@ -1,4 +1,4 @@
-import {OVR_REVIEW_20261029} from './ovr-review-20261029.js?v=ovr-import-20261029';
+import {OVR_REVIEW_20261029} from './ovr-review-20261029.js';
 /** Exact local-editor export approved by the creator. */
 export const IMPORTED_OVR_REVIEW=Object.freeze({
   "format": "scorefut-ovr-review",

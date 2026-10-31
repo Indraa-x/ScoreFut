@@ -1,5 +1,5 @@
-import {achievementEmblem} from './achievement-emblems.js?v=milestone-emblems-20261030';
-import { achievementsFor,achievementSummary } from './achievements.js?v=world-cup-20261026';
+import {achievementEmblem} from './achievement-emblems.js';
+import { achievementsFor,achievementSummary } from './achievements.js';
 
 const pad=value=>String(value).padStart(2,'0');
 const competitions={

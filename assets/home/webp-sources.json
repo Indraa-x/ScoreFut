@@ -1,0 +1,195 @@
+{
+  "convertedAt": "2026-10-31",
+  "method": "WebP encoding only; original dimensions and PNG/JPG fallback retained.",
+  "images": [
+    {
+      "source": "assets\\home\\bellingham-real-madrid-20261029.png",
+      "output": "assets\\home\\bellingham-real-madrid-20261029.webp",
+      "before": 287029,
+      "after": 46756,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\bellingham.png",
+      "output": "assets\\home\\bellingham.webp",
+      "before": 451021,
+      "after": 61624,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\buffon-color-20261030.png",
+      "output": "assets\\home\\buffon-color-20261030.webp",
+      "before": 1574467,
+      "after": 150814,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\buffon.png",
+      "output": "assets\\home\\buffon.webp",
+      "before": 211365,
+      "after": 68014,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\cristiano-ronaldo.png",
+      "output": "assets\\home\\cristiano-ronaldo.webp",
+      "before": 420337,
+      "after": 68308,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\group-3-player-1.png",
+      "output": "assets\\home\\group-3-player-1.webp",
+      "before": 251148,
+      "after": 42260,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\group-3-player-2.png",
+      "output": "assets\\home\\group-3-player-2.webp",
+      "before": 257642,
+      "after": 100970,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\group-3-player-3.png",
+      "output": "assets\\home\\group-3-player-3.webp",
+      "before": 372720,
+      "after": 55006,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\group-3-player-4.png",
+      "output": "assets\\home\\group-3-player-4.webp",
+      "before": 510151,
+      "after": 76214,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\haaland-city-20261030.png",
+      "output": "assets\\home\\haaland-city-20261030.webp",
+      "before": 257151,
+      "after": 104364,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\haaland.png",
+      "output": "assets\\home\\haaland.webp",
+      "before": 160922,
+      "after": 41220,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\harry-kane-bayern-20261029.png",
+      "output": "assets\\home\\harry-kane-bayern-20261029.webp",
+      "before": 243540,
+      "after": 44648,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\mbappe-psg-20261026.png",
+      "output": "assets\\home\\mbappe-psg-20261026.webp",
+      "before": 162467,
+      "after": 30542,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\mbappe-real-madrid-20261029.png",
+      "output": "assets\\home\\mbappe-real-madrid-20261029.webp",
+      "before": 234543,
+      "after": 92808,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\mbappe.png",
+      "output": "assets\\home\\mbappe.webp",
+      "before": 214953,
+      "after": 43292,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\messi.png",
+      "output": "assets\\home\\messi.webp",
+      "before": 479970,
+      "after": 64906,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\modric.png",
+      "output": "assets\\home\\modric.webp",
+      "before": 299531,
+      "after": 40376,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\neymar-al-hilal-20261026.png",
+      "output": "assets\\home\\neymar-al-hilal-20261026.webp",
+      "before": 258466,
+      "after": 103690,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\neymar-santos-20261029.png",
+      "output": "assets\\home\\neymar-santos-20261029.webp",
+      "before": 1790298,
+      "after": 185578,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\neymar.png",
+      "output": "assets\\home\\neymar.webp",
+      "before": 164498,
+      "after": 50500,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\players-field-20261030.png",
+      "output": "assets\\home\\players-field-20261030.webp",
+      "before": 690580,
+      "after": 97066,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\ronaldinho-color-20261030.png",
+      "output": "assets\\home\\ronaldinho-color-20261030.webp",
+      "before": 1695071,
+      "after": 172106,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\ronaldinho.png",
+      "output": "assets\\home\\ronaldinho.webp",
+      "before": 337103,
+      "after": 119308,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\ronaldo-color-20261030.png",
+      "output": "assets\\home\\ronaldo-color-20261030.webp",
+      "before": 1331000,
+      "after": 124270,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\ronaldo-nazario.png",
+      "output": "assets\\home\\ronaldo-nazario.webp",
+      "before": 243420,
+      "after": 78612,
+      "quality": 82
+    },
+    {
+      "source": "assets\\home\\zidane-color-20261030.png",
+      "output": "assets\\home\\zidane-color-20261030.webp",
+      "before": 2346324,
+      "after": 160488,
+      "quality": 76
+    },
+    {
+      "source": "assets\\home\\zidane.png",
+      "output": "assets\\home\\zidane.webp",
+      "before": 233323,
+      "after": 75492,
+      "quality": 82
+    }
+  ]
+}

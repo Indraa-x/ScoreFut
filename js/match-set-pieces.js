@@ -1,5 +1,5 @@
-import {playerSentOff} from './match-discipline.js?v=discipline-20261030';
-import {hashSeed,mulberry32} from './engine.js?v=discipline-20261030';
+import {playerSentOff} from './match-discipline.js';
+import {hashSeed,mulberry32} from './engine.js';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const mix=(a,b,t)=>a+(b-a)*t;
 const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};

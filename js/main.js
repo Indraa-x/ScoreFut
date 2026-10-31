@@ -1,26 +1,26 @@
-import {initHomeCounters} from './home-counters.js?v=home-count-up-20261029';
-import {initBrowserNavigation} from './browser-navigation.js?v=world-cup-20261026';
-import {selectQuickTeam,simulateQuickGame} from './quick-game.js?v=discipline-20261030';
-import {filterQuickClubs} from './quick-catalog.js?v=discipline-20261030';
-import { clubs, allSquads, validateData } from '../data/game-squads.js?v=discipline-20261030';
-import { squadsForMode, competitionName } from '../data/competitions.js?v=leverkusen-20261029';
-import { state, MODES } from './state.js?v=leverkusen-20261029';
-import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js?v=discipline-20261030';
-import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js?v=discipline-20261030';
-import {cryptoRandomIndex} from './random.js?v=world-cup-20261026';
-import * as storage from './storage.js?v=world-cup-20261026';
-import * as ui from './ui.js?v=milestone-emblems-20261030';
-import {renderReleaseDetails} from './release-notice.js?v=version-history-20261030';
-import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
-import {saveCampaignProgress} from './campaign-progress.js?v=world-cup-20261026';
-import {downloadResult} from './share.js?v=leverkusen-20261029';
-import {initPlayerDrag} from './player-drag.js?v=world-cup-20261026';
-import {initSkipFeedback} from './skip-feedback.js?v=world-cup-20261026';
-import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js?v=discipline-20261030';
-import {beginPenaltyReplay,matchHasEnded} from './match-penalties.js?v=single-penalty-title-20261028';
-import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js?v=discipline-20261030';
-import {initMatchPlayback} from './match-playback.js?v=discipline-20261030';
-import {initCelebration} from './celebration.js?v=world-cup-20261026';
+import {initHomeCounters} from './home-counters.js';
+import {initBrowserNavigation} from './browser-navigation.js';
+import {selectQuickTeam,simulateQuickGame} from './quick-game.js';
+import {filterQuickClubs} from './quick-catalog.js';
+import { clubs, allSquads, validateData, loadWorldCupSquads } from '../data/game-squads.js';
+import { squadsForMode, competitionName } from '../data/competitions.js';
+import { state, MODES } from './state.js';
+import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js';
+import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js';
+import {cryptoRandomIndex} from './random.js';
+import * as storage from './storage.js';
+import * as ui from './ui.js';
+import {renderReleaseDetails} from './release-notice.js';
+import {updateAchievementLedger} from './achievements.js';
+import {saveCampaignProgress} from './campaign-progress.js';
+import {downloadResult} from './share.js';
+import {initPlayerDrag} from './player-drag.js';
+import {initSkipFeedback} from './skip-feedback.js';
+import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js';
+import {beginPenaltyReplay,matchHasEnded} from './match-penalties.js';
+import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js';
+import {initMatchPlayback} from './match-playback.js';
+import {initCelebration} from './celebration.js';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 const homeCounters=initHomeCounters();
 const browserProgressReady=storage.initializeBrowserProgress();
@@ -268,7 +268,7 @@ async function launchFromHome(button){
   }
   if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('world-cup');
 }
-async function action(name,value,element){if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
+async function action(name,value,element){if(['mode','start','setup','play-home','resume'].includes(name)){const mode=name==='resume'?savedDraft()?.mode:name==='play-home'?'world-cup':value||state.mode;if(mode==='world-cup')await loadWorldCupSquads();}if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;switch(name){
 case'release-notes':document.getElementById('modal-content').innerHTML=renderReleaseDetails();modal.showModal();break;
 case'home':navigate('home');break;case'achievements':navigate('achievements');break;case'help':document.getElementById('modal-content').innerHTML=ui.renderHelp();modal.showModal();break;case'close-modal':modal.close();break;
 case'setup':openSetup(value||'world-cup');break;case'play-home':await launchFromHome(element);break;case'mode':{if(MODES.some(m=>m.id===value)){state.mode=value;if(value==='quick')state.quickStep='formation';render();}break;}
@@ -307,5 +307,6 @@ modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 document.addEventListener('visibilitychange',()=>{if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});
 window.addEventListener('pagehide',()=>{stopPlayback();if(['draft','summary','match'].includes(state.screen))persist();});
 if(!browserProgressReady||!competitionProgressReady){storageWarning=true;toast('Não foi possível concluir o salvamento neste navegador. Seu progresso anterior foi mantido.');}
+if(storage.read('active')?.draft?.mode==='world-cup')await loadWorldCupSquads();
 navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});
 navigation.start();

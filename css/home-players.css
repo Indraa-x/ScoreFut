@@ -44,7 +44,7 @@
 .home-stars-group--legends .home-star-portrait img{filter:url(#home-portrait-solid) saturate(.78)}
 
 /* The supplied pitch replaces the portrait card, fading gently into the page at either side. */
-#app .home-stars{border-color:transparent;box-shadow:none;background-image:linear-gradient(90deg,var(--bg),transparent 12%,transparent 88%,var(--bg)),linear-gradient(180deg,var(--bg),transparent 16%,transparent 84%,var(--bg)),linear-gradient(180deg,#09241945,#09241966 70%,#06170fbb),url('../assets/home/players-field-20261030.png');background-position:center;background-size:cover;background-repeat:no-repeat;background-clip:padding-box}
+#app .home-stars{border-color:transparent;box-shadow:none;background-image:linear-gradient(90deg,var(--bg),transparent 12%,transparent 88%,var(--bg)),linear-gradient(180deg,var(--bg),transparent 16%,transparent 84%,var(--bg)),linear-gradient(180deg,#09241945,#09241966 70%,#06170fbb),image-set(url('../assets/home/players-field-20261030.webp') type('image/webp'),url('../assets/home/players-field-20261030.png') type('image/png'));background-position:center;background-size:cover;background-repeat:no-repeat;background-clip:padding-box}
 /* Reveal more torso while preserving the existing image size and hairline. */
 #app .home-stars{--portrait-old-reserve:48.5px;--portrait-bottom-gap:14px}
 #app .home-stars-lineup{padding-bottom:var(--portrait-bottom-gap)}

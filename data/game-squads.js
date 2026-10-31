@@ -1,15 +1,22 @@
-import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js?v=courtois-20261030';
-import {worldCupNations,worldCupSquads} from './world-cup-squads.js?v=keepers-20261030';
-export {clubs} from './clubs.js?v=courtois-20261030';
-export {worldCupNations,worldCupSquads};
-export const allSquads=[...clubSquads,...worldCupSquads];
+import {allSquads as clubSquads,validateData as validateClubs} from './clubs.js';
+import {worldCupNations} from './world-cup-catalog.js';
+export let worldCupSquads=[];
+let loading=null;
+export async function loadWorldCupSquads(){
+ if(!loading)loading=import('./world-cup-squads.js').then(module=>{worldCupSquads=module.worldCupSquads;allSquads=[...clubSquads,...worldCupSquads];return worldCupSquads;}).catch(error=>{loading=null;throw error;});
+ return loading;
+}
+export {clubs} from './clubs.js';
+export {worldCupNations};
+export let allSquads=[...clubSquads,...worldCupSquads];
+if(typeof window==='undefined')await loadWorldCupSquads();
 export function validateData(){
   const original=validateClubs(),errors=[...original.errors],tags=new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);
-  if(worldCupNations.length!==32||worldCupSquads.length!==155)errors.push('Copa do Mundo: esperadas 32 seleções e 155 épocas reais.');
+  if(worldCupNations.length!==32||(worldCupSquads.length>0&&worldCupSquads.length!==155))errors.push('Copa do Mundo: esperadas 32 seleções e 155 épocas reais.');
   if(new Set(allSquads.map(s=>s.id)).size!==allSquads.length)errors.push('IDs de elenco repetidos.');
   for(const nation of worldCupNations){
     const eras=worldCupSquads.filter(s=>s.clubId===nation.id);
-    if(eras.length<1||eras.length>5||eras.length!==new Set(eras.map(s=>s.ano)).size)errors.push(`${nation.nome}: épocas inválidas.`);
+    if(worldCupSquads.length&&(eras.length<1||eras.length>5||eras.length!==new Set(eras.map(s=>s.ano)).size))errors.push(`${nation.nome}: épocas inválidas.`);
   }
   for(const squad of worldCupSquads){
     const players=squad.jogadores;

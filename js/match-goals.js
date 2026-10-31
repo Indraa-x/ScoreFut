@@ -1,5 +1,5 @@
-import {matchIncidentsAt} from './match-discipline.js?v=discipline-20261030';
-import { formatMatchEventMinute } from './match-motion.js?v=discipline-20261030';
+import {matchIncidentsAt} from './match-discipline.js';
+import { formatMatchEventMinute } from './match-motion.js';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 

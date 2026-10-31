@@ -1,4 +1,4 @@
-import {updateAchievementLedger} from './achievements.js?v=world-cup-20261026';
+import {updateAchievementLedger} from './achievements.js';
 
 const prefix = 'scorefut.';
 const progressKeys=['history','active'];

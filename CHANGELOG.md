@@ -33,3 +33,8 @@ Deploy explícito de `dist/` pelo GitHub Actions. A fonte do Pages deve ser GitH
 ### Etapa 3a — retratos arquivados
 
 Referências verificadas em js/, data/, css/ e index.html: somente os dois próprios módulos de retratos. A branch archive/portraits preserva data/player-portraits.js, js/player-portraits.js, assets/players/ (com fontes completas) e scripts/collect-commons-portraits.mjs e prepare-player-portraits.mjs. A versão ativa mantém apenas sources.json apontando ao arquivo. Nenhuma remoção definitiva do histórico.
+
+
+### Etapa 3b — carregamento e distribuição
+
+WebP com dimensões originais e fallback PNG/JPG preservado. Fontes locais sob OFL. Catálogo leve de seleções na home; elencos carregam na escolha da Copa e antes da retomada de saves dela. No Node, carregamento completo preserva auditorias e testes. CSS é unido na ordem original no dist; queries manuais de módulos foram substituídas por hash do conteúdo do grafo e o bundle CSS usa seu próprio hash. Escolha conservadora: !important que protegem temas, expulsões e animações foram preservados para evitar regressões visuais.

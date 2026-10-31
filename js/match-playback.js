@@ -1,9 +1,9 @@
-import {matchIncidentsAt,playerSentOff} from './match-discipline.js?v=discipline-20261030';
-import {goalOriginLabel} from './match-goal-origins.js?v=discipline-20261030';
-import { currentMatch } from './match-session.js?v=discipline-20261030';
-import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js?v=discipline-20261030';
-import {goalsAt,renderMatchGoals} from './match-goals.js?v=discipline-20261030';
-import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js?v=single-penalty-title-20261028';
+import {matchIncidentsAt,playerSentOff} from './match-discipline.js';
+import {goalOriginLabel} from './match-goal-origins.js';
+import { currentMatch } from './match-session.js';
+import { createMatchMotion, advanceMatchMinute, formatMatchClock, formatMatchEventMinute, matchAddedMinutes, matchPhase, scoreAt, normalizeMatchSpeed } from './match-motion.js';
+import {goalsAt,renderMatchGoals} from './match-goals.js';
+import {penaltyProgress,advancePenaltyReplay,matchHasEnded,renderPenaltyMarks} from './match-penalties.js';
 
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 

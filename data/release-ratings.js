@@ -1,5 +1,5 @@
-import {LEVERKUSEN_RELEASE_RATINGS} from './leverkusen.js?v=leverkusen-20261029';
-import {RECENT_CLUB_RELEASE_RATINGS} from './club-era-replacements.js?v=recent-club-eras-20261029';
+import {LEVERKUSEN_RELEASE_RATINGS} from './leverkusen.js';
+import {RECENT_CLUB_RELEASE_RATINGS} from './club-era-replacements.js';
 /** Verified OVRs from the edition released in the season year: 2015 -> FIFA 16.
  * Each record identifies its edition and source. Unverified seasons are not invented.
  * Creator JSON edits keep priority. Research and coverage: RATING-SOURCES.md.

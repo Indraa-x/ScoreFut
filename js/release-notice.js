@@ -1,4 +1,4 @@
-import {GAME_RELEASE,RELEASE_HISTORY} from '../data/release.js?v=version-history-20261030';
+import {GAME_RELEASE,RELEASE_HISTORY} from '../data/release.js';
 
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 

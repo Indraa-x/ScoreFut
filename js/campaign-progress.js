@@ -1,4 +1,4 @@
-import {recordAchievementProgress} from './achievements.js?v=world-cup-20261026';
+import {recordAchievementProgress} from './achievements.js';
 
 /** Save the small lifetime ledger before pruning the detailed campaign archive. */
 export function saveCampaignProgress(record,history,ledger,storage){

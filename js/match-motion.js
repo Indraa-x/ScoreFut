@@ -1,7 +1,7 @@
-import {playerSentOff} from './match-discipline.js?v=discipline-20261030';
-import {createSetPieceMotion} from './match-set-pieces.js?v=discipline-20261030';
-import {movementRole,movementProfile,chooseMovement,sampleMovement} from './match-movement-library.js?v=discipline-20261030';
-import { hashSeed, mulberry32 } from './engine.js?v=discipline-20261030';
+import {playerSentOff} from './match-discipline.js';
+import {createSetPieceMotion} from './match-set-pieces.js';
+import {movementRole,movementProfile,chooseMovement,sampleMovement} from './match-movement-library.js';
+import { hashSeed, mulberry32 } from './engine.js';
 
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const mix = (a, b, progress) => a + (b - a) * progress;

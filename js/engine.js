@@ -1,13 +1,13 @@
-import {assignMatchDiscipline} from './match-discipline.js?v=discipline-20261030';
+import {assignMatchDiscipline} from './match-discipline.js';
 /**
  * ScoreFut: pure, seeded eleven-player match and tournament simulation.
  * Ratings are editorial estimates, not a prediction about real football.
  * OVR and attributes drive the bounded Poisson equation, with modest player assistance.
  */
 
-import {assignSetPieceGoals} from './match-goal-origins.js?v=discipline-20261030';
-import { squadsForMode } from '../data/competitions.js?v=leverkusen-20261029';
-import {worldCupGroupOrder,worldCupRound16Pairings} from './world-cup.js?v=world-cup-20261026';
+import {assignSetPieceGoals} from './match-goal-origins.js';
+import { squadsForMode } from '../data/competitions.js';
+import {worldCupGroupOrder,worldCupRound16Pairings} from './world-cup.js';
 
 export const POSITION_MAP = Object.freeze({
   GOL: 'GOL', ZAG: 'DEF', LD: 'DEF', LE: 'DEF', DEF: 'DEF',

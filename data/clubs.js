@@ -1,5 +1,5 @@
-import {createLeverkusenClub} from './leverkusen.js?v=leverkusen-20261029';
-import {replaceClubEras} from './club-era-replacements.js?v=recent-club-eras-20261029';
+import {createLeverkusenClub} from './leverkusen.js';
+import {replaceClubEras} from './club-era-replacements.js';
 /**
  * Fonte central de dados do ScoreFut. Edite os elencos nos lotes importados
  * abaixo, ou inclua novos objetos diretamente em clubs. Notas com fonte histórica
@@ -7,12 +7,12 @@ import {replaceClubEras} from './club-era-replacements.js?v=recent-club-eras-202
  * Ajustes do criador têm prioridade; lacunas usam estimativas identificadas.
  * Cada temporada oferece onze candidatos, incluindo um goleiro.
  */
-import { clubsA } from './clubs-a.js?v=leverkusen-20261029';
-import { clubsB } from './clubs-b.js?v=leverkusen-20261029';
-import { clubsC } from './clubs-c.js?v=leverkusen-20261029';
-import { championsAdditions } from './champions-additions.js?v=leverkusen-20261029';
-import { expandClubSeasons } from './season-expansion.js?v=world-cup-20261026';
-import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js?v=courtois-20261030';
+import { clubsA } from './clubs-a.js';
+import { clubsB } from './clubs-b.js';
+import { clubsC } from './clubs-c.js';
+import { championsAdditions } from './champions-additions.js';
+import { expandClubSeasons } from './season-expansion.js';
+import { applyHistoricalFifaRating, MAX_OVR } from './ratings.js';
 export const ELENCO_TAMANHO = 11;
 export const clubs = replaceClubEras(expandClubSeasons([...clubsA, ...clubsB, ...clubsC, ...championsAdditions])).map(club=>club.id==='celtic'?createLeverkusenClub():club);
 const validTags = new Set(['GOL','ZAG','LD','LE','VOL','MC','MEI','MD','ME','PE','PD','SA','CA']);

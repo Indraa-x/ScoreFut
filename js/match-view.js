@@ -1,10 +1,10 @@
-import {playerSentOff} from './match-discipline.js?v=discipline-20261030';
-import {renderMatchGoals} from './match-goals.js?v=discipline-20261030';
-import {matchHasEnded,renderPenaltyMarks,penaltyProgress} from './match-penalties.js?v=single-penalty-title-20261028';
-import {championsGroup,renderChampionsSidebar} from './champions-view.js?v=discipline-20261030';
-import { competitionName, competitionLogo } from '../data/competitions.js?v=leverkusen-20261029';
-import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js?v=discipline-20261030';
-import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js?v=discipline-20261030';
+import {playerSentOff} from './match-discipline.js';
+import {renderMatchGoals} from './match-goals.js';
+import {matchHasEnded,renderPenaltyMarks,penaltyProgress} from './match-penalties.js';
+import {championsGroup,renderChampionsSidebar} from './champions-view.js';
+import { competitionName, competitionLogo } from '../data/competitions.js';
+import { currentMatch, canContinueTournament, nextFixturePreview } from './match-session.js';
+import { formatMatchClock, matchAddedMinutes, matchPhase, scoreAt, lineupAnchors, MATCH_SPEEDS, normalizeMatchSpeed } from './match-motion.js';
 
 const displayName = team => team.ano && team.name.endsWith(` ${team.ano}`) ? team.name.slice(0, -String(team.ano).length - 1) : team.name;
 const rgb = color => {
