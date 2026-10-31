@@ -1,5 +1,12 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.5',date:'31/10/2026',title:'Mais leve e mais organizado',changes:[
+  {icon:'clock',title:'Relógio contando os acréscimos',detail:'O tempo segue após 90 e 120 minutos, mantendo a indicação de acréscimos ao lado.'},
+  {icon:'field',title:'Placar mais claro',detail:'Equipes identificadas como Casa e Fora e gols de pênalti marcados com (Pen). Avisos de falta e escanteio removidos do campinho.'},
+  {icon:'players',title:'Elencos revisados',detail:'16 ajustes de OVR enviados pelo criador, aplicados às épocas indicadas.'},
+  {icon:'shield',title:'Pequenos detalhes, melhor leitura',detail:'Novos ícones de conquistas, escudo MT refinado, botões com apito e animação e resumo do time mais compacto.'},
+  {icon:'ball',title:'Carregamento mais leve',detail:'Imagens otimizadas, fontes locais e elencos da Copa carregados ao escolher o modo. Melhorias na organização e publicação do jogo.'},
+ ]},
  {version:'0.4',date:'30/10/2026',title:'Cartões entram em jogo',changes:[
   {icon:'shield',title:'Amarelos e vermelhos',detail:'Cartões ligados às faltas. Expulsões são raras, aparecem no placar e retiram o jogador do campinho.'},
   {icon:'ball',title:'Pênaltis identificados',detail:'Faltas na área originam cobranças de pênalti. Os gols recebem a indicação (pen) junto ao minuto.'},

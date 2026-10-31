@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.5 — 31/10/2026
+
+Consolida a otimização da distribuição e do carregamento, as 16 revisões de OVR, os refinamentos de ícones, escudo e botões, o resumo do time mais compacto e as melhorias de leitura no placar. O relógio continua contando durante os acréscimos, Casa/Fora identifica o mando e (Pen) identifica gols de pênalti. Histórico das versões anteriores preservado.
+
 ## Beta 0.4 — 30/10/2026
 
 Cartões amarelos e vermelhos vinculados às faltas, com expulsões raras. Faltas na área originam as cobranças de pênalti da partida. O placar identifica gols de pênalti com (pen) e exibe os jogadores expulsos, que saem do campinho.
