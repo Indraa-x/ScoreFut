@@ -71,7 +71,7 @@ test('the complete 16-team tree preserves the actual draw, bracket halves and un
   assert.equal((html.match(/data-action="champions-round"/g)||[]).length,4);
   assert.ok(html.includes('Ida e volta'));assert.ok(html.includes('Final única'));
   const details=renderChampionsTie(t,rounds[0][0].id);
-  assert.ok(details.includes('Ida ·'));assert.ok(details.includes('Volta ·'));
+  assert.ok(details.includes('Ida · Épocas:'));assert.ok(details.includes('Volta · Épocas:'));
   assert.equal((details.match(/A disputar/g)||[]).length,2);assert.ok(!details.includes('Classificado:'));
   assert.deepEqual(t,before);
 });
@@ -83,7 +83,12 @@ test('finished ties show oriented aggregate scores, the correct qualifier and th
     const actual=t.bracket.find(stage=>stage.stage===node.stage).ties[node.index];
     assert.equal(node.winnerId,actual.winnerId);assert.deepEqual(node.scores,actual.aggregate);
     const details=renderChampionsTie(t,node.id);
-    for(const game of node.games)assert.ok(details.includes(`${game.result.homeGoals} – ${game.result.awayGoals}`));
+    assert.ok(details.includes(node.stage==='final'?'Jogo único':'Jogo de ida e volta'));
+    for(const game of node.games){
+      assert.ok(details.includes(`${game.result.homeGoals} – ${game.result.awayGoals}`));
+      const era=id=>id===t.userTeamId?'Elenco montado':String(t.teams.find(team=>team.id===id).ano);
+      assert.ok(details.includes(`Épocas: ${era(game.homeId)} e ${era(game.awayId)}`),'each leg keeps its home/away eras in the displayed order');
+    }
     if(node.penalties)assert.ok(details.includes(node.penalties.join(' – ')));
     assert.ok(details.includes(node.stage==='final'?'Campeão:':'Classificado:'));
   }
