@@ -1,0 +1,7 @@
+/* A clear, generous start action, shared by the competition setup screens. */
+#app .setup-side>.setup-start-button{display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:56px;padding:14px 24px;border:1px solid #27875f;border-radius:10px;background:#13754b;color:#fff;font:750 15px/1.4 var(--body);box-shadow:inset 0 1px 0 #ffffff12;transition:background-color .16s,border-color .16s}
+#app .setup-side>.setup-start-button svg{width:25px;height:25px;flex:0 0 25px}
+#app .setup-side>.setup-start-button:hover{background:#106841;border-color:#379a70;filter:none;transform:none}
+#app .setup-side>.setup-start-button:active{background:#0c5937}
+#app .setup-side>.setup-start-button:focus-visible{outline:3px solid color-mix(in srgb,var(--green) 45%,transparent);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){#app .setup-side>.setup-start-button{transition:none}}
