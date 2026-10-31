@@ -20,7 +20,7 @@ test('cards have a foul and opposing offender; rare reds never leave future scor
   }
   for(const g of r.events.filter(e=>e.type==='goal'&&e.origin==='penalty')){
    pen++;const foul=r.events.find(f=>f.type==='foul'&&f.penaltyAwarded&&f.restartId===g.restartId);assert.ok(foul);
-   assert.ok(renderMatchGoals(r,g.minute).includes('(pen)'));
+   assert.ok(renderMatchGoals(r,g.minute).includes('(Pen)'));
   }
  }
  assert.ok(red>0&&red<60);assert.ok(yellow>red*5);assert.ok(pen>0);

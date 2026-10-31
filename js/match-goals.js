@@ -17,7 +17,7 @@ export function renderMatchGoals(result,minute,names={}){
       const key=goal.player.id||goal.player.nome;
       if(!players.has(key))players.set(key,{name:goal.player.nome,minutes:[]});
       const penalty=goal.origin==='penalty'||result.events.some(e=>e.type==='penalty'&&!e.shootout&&e.converted&&e.team===goal.team&&e.player.id===goal.player.id&&(e.goalMinute??e.minute)===goal.minute);
-      players.get(key).minutes.push(formatMatchEventMinute(result,goal.minute)+'′'+(penalty?' (pen)':''));
+      players.get(key).minutes.push(formatMatchEventMinute(result,goal.minute)+'′'+(penalty?' (Pen)':''));
     }
     return `<div class="match-scorers ${side}" aria-label="Gols de ${escape(names[side]||side)}">${[...players.values()].map(player=>`<p><strong>${escape(player.name)}</strong><span>${player.minutes.map(minute=>escape(minute)).join(', ')}</span></p>`).join('')}${result.events.filter(e=>e.type==='red'&&e.team===side&&e.minute<=minute).map(e=>`<p class="match-red-card"><i aria-label="Cartão vermelho"></i><strong>${escape(e.player.nome)}</strong><span>${escape(formatMatchEventMinute(result,e.minute))}′</span></p>`).join('')}</div>`;
   }).join('');
