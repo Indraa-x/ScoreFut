@@ -26,7 +26,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     position(nodes.ball, scene.ball);
     if(nodes.setPiece){
       const event=scene.setPiece,key=event?`${event.type}:${event.side}:${event.at}`:'';
-      nodes.setPiece.hidden=!event;
+      nodes.setPiece.hidden=!event||(!event.card&&['foul','corner'].includes(event.type));
       if(key!==nodes.setPieceKey){
         nodes.setPieceKey=key;
         nodes.ball.classList.toggle('set-piece-ball',!!event);
