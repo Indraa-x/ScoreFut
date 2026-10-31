@@ -80,3 +80,27 @@
  #app[data-screen="summary"] .summary-start{text-align:center;flex-direction:column;gap:14px}
  #app[data-screen="summary"] .summary-start .btn{width:auto}
 }
+
+/* Keep the review compact, with the same visual rhythm as the rest of the game. */
+#app[data-screen="summary"] .team-overview{grid-template-rows:auto auto auto;align-content:center;gap:12px}
+#app[data-screen="summary"] .gauge-card{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:206px;padding:20px 16px}
+#app[data-screen="summary"] .gauge{margin:15px auto 10px}
+#app[data-screen="summary"] .attribute-card{display:flex;flex-direction:column;justify-content:center;padding:20px 18px}
+#app[data-screen="summary"] .attribute-line{margin-bottom:12px}
+#app[data-screen="summary"] .attribute-line div{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:6px}
+#app[data-screen="summary"] .attribute-line .micro-bar{height:5px;border-radius:4px;overflow:hidden}
+#app[data-screen="summary"] .summary-info{min-height:126px;padding:18px;align-items:flex-start;text-align:left;gap:0}
+#app[data-screen="summary"] .summary-info strong{font-weight:750;font-size:29px;margin:8px 0 5px;font-variant-numeric:tabular-nums}
+#app[data-screen="summary"] .summary-info p{font-size:11px;line-height:1.55}
+#app[data-screen="summary"] .summary-start{display:flex;flex-direction:column;align-items:stretch;justify-content:center;text-align:left;padding:20px;gap:16px}
+#app[data-screen="summary"] .summary-start h3{font-size:17px;font-weight:700;margin-bottom:5px}
+#app[data-screen="summary"] .summary-start p{max-width:none;font-size:12px}
+#app[data-screen="summary"] .summary-start .btn{width:100%;min-height:50px;gap:10px;border-radius:9px;font-size:14px;font-weight:750;border:1px solid #27875f;box-shadow:inset 0 1px 0 #ffffff12}
+#app[data-screen="summary"] .summary-start .btn svg{width:22px;height:22px;flex:0 0 22px}
+@media(max-width:520px){
+ #app[data-screen="summary"] .gauge-card{min-height:188px;padding:16px 10px}
+ #app[data-screen="summary"] .attribute-card{padding:16px 12px}
+ #app[data-screen="summary"] .summary-info{min-height:125px;padding:15px 12px}
+ #app[data-screen="summary"] .summary-info strong{font-size:26px}
+ #app[data-screen="summary"] .summary-start{padding:18px}
+}
