@@ -29,3 +29,7 @@ Testes atualizados para três skips, acréscimos à direita e pênaltis em bolin
 ## Manutenção — 31/10/2026 — etapa 2
 
 Deploy explícito de `dist/` pelo GitHub Actions. A fonte do Pages deve ser GitHub Actions. A preparação não toca mais `.openai/hosting.json` e copia apenas dependências alcançáveis, escudos e retratos da home; referências dinâmicas são enumeradas explicitamente. A saída é reconstruída para não reter assets antigos.
+
+### Etapa 3a — retratos arquivados
+
+Referências verificadas em js/, data/, css/ e index.html: somente os dois próprios módulos de retratos. A branch archive/portraits preserva data/player-portraits.js, js/player-portraits.js, assets/players/ (com fontes completas) e scripts/collect-commons-portraits.mjs e prepare-player-portraits.mjs. A versão ativa mantém apenas sources.json apontando ao arquivo. Nenhuma remoção definitiva do histórico.
