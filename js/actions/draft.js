@@ -12,6 +12,36 @@ export function draftActions({
 }) {
   return {
     start: async (value, element) => {
+      const screen = state.screen,
+        mode = state.mode;
+      if (
+        element?.matches(".setup-start-button") &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        element.classList.add("is-starting");
+        element.disabled = true;
+        element.setAttribute("aria-busy", "true");
+        const animations = element.getAnimations?.({ subtree: true });
+        if (animations)
+          await Promise.all(
+            animations
+              .filter((animation) =>
+                animation.animationName?.startsWith("setup-start-"),
+              )
+              .map((animation) => animation.finished.catch(() => {})),
+          );
+        else await new Promise((resolve) => setTimeout(resolve, 360));
+        element.disabled = false;
+        element.removeAttribute("aria-busy");
+        element.classList.remove("is-starting");
+        if (
+          !element.isConnected ||
+          state.screen !== screen ||
+          state.mode !== mode
+        )
+          return;
+      }
+
       if (state.mode === "quick") {
         state.quickStep = "clubs";
         render();

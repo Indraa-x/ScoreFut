@@ -5,3 +5,18 @@
 #app .setup-side>.setup-start-button:active{background:#0c5937}
 #app .setup-side>.setup-start-button:focus-visible{outline:3px solid color-mix(in srgb,var(--green) 45%,transparent);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){#app .setup-side>.setup-start-button{transition:none}}
+
+#app .setup-start-button svg{transform-origin:42% 65%}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+ #app .setup-start-button:not(.is-starting):hover svg{animation:setup-start-hover .45s ease-in-out}
+}
+@media(prefers-reduced-motion:no-preference){
+ #app .setup-start-button:not(.is-starting):focus-visible svg{animation:setup-start-hover .45s ease-in-out}
+ #app .setup-start-button.is-starting{opacity:1;cursor:progress;animation:setup-start-press .36s ease-out}
+ #app .setup-start-button.is-starting svg{animation:setup-start-whistle .36s ease-in-out}
+ #app .setup-start-button.is-starting .whistle-signal{animation:setup-start-signal .36s ease-out}
+}
+@keyframes setup-start-hover{0%,100%{transform:rotate(0)}35%{transform:rotate(-12deg)}70%{transform:rotate(7deg)}}
+@keyframes setup-start-whistle{0%,100%{transform:rotate(0) scale(1)}30%{transform:rotate(-16deg) scale(1.1)}65%{transform:rotate(8deg) scale(1.06)}}
+@keyframes setup-start-signal{0%,100%{opacity:1}25%,60%{opacity:.25}40%,80%{opacity:1}}
+@keyframes setup-start-press{0%,100%{transform:scale(1)}35%{transform:scale(.985)}}
