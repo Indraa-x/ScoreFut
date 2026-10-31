@@ -22,7 +22,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const homeKit=home.id===t.userTeamId?'#13754b':'#3169b8';
   const awayKit=away.id===t.userTeamId?'#13754b':'#3169b8';
   const teamInfo = (team, side, kit) => {
-    return `<div class="match-team ${side}">${badge(team)}<div><span class="match-team-side"><i style="background:${esc(kit)}"></i>${team.id===t.userTeamId?'Seu time':'Adversário'}</span><h2>${esc(displayName(team))}</h2><small><b>OVR ${Math.round(team.strength.overall)}</b>${team.id===t.userTeamId?'':' · '+esc(team.ano || '')}</small></div></div>`;
+    return `<div class="match-team ${side}">${badge(team)}<div><span class="match-team-side"><i style="background:${esc(kit)}"></i>${side==='home'?'Casa':'Fora'}</span><h2>${esc(displayName(team))}</h2><small><b>OVR ${Math.round(team.strength.overall)}</b>${team.id===t.userTeamId?'':' · '+esc(team.ano || '')}</small></div></div>`;
   };
   const player = (entry, index, team, side) => {
     const anchor = anchors[(side === 'home' ? 0 : home.lineup.length) + index];
