@@ -43,3 +43,30 @@ test('v6 neutral equal teams retain realistic scoring; the Normal gap curve has 
   if(!gap){assert.ok(draws/runs>.235&&draws/runs<.29);assert.ok(zero/runs>.06&&zero/runs<.09);}
  }
 });
+test('v6 uses midfield, primary-position fit and capped era chemistry internally without changing display ratings',()=>{
+ const settings=simulationSettings('Realista'),a=team('a',85),b=team('b',85);
+ const midfield={...a,lineup:a.lineup.map(e=>({...e,player:{...e.player,atributos:{...e.player.atributos,meio:99}}}))};
+ assert.ok(expectedGoals(midfield,b,settings)>expectedGoals(a,b,settings));
+ assert.ok(expectedGoals(b,midfield,settings)<expectedGoals(b,a,settings));
+ const alternate=a.lineup.map(e=>e.slot.label==='LE'?{...e,player:{...e.player,tags:['LD','LE']}}:e);
+ assert.equal(calculateTeam(alternate).overall,85,'display remains the unchanged player average');
+ assert.ok(calculateTeam(alternate,settings).overall<calculateTeam(a.lineup,settings).overall);
+ const shared=a.lineup.map(e=>({...e,clubId:'same',squadId:'same-2010',ano:2010}));
+ assert.equal(calculateTeam(shared,settings).chemistry,2);
+ assert.equal(calculateTeam(shared,settings).overall,87);
+ assert.equal(calculateTeam(shared).chemistry,0);
+ assert.equal(calculateTeam(shared).overall,85);
+});
+test('no formation exceeds 52% decisive wins against the other equal-quality formations',()=>{
+ const settings=simulationSettings('Realista'),names=Object.keys(FORMATIONS);
+ for(const formation of names){let wins=0,total=0;
+  const a=team('a',85,formation);
+  for(const other of names.filter(n=>n!==formation)){
+   const b=team('b',85,other);
+   for(let seed=1;seed<=1600;seed++){
+    const r=simulateMatch(seed%2?a:b,seed%2?b:a,mulberry32(seed),{knockout:true,settings});wins+=r.winnerId==='a';total++;
+   }
+  }
+  assert.ok(wins/total<.52,`${formation}: ${wins/total}`);
+ }
+});

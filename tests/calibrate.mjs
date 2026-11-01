@@ -12,7 +12,8 @@ export function auditTeam(id,ovr,formation='4-3-3',isUser=false){
  return {id,name:id,lineup,strength:calculateTeam(lineup),formation,isUser};
 }
 const rows=[],start=performance.now();
-for(const [model,settings]of [['v5',LEGACY_SIMULATION_SETTINGS],...['Casual','Normal','Realista'].map(level=>[level,simulationSettings(level)])]){
+const levels=args.levels?args.levels.split(','):['Casual','Normal','Realista'];
+for(const [model,settings]of [['v5',LEGACY_SIMULATION_SETTINGS],...levels.map(level=>[level,simulationSettings(level)])]){
  for(const user of [true,false])for(const gap of [0,5,10,15,20]){
   const strong=auditTeam('strong',85+gap/2,'4-3-3',user),weak=auditTeam('weak',85-gap/2);
   let w=0,d=0,l=0,goals=0,high=0,zero=0;
@@ -26,7 +27,7 @@ for(const [model,settings]of [['v5',LEGACY_SIMULATION_SETTINGS],...['Casual','No
  }
 }
 const campaigns=[];
-if(args.campaigns)for(const mode of ['world-cup','champions','copa-do-brasil'])for(const [model,settings]of [['v5',LEGACY_SIMULATION_SETTINGS],...['Casual','Normal','Realista'].map(level=>[level,simulationSettings(level)])]){
+if(args.campaigns)for(const mode of ['world-cup','champions','copa-do-brasil'])for(const [model,settings]of [['v5',LEGACY_SIMULATION_SETTINGS],...levels.map(level=>[level,simulationSettings(level)])]){
  const cells=calibrateChampionship(allSquads,{runs:Number(args.campaigns),strengths:[86,94],seed,settings,mode});campaigns.push(...cells.map(c=>({mode,model,...c})));console.error(mode,model,JSON.stringify(cells));
 }
 const output={seed,runs,settings:SIMULATION_SETTINGS,matches:rows,campaigns,seconds:(performance.now()-start)/1000};

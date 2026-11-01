@@ -95,6 +95,7 @@ export const SIMULATION_DIFFICULTIES=Object.freeze({
 export const SIMULATION_SETTINGS=Object.freeze({
   modelVersion:6,difficulty:'Normal',baseXG:1.3,xGExponent:2.5,minXG:.02,maxXG:3.4,
   ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.12,smoothGapScale:22,
+  positionPenalty:.03,chemistryCap:2,midfieldWeight:.4,
 });
 export function simulationSettings(difficulty='Normal',overrides={}){
   if(!SIMULATION_DIFFICULTIES[difficulty])throw new Error('Unknown simulation difficulty');
@@ -147,10 +148,12 @@ export function positionFit(player, targetSlot) {
 }
 
 /** OVR and player attributes determine strength equally for every team. */
-export function calculateTeam(lineup = []) {
+export function calculateTeam(lineup = [], settings = LEGACY_SIMULATION_SETTINGS) {
   const entries = lineup.filter(entry => entry?.player && entry?.slot).map(entry => {
     const fit = positionFit(entry.player, entry.slot);
-    return { ...entry, factor: fit === null ? 0 : 1 };
+    const primary=normalizeRole(entry.player.tags?.[0] || '');
+    const target=normalizeRole(entry.slot.label || '');
+    return { ...entry, factor: fit === null ? 0 : settings.modelVersion>=6 && primary!==target ? 1-(settings.positionPenalty??.03) : 1 };
   });
   const effective = (entry, name) => attribute(entry.player, name) * entry.factor;
   const field = entries.filter(entry => entry.slot.position !== 'GOL');
@@ -169,11 +172,22 @@ export function calculateTeam(lineup = []) {
   const fieldDefense = field.length ? 0.55 * fieldOVR + 0.45 * weightedField('defesa', 'DEF') : 0;
   const defense = entries.length ? (keeper ? field.length ? fieldDefense * 0.75 + goalkeeper * 0.25 : goalkeeper : fieldDefense) : 0;
   const overall = average(entries.map(entry => entry.player.ovr * entry.factor));
-  const grade = value => rounded(clamp(value, 0, 99));
+  let chemistry=0;
+  if(settings.modelVersion>=6 && entries.length>1){
+    let sharedClub=0,sharedEra=0;
+    for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++){
+      const a=entries[i],b=entries[j];
+      if(a.clubId && a.clubId===b.clubId)sharedClub++;
+      if(a.squadId && a.squadId===b.squadId || a.clubId && a.clubId===b.clubId && a.ano!=null && a.ano===b.ano)sharedEra++;
+    }
+    const pairs=entries.length*(entries.length-1)/2;
+    chemistry=(settings.chemistryCap??2)*(.25*sharedClub+.75*sharedEra)/pairs;
+  }
+  const grade = value => rounded(clamp(value+chemistry, 0, 99));
   return {
-    overall: rounded(clamp(overall, 0, 99)),
+    overall: rounded(clamp(overall+chemistry, 0, 99)),
     attack: grade(attack), midfield: grade(midfield), defense: grade(defense),
-    goalkeeper: grade(goalkeeper), chemistry: 0,
+    goalkeeper: grade(goalkeeper), chemistry: rounded(chemistry),
     level: overall >= 90 ? 'Lendário' : overall >= 80 ? 'Profissional' : 'Amador',
   };
 }
@@ -263,8 +277,20 @@ export function expectedGoals(team, opponent, settings = SIMULATION_SETTINGS) {
 /** Paired rates share one budget: a stronger side gains what its opponent loses.
  * tanh is odd and smooth; it applies identically to user and computer teams.
  */
+const SIMULATION_METRICS=Symbol('simulation-metrics');
+function effectiveMetrics(team,settings){
+  return team[SIMULATION_METRICS] || (team.lineup?.length?calculateTeam(team.lineup,settings):team.strength || calculateTeam([],settings));
+}
+// Tempo changes both scoring rates together, rather than awarding free wins.
+const FORMATION_TEMPO=Object.freeze({'4-3-3':0,'4-4-2':0,'4-2-3-1':-.005,'4-2-4':.05,'3-5-2':.005,'5-3-2':-.04,'4-5-1':-.025,'3-4-3':.04});
+function formationTempo(team){
+  const entries=team.lineup || [];
+  const formation=Object.keys(FORMATIONS).find(key=>entries.length===11 && FORMATIONS[key].slots.every(slot=>entries.some(entry=>entry.slot.id===slot.id && entry.slot.label===slot.label)));
+  return FORMATION_TEMPO[formation] || 0;
+}
+
 function smoothExpectedGoals(team,opponent,settings){
-  const a=team.strength || calculateTeam(team.lineup),b=opponent.strength || calculateTeam(opponent.lineup);
+  const a=effectiveMetrics(team,settings),b=effectiveMetrics(opponent,settings);
   const quality=(one,two,user,opposingUser)=>{
     const gap=(one.overall??85)-(two.overall??85);
     const preset=SIMULATION_DIFFICULTIES[settings.difficulty] || SIMULATION_DIFFICULTIES.Normal;
@@ -272,16 +298,18 @@ function smoothExpectedGoals(team,opponent,settings){
     const def=settings.difficulty==='Normal'?(settings.userDefenseMultiplier??preset.userDefenseMultiplier):preset.userDefenseMultiplier;
     const assist=user&&!opposingUser?Math.log(atk):opposingUser&&!user?-Math.log(def):0;
     return settings.xGExponent*Math.log(Math.max(1,one.attack)/Math.max(1,two.defense))
-      +(settings.smoothGapWeight??.35)*Math.tanh(gap/(settings.smoothGapScale??22))+assist;
+      +(settings.smoothGapWeight??.12)*Math.tanh(gap/(settings.smoothGapScale??22))
+      +(settings.midfieldWeight??.4)*Math.log(Math.max(1,one.midfield??one.overall??85)/Math.max(1,two.midfield??two.overall??85))+assist;
   };
   const difference=clamp(quality(a,b,team.isUser,opponent.isUser)-quality(b,a,opponent.isUser,team.isUser),-6,6);
-  return clamp(2*settings.baseXG/(1+Math.exp(-difference)),settings.minXG,settings.maxXG);
+  const pace=1+(formationTempo(team)+formationTempo(opponent))/2;
+  return clamp(2*settings.baseXG*pace/(1+Math.exp(-difference)),settings.minXG,settings.maxXG);
 }
 
-function shootout(home, away, rng) {
+function shootout(home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
   const chance = (team, opponent) => {
-    const finishing = average(team.lineup.filter(entry => entry.slot.position !== 'GOL').map(entry => attribute(entry.player, 'finalizacao')));
-    const keeper = (opponent.strength || calculateTeam(opponent.lineup)).goalkeeper;
+    const finishing = average(team.lineup.filter(entry => entry.slot.position !== 'GOL').map(entry => attribute(entry.player, 'finalizacao')*(settings.modelVersion>=6 && normalizeRole(entry.player.tags?.[0])!==normalizeRole(entry.slot.label)?1-(settings.positionPenalty??.03):1)));
+    const keeper = (settings.modelVersion>=6?effectiveMetrics(opponent,settings):(opponent.strength || calculateTeam(opponent.lineup))).goalkeeper;
     return clamp(0.73 * (Math.max(finishing, 1) / Math.max(keeper, 1)) ** 0.25, 0.55, 0.88);
   };
   const homeChance = chance(home, away);
@@ -375,7 +403,7 @@ export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllo
   let penalties = null;
   let winnerId = homeGoals > awayGoals ? home.id : awayGoals > homeGoals ? away.id : null;
   if (knockout && homeGoals === awayGoals) {
-    const result = shootout(home, away, rng);
+    const result = shootout(home, away, rng, settings);
     penalties = result.score;
     events.push(...result.events.map(event => ({ ...event, minute: duration })));
     winnerId = penalties[0] > penalties[1] ? home.id : away.id;
