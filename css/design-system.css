@@ -46,7 +46,7 @@
 .stat-item span{display:block;font-size:8px;letter-spacing:.5px;margin-top:7px;line-height:1.5}
 .stat-item>svg{color:var(--green);width:22px;height:22px;flex-shrink:0}
 .stat-item>.home-stat-icon{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;margin:0;border-radius:11px}
-.home-stat-icon svg{width:24px;height:24px;stroke-width:1.8}
+.home-stat-icon svg{width:26px;height:26px;stroke-width:1.65}
 .stat-item>.home-stat-icon.titles{background:#fff2cf;color:#94700a}
 .stat-item>.home-stat-icon.best{background:#edf2ff;color:#355ab2}
 .stat-item>.home-stat-icon.rate{background:#eaf6ef;color:#13754b}
