@@ -93,8 +93,8 @@ export const SIMULATION_DIFFICULTIES=Object.freeze({
   Realista:Object.freeze({userAttackMultiplier:1,userDefenseMultiplier:1}),
 });
 export const SIMULATION_SETTINGS=Object.freeze({
-  modelVersion:6,difficulty:'Normal',baseXG:1.3,xGExponent:1.6,minXG:.02,maxXG:3.4,
-  ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.35,smoothGapScale:22,
+  modelVersion:6,difficulty:'Normal',baseXG:1.3,xGExponent:2.5,minXG:.02,maxXG:3.4,
+  ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.12,smoothGapScale:22,
 });
 export function simulationSettings(difficulty='Normal',overrides={}){
   if(!SIMULATION_DIFFICULTIES[difficulty])throw new Error('Unknown simulation difficulty');

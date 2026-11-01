@@ -30,3 +30,16 @@ test('smooth v6 rates are symmetric without assistance, continuous and have a bo
  assert.ok(expectedGoals(user,b,simulationSettings('Casual'))>expectedGoals(user,b,simulationSettings('Normal')));
  assert.ok(expectedGoals(user,b,simulationSettings('Normal'))>expectedGoals(user,b,settings));
 });
+test('v6 neutral equal teams retain realistic scoring; the Normal gap curve has no goal inflation',()=>{
+ const runs=8000;
+ for(const gap of [0,5,10,15,20]){
+  const a={...team('a',85+gap/2),isUser:true},b=team('b',85-gap/2);let wins=0,draws=0,goals=0,large=0,zero=0;
+  for(let seed=1;seed<=runs;seed++){
+   const r=simulateMatch(seed%2?a:b,seed%2?b:a,mulberry32(seed));wins+=r.winnerId==='a';draws+=!r.winnerId;const n=r.homeGoals+r.awayGoals;goals+=n;large+=n>=5;zero+=n===0;
+  }
+  const target={0:.42,5:.52,10:.62,15:.72,20:.80}[gap];
+  assert.ok(Math.abs(wins/runs-target)<.045,`gap ${gap}: ${wins/runs}`);
+  assert.ok(large/runs<.25);assert.ok(goals/runs>2.4&&goals/runs<2.8);
+  if(!gap){assert.ok(draws/runs>.235&&draws/runs<.29);assert.ok(zero/runs>.06&&zero/runs<.09);}
+ }
+});
