@@ -56,7 +56,7 @@ function visitRoute(route){
 }
 
 const playback=initMatchPlayback({app,state,onFinish:finishCurrentMatch,onSave:persist});
-const celebration=initCelebration({app,getRecord:()=>state.resultRecord,getScreen:()=>state.screen});
+const celebration=initCelebration({app});
 initSkipFeedback({app,getDraft:()=>state.screen==='draft'&&!state.rolling?state.draft:null});
 const validation=validateData();
 if(!validation.valid) console.error('Base ScoreFut inválida',validation.errors);
