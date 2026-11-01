@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
-import {squadTeam,simulateMatch,mulberry32} from '../js/engine.js';
+import {squadTeam,simulateMatch,mulberry32,LEGACY_SIMULATION_SETTINGS} from '../js/engine.js';
 import {createMatchMotion,scoreAt,advanceMatchMinute} from '../js/match-motion.js';
 const home={...squadTeam(allSquads.find(s=>s.id==='arsenal-2004')),id:'user'},away=squadTeam(allSquads.find(s=>s.id==='barcelona-2011'));
-function fixture(seed){return {id:'restart-'+seed,homeId:home.id,awayId:away.id,result:simulateMatch(home,away,mulberry32(seed),{knockout:true})};}
+function fixture(seed,settings){return {id:'restart-'+seed,homeId:home.id,awayId:away.id,result:simulateMatch(home,away,mulberry32(seed),{knockout:true,...(settings?{settings}:{})})};}
 
 test('repeated corners and fouls are seeded, finite, separate and preserve results',()=>{
  for(const seed of [2,7,14,39,102]){
@@ -37,7 +37,8 @@ test('resuming a replay or changing pace uses exactly the same restart at a give
 
 
 test('corners and fouls keep players, ball and clock moving at the selected pace',()=>{
- const match=fixture(39),motion=createMatchMotion(home,away,match,{seed:39});
+ // This fixed-seed continuous-run fixture predates v6; keep its original event sequence.
+ const match=fixture(39,LEGACY_SIMULATION_SETTINGS),motion=createMatchMotion(home,away,match,{seed:39});
  for(const event of motion.setPieces){
   for(let minute=event.at+.2;minute<event.end-.2;minute+=.1){
    const scene=motion.at(minute),next=motion.at(minute+.02);

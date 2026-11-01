@@ -96,6 +96,9 @@ export const SIMULATION_SETTINGS=Object.freeze({
   modelVersion:6,difficulty:'Normal',baseXG:1.3,xGExponent:2.5,minXG:.02,maxXG:3.4,
   ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.12,smoothGapScale:22,
   positionPenalty:.03,chemistryCap:2,midfieldWeight:.4,
+  homeAdvantage:.06,redAttackFactor:.65,redDefenseExposure:1.08,redCardChance:.006,
+  penaltyFoulChance:.035,substitutionChance:.72,substitutionRecovery:.02,
+  latePressure:.12,counterExposure:.06,extraTimeFatigue:.88,overdispersion:.18,
 });
 export function simulationSettings(difficulty='Normal',overrides={}){
   if(!SIMULATION_DIFFICULTIES[difficulty])throw new Error('Unknown simulation difficulty');
@@ -350,7 +353,7 @@ function shootout(home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
 }
 
 /** No RNG or team mutation. All events needed for the live replay are returned. */
-export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllowed = true, stoppageTimeAllowed = false, extraTimeTrigger = null, settings = SIMULATION_SETTINGS } = {}) {
+function simulateLegacyMatch(home, away, rng, { knockout = false, extraTimeAllowed = true, stoppageTimeAllowed = false, extraTimeTrigger = null, settings = SIMULATION_SETTINGS } = {}) {
   const xG = [expectedGoals(home, away, settings), expectedGoals(away, home, settings)];
   const regulationGoals = [poisson(xG[0], rng), poisson(xG[1], rng)];
   const extraGoals = [0, 0];
@@ -421,6 +424,133 @@ export function simulateMatch(home, away, rng, { knockout = false, extraTimeAllo
   return { homeGoals, awayGoals, winnerId, extraTime, penalties, regulationGoals,
     regulationStoppageTime, extraTimeStoppageTime, extraTimeStart, extraTimeEnd, duration,
     events, scorers: [...scorerMap.values()], xG: xG.map(rounded) };
+}
+
+/** Output schema is identical for both engines. The campaign's stored settings
+ * select the branch, including for an uncommitted saved replay. */
+export function simulateMatch(home,away,rng,options={}){
+  const settings=options.settings || SIMULATION_SETTINGS;
+  return settings.modelVersion>=6?simulateStatefulMatch(home,away,rng,{...options,settings}):simulateLegacyMatch(home,away,rng,{...options,settings});
+}
+function withoutDismissed(team,side,events){
+  const ids=new Set(events.filter(e=>e.type==='red' && e.team===side).map(e=>e.player.id));
+  return {...team,lineup:team.lineup.filter(e=>!ids.has(e.player.id))};
+}
+
+/** Five-minute blocks, split at causal incidents. No final score is drawn up front.
+ * A substitution represents a small freshness recovery: this dataset has no bench.
+ * Stoppage time adds exposure; extra time adds exposure with reduced freshness. */
+function simulateStatefulMatch(home,away,rng,{knockout=false,extraTimeAllowed=true,stoppageTimeAllowed=false,extraTimeTrigger=null,neutral=true,mode=null,settings}){
+  home={...home,[SIMULATION_METRICS]:effectiveMetrics(home,settings)};
+  away={...away,[SIMULATION_METRICS]:effectiveMetrics(away,settings)};
+  const teams=[home,away],sides=['home','away'];
+  const baseline=[expectedGoals(home,away,settings),expectedGoals(away,home,settings)];
+  const venue=!neutral && mode!=='world-cup'?1+(settings.homeAdvantage??.06):1;
+  baseline[0]*=venue;
+  const spread=settings.overdispersion??.18,tempo=1+(rng()*2-1)*spread;
+  const score=[0,0],xG=[0,0],reds=[new Set(),new Set()],booked=[new Set(),new Set()],freshness=[0,0],events=[];
+  let foulIndex=0;
+  const regulationStoppageTime=stoppageTimeAllowed?1+Math.floor(rng()*9):0;
+  const regulationEnd=90+regulationStoppageTime;
+  const pool=side=>teams[side].lineup.filter(e=>e.slot.position!=='GOL'&&!reds[side].has(e.player.id));
+  const activeTeam=side=>({...teams[side],lineup:teams[side].lineup.filter(e=>!reds[side].has(e.player.id))});
+  const coordinates=side=>({x:rounded(.12+rng()*.76),y:side===0?.15+rng()*.6:.25+rng()*.6});
+  const addGoal=(side,minute,player,extra={})=>{
+    score[side]++;
+    events.push({minute,type:'goal',team:sides[side],player:player || weightedPlayer(activeTeam(side),rng),...coordinates(side),...extra});
+  };
+  const plan=(start,end,extra)=>{
+    const items=[];
+    for(let side=0;side<2;side++){
+      const count=extra?1:3;
+      for(let i=0;i<count;i++)items.push({at:start+4+rng()*Math.max(1,end-start-12),side,type:'foul'});
+      for(let i=0,n=extra?1:1+Math.floor(rng()*4);i<n;i++)items.push({at:start+2+rng()*Math.max(1,end-start-9),side,type:'corner'});
+      for(let i=0,n=extra?1:2+Math.floor(rng()*4);i<n;i++)items.push({at:start+1+rng()*Math.max(1,end-start-3),side,type:'save'});
+      if(!extra && rng()<(settings.substitutionChance??.72))items.push({at:Math.min(end-6,60+rng()*20),side,type:'substitution'});
+    }
+    return items.sort((a,b)=>a.at-b.at);
+  };
+  const incident=(item,agenda)=>{
+    const {side,type,at}=item,other=1-side,eligible=pool(side);
+    if(type==='penalty-kick'){
+      const taker=weightedPlayer(activeTeam(side),rng),keeper=effectiveMetrics(teams[other],settings).goalkeeper;
+      const probability=clamp(.75*(Math.max(1,attribute(taker,'finalizacao'))/Math.max(1,keeper))**.18,.58,.88);
+      xG[side]+=probability;
+      const converted=rng()<probability;
+      const penalty={minute:item.foul.minute,type:'penalty',team:sides[side],player:taker,...coordinates(side),converted,shootout:false,restartId:item.foul.restartId,origin:'penalty',...(converted?{goalMinute:at}:{})};
+      item.foul.player=taker;events.push(penalty);
+      if(converted)addGoal(side,at,taker,{origin:'penalty',restartId:item.foul.restartId});
+      return;
+    }
+    if(type==='save'){
+      const keeper=teams[side].lineup.find(e=>e.slot.position==='GOL');
+      if(keeper)events.push({minute:at,type,team:sides[side],player:keeper.player,...coordinates(side)});
+      return;
+    }
+    if(!eligible.length)return;
+    const player=choose(eligible,rng).player;
+    if(type==='substitution')freshness[side]+=(settings.substitutionRecovery??.02);
+    if(type!=='foul'){events.push({minute:at,type,team:sides[side],player,...coordinates(side)});return;}
+    const defenders=pool(other);if(!defenders.length)return;
+    const offender=choose(defenders,rng).player,foulId=`foul-${foulIndex++}`;
+    const penaltyAwarded=rng()<(settings.penaltyFoulChance??.035);
+    const foul={minute:at,type:'foul',team:sides[side],player,...coordinates(side),offender,offendingTeam:sides[other],foulId,...(penaltyAwarded?{penaltyAwarded:true,restartId:`penalty-${foulId}`}:{})};
+    events.push(foul);
+    const roll=rng(),card=roll<(settings.redCardChance??.006)?'red':roll<.30&&!booked[other].has(offender.id)?'yellow':null;
+    if(card){
+      (card==='red'?reds[other]:booked[other]).add(offender.id);
+      events.push({minute:at,type:card,team:sides[other],player:offender,x:foul.x,y:foul.y,foulId,penaltyAwarded});
+    }
+    if(penaltyAwarded){agenda.push({at:at+2.5,type:'penalty-kick',side,foul});agenda.sort((a,b)=>a.at-b.at);}
+  };
+  const segment=(from,to,extra)=>{
+    if(to<=from)return;
+    const atStart=[...score];
+    for(let side=0;side<2;side++){
+      const other=1-side,chasing=from>=70 && atStart[side]<atStart[other],opponentChasing=from>=70 && atStart[other]<atStart[side];
+      const fatigue=extra?(settings.extraTimeFatigue??.88):1;
+      const rate=baseline[side]*tempo*(settings.redAttackFactor??.65)**reds[side].size
+        *(settings.redDefenseExposure??1.08)**reds[other].size*(1+freshness[side])
+        *(1-.001*booked[side].size)*(chasing?1+(settings.latePressure??.12):1)
+        *(opponentChasing?1+(settings.counterExposure??.06):1)*fatigue;
+      // Set-piece penalties are separate opportunities; retain the total scoring budget.
+      const lambda=rate*.94*(to-from)/90;xG[side]+=lambda;
+      const goals=poisson(lambda,rng);
+      for(let i=0;i<goals;i++)addGoal(side,Math.max(1,from+rng()*(to-from)));
+    }
+  };
+  const period=(start,end,extra)=>{
+    const agenda=plan(start,end,extra);let time=start;
+    for(let block=start;block<end;block+=5){
+      const until=Math.min(end,block+5);
+      while(agenda.length && agenda[0].at<=until){const event=agenda.shift();segment(time,event.at,extra);time=event.at;incident(event,agenda);}
+      segment(time,until,extra);time=until;
+    }
+  };
+  period(0,regulationEnd,false);
+  const regulationGoals=[...score];
+  const drawn=typeof extraTimeTrigger==='function'?extraTimeTrigger(regulationGoals):knockout && score[0]===score[1];
+  const extraTime=!!(extraTimeAllowed && drawn);
+  const extraTimeStoppageTime=extraTime&&stoppageTimeAllowed?1+Math.floor(rng()*9):0;
+  const extraTimeStart=extraTime?regulationEnd:null,extraTimeEnd=extraTime?regulationEnd+30:null;
+  const duration=extraTime?extraTimeEnd+extraTimeStoppageTime:regulationEnd;
+  if(extraTime)period(regulationEnd,duration,true);
+  let penalties=null,winnerId=score[0]>score[1]?home.id:score[1]>score[0]?away.id:null;
+  if(knockout && score[0]===score[1]){
+    const shoot=shootout(activeTeam(0),activeTeam(1),rng,settings);penalties=shoot.score;
+    events.push(...shoot.events.map(e=>({...e,minute:duration})));winnerId=penalties[0]>penalties[1]?home.id:away.id;
+  }
+  // Preserve the causal penalty/scorer; decorate only open-play goals. A separate
+  // seeded stream never changes the score or the match generator's state.
+  const decorating=events.filter(e=>!(e.type==='goal' && e.origin==='penalty') && !e.shootout),originalLength=decorating.length;
+  assignSetPieceGoals(decorating,withoutDismissed(home,'home',events),withoutDismissed(away,'away',events),mulberry32(hashSeed(`${home.id}:${away.id}:${events.filter(e=>e.type==='goal').map(e=>e.minute+e.team).join('|')}:goal-origins-v6`)));
+  events.push(...decorating.slice(originalLength));
+  events.sort((a,b)=>a.minute-b.minute);
+  const scorers=new Map();
+  for(const e of events.filter(e=>e.type==='goal')){
+    const key=`${e.team}:${e.player.id}`,record=scorers.get(key)||{playerId:e.player.id,nome:e.player.nome,name:e.player.nome,team:e.team,goals:0};record.goals++;scorers.set(key,record);
+  }
+  return {homeGoals:score[0],awayGoals:score[1],winnerId,extraTime,penalties,regulationGoals,regulationStoppageTime,extraTimeStoppageTime,extraTimeStart,extraTimeEnd,duration,events,scorers:[...scorers.values()],xG:xG.map(rounded)};
 }
 
 const shuffle = (items, rng) => {
@@ -565,13 +695,13 @@ function appendCupStage(tournament, stage, teamIds, rng, size = teamIds.length, 
 /** Resolve the return leg by total goals, never by away goals or its score alone.
  * Returned score and shootout events use the return leg's home/away orientation.
  * Inputs are immutable, so saves and a pending live replay remain independent. */
-export function resolveKnockoutTie(first, second, home, away, rng) {
+export function resolveKnockoutTie(first, second, home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
   const aggregate = [first.result.awayGoals + second.result.homeGoals,
     first.result.homeGoals + second.result.awayGoals];
   let winnerId = aggregate[0] > aggregate[1] ? home.id : aggregate[1] > aggregate[0] ? away.id : null;
   let result = {...second.result};
   if (!winnerId) {
-    const penalties = shootout(home, away, rng);
+    const penalties = settings.modelVersion>=6?shootout(withoutDismissed(home,'home',second.result.events),withoutDismissed(away,'away',second.result.events),rng,settings):shootout(home,away,rng,settings);
     winnerId = penalties.score[0] > penalties.score[1] ? home.id : away.id;
     result = {...result, winnerId, penalties:penalties.score,
       events:[...result.events, ...penalties.events.map(event => ({...event, minute:result.duration}))]};
@@ -624,12 +754,12 @@ function playCupRound(tournament) {
       : null;
     match.result = simulateMatch(home, away, rng, {knockout:match.stage === 'final',
       extraTimeAllowed:match.stage === 'final' || match.leg === 2,
-      stoppageTimeAllowed:true, extraTimeTrigger:aggregateDrawNeedsExtraTime, settings:next.settings});
+      stoppageTimeAllowed:true, extraTimeTrigger:aggregateDrawNeedsExtraTime, neutral:!!match.neutral,mode:next.mode,settings:next.settings});
     if (match.stage === 'final') {
       tie.winnerId = match.result.winnerId;
       tie.aggregate = [match.result.homeGoals, match.result.awayGoals];
     } else if (match.leg === 2) {
-      const resolved = resolveKnockoutTie(first, match, home, away, rng);
+      const resolved = resolveKnockoutTie(first, match, home, away, rng, next.settings);
       match.result = resolved.result;
       tie.winnerId = resolved.winnerId;
       tie.aggregate = [...resolved.aggregate].reverse(); // tie.teamIds follow the first leg
@@ -760,7 +890,7 @@ export function playNextRound(tournament) {
     const home = next.teams.find(team => team.id === match.homeId);
     const away = next.teams.find(team => team.id === match.awayId);
     match.result = simulateMatch(home, away, rng, { knockout: !league && !groupRound,
-      stoppageTimeAllowed:['champions','world-cup'].includes(next.mode), settings: next.settings });
+      stoppageTimeAllowed:['champions','world-cup'].includes(next.mode),neutral:!!match.neutral || next.mode==='world-cup',mode:next.mode,settings: next.settings });
   });
   next.progressRound += 1;
   next.rngState = rng.getState();

@@ -70,3 +70,28 @@ test('no formation exceeds 52% decisive wins against the other equal-quality for
   assert.ok(wins/total<.52,`${formation}: ${wins/total}`);
  }
 });
+test('v6 cards, substitutions, venue and stoppage time affect only the remaining exposure',()=>{
+ const a=team('a',85),b=team('b',85),base=simulationSettings('Realista',{redCardChance:0,penaltyFoulChance:0,overdispersion:0,latePressure:0,counterExposure:0,substitutionChance:0});
+ const constant=()=>.2;
+ const normal=simulateMatch(a,b,constant,{settings:base});
+ const dismissed=simulateMatch(a,b,constant,{settings:{...base,redCardChance:1}});
+ assert.ok(dismissed.events.some(e=>e.type==='red'));
+ assert.ok(dismissed.xG[0]<normal.xG[0]*.8 && dismissed.xG[1]<normal.xG[1]*.8);
+ const rested=simulateMatch(a,b,constant,{settings:{...base,substitutionChance:1,substitutionRecovery:.2}});
+ assert.ok(rested.xG[0]>normal.xG[0]);
+ const home=simulateMatch(a,b,constant,{settings:base,neutral:false,mode:'champions'});
+ assert.ok(home.xG[0]>normal.xG[0]);assert.equal(home.xG[1],normal.xG[1]);
+ assert.deepEqual(simulateMatch(a,b,constant,{settings:base,neutral:false,mode:'world-cup'}),normal);
+ const added=simulateMatch(a,b,()=>.8,{settings:base,stoppageTimeAllowed:true});assert.ok(added.duration>90 && added.xG[0]>normal.xG[0]);
+});
+test('v6 output has the v5 schema, is resumably deterministic and never uses dismissed penalty takers',()=>{
+ const a={...team('a',86),isUser:true},b=team('b',83),settings=simulationSettings('Normal');
+ const keys=Object.keys(simulateMatch(a,b,mulberry32(1),{settings:LEGACY_SIMULATION_SETTINGS})).sort();
+ for(let seed=1;seed<=250;seed++){
+  const rng=mulberry32(seed),r=simulateMatch(a,b,rng,{knockout:true,settings,stoppageTimeAllowed:true});
+  assert.deepEqual(Object.keys(r).sort(),keys);assert.deepEqual(r,simulateMatch(a,b,mulberry32(seed),{knockout:true,settings,stoppageTimeAllowed:true}));
+  assert.deepEqual(r,JSON.parse(JSON.stringify(r)));assert.equal(r.scorers.reduce((s,p)=>s+p.goals,0),r.homeGoals+r.awayGoals);
+  for(const e of r.events.filter(e=>e.type==='red'))assert.ok(!r.events.some(g=>['goal','penalty'].includes(g.type)&&g.team===e.team&&g.player.id===e.player.id&&g.minute>=e.minute));
+  const checkpoint=rng.getState();assert.equal(rng(),mulberry32(checkpoint)(),'RNG resumes after exactly the consumed draws');
+ }
+});
