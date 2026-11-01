@@ -948,8 +948,8 @@ export function simulateTournament(tournament) {
  * Call with the actual dataset: calibrateChampionship(allSquads, { runs: 1000 }).
  * Returning confidence margins makes the sampled rate's uncertainty visible.
  */
-export function calibrateChampionship(allSquads, { runs = 1000, strengths = [76, 82, 88, 94], seed = 20261010, settings = SIMULATION_SETTINGS } = {}) {
-  const candidateTeams = new Map(allSquads.map(squad => [squad.id, squadTeam(squad)]));
+export function calibrateChampionship(allSquads, { runs = 1000, strengths = [76, 82, 88, 94], seed = 20261010, settings = SIMULATION_SETTINGS, mode='cup', candidateTeams=new Map(allSquads.map(squad => [squad.id, squadTeam(squad)])) } = {}) {
+  if(!Number.isInteger(runs)||runs<1)throw new Error('Calibration runs must be a positive integer');
   const attributeNames = ['ataque', 'meio', 'defesa', 'finalizacao', 'reflexo', 'posicionamento'];
   const profiles = Object.fromEntries(['GOL', 'ZAG', 'LD', 'LE', 'VOL', 'MC', 'PE', 'PD', 'CA'].map(tag => {
     const players = allSquads.flatMap(squad => squad.jogadores).filter(player => player.tags[0] === tag);
@@ -964,10 +964,14 @@ export function calibrateChampionship(allSquads, { runs = 1000, strengths = [76,
     const team = { id: 'audit-user', name: `Teste OVR ${ovr}`, lineup, strength: calculateTeam(lineup) };
     let titles = 0;
     for (let run = 0; run < runs; run += 1) {
-      const tournament = simulateTournament(createTournament(team, allSquads, { seed: hashSeed(`${seed}:${run}`), settings, candidateTeams }));
+      let tournament = createTournament(team, allSquads, { mode,seed: hashSeed(`${seed}:${run}`), settings, candidateTeams });
+      // Once eliminated, the title indicator is fixed; skipped rounds cannot change it.
+      while(!tournament.complete&&!tournament.campaign.eliminated)tournament=playNextRound(tournament);
       if (tournament.championId === team.id) titles += 1;
     }
     const probability = titles / runs;
-    return { strength: ovr, overall: team.strength.overall, runs, titles, titleRate: rounded(probability * 100), margin95: rounded(1.96 * Math.sqrt(probability * (1 - probability) / runs) * 100), modelVersion: SIMULATION_SETTINGS.modelVersion };
+    const z=1.96,denominator=1+z*z/runs,center=(probability+z*z/(2*runs))/denominator;
+    const half=z*Math.sqrt(probability*(1-probability)/runs+z*z/(4*runs*runs))/denominator;
+    return { mode,strength:ovr,overall:team.strength.overall,runs,titles,titleRate:rounded(probability*100),margin95:rounded(Math.max(probability-center+half,center+half-probability)*100),confidence95:[rounded((center-half)*100),rounded((center+half)*100)],modelVersion:settings.modelVersion,difficulty:settings.difficulty || 'legacy' };
   });
 }
