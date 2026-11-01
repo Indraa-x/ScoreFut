@@ -1,8 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
-import {FORMATIONS,calculateTeam,expectedGoals,simulateMatch,mulberry32,createTournament,playNextRound,SIMULATION_SETTINGS} from '../js/engine.js';
+import {FORMATIONS,calculateTeam,expectedGoals as engineXG,simulateMatch as engineMatch,mulberry32,createTournament as engineTournament,playNextRound,LEGACY_SIMULATION_SETTINGS as SIMULATION_SETTINGS} from '../js/engine.js';
 import {prepareUserRound,currentMatch,migrateNeutralSimulation} from '../js/match-session.js';
+// Historical model-5 regression: the old dominance rule remains available to saves.
+const expectedGoals=(a,b,settings=SIMULATION_SETTINGS)=>engineXG(a,b,settings);
+const simulateMatch=(a,b,rng,options={})=>engineMatch(a,b,rng,{settings:SIMULATION_SETTINGS,...options});
+const createTournament=(a,b,options={})=>engineTournament(a,b,{settings:SIMULATION_SETTINGS,...options});
 const team=(id,ovr,isUser=false)=>{
  const lineup=FORMATIONS['4-3-3'].slots.map((slot,i)=>({slot,player:{id:id+'-'+i,nome:id+' '+i,tags:[slot.label],ovr,
  atributos:Object.fromEntries(['ataque','meio','defesa','finalizacao','reflexo','posicionamento'].map(key=>[key,ovr]))}}));
@@ -67,18 +71,12 @@ test('World Cup, Champions, Copa do Brasil and quick simulation use the same OVR
  }
 });
 
-test('version-four saves adopt the gap rule for future games and keep finished scores and started replays',()=>{
+test('version-four saves retain their original model, finished scores and pending replay',()=>{
  const settings={...baseline,modelVersion:4};
  const committed=playNextRound(createTournament(team('user',89),weakPool,{mode:'world-cup',seed:121,settings}));
  for(const minute of [0,27,120]){
-  const state={...prepareUserRound(committed),matchMinute:minute},original=structuredClone(state),previous=currentMatch(state);
-  const updated={...state,...migrateNeutralSimulation(state)};
-  assert.deepEqual(state,original);assert.deepEqual(updated.tournament.userMatches,original.tournament.userMatches);
-  assert.equal(updated.tournament.settings.modelVersion,SIMULATION_SETTINGS.modelVersion);
-  assert.equal(updated.pendingRound.settings.dominanceAttackMultiplier,SIMULATION_SETTINGS.dominanceAttackMultiplier);
-  assert.equal(currentMatch(updated).id,previous.id);
-  if(minute>0){assert.equal(updated.matchMinute,minute);assert.deepEqual(currentMatch(updated),previous);}
-  else {const game=currentMatch(updated),index=game.homeId==='user'?0:1;assert.ok(game.result.xG[index]>previous.result.xG[index]);}
-  assert.deepEqual(migrateNeutralSimulation(updated),{});
+  const state={...prepareUserRound(committed),matchMinute:minute},original=structuredClone(state);
+  assert.deepEqual(migrateNeutralSimulation(state),{});
+  assert.deepEqual(state,original);
  }
 });

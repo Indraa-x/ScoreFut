@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { allSquads } from '../data/clubs.js';
-import { FORMATIONS, TEAM_SIZE, SIMULATION_SETTINGS, POSITION_MAP, mulberry32, hashSeed, positionFit, calculateTeam, squadTeam, expectedGoals, simulateMatch, createTournament, playNextRound, simulateTournament } from '../js/engine.js';
+import { FORMATIONS, TEAM_SIZE, SIMULATION_SETTINGS, LEGACY_SIMULATION_SETTINGS, POSITION_MAP, mulberry32, hashSeed, positionFit, calculateTeam, squadTeam, expectedGoals as engineXG, simulateMatch, createTournament, playNextRound, simulateTournament } from '../js/engine.js';
 
+const expectedGoals=(a,b,settings=LEGACY_SIMULATION_SETTINGS)=>engineXG(a,b,settings);
 const player = (id, tag, ovr = 88) => ({ id, nome: id, tags: [tag], ovr, atributos: { ataque: ovr, meio: ovr, defesa: ovr, finalizacao: ovr, reflexo: ovr, posicionamento: ovr } });
 const squads = Array.from({ length: 120 }, (_, index) => ({ id: `squad-${index}`, clubId: `club-${Math.floor(index / 4)}`, nome: `Clube ${Math.floor(index / 4)}`, ano: 2000 + index % 4, cores: ['#145b36', '#ffffff'], monograma: 'CL', jogadores: ['GOL','LD','ZAG','ZAG','LE','VOL','MC','MC','PE','PD','CA'].map((tag, place) => player(`p-${index}-${place}`, tag, 80 + index % 15)) }));
 const userLineup = FORMATIONS['4-3-3'].slots.map((slot, index) => ({ slot, player: player(`user-${index}`, slot.label), clubId: `user-club-${index}` }));
@@ -100,6 +101,7 @@ test('seed generators are stable and resume from explicit state', () => {
 });
 
 test('xG keeps OVR relevant, applies modest assistance and ignores the old large familiarity bonus', () => {
+  const SIMULATION_SETTINGS=LEGACY_SIMULATION_SETTINGS; // This equation is the saved model-5 contract.
   const home={...user,isUser:false,strength:{...user.strength,overall:85,attack:90}};
   const away={...squadTeam(squads[0]),isUser:false,strength:{...squadTeam(squads[0]).strength,overall:85,defense:80}};
   const base=1.3*(90/80)**1.6;
@@ -110,7 +112,7 @@ test('xG keeps OVR relevant, applies modest assistance and ignores the old large
   assert.equal(expectedGoals({...home,strength:{attack:99}},{...away,strength:{defense:1}}),4.5);
   assert.equal(expectedGoals({...home,strength:{attack:1}},{...away,strength:{defense:99}}),.2);
   assert.equal(expectedGoals({...home,isUser:true},away,{...SIMULATION_SETTINGS,draftFamiliarity:3}),base*SIMULATION_SETTINGS.userAttackMultiplier);
-  for(let seed=1;seed<=100;seed++)assert.deepEqual(simulateMatch({...home,isUser:true},away,mulberry32(seed),{knockout:true,settings:{...SIMULATION_SETTINGS,draftFamiliarity:3}}),simulateMatch({...home,isUser:true},away,mulberry32(seed),{knockout:true}));
+  for(let seed=1;seed<=100;seed++)assert.deepEqual(simulateMatch({...home,isUser:true},away,mulberry32(seed),{knockout:true,settings:{...SIMULATION_SETTINGS,draftFamiliarity:3}}),simulateMatch({...home,isUser:true},away,mulberry32(seed),{knockout:true,settings:LEGACY_SIMULATION_SETTINGS}));
 });
 
 test('match events reconcile with the score, stay within the pitch, and resolve knockout draws', () => {
@@ -207,8 +209,8 @@ test('nearby positions keep the full OVR, attributes and shootout finishing',()=
  const naturalTeam={...user,lineup:natural,strength:calculateTeam(natural)};
  const nearbyTeam={...user,lineup:nearby,strength:calculateTeam(nearby)};
  for(let seed=0;seed<60;seed++){
-  const a=simulateMatch(naturalTeam,opponent,mulberry32(seed),{knockout:true});
-  const b=simulateMatch(nearbyTeam,opponent,mulberry32(seed),{knockout:true});
+  const a=simulateMatch(naturalTeam,opponent,mulberry32(seed),{knockout:true,settings:LEGACY_SIMULATION_SETTINGS});
+  const b=simulateMatch(nearbyTeam,opponent,mulberry32(seed),{knockout:true,settings:LEGACY_SIMULATION_SETTINGS});
   assert.equal(a.homeGoals,b.homeGoals);assert.equal(a.awayGoals,b.awayGoals);assert.deepEqual(a.penalties,b.penalties);
  }
 });

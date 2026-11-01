@@ -1,4 +1,4 @@
-import { createTournament, playNextRound, calculateTeam, SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js';
+import { createTournament, playNextRound, LEGACY_SIMULATION_SETTINGS, upgradeChampionsTournament } from './engine.js';
 import {matchHasEnded} from './match-penalties.js';
 
 export const MATCH_FLOW_VERSION = 1;
@@ -49,18 +49,14 @@ export function commitUserRound(state) {
   return true;
 }
 
-/** Keep completed rounds; regenerate only an uncommitted match under current difficulty. */
+/** Freeze unversioned saves to the pre-upgrade model. Never regenerate a replay
+ * or promote an existing campaign to a different simulation model/difficulty. */
 export function migrateNeutralSimulation(state) {
-  if(!state.tournament || state.tournament.settings?.modelVersion===SIMULATION_SETTINGS.modelVersion)return {};
-  const {draftFamiliarity,...oldSettings}=state.tournament.settings||{};
-  const tournament={...state.tournament,settings:{...oldSettings,...SIMULATION_SETTINGS},teams:state.tournament.teams.map(team=>({...team,isUser:team.id===state.tournament.userTeamId,strength:calculateTeam(team.lineup)}))};
-  // Version 3 already used the current ratings. Keep a replay that has started;
-  // its following rounds adopt the new matchup rule without changing visible scores.
-  if(state.pendingRound&&oldSettings.modelVersion>=3&&state.matchMinute>0){
-    return {tournament,pendingRound:{...state.pendingRound,settings:tournament.settings,teams:tournament.teams}};
-  }
-  if(state.pendingRound)return {...prepareUserRound(tournament),matchMinute:0};
-  return {tournament};
+  if(!state.tournament || state.tournament.settings?.modelVersion)return {};
+  const settings={...LEGACY_SIMULATION_SETTINGS,...state.tournament.settings,modelVersion:5};
+  return {tournament:{...state.tournament,settings},...(state.pendingRound?{
+    pendingRound:{...state.pendingRound,settings:{...settings,...state.pendingRound.settings,modelVersion:state.pendingRound.settings?.modelVersion || 5}}
+  }:{})};
 }
 
 /** Rebuild an old, fully simulated save only as far as the viewed round. */
@@ -69,7 +65,7 @@ export function migrateMatchSession(saved, squads) {
   const viewed = previous.userMatches[saved.userMatchIndex || 0];
   const user = previous.teams.find(team => team.id === previous.userTeamId);
   let tournament = createTournament(user, squads, {
-    mode: previous.mode, seed: previous.seed, settings: previous.settings,
+    mode: previous.mode, seed: previous.seed, settings: previous.settings?.modelVersion?previous.settings:{...LEGACY_SIMULATION_SETTINGS,...previous.settings},
     excludeSquadIds: saved.draft?.picks.map(pick => pick.squadId) || [],
   });
   while (tournament.progressRound < (viewed?.round || 1) - 1) tournament = playNextRound(tournament);

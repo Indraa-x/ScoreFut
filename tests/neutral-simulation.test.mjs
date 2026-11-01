@@ -1,9 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {FORMATIONS,calculateTeam,simulateMatch,mulberry32,createTournament,squadTeam,SIMULATION_SETTINGS} from '../js/engine.js';
+import {FORMATIONS,calculateTeam,simulateMatch as engineMatch,mulberry32,createTournament as engineTournament,squadTeam,LEGACY_SIMULATION_SETTINGS as SIMULATION_SETTINGS} from '../js/engine.js';
 import {allSquads} from '../data/clubs.js';
 import {prepareUserRound,currentMatch,commitUserRound,migrateNeutralSimulation} from '../js/match-session.js';
 
+// These cases describe the legacy assistance, not the new campaign defaults.
+const simulateMatch=(a,b,rng,options={})=>engineMatch(a,b,rng,{settings:SIMULATION_SETTINGS,...options});
+const createTournament=(a,b,options={})=>engineTournament(a,b,{settings:SIMULATION_SETTINGS,...options});
 const team=(id,ovr)=>{
   const lineup=FORMATIONS['4-3-3'].slots.map((slot,index)=>({slot,clubId:id,player:{id:id+'-'+index,nome:id+' '+index,tags:[slot.label],ovr,atributos:{ataque:ovr,meio:ovr,defesa:ovr,finalizacao:ovr,reflexo:ovr,posicionamento:ovr}}}));
   return {id,name:id,lineup,strength:calculateTeam(lineup),isUser:id==='user'};
@@ -28,28 +31,13 @@ test('without assistance equal teams remain balanced and higher OVR raises the w
   assert.ok(strong.losses>4000*.1);
 });
 
-test('legacy biased saves keep finished matches and regenerate only the unfinished round with current difficulty and original ratings',()=>{
-  const user={...squadTeam(allSquads[0]),id:'user',clubId:'user',name:'Meu time'};
-  let state={...prepareUserRound(createTournament(user,allSquads,{mode:'copa-do-brasil',seed:39})),matchMinute:90};
-  commitUserRound(state);
-  state.tournament.settings={...state.tournament.settings,modelVersion:1,draftFamiliarity:1.38};
-  const oldUser=state.tournament.teams.find(team=>team.id==='user');
-  oldUser.strength.attack*=1.38;oldUser.strength.defense*=1.38;
-  Object.assign(state,prepareUserRound(state.tournament),{matchMinute:23});
-  const before=structuredClone(state),matchId=currentMatch(state).id;
-  const migrated={...state,...migrateNeutralSimulation(state)};
-  assert.deepEqual(state,before);
-  assert.equal(migrated.matchMinute,0);
-  assert.equal(currentMatch(migrated).id,matchId);
-  assert.deepEqual(migrated.tournament.userMatches,before.tournament.userMatches);
-  assert.equal(migrated.tournament.settings.modelVersion,SIMULATION_SETTINGS.modelVersion);
-  assert.ok(!Object.hasOwn(migrated.tournament.settings,'draftFamiliarity'));
-  assert.deepEqual(migrated.tournament.teams.find(team=>team.id==='user').strength,calculateTeam(user.lineup));
-  assert.deepEqual(migrateNeutralSimulation(migrated),{});
-  const ended={...before,pendingRound:null,matchMinute:90};
-  const completedMigration=migrateNeutralSimulation(ended);
-  assert.deepEqual(completedMigration.tournament.userMatches,before.tournament.userMatches);
-  assert.ok(!Object.hasOwn(completedMigration,'matchMinute'));
+test('legacy biased saves and pending replays retain their existing settings and results',()=>{
+ const user={...squadTeam(allSquads[0]),id:'user',clubId:'user',name:'Meu time'};
+ const settings={...SIMULATION_SETTINGS,modelVersion:1,draftFamiliarity:1.38};
+ const state={...prepareUserRound(createTournament(user,allSquads,{mode:'copa-do-brasil',seed:39,settings})),matchMinute:23};
+ const before=structuredClone(state);
+ assert.deepEqual(migrateNeutralSimulation(state),{});
+ assert.deepEqual(state,before);
 });
 
 test('the small assistance in close matchups improves wins at home and away while preserving draws and losses',()=>{
@@ -74,17 +62,11 @@ test('the small assistance in close matchups improves wins at home and away whil
   assert.ok(counts[2]>counts[1]&&counts[1]>counts[0]);
 });
 
-test('version-two saves retain completed scores when migrating to the easier difficulty',()=>{
-  const user={...squadTeam(allSquads[0]),id:'user',name:'Meu time'};
-  const settings={...SIMULATION_SETTINGS,modelVersion:2,userAttackMultiplier:1,userDefenseMultiplier:1};
-  let state={...prepareUserRound(createTournament(user,allSquads,{mode:'champions',seed:41,settings})),matchMinute:90};
-  commitUserRound(state);
-  Object.assign(state,prepareUserRound(state.tournament),{matchMinute:17});
-  const before=structuredClone(state);
-  const migrated={...state,...migrateNeutralSimulation(state)};
-  assert.deepEqual(migrated.tournament.userMatches,before.tournament.userMatches);
-  assert.equal(migrated.tournament.settings.userAttackMultiplier,1.12);
-  assert.equal(migrated.tournament.settings.userDefenseMultiplier,1.06);
-  assert.equal(migrated.matchMinute,0);
-  assert.deepEqual(state,before);
+test('version-two saves retain their original assistance and unfinished match',()=>{
+ const user={...squadTeam(allSquads[0]),id:'user',name:'Meu time'};
+ const settings={...SIMULATION_SETTINGS,modelVersion:2,userAttackMultiplier:1,userDefenseMultiplier:1};
+ const state={...prepareUserRound(createTournament(user,allSquads,{mode:'champions',seed:41,settings})),matchMinute:17};
+ const before=structuredClone(state);
+ assert.deepEqual(migrateNeutralSimulation(state),{});
+ assert.deepEqual(state,before);
 });

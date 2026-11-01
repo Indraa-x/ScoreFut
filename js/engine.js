@@ -72,7 +72,7 @@ export const FORMATIONS = Object.freeze({
   '3-4-3': { name: '3–4–3', description: 'Três zagueiros, alas e pontas', slots: [slot('gol', 'GOL', 50, 92), slot('zag-1', 'ZAG', 25, 78), slot('zag-2', 'ZAG', 50, 77), slot('zag-3', 'ZAG', 75, 78), slot('me', 'ME', 12, 49), slot('mc-1', 'MC', 37, 54), slot('mc-2', 'MC', 63, 54), slot('md', 'MD', 88, 49), slot('pe', 'PE', 16, 24), slot('pd', 'PD', 84, 24), slot('ca', 'CA', 50, 16)] },
 });
 
-export const SIMULATION_SETTINGS = Object.freeze({
+export const LEGACY_SIMULATION_SETTINGS = Object.freeze({
   modelVersion: 5,
   baseXG: 1.3,
   xGExponent: 1.6,
@@ -85,6 +85,21 @@ export const SIMULATION_SETTINGS = Object.freeze({
   dominanceAttackMultiplier: 1.9,
   dominanceDefenseMultiplier: 1.7,
 });
+
+/** New campaigns only. Saved settings select their original engine branch. */
+export const SIMULATION_DIFFICULTIES=Object.freeze({
+  Casual:Object.freeze({userAttackMultiplier:1.25,userDefenseMultiplier:1.12}),
+  Normal:Object.freeze({userAttackMultiplier:1.12,userDefenseMultiplier:1.06}),
+  Realista:Object.freeze({userAttackMultiplier:1,userDefenseMultiplier:1}),
+});
+export const SIMULATION_SETTINGS=Object.freeze({
+  modelVersion:6,difficulty:'Normal',baseXG:1.3,xGExponent:1.6,minXG:.02,maxXG:3.4,
+  ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.35,smoothGapScale:22,
+});
+export function simulationSettings(difficulty='Normal',overrides={}){
+  if(!SIMULATION_DIFFICULTIES[difficulty])throw new Error('Unknown simulation difficulty');
+  return {...SIMULATION_SETTINGS,...SIMULATION_DIFFICULTIES[difficulty],difficulty,...overrides};
+}
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const rounded = value => Math.round(value * 10) / 10;
@@ -225,6 +240,7 @@ const weightedPlayer = (team, rng) => {
 };
 
 export function expectedGoals(team, opponent, settings = SIMULATION_SETTINGS) {
+  if(settings.modelVersion>=6)return smoothExpectedGoals(team,opponent,settings);
   const metrics = team.strength || calculateTeam(team.lineup);
   const opposition = opponent.strength || calculateTeam(opponent.lineup);
   const attack = metrics.attack;
@@ -242,6 +258,24 @@ export function expectedGoals(team, opponent, settings = SIMULATION_SETTINGS) {
     : opponent.isUser&&!team.isUser
       ? 1/(1+dominance(opposition,metrics)*((settings.dominanceDefenseMultiplier??1)-1)) : 1;
   return clamp(settings.baseXG * (Math.max(1, attack) / Math.max(1, defense)) ** settings.xGExponent * assistance * mismatch, settings.minXG, settings.maxXG);
+}
+
+/** Paired rates share one budget: a stronger side gains what its opponent loses.
+ * tanh is odd and smooth; it applies identically to user and computer teams.
+ */
+function smoothExpectedGoals(team,opponent,settings){
+  const a=team.strength || calculateTeam(team.lineup),b=opponent.strength || calculateTeam(opponent.lineup);
+  const quality=(one,two,user,opposingUser)=>{
+    const gap=(one.overall??85)-(two.overall??85);
+    const preset=SIMULATION_DIFFICULTIES[settings.difficulty] || SIMULATION_DIFFICULTIES.Normal;
+    const atk=settings.difficulty==='Normal'?(settings.userAttackMultiplier??preset.userAttackMultiplier):preset.userAttackMultiplier;
+    const def=settings.difficulty==='Normal'?(settings.userDefenseMultiplier??preset.userDefenseMultiplier):preset.userDefenseMultiplier;
+    const assist=user&&!opposingUser?Math.log(atk):opposingUser&&!user?-Math.log(def):0;
+    return settings.xGExponent*Math.log(Math.max(1,one.attack)/Math.max(1,two.defense))
+      +(settings.smoothGapWeight??.35)*Math.tanh(gap/(settings.smoothGapScale??22))+assist;
+  };
+  const difference=clamp(quality(a,b,team.isUser,opponent.isUser)-quality(b,a,opponent.isUser,team.isUser),-6,6);
+  return clamp(2*settings.baseXG/(1+Math.exp(-difference)),settings.minXG,settings.maxXG);
 }
 
 function shootout(home, away, rng) {

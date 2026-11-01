@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
-import {squadTeam,createTournament,simulateTournament} from '../js/engine.js';
+import {squadTeam,createTournament,simulateTournament,LEGACY_SIMULATION_SETTINGS} from '../js/engine.js';
 import {prepareUserRound,currentMatch,commitUserRound,nextFixturePreview} from '../js/match-session.js';
 import {renderMatch} from '../js/ui.js';
 
@@ -10,7 +10,8 @@ const user={...base,id:'user',clubId:'user',name:'Meu time',lineup:base.lineup.m
   atributos:Object.fromEntries(Object.keys(pick.player.atributos).map(key=>[key,99]))}}))};
 const candidateTeams=new Map(allSquads.map(squad=>[squad.id,squadTeam(squad)]));
 const cases=[['world-cup',2],['champions',2],['copa-do-brasil',1]];
-const initial=(mode,seed)=>createTournament(user,allSquads,{mode,seed,candidateTeams});
+// Fixed winning campaigns are legacy replay fixtures, not v6 win guarantees.
+const initial=(mode,seed)=>createTournament(user,allSquads,{mode,seed,candidateTeams,settings:LEGACY_SIMULATION_SETTINGS});
 const view=(mode,tournament)=>({screen:'match',mode,formation:user.formation,matchMinute:0,matchSpeed:4,...prepareUserRound(tournament)});
 
 for(const [mode,seed]of cases){
