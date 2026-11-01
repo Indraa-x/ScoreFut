@@ -10,7 +10,7 @@ export function resultActions({ state, modal, ui, downloadResult, toast }) {
       return;
     },
     download: async (value, element) => {
-      downloadResult(state.resultRecord);
+      await downloadResult(state.resultRecord);
       toast("Seu resultado em PNG está pronto.");
       return;
     },
