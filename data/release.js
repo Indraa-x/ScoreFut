@@ -1,5 +1,12 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.7',date:'01/11/2026',title:'Uma simulação mais equilibrada',changes:[
+  {icon:'ball',title:'Favoritismo sem saltos',detail:'A vantagem cresce gradualmente com a força dos times, tanto para você quanto para o adversário. Diferenças grandes de OVR não inflam mais os placares como antes.'},
+  {icon:'players',title:'A composição do time importa',detail:'Meio-campo, formação e entrosamento entre jogadores do mesmo clube ou época influenciam a partida. Atuar fora da posição principal traz um pequeno desconto na força efetiva, sem mudar o OVR da ficha.'},
+  {icon:'shield',title:'Os acontecimentos mudam o jogo',detail:'Expulsões reduzem a força para o restante da partida. Substituições recuperam um pouco do ritmo, e quem está perdendo pressiona mais no fim.'},
+  {icon:'clock',title:'Mando, desgaste e acréscimos',detail:'Jogar em casa dá uma pequena vantagem nos clubes. A Copa do Mundo continua neutra, os acréscimos entram na simulação e a prorrogação considera o desgaste.'},
+  {icon:'field',title:'Suas campanhas continuam',detail:'O novo motor vale para campanhas novas. Campanhas salvas mantêm o modelo anterior, os resultados e o andamento. Nenhum OVR ou elenco foi alterado nesta atualização.'},
+ ]},
  {version:'0.6',date:'31/10/2026',title:'O caminho até o campeão',changes:[
   {icon:'bracket',title:'Novo chaveamento do mata-mata',detail:'Cartões compactos com escudos e placares, eliminados riscados, caminho do vencedor em azul e campeão no centro. Janela de cada confronto com ida, volta e épocas dos times.'},
   {icon:'field',title:'A chave inteira no celular',detail:'Deslize pelos confrontos ou toque na fase para acompanhar o mata-mata da Champions e da Copa do Mundo até a final.'},

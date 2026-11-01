@@ -1,5 +1,11 @@
 # Atualizações do ScoreFut
 
+## Beta 0.7 — 01/11/2026
+
+Motor de simulação 6 para campanhas novas: vantagem de força gradual e simétrica, sem os antigos saltos de dominância. Meio-campo, posição principal, formação e entrosamento entram no cálculo efetivo. A partida evolui em blocos de cinco minutos: expulsões, substituições, pressão no fim, mando nos clubes, desgaste na prorrogação e acréscimos afetam as oportunidades de gol. Campanhas existentes conservam o modelo anterior, sem alterar OVRs, elencos ou aparência do jogo.
+
+Calibração reproduzível com 20.000 jogos por linha e 1.000 campanhas por célula. O Normal mantém ajuda mínima por escolha do autor; as metas de título da Copa do Mundo e Champions não foram atingidas. Resultados completos, intervalos de 95% e verificação visual em [SIMULATION-V6-2026-10-31.md](docs/SIMULATION-V6-2026-10-31.md). O histórico das versões anteriores permanece disponível ao clicar no beta.
+
 ## Beta 0.6 — 31/10/2026
 
 Novo mata-mata da Champions, da Copa do Mundo e da Copa do Brasil: chave simétrica com cartões compactos, escudos, siglas e placares. Equipes eliminadas aparecem riscadas, o caminho do vencedor fica azul e a final e o campeão ficam no centro. Ao clicar, uma janela compacta mostra ida, volta e pênaltis com as épocas dos times no lugar das datas. No celular, a chave completa tem rolagem horizontal e atalhos por fase. Na Copa do Brasil, as linhas respeitam o sorteio das quartas e as classificações diretas. Resultados futuros permanecem ocultos. Grupos com navegação renovada, classificados destacados e tabela mais legível; no celular, um resumo cabe na tela e permite abrir todas as estatísticas.
