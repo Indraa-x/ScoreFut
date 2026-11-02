@@ -2,34 +2,62 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
-import {FORMATIONS,createTournament,hashSeed} from '../js/engine.js';
-import {createDraft,drawSquad,confirmPick,automaticSlot,refreshDraftSkips} from '../js/draft.js';
+import {FORMATIONS,createTournament,hashSeed,SIMULATION_SETTINGS} from '../js/engine.js';
+import {createDraft,drawSquad,confirmPick,automaticSlot,refreshDraftSkips,DEFAULT_REROLLS} from '../js/draft.js';
 import {prepareUserRound} from '../js/match-session.js';
-import {createChallenge,decodeChallenge,validateChallenge,createChallengeDraft,validateChallengeDraft,challengeTournamentSeed,challengeLink} from '../js/challenge.js';
+import {createChallenge,decodeChallenge,validateChallenge,createChallengeDraft,validateChallengeDraft,challengeTournamentSeed,challengeLink,challengeRosterRevision} from '../js/challenge.js';
 import {renderHome,renderDraft,renderSummary,renderResult} from '../js/ui.js';
 
-test('challenge codes round-trip every competition and formation, with zero and maximum uint32 seeds',()=>{
+test('six-character codes round-trip all competitions and formations with bounded deterministic seeds',()=>{
   for(const mode of ['world-cup','copa-do-brasil','champions'])for(const formation of Object.keys(FORMATIONS))for(const seed of [0,0xffffffff]){
     const challenge=createChallenge({mode,formation,seed},allSquads);
     assert.deepEqual(validateChallenge(challenge.code,allSquads),challenge);
     assert.deepEqual(decodeChallenge('  '+challenge.code.toLowerCase()+'  '),challenge);
     assert.deepEqual(decodeChallenge(challengeLink(challenge.code,'https://example.com/ScoreFut/?v=old#result')),challenge);
-    assert.deepEqual([challenge.mode,challenge.formation,challenge.seed],[mode,formation,seed]);
+    assert.match(challenge.code,/^[A-Z0-9]{6}$/);
+    assert.deepEqual([challenge.mode,challenge.formation,challenge.seed],[mode,formation,seed%65536]);
   }
 });
 
 test('malformed, truncated, edited and incompatible codes are rejected without changing any data',()=>{
   const challenge=createChallenge({mode:'champions',formation:'4-3-3',seed:42},allSquads);
-  for(const input of [null,{},'', 'a'.repeat(401),'<script>alert(1)</script>',challenge.code.slice(0,-1),challenge.code.replace('-16-','-17-'),'https://example.com/?other=1'])assert.throws(()=>decodeChallenge(input),/inválido/);
+  for(const input of [null,{},'', 'a'.repeat(401),'<script>alert(1)</script>',challenge.code.slice(0,-1),'ZZZZZZ','1234567','https://example.com/?other=1'])assert.throws(()=>decodeChallenge(input),/inválido/);
+  const edited=challenge.code.slice(0,-1)+(challenge.code.endsWith('0')?'1':'0');
+  assert.throws(()=>validateChallenge(edited,allSquads),/outra versão/);
   assert.throws(()=>createChallenge({mode:'quick',formation:'4-3-3',seed:1},allSquads));
   assert.throws(()=>createChallenge({mode:'champions',formation:'4-3-3',seed:0x100000000},allSquads));
   const pool=squadsForMode(allSquads,'champions'),changed=structuredClone(pool);changed[0].jogadores[0].ovr--;
   assert.throws(()=>validateChallenge(challenge,changed),/outra versão/);
-  const old=challenge.code.split('-');old[4]='5';const body=old.slice(0,-1).join('-');
-  old[old.length-1]=hashSeed('ScoreFut challenge 1|'+body).toString(36).toUpperCase().padStart(7,'0');
-  assert.equal(decodeChallenge(old.join('-')).modelVersion,5);
-  assert.throws(()=>validateChallenge(old.join('-'),allSquads),/outra versão/);
+  const old=legacyCode(5);
+  assert.equal(decodeChallenge(old).modelVersion,5);
+  assert.throws(()=>validateChallenge(old,allSquads),/outra versão/);
   assert.deepEqual(validateChallenge(challenge,allSquads),challenge);
+});
+
+function legacyCode(model=SIMULATION_SETTINGS.modelVersion){
+  const token=n=>n.toString(36).toUpperCase();
+  const rules=token(hashSeed(JSON.stringify({settings:SIMULATION_SETTINGS,skips:DEFAULT_REROLLS,formations:FORMATIONS})));
+  const body=`SF1-C0-16-${challengeRosterRevision(allSquads,'champions')}-${token(model)}-${rules}`;
+  return body+'-'+token(hashSeed('ScoreFut challenge 1|'+body)).padStart(7,'0');
+}
+
+test('previously shared long codes and saved drafts preserve their seeds, picks and tournament seeds',()=>{
+  const code=legacyCode(),challenge=validateChallenge(code,allSquads),draft=createChallengeDraft(challenge,allSquads,'2026-11-01');
+  assert.equal(challenge.version,1);assert.equal(draft.seed,42);
+  assert.equal(challengeTournamentSeed(challenge),hashSeed('ScoreFut challenge tournament|'+code));
+  assert.deepEqual(validateChallengeDraft(JSON.parse(JSON.stringify(draft)),'4-3-3',allSquads),challenge);
+  assert.deepEqual(decodeChallenge(challengeLink(code,'https://example.com/')),challenge);
+});
+
+test('short codes keep choices distinct and leading zeros intact',()=>{
+  const codes=new Set();
+  for(const seed of [0,1,65534,65535])for(const mode of ['world-cup','copa-do-brasil','champions'])for(const formation of Object.keys(FORMATIONS)){
+    const challenge=createChallenge({mode,formation,seed},allSquads);
+    assert.ok(!codes.has(challenge.code));codes.add(challenge.code);
+    assert.deepEqual(validateChallenge(challenge,allSquads),challenge);
+  }
+  assert.equal(codes.size,96);
+  assert.ok(createChallenge({mode:'world-cup',formation:'4-3-3',seed:0},allSquads).code.startsWith('0000'));
 });
 
 function pickFirstAvailable(draft,pool,formation){

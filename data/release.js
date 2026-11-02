@@ -1,6 +1,7 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
  {version:'0.8',date:'01/11/2026',title:'Desafios com amigos',changes:[
+  {icon:'players',title:'Códigos de apenas 6 caracteres',detail:'Ficou mais fácil compartilhar: os novos códigos têm seis letras e números. Links e desafios antigos continuam funcionando.'},
   {icon:'players',title:'Convide por código ou link',detail:'Crie um desafio na página inicial, escolha a competição e a formação e envie o código para outra pessoa. Sem conta.'},
   {icon:'ball',title:'O mesmo primeiro sorteio',detail:'Os dois começam com o mesmo elenco sorteado e três skips. As escolhas de jogadores e os skips podem levar a caminhos diferentes.'},
   {icon:'shield',title:'Desafio salvo no navegador',detail:'O código acompanha seu draft e o resultado. Elencos e regras precisam estar na mesma versão para começar ou continuar as escolhas do desafio.'},

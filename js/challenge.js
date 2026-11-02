@@ -8,6 +8,8 @@ const token=number=>number.toString(36).toUpperCase();
 const checksum=body=>token(hashSeed('ScoreFut challenge 1|'+body)).padStart(7,'0');
 const invalid=()=>new Error('Código de desafio inválido. Confira se você copiou o código inteiro.');
 const rulesRevision=()=>token(hashSeed(JSON.stringify({settings:SIMULATION_SETTINGS,skips:DEFAULT_REROLLS,formations:FORMATIONS})));
+const modeKeys=Object.keys(modes),combinationCount=modeKeys.length*formations.length,seedCount=0x10000;
+const shortSignature=(payload,squads,mode)=>hashSeed(`ScoreFut challenge 2|${payload}|${challengeRosterRevision(squads,mode)}|${SIMULATION_SETTINGS.modelVersion}|${rulesRevision()}`)%1296;
 
 /** Fingerprint the ordered, playable pool; no user data goes into the code. */
 export function challengeRosterRevision(squads,mode){
@@ -16,12 +18,12 @@ export function challengeRosterRevision(squads,mode){
   return token(hashSeed(JSON.stringify(pool.map(s=>[s.id,s.clubId,s.ano,s.jogadores.map(p=>[p.id,p.nome,p.tags,p.ovr,p.camisa,p.atributos])]))));
 }
 
-/** Codes carry an initial seed and compatibility fingerprints, never results. */
+/** Six base36 characters: four for seed/choices and two for compatibility/error detection. */
 export function createChallenge({mode,formation,seed},squads){
   const modeKey=Object.keys(modes).find(key=>modes[key]===mode),index=formations.indexOf(formation);
   if(!modeKey||index<0||!Number.isInteger(seed)||seed<0||seed>0xffffffff)throw invalid();
-  const body=`SF1-${modeKey}${index}-${token(seed)}-${challengeRosterRevision(squads,mode)}-${token(SIMULATION_SETTINGS.modelVersion)}-${rulesRevision()}`;
-  return decodeChallenge(`${body}-${checksum(body)}`);
+  const payload=(seed%seedCount)*combinationCount+modeKeys.indexOf(modeKey)*formations.length+index;
+  return decodeChallenge(token(payload).padStart(4,'0')+token(shortSignature(payload,squads,mode)).padStart(2,'0'));
 }
 
 export function decodeChallenge(input){
@@ -31,6 +33,13 @@ export function decodeChallenge(input){
     try{code=new URL(code).searchParams.get('desafio') || '';}catch{throw invalid();}
   }
   code=code.toUpperCase();
+  if(/^[0-9A-Z]{6}$/.test(code)){
+    const payload=parseInt(code.slice(0,4),36),signature=parseInt(code.slice(4),36);
+    if(payload>=seedCount*combinationCount)throw invalid();
+    const choice=payload%combinationCount;
+    return {version:2,code,mode:modes[modeKeys[Math.floor(choice/formations.length)]],formation:formations[choice%formations.length],seed:Math.floor(payload/combinationCount),signature};
+  }
+  // Keep previously shared links and saved drafts compatible with the original format.
   const parts=code.match(/^SF1-([MBC])([0-7])-([0-9A-Z]{1,7})-([0-9A-Z]{1,7})-([0-9A-Z]{1,2})-([0-9A-Z]{1,7})-([0-9A-Z]{7})$/);
   if(!parts)throw invalid();
   const [,modeKey,index,seedToken,rosterRevision,modelToken,rules,check]=parts;
@@ -41,7 +50,10 @@ export function decodeChallenge(input){
 
 export function validateChallenge(input,squads){
   const challenge=decodeChallenge(typeof input==='string'?input:input?.code);
-  if(challenge.modelVersion!==SIMULATION_SETTINGS.modelVersion||challenge.rulesRevision!==rulesRevision()||challenge.rosterRevision!==challengeRosterRevision(squads,challenge.mode)){
+  const compatible=challenge.version===2
+    ? challenge.signature===shortSignature(parseInt(challenge.code.slice(0,4),36),squads,challenge.mode)
+    : challenge.modelVersion===SIMULATION_SETTINGS.modelVersion&&challenge.rulesRevision===rulesRevision()&&challenge.rosterRevision===challengeRosterRevision(squads,challenge.mode);
+  if(!compatible){
     throw new Error('Este desafio foi criado com outra versão dos elencos ou das regras. Peça um novo código para jogar em condições iguais.');
   }
   return challenge;

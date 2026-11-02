@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+### Correção de 02/11/2026 — códigos curtos
+
+Novos desafios geram códigos de apenas seis letras e números, com competição, formação e sorteio reproduzíveis sem servidor. Links e campanhas dos códigos longos anteriores continuam funcionando. O campo de entrada também aceita o link completo.
+
 ## Beta 0.8 — 01/11/2026
 
 Desafios por código e link na página inicial, para Copa do Mundo, Champions e Copa do Brasil. O código fixa competição, formação, seed inicial e versão dos elencos/regras. O primeiro sorteio é o mesmo; escolhas e skips diferentes podem alterar os próximos elencos elegíveis. Escolhas e skips iguais reproduzem o draft e a seed da competição, inclusive em outro navegador ou dia. Três skips, saves locais e identificação do desafio no draft, resumo e resultado. Abrir um link apenas mostra os detalhes: a campanha começa depois de clicar em Começar desafio. Sorteios normais continuam usando Web Crypto. Sem contas, classificação online ou mudança de OVRs. [Detalhes técnicos](docs/CHALLENGES.md).
