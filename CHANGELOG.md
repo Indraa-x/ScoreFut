@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.8 — 01/11/2026
+
+Desafios por código e link na página inicial, para Copa do Mundo, Champions e Copa do Brasil. O código fixa competição, formação, seed inicial e versão dos elencos/regras. O primeiro sorteio é o mesmo; escolhas e skips diferentes podem alterar os próximos elencos elegíveis. Escolhas e skips iguais reproduzem o draft e a seed da competição, inclusive em outro navegador ou dia. Três skips, saves locais e identificação do desafio no draft, resumo e resultado. Abrir um link apenas mostra os detalhes: a campanha começa depois de clicar em Começar desafio. Sorteios normais continuam usando Web Crypto. Sem contas, classificação online ou mudança de OVRs. [Detalhes técnicos](docs/CHALLENGES.md).
+
 ## Beta 0.7 — 01/11/2026
 
 Motor de simulação 6 para campanhas novas: vantagem de força gradual e simétrica, sem os antigos saltos de dominância. Meio-campo, posição principal, formação e entrosamento entram no cálculo efetivo. A partida evolui em blocos de cinco minutos: expulsões, substituições, pressão no fim, mando nos clubes, desgaste na prorrogação e acréscimos afetam as oportunidades de gol. Campanhas existentes conservam o modelo anterior, sem alterar OVRs, elencos ou aparência do jogo.

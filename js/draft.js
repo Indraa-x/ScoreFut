@@ -52,7 +52,7 @@ export function drawSquad(draft,squads,formation,kind='new',mode=draft.mode||'',
   const rng=mulberry32(draft.rngState);const clubIds=[...new Set(candidates.map(s=>s.clubId))];
   const indexFor=length=>{
     const seededIndex=Math.floor(rng()*length);
-    return randomIndex&&mode!=='daily'?randomIndex(length):seededIndex;
+    return randomIndex&&mode!=='daily'&&!draft.challenge?randomIndex(length):seededIndex;
   };
   const clubId=clubIds[indexFor(clubIds.length)],clubSeasons=candidates.filter(s=>s.clubId===clubId),squad=clubSeasons[indexFor(clubSeasons.length)];
   return {...draft,rngState:rng.getState(),rerolls:draft.rerolls-(reroll?1:0),currentSquadId:squad.id,seen:[...draft.seen,squad.id]};

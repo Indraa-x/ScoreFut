@@ -8,11 +8,15 @@ export function navigationActions({
   renderReleaseDetails,
   navigate,
   openSetup,
+  openChallenge,
   launchFromHome,
   render,
   resumeGame,
 }) {
   return {
+    'challenge-create':async()=>openChallenge('create'),
+    'challenge-enter':async()=>openChallenge('enter'),
+    'challenge-share':async code=>openChallenge('enter',code),
     "release-notes": async (value, element) => {
       document.getElementById("modal-content").innerHTML =
         renderReleaseDetails();

@@ -13,6 +13,7 @@ import { state, MODES } from './state.js';
 import { FORMATIONS, TEAM_SIZE, positionFit, calculateTeam, createTournament, simulateTournament } from './engine.js';
 import { createDraft, drawSquad, availableSlots, movableSlots, movePick, confirmPick, migrateDraft, refreshDraftRatings, refreshDraftSkips } from './draft.js';
 import {cryptoRandomIndex} from './random.js';
+import {createChallengeDraft,validateChallengeDraft,challengeTournamentSeed} from './challenge.js';
 import * as storage from './storage.js';
 import * as ui from './ui.js';
 import {renderReleaseDetails} from './release-notice.js';
@@ -33,7 +34,8 @@ let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null
 let pendingAchievementLedger=null;
 const navigationSessions=new Map();
 const gameScreens=new Set(['draft','summary','match','bracket']);
-const sessionId=draft=>draft?`${draft.mode}:${draft.date}:${draft.seed}`:null;
+const sessionId=draft=>draft?(draft.challenge?`challenge:${draft.challenge.code}:${draft.date}`:`${draft.mode}:${draft.date}:${draft.seed}`):null;
+const campaignId=()=>state.draft?.challenge?`challenge-${state.draft.challenge.code}-${state.draft.date}`:`11-${state.mode}-${state.draft.seed}-${state.draft.date}`;
 function rememberSession(){if(gameScreens.has(state.screen)&&state.draft&&state.draft.mode===state.mode&&!state.resultRecord){navigationSessions.set(sessionId(state.draft),{...state});}}
 function currentRoute(){return {screen:state.screen,mode:state.mode,quickStep:state.quickStep,...(gameScreens.has(state.screen)?{session:sessionId(state.draft)}:{}),...(['result','bracket'].includes(state.screen)&&state.resultRecord?{recordId:state.resultRecord.id}:{}),...(state.screen==='bracket'?{championsView:state.championsView,returnScreen:state.returnScreen}:{})};}
 function visitRoute(route){
@@ -61,6 +63,15 @@ const validation=validateData();
 if(!validation.valid) console.error('Base ScoreFut inválida',validation.errors);
 function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3400);}
 async function downloadResult(record){const exporter=await import('./share.js');return exporter.downloadResult(record);}
+let challengeDialogPromise=null;
+async function openChallenge(kind='create',code=''){
+  challengeDialogPromise??=import('./challenge-dialog.js').then(({initChallengeDialog})=>initChallengeDialog({
+    modal,content:document.getElementById('modal-content'),getSelection:()=>({mode:state.mode,formation:state.formation}),
+    loadSquads:async mode=>{if(mode==='world-cup')await loadWorldCupSquads();return allSquads;},
+    startChallenge:challenge=>startDraft(challenge),toast,
+  })).catch(error=>{challengeDialogPromise=null;throw error;});
+  (await challengeDialogPromise).show(kind,code);
+}
 function savedDraft(){const saved=storage.read('active');return saved?.draft?.picks?.length<TEAM_SIZE||saved?.screen==='summary'||saved?.screen==='match'?saved:null;}
 function hydrateDraft(){if(!state.draft)return;const pool=squadsForMode(allSquads,state.mode);state.draft.currentSquad=pool.find(s=>s.id===state.draft.currentSquadId)||null;state.draft.otherSeasonAvailable=pool.some(s=>s.clubId===state.draft.currentSquad?.clubId&&!state.draft.seen.includes(s.id));}
 function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed,penaltyReplay:state.penaltyReplay||null};}
@@ -111,7 +122,7 @@ function restore(saved){
   Object.assign(state,migrateNeutralSimulation(state));
   Object.assign(state,migrateChampionsFormat(state));
   if(state.tournament)commitUserRound(state);
-  if(!state.tournament)state.draft=refreshDraftRatings(state.draft,allSquads);
+  if(!state.tournament&&!state.draft.challenge)state.draft=refreshDraftRatings(state.draft,allSquads);
   delete state.draft.selectedId;delete state.draft.selectedSlotId;delete state.draft.selectedPickId;
   hydrateDraft();if(state.screen==='bracket')state.screen='match';persist();render();return true;
 }
@@ -126,8 +137,10 @@ function updateQuickSearch(search){
   if(grid)grid.innerHTML=ui.renderQuickClubCards(items);
   if(count)count.textContent=`${items.length} ${items.length===1?'clube':'clubes'}`;
 }
-function startDraft(){state.quickSquadId=null;state.teamName='Meu time';const date=storage.today();
-  const seed=crypto.getRandomValues(new Uint32Array(1))[0];state.draft=createDraft(seed,date,state.mode);state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('draft');
+function startDraft(challenge=null){const date=storage.today();
+  const draft=challenge?createChallengeDraft(challenge,allSquads,date):createDraft(crypto.getRandomValues(new Uint32Array(1))[0],date,state.mode);
+  if(challenge){state.mode=draft.mode;state.formation=draft.challenge.formation;}
+  state.quickSquadId=null;state.teamName='Meu time';state.draft=draft;state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('draft');
 }
 async function roll(kind='new'){
   if(state.rolling||(kind!=='new'&&state.draft?.rerolls<=0))return;
@@ -136,7 +149,7 @@ async function roll(kind='new'){
   state.rolling=true;render();
   await new Promise(r=>setTimeout(r,1500));
   if(navigationVersion!==versionAtStart||state.screen!=='draft'||state.draft!==draftAtStart){state.rolling=false;return;}
-  try{state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind,state.mode,cryptoRandomIndex);drawn=true;persist();}
+  try{if(state.draft.challenge)validateChallengeDraft(state.draft,state.formation,allSquads);state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind,state.mode,cryptoRandomIndex);drawn=true;persist();}
   catch(error){toast(error.message);}
   finally{
     state.rolling=false;render();
@@ -223,11 +236,12 @@ function chooseQuickTeam(squadId){
   navigate('summary');
 }
 function startTournament(){
-  if(state.tournament){if(state.tournament.complete){const record=storage.read('history',[]).find(r=>r.id===`11-${state.mode}-${state.draft?.seed}-${state.draft?.date}`);if(record){state.resultRecord=record;navigate('result');return;}}navigate('match');return;}
+  if(state.tournament){if(state.tournament.complete){const record=storage.read('history',[]).find(r=>r.id===campaignId());if(record){state.resultRecord=record;navigate('result');return;}}navigate('match');return;}
+  if(state.draft?.challenge)validateChallengeDraft(state.draft,state.formation,allSquads);
   const picks=state.draft?.picks||[],slots=FORMATIONS[state.formation].slots;
   if(picks.length!==TEAM_SIZE||new Set(picks.map(p=>p.player.id)).size!==TEAM_SIZE||new Set(picks.map(p=>p.slot.id)).size!==TEAM_SIZE||picks.some(p=>!slots.some(s=>s.id===p.slot.id&&positionFit(p.player,s)!==null))){toast('Complete as onze posições antes de entrar em campo.');return;}
   const strength=calculateTeam(state.draft.picks),user={id:'user',name:state.teamName,clubId:'user',monograma:ui.initials(state.teamName),cores:['#2bb777','#174b2e'],lineup:state.draft.picks,strength};
-  const seed=crypto.getRandomValues(new Uint32Array(1))[0];
+  const seed=state.draft.challenge?challengeTournamentSeed(state.draft.challenge):crypto.getRandomValues(new Uint32Array(1))[0];
   if(state.mode==='quick'){
     state.tournament=simulateQuickGame({picks,formation:state.formation,squads:allSquads,seed,teamName:state.teamName});
     state.pendingRound=null;state.matchFlowVersion=MATCH_FLOW_VERSION;state.userMatchIndex=state.tournament.userMatches.length-1;state.matchUnlockedIndex=state.userMatchIndex;state.matchMinute=state.tournament.userMatches.at(-1).result.duration;
@@ -252,7 +266,7 @@ function finishTournament(){
   const t=state.tournament,c=t.campaign,league=state.mode==='brasileirao';
   const rank={group:1,round16:2,quarter:3,semi:4,final:5};
   const title='Campeão · '+competitionName(state.mode);
-  const record={rulesVersion:2,id:`11-${state.mode}-${state.draft.seed}-${state.draft.date}`,date:state.draft.date,teamName:state.teamName,mode:state.mode,formation:state.formation,picks:state.draft.picks,strength:calculateTeam(state.draft.picks).overall,champion:c.champion,stageLabel:c.champion?title:league?c.stageLabel:c.stage==='group'?'Eliminado na fase de grupos':`Eliminado · ${c.stageLabel}`,rank:c.champion?6:league?Math.max(1,6-c.position):(rank[c.stage]||1),goalsFor:c.goalsFor,goalsAgainst:c.goalsAgainst,played:c.played,topScorer:c.topScorer,tournament:t};
+  const record={rulesVersion:2,id:campaignId(),challenge:state.draft.challenge || null,date:state.draft.date,teamName:state.teamName,mode:state.mode,formation:state.formation,picks:state.draft.picks,strength:calculateTeam(state.draft.picks).overall,champion:c.champion,stageLabel:c.champion?title:league?c.stageLabel:c.stage==='group'?'Eliminado na fase de grupos':`Eliminado · ${c.stageLabel}`,rank:c.champion?6:league?Math.max(1,6-c.position):(rank[c.stage]||1),goalsFor:c.goalsFor,goalsAgainst:c.goalsAgainst,played:c.played,topScorer:c.topScorer,tournament:t};
   const history=storage.read('history',[]);
   const saved=saveCampaignProgress(record,history,browserAchievements(history),storage);
   pendingAchievementLedger=saved.ledgerSaved?null:saved.ledger;
@@ -276,7 +290,7 @@ async function launchFromHome(button){
   if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('world-cup');
 }
 function resumeGame(){const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}return;}
-const actionContext={state, MODES, FORMATIONS, MATCH_SPEEDS, modal, ui, storage, renderReleaseDetails, navigate, openSetup, launchFromHome, render, startDraft, resumeGame, roll, selectPlayer, slotAction, startTournament, chooseQuickTeam, nextMatch, persist, app, stopPlayback, downloadResult, toast};
+const actionContext={state, MODES, FORMATIONS, MATCH_SPEEDS, modal, ui, storage, renderReleaseDetails, navigate, openSetup, openChallenge, launchFromHome, render, startDraft, resumeGame, roll, selectPlayer, slotAction, startTournament, chooseQuickTeam, nextMatch, persist, app, stopPlayback, downloadResult, toast};
 const actionHandlers={...navigationActions(actionContext), ...draftActions(actionContext), ...matchActions(actionContext), ...resultActions(actionContext)};
 async function action(name,value,element){if(['mode','start','setup','play-home','resume'].includes(name)){const mode=name==='resume'?savedDraft()?.mode:name==='play-home'?'world-cup':value||state.mode;if(mode==='world-cup')await loadWorldCupSquads();}if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;return actionHandlers[name]?.(value,element);
 }
@@ -303,3 +317,5 @@ if(!browserProgressReady||!competitionProgressReady){storageWarning=true;toast('
 if(storage.read('active')?.draft?.mode==='world-cup')await loadWorldCupSquads();
 navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});
 navigation.start();
+const sharedChallengeUrl=new URL(window.location.href),sharedChallenge=sharedChallengeUrl.searchParams.get('desafio');
+if(sharedChallenge!==null){sharedChallengeUrl.searchParams.delete('desafio');history.replaceState(history.state,'',sharedChallengeUrl.href);void openChallenge('enter',sharedChallenge).catch(error=>toast(error.message));}

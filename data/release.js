@@ -1,5 +1,10 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.8',date:'01/11/2026',title:'Desafios com amigos',changes:[
+  {icon:'players',title:'Convide por código ou link',detail:'Crie um desafio na página inicial, escolha a competição e a formação e envie o código para outra pessoa. Sem conta.'},
+  {icon:'ball',title:'O mesmo primeiro sorteio',detail:'Os dois começam com o mesmo elenco sorteado e três skips. As escolhas de jogadores e os skips podem levar a caminhos diferentes.'},
+  {icon:'shield',title:'Desafio salvo no navegador',detail:'O código acompanha seu draft e o resultado. Elencos e regras precisam estar na mesma versão para começar ou continuar as escolhas do desafio.'},
+ ]},
  {version:'0.7',date:'01/11/2026',title:'Uma simulação mais equilibrada',changes:[
   {icon:'ball',title:'Favoritismo sem saltos',detail:'A vantagem cresce gradualmente com a força dos times, tanto para você quanto para o adversário. Diferenças grandes de OVR não inflam mais os placares como antes.'},
   {icon:'players',title:'A composição do time importa',detail:'Meio-campo, formação e entrosamento entre jogadores do mesmo clube ou época influenciam a partida. Atuar fora da posição principal traz um pequeno desconto na força efetiva, sem mudar o OVR da ficha.'},

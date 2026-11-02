@@ -45,6 +45,10 @@ Funciona no **celular e no PC**, com temas claro e escuro. Você joga sem cadast
 3. **Organize o time.** Arraste os jogadores ou selecione uma vaga compatível para posicioná-los.
 4. **Dispute a campanha.** Acompanhe os movimentos no campo, o placar e os autores dos gols. Nos empates decisivos, os pênaltis aparecem cobrança por cobrança.
 
+### Desafie seus amigos
+
+Na página inicial, use **Criar desafio**, escolha competição e formação e compartilhe o código ou link. A outra pessoa pode usar **Tenho um código** ou abrir o link, conferir os detalhes e começar. Os dois recebem o mesmo primeiro elenco sorteado e três skips; as escolhas seguintes podem mudar o caminho. O progresso fica no navegador, sem conta ou placar online. [Como funciona](docs/CHALLENGES.md).
+
 ### O que você encontra no jogo
 
 | Monte do seu jeito | Acompanhe a campanha |
