@@ -18,7 +18,6 @@ import * as ui from './ui.js';
 import {renderReleaseDetails} from './release-notice.js';
 import {updateAchievementLedger} from './achievements.js';
 import {saveCampaignProgress} from './campaign-progress.js';
-import {downloadResult} from './share.js';
 import {initPlayerDrag} from './player-drag.js';
 import {initSkipFeedback} from './skip-feedback.js';
 import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js';
@@ -61,6 +60,7 @@ initSkipFeedback({app,getDraft:()=>state.screen==='draft'&&!state.rolling?state.
 const validation=validateData();
 if(!validation.valid) console.error('Base ScoreFut inválida',validation.errors);
 function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3400);}
+async function downloadResult(record){const exporter=await import('./share.js');return exporter.downloadResult(record);}
 function savedDraft(){const saved=storage.read('active');return saved?.draft?.picks?.length<TEAM_SIZE||saved?.screen==='summary'||saved?.screen==='match'?saved:null;}
 function hydrateDraft(){if(!state.draft)return;const pool=squadsForMode(allSquads,state.mode);state.draft.currentSquad=pool.find(s=>s.id===state.draft.currentSquadId)||null;state.draft.otherSeasonAvailable=pool.some(s=>s.clubId===state.draft.currentSquad?.clubId&&!state.draft.seen.includes(s.id));}
 function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed,penaltyReplay:state.penaltyReplay||null};}

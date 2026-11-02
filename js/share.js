@@ -20,6 +20,12 @@ export function resultFixtures(record){
   });
 }
 
+/** Preload only crests that will be drawn, not every team in the tournament. */
+export function resultLogoSources(record){
+  const ids=[...(record.picks || []).map(p=>p.clubId),...resultFixtures(record).flatMap(match=>[match.home?.clubId,match.away?.clubId])];
+  return [...new Set(ids.map(id=>exportLogos[id]).filter(Boolean))];
+}
+
 /** A self-contained campaign poster, with the saved positions and actual results. */
 export function resultCanvas(record,{images=new Map()}={}) {
   const picks=record.picks || [],matches=resultFixtures(record);
@@ -106,9 +112,8 @@ export function resultCanvas(record,{images=new Map()}={}) {
 export async function downloadResult(record) {
   if(!record)return;
   await document.fonts?.ready;
-  const ids=[...(record.picks || []).map(p=>p.clubId),...(record.tournament?.teams || []).map(t=>t.clubId)];
   const images=new Map();
-  await Promise.all([...new Set(ids.map(id=>exportLogos[id]).filter(Boolean))].map(src=>new Promise(resolve=>{
+  await Promise.all(resultLogoSources(record).map(src=>new Promise(resolve=>{
     const image=new Image();image.crossOrigin='anonymous';
     const timer=setTimeout(resolve,4000);
     image.onload=()=>{clearTimeout(timer);images.set(src,image);resolve();};image.onerror=()=>{clearTimeout(timer);resolve();};

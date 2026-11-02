@@ -8,8 +8,11 @@ const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300
 export const quickCatalog = clubs.map(club => {
   const seasons = allSquads.filter(squad => squad.clubId === club.id).sort((a,b) => b.ano-a.ano);
   const squad = seasons[0];
+  // Legacy club selection is not part of normal startup. Calculate its rating
+  // only when that card is actually read, retaining the exact same lineup.
+  let overall;
   return {...club, squad, seasonCount:seasons.length,
-    overall:Math.round(squadTeam(squad).strength.overall),
+    get overall(){return overall??=Math.round(squadTeam(squad).strength.overall);},
     region:BRAZIL_CLUB_IDS.includes(club.id) ? 'brasil' : 'europa'};
 }).sort((a,b) => a.nome.localeCompare(b.nome,'pt-BR'));
 
