@@ -6,7 +6,7 @@ Não se usa o ano da capa como se fosse o ano de lançamento.
 
 ## Prioridade
 
-1. Os **100 ajustes ativos do criador nos clubes** sempre prevalecem. O JSON de 26/10 em `imported-ovr-review.js` tem prioridade sobre importações anteriores; os pedidos diretos mais recentes em `CREATOR_DIRECT_RATING_REVIEWS` prevalecem sobre valores importados antigos. Entre os pedidos registrados estão **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial.
+1. Os **99 ajustes ativos do criador nos clubes** sempre prevalecem. O JSON de 26/10 em `imported-ovr-review.js` tem prioridade sobre importações anteriores; os pedidos diretos mais recentes em `CREATOR_DIRECT_RATING_REVIEWS` prevalecem sobre valores importados antigos. Entre os pedidos registrados estão **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial.
 2. OVR verificável da edição seguinte ao ano da época, por pessoa e elenco, em `release-ratings.js` (`release-rating`). Uma transferência não muda a identidade: por exemplo, Donnarumma do PSG 2025 pode ter a nota do Manchester City no FC 26.
 3. Na ausência de registro verificável nessa edição, revisão editorial explícita (`season-review`) ou estimativa histórica (`editorial-estimate`). Não se copia uma nota de outra edição, de um homônimo ou de um jogador genérico sem licença.
 
@@ -14,7 +14,7 @@ As antigas notas da edição de mesmo ano foram mantidas somente como histórico
 
 ## Cobertura conferida
 
-Na fotografia histórica da auditoria de 26/10/2026 havia **1.069 registros jogador/época verificados**, 2.365 registros de clube e 93 ajustes pessoais ativos. As sete revisões diretas de clube feitas em 05/11 elevam para 100 o número atual de ajustes ativos; esse retrato histórico não é reescrito. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
+Na fotografia histórica da auditoria de 26/10/2026 havia **1.069 registros jogador/época verificados**, 2.365 registros de clube e 93 ajustes pessoais. Após as sete revisões diretas de clube feitas em 05/11, o código aplica 99 ajustes ativos; a fotografia histórica não é reescrita. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
 
 A [revisão de 1970–1989](VINTAGE-RATINGS.md) confere 275 registros e reduz 250 notas exageradas, preservando os grandes craques e os 67 ajustes pessoais. Os valores continuam identificados como editoriais: não existia uma edição FIFA/FC da EA lançada nessas décadas. As decisões são individuais por jogador e temporada, sem desconto automático por idade ou época.
 
