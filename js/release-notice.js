@@ -4,8 +4,7 @@ import {GAME_RELEASE,RELEASE_HISTORY} from '../data/release.js';
 
 /** Shared by the static HTML generator. */
 export function renderReleaseNotice() {
-  const label = `${GAME_RELEASE.stage} ${GAME_RELEASE.version}`;
-  return `<button class="release-notice" data-release-notice data-action="release-notes" type="button" aria-haspopup="dialog" aria-controls="modal" aria-label="${escapeHtml(label)}: ver correções e melhorias"><svg class="release-maintenance-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.5 7 5-5 3 3-5 5Z"/><path d="m8 8 12 12"/><path d="m21 6.5-3.5 3.5L14 6.5 17.5 3a6 6 0 0 0-7.5 7.5l-6.2 6.2a2.5 2.5 0 0 0 3.5 3.5l6.2-6.2A6 6 0 0 0 21 6.5Z"/></svg><span>${escapeHtml(label)}</span></button>`;
+  return "<button class=\"release-notice release-notice--icon\" data-release-notice data-action=\"release-notes\" type=\"button\" aria-haspopup=\"dialog\" aria-controls=\"modal\" aria-label=\"Ver correções e melhorias\" title=\"Correções e melhorias\"><svg class=\"release-maintenance-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m2.5 7 5-5 3 3-5 5Z\"/><path d=\"m8 8 12 12\"/><path d=\"m21 6.5-3.5 3.5L14 6.5 17.5 3a6 6 0 0 0-7.5 7.5l-6.2 6.2a2.5 2.5 0 0 0 3.5 3.5l6.2-6.2A6 6 0 0 0 21 6.5Z\"/></svg></button>";
 }
 
 const releaseIcons = {
