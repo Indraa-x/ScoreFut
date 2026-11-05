@@ -28,7 +28,11 @@ test('previous medals remain shown with an empty or pruned campaign history',()=
 test('public navigation exposes achievements and does not load login or account modules',()=>{
   const index=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const main=fs.readFileSync(new URL('../js/main.js',import.meta.url),'utf8');
-  assert.match(index,/data-action="achievements">Conquistas<\/button>/);
+  const achievementsButton=index.match(/<button\b[^>]*data-action="achievements"[^>]*>([\s\S]*?)<\/button>/)?.[1];
+  assert.ok(achievementsButton,'O botão de conquistas deve estar na navegação.');
+  const label=achievementsButton.replace(/<svg\b[\s\S]*?<\/svg>/g,'').replace(/<[^>]+>/g,'').trim();
+  assert.equal(label,'Conquistas');
+  for(const svg of achievementsButton.matchAll(/<svg\b[^>]*>/g))assert.match(svg[0],/aria-hidden="true"/);
   assert.doesNotMatch(index,/account-trigger|account\.css|account-career\.css|data-action="history"/);
   assert.doesNotMatch(main,/accounts\.js|renderAccount|account-open|account-form|loginAccount|createAccount/);
   assert.match(main,/saveCampaignProgress\(record,history/);
