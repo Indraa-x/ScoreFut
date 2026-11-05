@@ -388,7 +388,7 @@ main:has(.draft-layout),main:has(.summary-layout){max-width:1760px;padding-left:
  .setup-choices .setup-mode-option{font-size:11px}
 }
 @media(min-width:761px) and (max-height:800px){
- .formation-preview{max-width:clamp(220px,calc((100dvh - 340px)*20/27),320px)}
+ .formation-preview{max-width:clamp(220px,calc((100dvh - 320px)*20/27),320px)}
  .setup-choices .formation-option{min-height:48px}
  .setup-choices .setup-mode-option{min-height:76px}
 }
