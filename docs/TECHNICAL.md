@@ -48,9 +48,9 @@ Revisões manuais do criador vencem notas verificadas. Para clubes:
 5. Revisão editorial de época em `season-ratings.js`, incluindo a revisão vintage.
 6. Estimativa original identificada.
 
-`fifa-archive-ratings.js` e `modern-ratings.js` preservam a nota da edição anterior como procedência, sem vencer uma revisão manual ou a edição correta. Para seleções: revisão manual de 31/10/2026, revisão direta dos goleiros, revisão histórica manual, importações anteriores e revisões originais da Copa, nessa ordem. As datas e fontes ficam no registro; metadados originais não devem ser inventados.
+`fifa-archive-ratings.js` e `modern-ratings.js` preservam a nota da edição anterior como procedência, sem vencer uma revisão manual ou a edição correta. Para seleções, a prioridade atual é: revisão direta mais recente do criador, revisão importada mais recente, revisão direta dos goleiros, revisão histórica manual, importações anteriores e revisões originais da Copa. As datas e fontes ficam no registro; metadados originais não devem ser inventados.
 
-**Nenhum OVR ativo mudou nesta manutenção.** Expectativas antigas dos testes passaram a respeitar revisões posteriores. `release-rating-audit.json` é um retrato histórico; não deve ser reescrito para fingir que ajustes recentes já existiam.
+Na manutenção que produziu essa auditoria, nenhum OVR ativo mudou. Revisões posteriores são registradas nos arquivos de rating e em `RATING-SOURCES.md`; `release-rating-audit.json` permanece um retrato histórico e não deve ser reescrito para simular que ajustes recentes já existiam.
 
 ## Build e publicação
 

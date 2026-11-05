@@ -1,12 +1,12 @@
 # OVR por jogador e época
 
-Política revista em 22/10/2026. A edição usada é a lançada no ano da época:
+Política revista em 05/11/2026. A edição usada é a lançada no ano da época:
 **2015 → FIFA 16**, **2022 → FIFA 23**, **2023 → FC 24**, **2025 → FC 26**.
 Não se usa o ano da capa como se fosse o ano de lançamento.
 
 ## Prioridade
 
-1. Os **93 ajustes ativos do criador nos clubes** sempre prevalecem; o JSON de 26/10 em `imported-ovr-review.js` tem prioridade sobre as revisões anteriores: os 67 importados dos JSONs de 21 e 22/10 e 25 revisões diretas, incluindo os pedidos anteriores: **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial. Pedidos diretos ficam separados dos arquivos importados em `CREATOR_DIRECT_RATING_REVIEWS`.
+1. Os **100 ajustes ativos do criador nos clubes** sempre prevalecem. O JSON de 26/10 em `imported-ovr-review.js` tem prioridade sobre importações anteriores; os pedidos diretos mais recentes em `CREATOR_DIRECT_RATING_REVIEWS` prevalecem sobre valores importados antigos. Entre os pedidos registrados estão **Kaká, Milan 2007, OVR 92; Henry, Arsenal 2004, OVR 93; Čech, Chelsea 2005, OVR 92; Vieira, Arsenal 2004, OVR 91; Campbell, Arsenal 2004, OVR 90; Falcão, Roma 1983, OVR 90**. Continuam identificados como `creator-review`, sem apresentar a nota personalizada como oficial.
 2. OVR verificável da edição seguinte ao ano da época, por pessoa e elenco, em `release-ratings.js` (`release-rating`). Uma transferência não muda a identidade: por exemplo, Donnarumma do PSG 2025 pode ter a nota do Manchester City no FC 26.
 3. Na ausência de registro verificável nessa edição, revisão editorial explícita (`season-review`) ou estimativa histórica (`editorial-estimate`). Não se copia uma nota de outra edição, de um homônimo ou de um jogador genérico sem licença.
 
@@ -14,7 +14,7 @@ As antigas notas da edição de mesmo ano foram mantidas somente como histórico
 
 ## Cobertura conferida
 
-Há **1.069 registros jogador/época verificados**, dos quais 39 também têm ajuste pessoal. Na base ativa de 2.365 registros: 1.030 usam a nota verificada, 93 usam os ajustes pessoais e 1.242 continuam editoriais: 272 revisões explícitas e 970 estimativas anteriores. A auditoria completa está em [release-rating-audit.json](release-rating-audit.json), com uma linha para cada jogador/época. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
+Na fotografia histórica da auditoria de 26/10/2026 havia **1.069 registros jogador/época verificados**, 2.365 registros de clube e 93 ajustes pessoais ativos. As sete revisões diretas de clube feitas em 05/11 elevam para 100 o número atual de ajustes ativos; esse retrato histórico não é reescrito. As notas originais continuam como fonte em `releaseRating`, mas os ajustes do criador são aplicados no jogo. A revisão histórica de Falcão da Roma 1983 fica preservada em `currentOvr` (92); o pedido posterior de OVR 90 consta em `creatorOvr` e prevalece no jogo.
 
 A [revisão de 1970–1989](VINTAGE-RATINGS.md) confere 275 registros e reduz 250 notas exageradas, preservando os grandes craques e os 67 ajustes pessoais. Os valores continuam identificados como editoriais: não existia uma edição FIFA/FC da EA lançada nessas décadas. As decisões são individuais por jogador e temporada, sem desconto automático por idade ou época.
 
@@ -88,3 +88,19 @@ As 18 alterações do JSON enviado são aplicadas por jogador e época em `impor
 Tottenham 2011 e Celtic 2013 acrescentam 22 registros de edição, elevando o total de notas de edição verificadas para 1.091. Bahia 2024 contém onze estimativas editoriais explícitas. A auditoria JSON anterior é preservada como registro histórico. Fontes e decisões: [RECENT-CLUB-ERAS.md](RECENT-CLUB-ERAS.md).
 
 Atualização posterior de 29/10/2026: o Celtic foi retirado do catálogo ativo e substituído pelo Bayer Leverkusen. Registros anteriores de épocas e notas do Celtic são históricos. Os dados atuais e a contagem de 1.102 notas de edição estão documentados em [LEVERKUSEN.md](LEVERKUSEN.md).
+
+## Revisões diretas de clubes — 05/11/2026
+
+A pedido do criador, sete OVRs foram aumentados. Os valores personalizados permanecem identificados como `creator-review`, com as notas da EA preservadas em `releaseRating` quando disponíveis.
+
+| Elenco | Jogador | Antes | Depois |
+| --- | --- | ---: | ---: |
+| Manchester United 1999 | Paul Scholes | 86 | 89 |
+| Manchester United 1999 | Ryan Giggs | 86 | 89 |
+| Real Madrid 2002 | Claude Makélélé | 82 | 85 |
+| Real Madrid 2002 | Roberto Carlos | 86 | 89 |
+| AC Milan 2007 | Clarence Seedorf | 79 | 83 |
+| AC Milan 2007 | Gennaro Gattuso | 81 | 84 |
+| Liverpool 2025 (FC 26) | Mohamed Salah | 89 | 92 |
+
+Os ajustes estão em `CREATOR_DIRECT_RATING_REVIEWS`; as alterações de seleções de 1990 a 2022 estão em [WORLD-CUP-SOURCES.md](WORLD-CUP-SOURCES.md). O arquivo `release-rating-audit.json` continua como fotografia de 26/10/2026.
