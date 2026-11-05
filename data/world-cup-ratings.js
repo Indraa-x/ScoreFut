@@ -23,6 +23,25 @@ export const WORLD_CUP_CREATOR_REVIEWS=Object.freeze(Object.fromEntries(reviews.
    :'Reequilíbrio solicitado pelo criador em 26/10/2026: OVR geral calculado de 88,5, preservando os principais craques.',
  })]))),
 ])));
+const directReviews=[
+ ['nation-argentina-1990','Aumento aprovado pelo criador em 05/11/2026 para reconhecer as defesas decisivas de Sergio Goycochea nas disputas de pênaltis da campanha.',[
+  ['sergio-goycochea',79,84],
+ ]],
+ ['nation-spain-2010','Aumento aprovado pelo criador em 05/11/2026 para reconhecer o impacto de Iniesta, Xavi e Busquets na campanha campeã.',[
+  ['andres-iniesta',87,90],['xavi',87,90],['sergio-busquets',81,85],
+ ]],
+ ['nation-france-2018','Aumento aprovado pelo criador em 05/11/2026 para reconhecer a campanha de Mbappé, campeão e vencedor do prêmio de melhor jogador jovem.',[
+  ['kylian-mbappe',87,90],
+ ]],
+ ['nation-argentina-2022','Aumento aprovado pelo criador em 05/11/2026 para reconhecer o impacto de Julián Álvarez e Enzo Fernández na campanha campeã.',[
+  ['julian-alvarez',78,82],['enzo-fernandez',78,82],
+ ]],
+];
+export const WORLD_CUP_DIRECT_CREATOR_REVIEWS=Object.freeze(Object.fromEntries(directReviews.map(([squadId,reason,players])=>[
+ squadId,Object.freeze(Object.fromEntries(players.map(([playerId,previousOvr,ovr])=>[playerId,Object.freeze({
+  squadId,playerId,previousOvr,ovr,reviewedAt:'2026-11-05',source:'data/world-cup-ratings.js',reason,
+ })]))),
+])));
 export const GOALKEEPER_CREATOR_REVIEWS=Object.freeze(Object.fromEntries([
  ['nation-italy-2006','gianluigi-buffon',92,94],
  ['nation-germany-2014','manuel-neuer',90,93],
@@ -32,7 +51,7 @@ export const GOALKEEPER_CREATOR_REVIEWS=Object.freeze(Object.fromEntries([
  reason:'Ajuste de goleiro solicitado pelo criador em 30/10/2026, exclusivo desta seleção e época.',
 })})])));
 export function applyWorldCupRatingReview(player,squadId){
- const review=LATEST_IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??GOALKEEPER_CREATOR_REVIEWS[squadId]?.[player.id]??HISTORICAL_NATIONAL_REVIEWS[squadId]?.[player.id]??IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
+ const review=WORLD_CUP_DIRECT_CREATOR_REVIEWS[squadId]?.[player.id]??LATEST_IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??GOALKEEPER_CREATOR_REVIEWS[squadId]?.[player.id]??HISTORICAL_NATIONAL_REVIEWS[squadId]?.[player.id]??IMPORTED_OVR_BY_SQUAD[squadId]?.[player.id]??WORLD_CUP_CREATOR_REVIEWS[squadId]?.[player.id];
  if(!review)return player;
  const delta=review.ovr-player.ovr;
  return {...player,ovr:review.ovr,ratingKind:'creator-review',creatorReview:review,

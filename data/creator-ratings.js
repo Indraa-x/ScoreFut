@@ -765,6 +765,19 @@ export const CREATOR_DIRECT_RATING_REVIEWS = Object.freeze([
     reviewedAt:'2026-10-24',source:'data/creator-ratings.js',
     reason:'Reequilíbrio solicitado pelo criador em 24/10/2026: OVR geral calculado de 86,5 para o Santos 1963, preservando Pelé, Gilmar, Zito, Pepe, Coutinho e Mauro Ramos.',
   })),
+  ...[
+    ['manchester-united-1999','paul-scholes','Paul Scholes',86,89],
+    ['manchester-united-1999','ryan-giggs','Ryan Giggs',86,89],
+    ['real-madrid-2002','claude-makelele','Claude Makélélé',82,85],
+    ['real-madrid-2002','roberto-carlos','Roberto Carlos',86,89],
+    ['milan-2007','clarence-seedorf','Clarence Seedorf',79,83],
+    ['milan-2007','gennaro-gattuso','Gennaro Gattuso',81,84],
+    ['liverpool-2025','mohamed-salah','Mohamed Salah',89,92],
+  ].map(([squadId,playerId,nome,previousOvr,ovr])=>Object.freeze({
+    squadId,playerId,nome,ovr,previousOvr,
+    reviewedAt:'2026-11-05',source:'data/creator-ratings.js',
+    reason:'Aumento editorial direto aprovado pelo criador em 05/11/2026 para reconhecer o impacto do jogador na época do elenco.',
+  })),
 ]);
 
 // Keep each import's provenance; the latest edit wins for the same player/season.

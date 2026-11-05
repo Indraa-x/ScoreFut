@@ -101,3 +101,19 @@ Os novos onzes foram selecionados entre convocados que atuaram na edição, conf
 As 55 notas novas são de arquivos de edição: Espanha e Suécia 2006 usam [FIFA 07](https://github.com/lbenz730/fifa_model/blob/master/stats/player_stats_2007.csv); Uruguai 2014 usa [FIFA 15](https://github.com/lbenz730/fifa_model/blob/master/stats/player_stats_2015.csv); Uruguai 2018 usa [FIFA 19](https://github.com/lbenz730/fifa_model/blob/master/stats/player_stats_2019.csv); Estados Unidos 2022 usa o campo Overall do [arquivo FIFA 23](https://github.com/guebin/DV2022/blob/main/posts/FIFA23_official_data.csv). O EA ID de cada pessoa e a origem da nota ficam no próprio jogador. O arquivo FIFA 23 fornece nomes abreviados: Matt Turner (233267) e Antonee Robinson (229348), por exemplo, foram separados dos homônimos pelos respectivos IDs e nomes.
 
 Campanhas de referência: Espanha e Suécia chegaram às oitavas de 2006; Uruguai às oitavas de 2014 e quartas de 2018; Estados Unidos às oitavas de 2022. [Uruguai, resultados oficiais FIFA](https://www.fifa.com/es/articles/uruguay-en-las-copas-mundiales-planteles-entrenadores-y-resultados), [Uruguai 2018, AUF](https://www.auf.org.uy/copa-mundial-rusia-2018uruguay-vs-portugal2018-06-30/), [Estados Unidos 2022, U.S. Soccer](https://www.ussoccer.com/stories/2022/12/fifa-world-cup-2022-usmnt-1-netherlands-3-match-report-stats-standings).
+
+## Aumentos diretos de OVR — 05/11/2026
+
+A pedido do criador, sete OVRs foram aumentados. Os valores anteriores e os novos ficam registrados em `WORLD_CUP_DIRECT_CREATOR_REVIEWS`; os atributos de simulação recebem a mesma diferença, e as notas originais dos elencos continuam preservadas.
+
+| Seleção | Jogador | Antes | Depois |
+| --- | --- | ---: | ---: |
+| Argentina 1990 | Sergio Goycochea | 79 | 84 |
+| Espanha 2010 | Andrés Iniesta | 87 | 90 |
+| Espanha 2010 | Xavi | 87 | 90 |
+| Espanha 2010 | Sergio Busquets | 81 | 85 |
+| França 2018 | Kylian Mbappé | 87 | 90 |
+| Argentina 2022 | Julián Álvarez | 78 | 82 |
+| Argentina 2022 | Enzo Fernández | 78 | 82 |
+
+Esses ajustes prevalecem sobre revisões anteriores para os mesmos jogadores e épocas. A auditoria `release-rating-audit.json` permanece como fotografia histórica de 26/10/2026.
