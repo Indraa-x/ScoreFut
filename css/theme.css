@@ -100,3 +100,24 @@ html[data-theme="dark"] dialog::backdrop{background:#000a}
 @media(max-width:420px){.header-inner{padding-inline:12px;gap:8px}.brand .brand-logo{width:140px}.header-inner nav{gap:4px}.header-inner .nav-link{font-size:11px;padding-inline:8px}.theme-toggle{width:38px;height:40px;flex-basis:38px;border-radius:10px}.theme-toggle svg{width:18px;height:18px}}
 @media(max-width:360px){.brand .brand-logo{width:118px}.header-inner .nav-link{padding-inline:6px}}
 @media(prefers-reduced-motion:reduce){.theme-toggle,.theme-toggle svg{transition:none}}
+
+/* Main navigation: compact football controls with a clear active section. */
+.header-inner nav{gap:6px}
+.header-inner .nav-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid transparent;border-radius:11px;color:var(--muted);font-size:13px;font-weight:700;transition:background-color .18s,border-color .18s,color .18s,transform .18s}
+.header-inner .nav-link svg{width:17px;height:17px;flex:0 0 auto}
+.header-inner .nav-link:hover{background:var(--soft);color:var(--text)}
+.header-inner .nav-link.active,.header-inner .nav-link.active:hover{background:var(--accent-soft);border-color:color-mix(in srgb,var(--green) 30%,transparent);color:var(--green)}
+.header-inner .nav-link.active::after{display:none}
+.header-inner .nav-link:active{transform:scale(.97)}
+.header-inner .nav-link:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+@media(max-width:760px){
+ .header-inner nav{gap:5px}
+ .header-inner .nav-link{padding-inline:9px;gap:6px}
+}
+@media(max-width:420px){
+ .header-inner .nav-link{padding-inline:7px;gap:5px;font-size:11px}
+ .header-inner .nav-link svg{width:15px;height:15px}
+}
+@media(max-width:480px){.header-inner .nav-link svg{display:none}}
+@media(max-width:340px){.brand .brand-logo{width:96px}}
+@media(prefers-reduced-motion:reduce){.header-inner .nav-link{transition:none}}
