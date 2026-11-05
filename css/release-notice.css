@@ -1,9 +1,13 @@
-/* A compact maintenance mark and version open the current release notes. */
+/* The maintenance icon opens release notes beside the main navigation. */
 .site-header .header-tools{gap:20px;min-width:0}
 .release-notice{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;min-height:34px;padding:4px 0;border:0;border-radius:3px;background:none;color:var(--gold);font:750 11px/1.4 var(--body);font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer}
 .release-maintenance-icon{width:18px;height:18px;flex:0 0 18px}
 .release-notice:hover{text-decoration:underline;text-underline-offset:4px}
 .release-notice:focus-visible{outline:2px solid var(--green);outline-offset:5px}
+.header-inner .release-notice--icon{display:grid;place-items:center;width:42px;height:44px;min-height:44px;flex:0 0 42px;padding:0;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--gold);transition:background .18s,border-color .18s}
+.header-inner .release-notice--icon:hover{background:var(--soft);border-color:var(--gold);text-decoration:none}
+.header-inner .release-notice--icon:focus-visible{outline-offset:3px}
+.release-notice--icon .release-maintenance-icon{width:20px;height:20px}
 
 dialog:has(.release-details){width:min(510px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border-radius:14px;overflow:hidden}
 .release-details{display:flex;flex-direction:column;max-height:min(680px,calc(100dvh - 32px))}
@@ -33,12 +37,11 @@ dialog:has(.release-details){width:min(510px,calc(100% - 24px));max-width:none;m
 .release-feedback{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;margin-top:6px;padding:13px 24px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
 .release-feedback a{display:inline-flex;align-items:center;min-height:28px;color:var(--green);font-weight:650;text-decoration:none}
 .release-feedback a:hover{text-decoration:underline;text-underline-offset:3px}
-@media(max-width:1200px){.site-header .header-tools>.edition{display:none}}
+@media(max-width:1200px){.site-header .header-tools{display:none}}
 @media(min-width:761px) and (max-width:1000px){.site-header .header-tools{margin-left:auto}}
 @media(max-width:760px){
  .site-header,body:has(#app[data-screen="match"]) .site-header{height:auto;flex-basis:auto}
- .site-header .header-inner{height:auto;flex-wrap:wrap;row-gap:3px;padding-top:10px;padding-bottom:5px}
- .site-header .header-tools{display:flex;flex:0 0 100%;margin:0;justify-content:center}
+ .site-header .header-inner{height:auto;flex-wrap:nowrap;padding-top:10px;padding-bottom:10px}
  .release-notice{min-height:24px;font-size:10px}
  .release-details .modal-head{padding:18px 18px 0}
  .release-description{margin:8px 18px 15px}
@@ -46,4 +49,5 @@ dialog:has(.release-details){width:min(510px,calc(100% - 24px));max-width:none;m
  .release-feedback{padding:10px 18px}
  .release-details h2{font-size:22px}
 }
-@media(prefers-reduced-motion:reduce){.release-chevron{transition:none}}
+@media(max-width:420px){.header-inner .release-notice--icon{width:38px;flex-basis:38px;border-radius:10px}}
+@media(prefers-reduced-motion:reduce){.release-chevron,.header-inner .release-notice--icon{transition:none}}
