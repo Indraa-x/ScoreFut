@@ -19,7 +19,6 @@ import * as ui from './ui.js';
 import {renderReleaseDetails} from './release-notice.js';
 import {updateAchievementLedger} from './achievements.js';
 import {saveCampaignProgress} from './campaign-progress.js';
-import {initPlayerDrag} from './player-drag.js';
 import {initSkipFeedback} from './skip-feedback.js';
 import {currentMatch,canContinueTournament,prepareUserRound,commitUserRound,migrateMatchSession,migrateNeutralSimulation,migrateChampionsFormat,MATCH_FLOW_VERSION} from './match-session.js';
 import {beginPenaltyReplay,matchHasEnded} from './match-penalties.js';
@@ -191,27 +190,6 @@ function slotAction(slotId){
   if(pick){selectLineupPlayer(pick.player.id);return;}
   if(state.draft?.selectedId)addPlayer(state.draft.selectedId,slotId);
 }
-function highlightDrag(id){
-  const player=selectedPlayer(id);if(!player)return false;
-  const free=playerDestinations(id).map(slot=>slot.id);if(!free.length)return false;
-  const moving=state.draft.picks.find(pick=>pick.player.id===id);
-  state.draft.selectedId=moving?null:id;state.draft.selectedPickId=moving?id:null;
-  app.querySelectorAll('[data-action="slot"]').forEach(el=>{
-    const legal=free.includes(el.dataset.value),origin=moving?.slot.id===el.dataset.value;
-    el.disabled=!legal&&!el.classList.contains('picked');
-    el.classList.toggle('compatible',legal);el.classList.toggle('move-origin',origin);el.classList.toggle('incompatible',!legal&&!origin);
-    if(el.dataset.lineupPlayer)el.setAttribute('aria-pressed',String(origin));
-    if(legal){const slot=FORMATIONS[state.formation].slots.find(slot=>slot.id===el.dataset.value);el.setAttribute('aria-label',(el.classList.contains('picked')?'Trocar ':'Colocar ')+player.nome+' como '+slot.label);}
-    if(el.classList.contains('empty')){
-      const slot=FORMATIONS[state.formation].slots.find(slot=>slot.id===el.dataset.value);
-      el.setAttribute('aria-label',legal?'Colocar '+player.nome+' como '+slot.label:'Vaga '+slot.label);
-      el.querySelector('small').textContent=legal?'Solte aqui':slot.position==='GOL'?'Goleiro':'Livre';
-    }
-  });
-  app.querySelectorAll('[data-action="player"]').forEach(el=>{const selected=el.dataset.value===id;el.setAttribute('aria-pressed',String(selected));el.closest('.player-row').classList.toggle('selected',selected);});
-  const hint=app.querySelector('.placement-hint');if(hint)hint.textContent='Solte '+player.nome+' em uma vaga destacada.';
-  return true;
-}
 function addPlayer(id,slotId){
   if(!['draft','summary'].includes(state.screen)||state.rolling)return;
   try{
@@ -297,19 +275,6 @@ async function action(name,value,element){if(['mode','start','setup','play-home'
 document.addEventListener('click',event=>{const element=event.target.closest('[data-action]');if(element&&!element.disabled)action(element.dataset.action,element.dataset.value,element).catch(error=>{console.error(error);toast('Não foi possível completar a ação. '+error.message);});});
 app.addEventListener('change',event=>{if(event.target.id==='quick-season')action('quick-team',event.target.value,event.target).catch(error=>toast(error.message));});
 app.addEventListener('input',event=>{if(event.target.id==='quick-search'&&state.mode==='quick'&&state.screen==='setup')updateQuickSearch(event.target.value);});
-initPlayerDrag({
-  app,
-  getPlayer:id=>{
-    const player=selectedPlayer(id);
-    const pick=state.draft?.picks.find(pick=>pick.player.id===id);
-    const squad=pick?allSquads.find(squad=>squad.id===pick.squadId):state.draft?.currentSquad;
-    return player&&squad&&playerDestinations(id).length?{player,squad,slot:pick?.slot,hidden:state.mode==='legends'&&state.screen==='draft'}:null;
-  },
-  onStart:highlightDrag,
-  onPlace:addPlayer,
-  onCancel:()=>{if(['draft','summary'].includes(state.screen)){state.draft.selectedId=null;state.draft.selectedPickId=null;render();}},
-  renderPreview:ui.renderPlayerDragPreview
-});
 modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 document.addEventListener('visibilitychange',()=>{if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});
 window.addEventListener('pagehide',()=>{stopPlayback();if(['draft','summary','match'].includes(state.screen))persist();});
