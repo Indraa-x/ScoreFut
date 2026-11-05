@@ -4,6 +4,7 @@ export const RELEASE_HISTORY=Object.freeze([
   {icon:'players',title:'Escolha entre 2 ou 4 participantes',detail:'Defina os nomes e a formação antes do sorteio. Cada pessoa monta seu time em sequência no mesmo aparelho.'},
   {icon:'bracket',title:'Ida e volta em todas as fases',detail:'Com 2 jogadores, a final tem 2 partidas. Com 4, são duas semifinais e uma final, totalizando 6 partidas.'},
   {icon:'ball',title:'Classificação pelo agregado',detail:'A chave revela os placares após cada jogo. Empate no agregado leva à prorrogação e, se necessário, aos pênaltis.'},
+  {icon:'field',title:'Força no padrão das competições solo',detail:'O resumo usa o mesmo medidor geral, perfil por setor, média OVR e informações da formação.'},
   {icon:'shield',title:'Progresso salvo no aparelho',detail:'O torneio pode ser retomado no navegador em que foi criado. Os desafios antigos por código continuam aceitos.'},
  ]},
  {version:'0.8',date:'01/11/2026',title:'Desafios com amigos',changes:[
