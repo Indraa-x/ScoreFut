@@ -207,12 +207,10 @@ main{padding:36px 32px 52px}
 @media(max-width:900px){.result-lineup-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.result-lineup-list{grid-template-columns:1fr}.result-lineup .panel-head{padding:20px;flex-wrap:wrap}.result-lineup .box-row{border-right:0}}
 
-/* Drop a player into a compatible pitch position; no extra confirmation. */
-.player-select[draggable="true"]{cursor:grab}
-.player-select.dragging{cursor:grabbing;opacity:.55}
+/* Select a player, then choose a compatible pitch position. */
+.player-select:not(:disabled){cursor:pointer}
 .draft-pitch .pitch-slot{cursor:default}
 .draft-pitch .pitch-slot.compatible{cursor:pointer}
-.draft-pitch .pitch-slot.drop-target .slot-circle{background:#eaffef;color:#154128;border-color:#fff;box-shadow:0 0 0 7px #ffffff33}
 .draft-pitch .pitch-slot.incompatible{opacity:.4}
 .player-select{gap:10px}
 
