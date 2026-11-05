@@ -42,7 +42,7 @@ Funciona no **celular e no PC**, com temas claro e escuro. Você joga sem cadast
 
 1. **Escolha sua formação.** Veja as posições no campo antes de começar.
 2. **Monte os onze.** A cada rodada, sorteie um clube ou seleção e uma época; escolha um jogador para sua escalação. São **3 skips** no total, compartilhados entre equipe e época.
-3. **Organize o time.** Arraste os jogadores ou selecione uma vaga compatível para posicioná-los.
+3. **Organize o time.** Clique em um jogador e depois em uma vaga compatível. Para mover alguém já escalado, clique nele no campo e escolha outra posição compatível.
 4. **Dispute a campanha.** Acompanhe os movimentos no campo, o placar e os autores dos gols. Nos empates decisivos, os pênaltis aparecem cobrança por cobrança.
 
 ### Desafie seus amigos

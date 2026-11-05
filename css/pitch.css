@@ -8,7 +8,7 @@
   box-shadow:inset 0 1px 0 #d5f6dc21,inset 0 0 28px #082e2421,0 8px 22px #071e1714;
 }
 #app .draft-pitch>.pitch-lines{stroke:#d8f0df;stroke-opacity:.62;filter:drop-shadow(0 1px 1px #07372130)}
-#app .draft-pitch .pitch-slot.empty:not(.compatible):not(.target):not(.drop-target) .slot-circle{
+#app .draft-pitch .pitch-slot.empty:not(.compatible):not(.target) .slot-circle{
   color:#f0faf3;background:#0b3b2b38;border-color:#c8ead278;
   box-shadow:inset 0 1px 0 #e7ffed14,0 3px 8px #082d2521;
 }
