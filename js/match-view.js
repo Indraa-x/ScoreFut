@@ -15,14 +15,14 @@ const rgb = color => {
 export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const t = s.tournament, match = currentMatch(s);
   if (!match) return '';
-  const result=match.result,ended=matchHasEnded(s,match),deciding=penaltyProgress(s,match).playing;
+  const result=match.result,ended=matchHasEnded(s,match),deciding=penaltyProgress(s,match).playing,friendMode=t.mode==='friends';
   const twoLegged = !!match.tieId;
   const home = t.teams.find(team => team.id === match.homeId), away = t.teams.find(team => team.id === match.awayId);
   const scores = scoreAt(result, s.matchMinute), anchors = lineupAnchors(home, away);
   const homeKit=home.id===t.userTeamId?'#13754b':'#3169b8';
   const awayKit=away.id===t.userTeamId?'#13754b':'#3169b8';
   const teamInfo = (team, side, kit) => {
-    return `<div class="match-team ${side}">${badge(team)}<div><span class="match-team-side"><i style="background:${esc(kit)}"></i>${side==='home'?'Casa':'Fora'}</span><h2>${esc(displayName(team))}</h2><small><b>OVR ${Math.round(team.strength.overall)}</b>${team.id===t.userTeamId?'':' · '+esc(team.ano || '')}</small></div></div>`;
+    return `<div class="match-team ${side}">${badge(team)}<div><span class="match-team-side"><i style="background:${esc(kit)}"></i>${side==='home'?'Casa':'Fora'}</span><h2>${esc(displayName(team))}</h2><small><b>OVR ${Math.round(team.strength.overall)}</b>${team.id===t.userTeamId||!team.ano?'':' · '+esc(team.ano)}</small></div></div>`;
   };
   const player = (entry, index, team, side) => {
     const anchor = anchors[(side === 'home' ? 0 : home.lineup.length) + index];
@@ -30,22 +30,25 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
     const [r,g,b]=rgb(kit), numberColor=r*.299+g*.587+b*.114>160?'#17232b':'#fff';
     return `<span class="match-player ${side}${playerSentOff(result,side,entry.player.id,s.matchMinute)?' sent-off':''}" data-match-player style="left:${anchor.x}%;top:${anchor.y}%;--kit:${esc(kit)};--number-color:${numberColor}" title="Nº ${esc(entry.player.camisa || index + 1)} · ${esc(displayName(team))}"><b>${esc(entry.player.camisa || index + 1)}</b></span>`;
   };
-  const preview=nextFixturePreview(s), upcoming=preview.fixture?[preview.fixture]:[];
-  const recent = t.userMatches.map((fixture, index) => ({fixture, index})).filter(({fixture}) => fixture.id !== match.id).slice(-3).reverse();
+  const nextFriendMatch=friendMode?t.userMatches[s.userMatchIndex+1]:null;
+  const preview=friendMode?{kind:nextFriendMatch?'fixture':'complete',fixture:nextFriendMatch}:nextFixturePreview(s), upcoming=preview.fixture?[preview.fixture]:[];
+  const visibleMatches=friendMode?t.userMatches.slice(0,s.userMatchIndex):t.userMatches;
+  const recent = friendMode?[]:visibleMatches.map((fixture, index) => ({fixture, index})).filter(({fixture}) => fixture.id !== match.id).slice(-3).reverse();
   const fixtures = upcoming.slice(0, 1).map(fixture => {
+    if(friendMode){const nextHome=t.teams.find(team=>team.id===fixture.homeId),nextAway=t.teams.find(team=>team.id===fixture.awayId);return `<article class="upcoming-game"><div class="fixture-round"><span>${esc(fixture.stageLabel)}</span><small>Próxima partida</small></div><div class="fixture-opponent friend-upcoming-pair"><div>${badge(nextHome)}<strong>${esc(displayName(nextHome))}</strong></div><b>×</b><div>${badge(nextAway)}<strong>${esc(displayName(nextAway))}</strong></div></div></article>`;}
     const isHome = fixture.homeId === t.userTeamId, opponent = t.teams.find(team => team.id === (isHome ? fixture.awayId : fixture.homeId));
     return `<article class="upcoming-game"><div class="fixture-round"><span>${esc(fixture.stageLabel)}</span><small>${fixture.neutral?'Campo neutro':isHome?'Casa':'Fora'}</small></div><div class="fixture-opponent">${badge(opponent)}<div><strong>${esc(displayName(opponent))}</strong><span>Temporada ${esc(opponent.ano || '')}</span></div>${icon('arrow')}</div></article>`;
   });
   const possible=preview.opponentIds?.map(id=>t.teams.find(team=>team.id===id)).filter(Boolean)||[];
   const pendingText=possible.length?`Se avançar: ${possible.length>1?'vencedor de ':''}${possible.map(team=>displayName(team)).join(' × ')}`:preview.draw?'Adversário definido no sorteio após esta fase.':'Adversário definido após a classificação.';
-  const nextContent=fixtures[0]||(preview.kind==='pending'?`<div class="fixture-pending">${icon('bracket')}<div><strong>${esc(preview.stageLabel)}</strong><span>${esc(pendingText)}</span></div></div>`:`<div class="calendar-empty">${icon('trophy')}<strong>${preview.kind==='complete'?'Campanha encerrada':'Último jogo'}</strong><p>${preview.kind==='complete'?'Confira o resultado da sua campanha.':'Tudo se decide em campo.'}</p></div>`);
-  const nextGamePanel = `<section class="fixtures-panel panel ${t.mode === 'brasileirao' ? 'league-campaign' : ['champions','world-cup'].includes(t.mode) ? 'champions-next-game' : ''}" aria-label="Próximo jogo"><div class="calendar-heading"><div>${icon('calendar')}<h2>Próximo jogo</h2></div></div><div class="fixture-list">${nextContent}</div></section>`;
+  const nextContent=friendMode?fixtures[0]||`<div class="calendar-empty">${icon('trophy')}<strong>Último jogo</strong><p>Avance para ver o campeão do torneio.</p></div>`:fixtures[0]||(preview.kind==='pending'?`<div class="fixture-pending">${icon('bracket')}<div><strong>${esc(preview.stageLabel)}</strong><span>${esc(pendingText)}</span></div></div>`:`<div class="calendar-empty">${icon('trophy')}<strong>${preview.kind==='complete'?'Campanha encerrada':'Último jogo'}</strong><p>${preview.kind==='complete'?'Confira o resultado da sua campanha.':'Tudo se decide em campo.'}</p></div>`);
+  const nextGamePanel = `<section class="fixtures-panel panel ${t.mode === 'brasileirao' ? 'league-campaign' : ['champions','world-cup'].includes(t.mode) ? 'champions-next-game' : ''}" aria-label="Próximo jogo"><div class="calendar-heading"><div>${icon('calendar')}<h2>Próximo jogo</h2></div></div><div class="fixture-list">${nextContent}</div>${friendMode?btn(icon('bracket')+' Ver chave','bracket',false):''}</section>`;
   const championsPanel=['champions','world-cup'].includes(t.mode)?(match.stage!=='group'||championsGroup(t)?.complete?nextGamePanel:renderChampionsSidebar(t,{esc,icon,badge})):'';
   const phase = matchPhase(result,s.matchMinute);
   const addedMinutes = matchAddedMinutes(result,s.matchMinute);
   const morePlayed = s.userMatchIndex < t.userMatches.length - 1;
   const nextFixture = morePlayed ? t.userMatches[s.userMatchIndex+1] : upcoming[0];
-  const nextLabel = morePlayed ? 'Rever próximo jogo' : twoLegged && match.leg===1 && match.stage!=='final' ? 'Jogar a volta' : match.stage==='final' ? 'Ver resultado' : s.pendingRound || canContinueTournament(t)
+  const nextLabel = friendMode?(morePlayed&&t.userMatches[s.userMatchIndex+1]?.tieId===match.tieId&&match.leg===1?'Jogar a volta':morePlayed?'Próxima partida':'Ver chave final') : morePlayed ? 'Rever próximo jogo' : twoLegged && match.leg===1 && match.stage!=='final' ? 'Jogar a volta' : match.stage==='final' ? 'Ver resultado' : s.pendingRound || canContinueTournament(t)
     ? nextFixture?.stage === match.stage ? 'Próxima partida' : 'Próxima etapa' : 'Ver resultado';
   const trophy = {'world-cup':'assets/competitions/world-cup-trophy.png',champions:'assets/competitions/champions-trophy.png','copa-do-brasil':'assets/competitions/brazil-cup-trophy.png'}[s.mode];
   const logo = trophy || competitionLogo(s.mode), speed = normalizeMatchSpeed(s.matchSpeed);
@@ -54,7 +57,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const previousGoals = firstLeg ? [firstLeg.result.awayGoals, firstLeg.result.homeGoals] : [0,0];
   const aggregateScore = twoLegged && match.leg === 2
     ? `<span class="match-aggregate">Ida + volta <b data-match-aggregate data-home="${previousGoals[0]}" data-away="${previousGoals[1]}">${previousGoals[0]+scores[0]} – ${previousGoals[1]+scores[1]}</b></span>` : '';
-  const tie = ended && twoLegged && (match.leg === 2 || match.stage === 'final') ? (s.pendingRound || t).bracket.flatMap(stage => stage.ties || []).find(tie => tie.id === match.tieId) : null;
+  const tie = ended && twoLegged && (match.leg === 2 || match.stage === 'final'&&!friendMode) ? (s.pendingRound || t).bracket.flatMap(stage => stage.ties || []).find(tie => tie.id === match.tieId) : null;
   const winnerId=tie?.winnerId || result.winnerId || (result.penalties ? result.penalties[0]>result.penalties[1] ? home.id : away.id : result.homeGoals>result.awayGoals ? home.id : result.awayGoals>result.homeGoals ? away.id : null);
   const outcome=ended ? winnerId===t.userTeamId?'victory':winnerId?'defeat':'draw' : 'playing';
   const statusLabel=deciding?'Em jogo':ended ? tie&&match.stage!=='final' ? outcome==='victory'?'Classificado':'Eliminado' : outcome==='victory'?'Vitória':outcome==='defeat'?'Derrota':'Empate' : 'Em jogo';

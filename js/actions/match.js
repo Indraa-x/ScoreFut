@@ -117,6 +117,7 @@ export function matchActions({
         ) {
           stopPlayback();
           state.userMatchIndex = i;
+          if(state.friendChallenge)state.tournament.userTeamId=state.tournament.userMatches[i].homeId;
           state.penaltyReplay = null;
           state.matchMinute = state.tournament.userMatches[i].result.duration;
           persist();
