@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.9 — 05/11/2026
+
+Desafio com amigos reformulado como torneio local. Antes do sorteio, escolha 2 ou 4 participantes, informe os nomes e selecione a formação; cada pessoa monta seu time em sequência no mesmo aparelho. Com 2 participantes, a final tem ida e volta (2 partidas). Com 4, há duas semifinais e uma final, todas de ida e volta (6 partidas). O agregado decide quem avança; empate leva à prorrogação e, se necessário, aos pênaltis. A chave revela os resultados conforme cada jogo termina, e o progresso fica salvo no navegador. A escolha de competição saiu da configuração do torneio. Códigos antigos continuam aceitos no fluxo legado; o torneio novo não sincroniza entre aparelhos. [Detalhes técnicos](docs/CHALLENGES.md).
+
 ### Correção de 02/11/2026 — códigos curtos
 
 Novos desafios geram códigos de apenas seis letras e números, com competição, formação e sorteio reproduzíveis sem servidor. Links e campanhas dos códigos longos anteriores continuam funcionando. O campo de entrada também aceita o link completo.
@@ -38,7 +42,7 @@ Faltas com barreira e escanteios agora são encenados no campo da simulação, c
 
 Início da numeração pública do jogo. Esta versão reúne a Copa do Mundo, a Copa do Brasil e a Champions League; draft com oito formações e três skips; simulação de partidas; conquistas e progresso salvos no navegador.
 
-O cabeçalho mostra somente Beta 0.1. Ao clicar, uma janela apresenta as correções e melhorias da versão, com acesso aos formulários do GitHub para dúvidas e bugs.
+O ícone de ferramentas no cabeçalho abre o histórico de versões, com as correções e melhorias e acesso aos formulários do GitHub para dúvidas e bugs. A versão atual aparece nesse painel.
 
 Durante o beta, atualizações importantes incrementam a revisão (`0.2`, `0.3` e assim por diante). Pequenos ajustes não geram uma nova versão. A versão final será anunciada pelo criador do projeto.
 
