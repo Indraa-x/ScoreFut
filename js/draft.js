@@ -63,7 +63,7 @@ export function confirmPick(draft,squads,formation,playerId,targetSlotId) {
   if(!player) throw new Error('Escolha um jogador do elenco sorteado.');
   if(draft.picks.some(p=>p.player.id===player.id)) throw new Error('Este jogador já está no seu time.');
   const slot=targetSlotId===undefined?automaticSlot(draft,formation,player):availableSlots(draft,formation,player).find(slot=>slot.id===targetSlotId);
-  if(targetSlotId!==undefined&&!slot) throw new Error('Escolha uma posição livre compatível para o jogador.');
+  if(targetSlotId!==undefined&&!slot) throw new Error('Escolha uma posição livre destacada e compatível para o jogador.');
   if(!slot) throw new Error('Não há posição livre para este jogador.');
   return {...draft,picks:[...draft.picks,{player,slot,squadId:squad.id,clubId:squad.clubId,clubName:squad.nome,ano:squad.ano}],currentSquadId:null,selectedId:null};
 }
