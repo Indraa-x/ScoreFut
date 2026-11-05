@@ -89,12 +89,13 @@ test('normal draws still use fresh browser entropy, and starting a normal draft 
   assert.equal(calls,2);assert.equal(draft.challenge,undefined);
 });
 
-test('the home offers code challenges and saved draft/result banners are escaped and shareable',()=>{
+test('the home organizes local friend tournaments without code entry and saved draft/result banners are escaped and shareable',()=>{
   const home=renderHome({clubs:[],stats:{titles:0,best:'—',streak:0,winRate:0}});
-  assert.ok(home.includes('data-action="challenge-create"'));assert.ok(home.includes('data-action="challenge-enter"'));
+  assert.ok(home.includes('data-action="challenge-create"'));assert.ok(!home.includes('data-action="challenge-enter"'));
   const challenge=createChallenge({mode:'champions',formation:'4-3-3',seed:42},allSquads),draft=createChallengeDraft(challenge,allSquads,'today');
   const state={draft,mode:'champions',formation:'4-3-3',teamName:'Meu time'};
   assert.ok(renderDraft(state).includes(challenge.code));assert.ok(renderSummary(state).includes(challenge.code));
   assert.ok(renderResult({mode:'champions',teamName:'Meu time',strength:90,played:7,challenge},null).includes(challenge.code));
   assert.ok(!renderDraft({...state,draft:{...draft,challenge:{code:'<script>bad</script>'}}}).includes('<script>'));
 });
+
