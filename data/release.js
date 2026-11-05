@@ -1,5 +1,11 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.9',date:'05/11/2026',title:'Torneio local com amigos',changes:[
+  {icon:'players',title:'Escolha entre 2 ou 4 participantes',detail:'Defina os nomes e a formação antes do sorteio. Cada pessoa monta seu time em sequência no mesmo aparelho.'},
+  {icon:'bracket',title:'Ida e volta em todas as fases',detail:'Com 2 jogadores, a final tem 2 partidas. Com 4, são duas semifinais e uma final, totalizando 6 partidas.'},
+  {icon:'ball',title:'Classificação pelo agregado',detail:'A chave revela os placares após cada jogo. Empate no agregado leva à prorrogação e, se necessário, aos pênaltis.'},
+  {icon:'shield',title:'Progresso salvo no aparelho',detail:'O torneio pode ser retomado no navegador em que foi criado. Os desafios antigos por código continuam aceitos.'},
+ ]},
  {version:'0.8',date:'01/11/2026',title:'Desafios com amigos',changes:[
   {icon:'players',title:'Códigos de apenas 6 caracteres',detail:'Ficou mais fácil compartilhar: os novos códigos têm seis letras e números. Links e desafios antigos continuam funcionando.'},
   {icon:'players',title:'Convide por código ou link',detail:'Crie um desafio na página inicial, escolha a competição e a formação e envie o código para outra pessoa. Sem conta.'},
