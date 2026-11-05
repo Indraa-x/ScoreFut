@@ -71,7 +71,7 @@ test('the before/after audit has 250 reductions, no increases and all personal e
     assert.equal(player(squad,id).ovr,IMPORTED_OVR_BY_SQUAD[squad]?.[id]?.ovr??review.ovr);
     assert.equal(player(squad,id).ratingKind,'creator-review');
   }
-  assert.equal(personal,92);
+  assert.equal(personal,99);
 });
 
 test('lowered vintage ratings update simulation attributes and saved picks without losing progress',()=>{

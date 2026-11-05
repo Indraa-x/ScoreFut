@@ -11,7 +11,7 @@ const player=(squadId,id)=>allSquads.find(squad=>squad.id===squadId)?.jogadores.
 
 test('the direct request locks Kaka 2007 at 92 above FIFA 08 and survives saved draft reloads',()=>{
   const kaka=player('milan-2007','kaka');
-  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,25);
+  assert.equal(CREATOR_DIRECT_RATING_REVIEWS.length,32);
   assert.equal(kaka.ovr,92);
   assert.equal(kaka.ratingKind,'creator-review');
   assert.deepEqual(kaka.creatorReview,CREATOR_DIRECT_RATING_REVIEWS[0]);
