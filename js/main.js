@@ -53,7 +53,7 @@ function visitRoute(route){
     const record=storage.read('history',[]).find(r=>r.id===route.recordId)|| (state.resultRecord?.id===route.recordId?state.resultRecord:null);
     if(record&&record.mode!=='euro'){state.resultRecord=record;state.tournament=record.tournament||null;state.mode=record.mode;state.screen='result';}else state.screen='achievements';
   }else{state.screen=requested; if(requested==='setup'){state.mode=MODES.some(m=>m.id===route.mode)||route.mode==='quick'?route.mode:'world-cup';state.quickStep=route.quickStep||'formation';}}
-  state.rolling=false;state.matchPlaying=false;render();window.scrollTo({top:0,behavior:'instant'});
+  state.rolling=false;state.rollingPreviewSquad=null;state.matchPlaying=false;render();window.scrollTo({top:0,behavior:'instant'});
 }
 
 const playback=initMatchPlayback({app,state,onFinish:finishCurrentMatch,onSave:persist});
@@ -104,7 +104,7 @@ function restore(saved){
   const mode=saved?.mode==='brasileirao'?'copa-do-brasil':saved?.mode==='daily'?'cup':saved?.mode;
   if(!saved?.draft||!FORMATIONS[formation]||!(mode==='cup'||mode==='legends'||mode==='quick'||mode==='friends'&&saved.friendChallenge||MODES.some(m=>m.id===mode)))return false;
   const upgrade=saved.rulesVersion!==2||!!legacy[saved.formation];
-  Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'||mode==='friends'?(saved.teamName||saved.friendChallenge?.players?.[saved.friendChallenge.currentIndex]||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=normalizeMatchSpeed(saved.matchSpeed);
+  Object.assign(state,saved);state.draft=refreshDraftSkips(state.draft);state.mode=mode;state.formation=formation;state.teamName=mode==='quick'||mode==='friends'?(saved.teamName||saved.friendChallenge?.players?.[saved.friendChallenge.currentIndex]||'Meu time'):'Meu time';state.quickSquadId=saved.quickSquadId||null;state.matchPlaying=false;state.rolling=false;state.rollingPreviewSquad=null;state.resultRecord=null;state.pendingRound=saved.pendingRound||null;state.matchSpeed=normalizeMatchSpeed(saved.matchSpeed);
   if (saved.mode === 'brasileirao') {
     state.draft = {...state.draft, mode};
     state.tournament=null;state.pendingRound=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;
@@ -149,22 +149,67 @@ function startDraft(challenge=null){const date=storage.today();
   if(challenge){state.mode=draft.mode;state.formation=draft.challenge.formation;}
   state.quickSquadId=null;state.teamName=state.friendChallenge?.players[state.friendChallenge.currentIndex]||'Meu time';state.draft=draft;state.tournament=null;state.pendingRound=null;state.resultRecord=null;state.userMatchIndex=0;state.matchUnlockedIndex=0;state.matchMinute=0;state.matchSpeed=4;navigate('draft');
 }
+function clubRollSequence(draft,pool,formation,mode,resultDraft){
+  const result=pool.find(squad=>squad.id===resultDraft.currentSquadId);
+  if(!result)return [];
+  let previewDraft={...draft,rerolls:99,seen:[...draft.seen,result.id]};
+  const previews=[];
+  for(let index=0;index<7;index++){
+    try{
+      previewDraft={...previewDraft,rerolls:99};
+      previewDraft=drawSquad(previewDraft,pool,formation,'club',mode,cryptoRandomIndex);
+      const squad=pool.find(item=>item.id===previewDraft.currentSquadId);
+      if(squad&&squad.id!==result.id)previews.push(squad);
+    }catch{break;}
+  }
+  return [...previews,result];
+}
+const waitForRoll=duration=>new Promise(resolve=>setTimeout(resolve,duration));
 async function roll(kind='new'){
   if(state.rolling||(kind!=='new'&&state.draft?.rerolls<=0))return;
   const draftAtStart=state.draft,versionAtStart=navigationVersion;
+  const isCurrent=()=>navigationVersion===versionAtStart&&state.screen==='draft'&&state.draft===draftAtStart;
   let drawn=false;
-  state.rolling=true;render();
-  await new Promise(r=>setTimeout(r,1500));
-  if(navigationVersion!==versionAtStart||state.screen!=='draft'||state.draft!==draftAtStart){state.rolling=false;return;}
-  try{if(state.draft.challenge)validateChallengeDraft(state.draft,state.formation,allSquads);state.draft=drawSquad(state.draft,squadsForMode(allSquads,state.mode),state.formation,kind,state.mode,cryptoRandomIndex);drawn=true;persist();}
-  catch(error){toast(error.message);}
+  state.rolling=true;state.rollingPreviewSquad=null;
+  try{
+    const pool=squadsForMode(allSquads,state.mode);
+    if(draftAtStart.challenge)validateChallengeDraft(draftAtStart,state.formation,allSquads);
+    if(kind==='club'&&draftAtStart.currentSquadId){
+      const resultDraft=drawSquad(draftAtStart,pool,state.formation,kind,state.mode,cryptoRandomIndex);
+      const sequence=clubRollSequence(draftAtStart,pool,state.formation,state.mode,resultDraft);
+      const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!reducedMotion&&sequence.length>1){
+        const delays=[75,90,110,135,165,205,255,310];
+        state.rollingPreviewSquad=sequence[0];render();
+        for(let index=1;index<sequence.length;index++){
+          await waitForRoll(delays[Math.min(index-1,delays.length-1)]);
+          if(!isCurrent())return;
+          state.rollingPreviewSquad=sequence[index];render();
+        }
+        await waitForRoll(250);
+      }else if(!reducedMotion){
+        state.rollingPreviewSquad=sequence[0]||null;render();
+        await waitForRoll(450);
+      }else render();
+      if(!isCurrent())return;
+      state.draft=resultDraft;drawn=true;persist();
+    }else{
+      render();
+      await waitForRoll(1500);
+      if(!isCurrent())return;
+      state.draft=drawSquad(draftAtStart,pool,state.formation,kind,state.mode,cryptoRandomIndex);drawn=true;persist();
+    }
+  }catch(error){if(isCurrent())toast(error.message);}
   finally{
-    state.rolling=false;render();
-    if(drawn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
-      app.querySelectorAll('.draw-club,.season-award,.roster-list').forEach(element=>element.animate(
-        [{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],
-        {duration:320,easing:'cubic-bezier(.2,.7,.3,1)'}
-      ));
+    state.rolling=false;state.rollingPreviewSquad=null;
+    if(navigationVersion===versionAtStart&&state.screen==='draft'){
+      render();
+      if(drawn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+        app.querySelectorAll('.draw-club,.season-award,.roster-list').forEach(element=>element.animate(
+          [{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],
+          {duration:320,easing:'cubic-bezier(.2,.7,.3,1)'}
+        ));
+      }
     }
   }
 }
@@ -316,3 +361,4 @@ navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});
 navigation.start();
 const sharedChallengeUrl=new URL(window.location.href),sharedChallenge=sharedChallengeUrl.searchParams.get('desafio');
 if(sharedChallenge!==null){sharedChallengeUrl.searchParams.delete('desafio');history.replaceState(history.state,'',sharedChallengeUrl.href);void openChallenge('enter',sharedChallenge).catch(error=>toast(error.message));}
+
