@@ -44,9 +44,9 @@
  #app[data-screen="draft"] .draw-empty .btn{grid-column:1/-1;justify-self:stretch;width:100%}
 }
 
-#app[data-screen="draft"] .draw-club-info.draw-roll-preview{animation:draw-roll-enter .18s cubic-bezier(.2,.7,.3,1)}
+#app[data-screen="draft"] .draw-club-info.draw-roll-preview .draw-roll-item{animation:draw-roll-item-enter .22s cubic-bezier(.2,.7,.3,1)}
 #app[data-screen="draft"] .rolling .draw-club-info.draw-roll-preview .club-badge{animation:none}
-@keyframes draw-roll-enter{from{opacity:.48;transform:translateY(-7px);filter:blur(1.2px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes draw-roll-item-enter{from{opacity:.5;transform:translateY(-6px);filter:blur(1px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
 
 /* Center the initial action within the header while keeping the identity on the left. */
 #app[data-screen="draft"] .draw-empty:has(.draw-empty-intro){grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px}
