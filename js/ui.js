@@ -154,7 +154,7 @@ function friendProgressBanner(challenge){
 function drawClubInfo(s,squad,{rolling=false,animate=false}={}){
   const type=squad.kind==='national'?'Seleção':'Clube';
   const label=rolling?'Sorteando…':s.mode==='friends'?`${type} sorteado`:s.mode==='world-cup'?'Seleção sorteada':'Clube sorteado';
-  return `<div class="draw-club-info ${animate?'draw-roll-preview':''}"><div class="draw-card-top"><span class="eyebrow">${label}</span><span class="season-year ${s.mode==='world-cup'?'national-year':''}" style="--year-color-1:${esc(squad.cores[0])};--year-color-2:${esc(squad.cores[1])}">${esc(squad.ano)}</span></div><div class="draw-club">${badge(squad)}<h2>${esc(squad.nome)}</h2></div><p class="season-award">${icon('trophy')} ${esc(squad.conquistas)}</p></div>`;
+  return `<div class="draw-club-info ${animate?'draw-roll-preview':''}"><div class="draw-card-top"><span class="eyebrow">${label}</span><span class="season-year ${s.mode==='world-cup'?'national-year':''} ${animate?'draw-roll-item':''}" style="--year-color-1:${esc(squad.cores[0])};--year-color-2:${esc(squad.cores[1])}">${esc(squad.ano)}</span></div><div class="draw-club ${animate?'draw-roll-item':''}">${badge(squad)}<h2>${esc(squad.nome)}</h2></div><p class="season-award ${animate?'draw-roll-item':''}">${icon('trophy')} ${esc(squad.conquistas)}</p></div>`;
 }
 function renderFriendDraft(s){
   const d=s.draft,squad=d.currentSquad,displaySquad=s.rollingPreviewSquad||squad,filled=d.picks.length,strength=calculateTeam(d.picks),shown=filled?Math.round(strength.overall):'—';

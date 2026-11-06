@@ -179,17 +179,17 @@ async function roll(kind='new'){
       const sequence=clubRollSequence(draftAtStart,pool,state.formation,state.mode,resultDraft);
       const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
       if(!reducedMotion&&sequence.length>1){
-        const delays=[75,90,110,135,165,205,255,310];
+        const delays=[150,185,225,275,335,410,500];
         state.rollingPreviewSquad=sequence[0];render();
         for(let index=1;index<sequence.length;index++){
           await waitForRoll(delays[Math.min(index-1,delays.length-1)]);
           if(!isCurrent())return;
           state.rollingPreviewSquad=sequence[index];render();
         }
-        await waitForRoll(250);
+        await waitForRoll(380);
       }else if(!reducedMotion){
         state.rollingPreviewSquad=sequence[0]||null;render();
-        await waitForRoll(450);
+        await waitForRoll(700);
       }else render();
       if(!isCurrent())return;
       state.draft=resultDraft;drawn=true;persist();
