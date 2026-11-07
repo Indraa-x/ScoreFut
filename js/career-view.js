@@ -10,7 +10,7 @@ import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
   CAREER_CRESTS, CAREER_TEAM, FACILITIES, MAX_CAREER_ROSTER, MAX_FACILITY_LEVEL, careerClub,
-  careerFixtures, careerPicks, careerScorers, careerSlotOptions, careerTable, facilityPrice, nextCareerMatch,
+  careerDestinations, careerFixtures, careerPicks, careerScorers, careerTable, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -50,13 +50,12 @@ function clubBadge(career, id, ui) {
   return id === CAREER_TEAM ? careerCrest(career.crest) : ui.badge(club);
 }
 
-function pitch(career, ui, details = false) {
+function pitch(career, ui) {
   const picks = careerPicks(career);
   return `<div class="career-pitch" role="img" aria-label="Escalação ${FORMATIONS[career.formation].name}: ${esc(picks.map(({slot, player}) => `${slot.label} ${player.nome}`).join(', '))}">
     ${ui.pitchLines()}
     ${picks.map(({slot, player}) => `<div class="career-pitch-player" style="left:${slot.x}%;top:${slot.y}%">
       <span class="career-pitch-marker${slot.position === 'GOL' ? ' is-keeper' : ''}" title="${esc(player.nome)} · ${player.ovr} OVR">${slot.label}</span>
-      ${details ? `<small>${esc(player.nome.split(' ').at(-1))}</small>` : ''}
     </div>`).join('')}
   </div>`;
 }
@@ -151,33 +150,70 @@ function overview(career, ui, rows, live) {
     `<li>Temporada ${season.number} · ${season.position === 1 ? 'Campeão' : `${season.position}º lugar`} · ${season.points} pts · ${money(season.prize)} em premiação</li>`).join('')}</ul></details>` : ''}`;
 }
 
-function squad(career, ui) {
+function playerToken(player, crest, className) {
+  return `<span class="${className}" role="img" aria-label="${player.ovr} OVR">${crest}<strong>${player.ovr}</strong></span>`;
+}
+
+function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
   const picks = careerPicks(career);
-  const starters = new Set(picks.map(pick => pick.player.id));
-  return `<div class="career-columns">
-    <section class="career-card panel">
-      <div class="career-card-heading"><h2>Escalação titular</h2><span class="career-pill">${Math.round(calculateTeam(picks).overall)} OVR</span></div>
-      ${pitch(career, ui, true)}
-      <label for="career-formation">Formação</label>
-      <select id="career-formation">${Object.entries(FORMATIONS).map(([id, formation]) =>
-        `<option value="${id}"${id === career.formation ? ' selected' : ''}>${formation.name}</option>`).join('')}</select>
+  const starters = new Map(picks.map(({slot, player}) => [player.id, slot.label]));
+  const reserves = career.roster.filter(player => !starters.has(player.id)).sort((a, b) => b.ovr - a.ovr);
+  const showingReserves = group === 'reserves';
+  const players = showingReserves ? reserves : picks.map(({player}) => player);
+  const selected = career.roster.find(player => player.id === selectedId);
+  const targets = new Set(careerDestinations(career, selectedId).map(slot => slot.id));
+  const crest = careerCrest(career.crest);
+  return `<div class="career-squad-layout">
+    <section class="career-card panel career-roster" aria-labelledby="career-roster-title">
+      <div class="career-card-heading">
+        <h2 id="career-roster-title">Jogadores</h2><span class="career-pill">${career.roster.length} / ${MAX_CAREER_ROSTER}</span>
+      </div>
+      <div class="career-roster-switch" role="group" aria-label="Grupo de jogadores">
+        <button type="button" data-action="career-squad-group" data-value="reserves" aria-pressed="${showingReserves}">Reservas <span>${reserves.length}</span></button>
+        <button type="button" data-action="career-squad-group" data-value="starters" aria-pressed="${!showingReserves}">Titulares <span>${picks.length}</span></button>
+      </div>
+      <ul class="career-roster-list" aria-label="${showingReserves ? 'Reservas' : 'Titulares'}">
+        ${players.map(player => `<li class="career-roster-row">
+          <button type="button" class="career-roster-player" data-action="career-select-player" data-value="${esc(player.id)}" aria-pressed="${selectedId === player.id}">
+            <span class="career-roster-position">${esc(starters.get(player.id) ?? player.tags[0])}</span>
+            <span class="career-roster-name"><strong>${esc(player.nome)}</strong><small>${esc(player.tags.join(' / '))}</small></span>
+            <span class="career-roster-rating">${player.ovr}<small>OVR</small></span>
+          </button>
+          ${showingReserves ? `<button type="button" class="career-roster-release" data-action="career-release" data-value="${esc(player.id)}" aria-label="Liberar ${esc(player.nome)}" title="Liberar ${esc(player.nome)}">${ui.icon('close')}</button>` : ''}
+        </li>`).join('') || '<li class="career-roster-empty">Sem jogadores na reserva.</li>'}
+      </ul>
     </section>
-    <section class="career-card panel">
-      ${title('Titulares', 'Escolha jogadores compatíveis com cada posição.')}
-      <div class="career-starters">${picks.map(({slot, player}) => `<div>
-        <label for="career-slot-${slot.id}">${slot.label}</label>
-        <select id="career-slot-${slot.id}" data-career-slot="${slot.id}">${careerSlotOptions(career, slot).map(p =>
-          `<option value="${esc(p.id)}"${p.id === player.id ? ' selected' : ''}>${esc(p.nome)} · ${p.ovr} OVR</option>`).join('')}</select>
-      </div>`).join('')}</div>
+    <section class="career-card panel career-squad-field" aria-labelledby="career-squad-title">
+      <div class="career-card-heading">
+        <div><span class="eyebrow accent">11 titulares</span><h2 id="career-squad-title">Escalação titular</h2></div>
+        <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
+      </div>
+      <div class="career-squad-guide">
+        <p id="career-squad-hint" aria-live="polite">${selected ? `<strong>${esc(selected.nome)}</strong> · Escolha uma posição destacada.` : 'Selecione um jogador na lista ou no campo para trocar a escalação.'}</p>
+        ${selected ? button('Cancelar', 'career-cancel-pick') : ''}
+      </div>
+      <div class="career-pitch career-edit-pitch" role="group" aria-label="Posições no campo" aria-describedby="career-squad-hint">
+        ${ui.pitchLines()}
+        ${picks.map(({slot, player}) => {
+          const origin = player.id === selectedId;
+          const target = targets.has(slot.id);
+          const label = target ? `Colocar ${selected.nome} como ${slot.label} no lugar de ${player.nome}` : `${slot.label} · ${player.nome} · ${player.ovr} OVR`;
+          return `<button type="button" class="career-squad-slot${target ? ' is-target' : ''}${origin ? ' is-origin' : ''}"
+            style="left:${slot.x}%;top:${slot.y}%" data-action="career-pick-slot" data-value="${slot.id}"
+            aria-label="${esc(label)}" title="${esc(label)}" aria-pressed="${origin}"${selected && !origin && !target ? ' disabled' : ''}>
+            ${playerToken(player, crest, 'career-squad-token')}
+            <span class="career-squad-role">${slot.label}</span>
+            <span class="career-squad-name">${esc(player.nome)}</span>
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="career-squad-formation">
+        <label for="career-formation">Formação</label>
+        <select id="career-formation">${Object.entries(FORMATIONS).map(([id, formation]) =>
+          `<option value="${id}"${id === career.formation ? ' selected' : ''}>${formation.name}</option>`).join('')}</select>
+      </div>
     </section>
-  </div>
-  <section class="career-card panel">
-    ${title('Reservas', `${career.roster.length} de ${MAX_CAREER_ROSTER} vagas no elenco.`)}
-    <div class="career-list">${career.roster.filter(p => !starters.has(p.id)).map(p => `<div class="career-list-row">
-      <div><strong>${esc(p.nome)}</strong><small>${esc(p.tags.join(' / '))} · ${p.ovr} OVR</small></div>
-      ${button('Liberar', 'career-release', p.id)}
-    </div>`).join('') || '<p>Sem jogadores na reserva.</p>'}</div>
-  </section>`;
+  </div>`;
 }
 
 export function renderCareerMarketResults(career, ui, filters) {
@@ -190,10 +226,7 @@ export function renderCareerMarketResults(career, ui, filters) {
       const affordable = career.budget >= price;
       return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}">
         <div class="career-market-player-head">
-          <span class="career-market-token" role="img" aria-label="${player.ovr} OVR">
-            ${ui.badge(squad).replace('<img ', '<img loading="lazy" ')}
-            <strong>${player.ovr}</strong>
-          </span>
+          ${playerToken(player, ui.badge(squad).replace('<img ', '<img loading="lazy" '), 'career-market-token')}
           <div>
             <h3>${esc(player.nome)}</h3>
             <p>${esc(squad.nome)} <span aria-hidden="true">·</span> ${esc(squad.ano)}</p>
@@ -288,10 +321,10 @@ function club(career) {
   </section>`;
 }
 
-export function renderCareer(career, tab, ui, live = null, marketState) {
+export function renderCareer(career, tab, ui, live = null, marketState, squadState) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
-  const pages = {overview, squad, facilities, club};
+  const pages = {overview, facilities, club};
   return `<div class="career-page">
     <header class="career-title"><span class="eyebrow accent">Modo carreira</span><h1>Carreira de Treinador</h1></header>
     <nav class="career-tabs" aria-label="Seções da carreira">
@@ -303,6 +336,6 @@ export function renderCareer(career, tab, ui, live = null, marketState) {
       <div><small>Posição</small><strong>${career.round ? `${position}º lugar` : '—'}</strong></div>
       <div><small>Orçamento</small><strong>${money(career.budget)}</strong></div>
     </div>
-    ${tab === 'market' ? market(career, ui, marketState) : (pages[tab] || overview)(career, ui, rows, live)}
+    ${tab === 'market' ? market(career, ui, marketState) : tab === 'squad' ? squad(career, ui, squadState) : (pages[tab] || overview)(career, ui, rows, live)}
   </div>`;
 }

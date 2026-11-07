@@ -1,5 +1,9 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.12',date:'07/11/2026',title:'Escalação interativa na Carreira',changes:[
+  {icon:'field',title:'Escale direto no campinho',detail:'Selecione um jogador na lista ou no campo e clique em uma posição destacada. A troca é salva automaticamente.'},
+  {icon:'players',title:'Titulares e reservas em uma lista',detail:'Alterne entre os grupos para ver nomes, posições e OVRs. No campo, os marcadores mostram o escudo do seu clube e a nota de cada titular.'},
+ ]},
  {version:'0.11',date:'07/11/2026',title:'Mercado histórico na Carreira',changes:[
   {icon:'players',title:'Reforços de todas as épocas',detail:'O mercado reúne todas as versões de jogadores dos clubes e seleções do ScoreFut. Cada cartão traz o escudo, a temporada e o OVR daquela versão.'},
   {icon:'field',title:'Encontre a versão certa',detail:'Busque por nome, clube, seleção ou ano. Filtre por posição, década e orçamento, e ordene por OVR, preço, época ou nome.'},

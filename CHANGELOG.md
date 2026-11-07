@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.12 — 07/11/2026
+
+O Elenco da Carreira usa a seleção por clique no campinho. Escolha um titular ou reserva e toque em uma posição destacada para trocar a escalação. Os marcadores mostram o escudo do clube e o OVR de cada titular.
+
 ## Beta 0.11 — 07/11/2026
 
 O Mercado da Carreira reúne as versões históricas dos jogadores de clubes e seleções. Os cartões mostram o escudo de origem, o OVR, a temporada, as posições e o preço. Use a busca, os filtros e a ordenação para encontrar um reforço e contratar a versão desejada com o orçamento do clube.

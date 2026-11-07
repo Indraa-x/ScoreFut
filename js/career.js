@@ -4,6 +4,7 @@ import {FORMATIONS, calculateTeam, mulberry32, positionFit, simulateMatch, squad
 import {goalsAt} from './match-goals.js';
 import {formatMatchEventMinute} from './match-motion.js';
 import {careerMarketCatalog} from './career-market.js';
+import {movableSlots} from './draft.js';
 
 export const CAREER_KEY = 'coach-career';
 export const CAREER_TEAM = 'career-user';
@@ -115,19 +116,16 @@ export function changeCareerFormation(career, formation) {
   return {...career, formation, lineup: bestLineup(career.roster, formation)};
 }
 
-export function careerSlotOptions(career, slot) {
+export function careerDestinations(career, playerId) {
+  const candidate = career.roster.find(player => player.id === playerId);
+  if (!candidate) return [];
   const picks = careerPicks(career);
-  const current = picks.find(pick => pick.slot.id === slot.id)?.player;
-  return career.roster.filter(candidate => {
-    if (positionFit(candidate, slot) === null) return false;
-    const origin = picks.find(pick => pick.player?.id === candidate.id);
-    return !origin || origin.slot.id === slot.id || (current && positionFit(current, origin.slot) !== null);
-  }).sort((a, b) => b.ovr - a.ovr);
+  if (picks.some(pick => pick.player.id === playerId)) return movableSlots({picks}, career.formation, playerId);
+  return picks.map(({slot}) => slot).filter(slot => positionFit(candidate, slot) !== null);
 }
 
 export function changeCareerStarter(career, slotId, playerId) {
-  const slot = FORMATIONS[career.formation].slots.find(slot => slot.id === slotId);
-  if (!slot || !careerSlotOptions(career, slot).some(p => p.id === playerId)) throw Error('Escolha um jogador compatível com a vaga.');
+  if (!careerDestinations(career, playerId).some(slot => slot.id === slotId)) throw Error('Escolha uma posição compatível destacada no campo.');
   const lineup = {...career.lineup};
   const origin = Object.keys(lineup).find(id => lineup[id] === playerId);
   if (origin) lineup[origin] = lineup[slotId];
