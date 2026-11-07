@@ -192,7 +192,7 @@ function renderLeagueTable(s){
   const t=s.tournament,rows=t.groups[0].standings;
   return `<div class="screen-title league-page-title"><div>${competitionMark('brasileirao')}<div><span class="eyebrow accent">PONTOS CORRIDOS</span><h1>Brasileirão</h1><p>Classificação em turno e returno.</p></div></div>${btn(icon('back')+' Voltar ao jogo','back-match')}</div><p class="bracket-note">Classificação atualizada ao fim de cada rodada. As próximas partidas ainda não têm resultado.</p><section class="panel league-table-panel" tabindex="0" aria-label="Classificação do Brasileirão"><table class="standings league-standings"><thead><tr><th>#</th><th>Time</th><th>PTS</th><th>J</th><th>V</th><th>E</th><th>D</th><th>SG</th></tr></thead><tbody>${rows.map((row,index)=>`<tr class="${row.teamId===t.userTeamId?'user':''}"><td>${index+1}</td><td><span class="standings-team">${badge(displayTeam(t,row.teamId))}<span>${esc(row.name)}</span></span></td><td><b>${row.points}</b></td><td>${row.played}</td><td>${row.wins}</td><td>${row.draws}</td><td>${row.losses}</td><td>${row.goalDifference}</td></tr>`).join('')}</tbody></table></section><p class="mode-note">Vitória: 3 pontos · Empate: 1 ponto. Desempate por vitórias, saldo de gols e gols marcados.</p>`;
 }
-export function renderMatch(s, options){return renderMatchView(s,{esc,icon,badge,pitchLines,btn,...options});}
+export function renderMatch(s){return renderMatchView(s,{esc,icon,badge,pitchLines,btn});}
 export function renderBracket(s){
   const t=s.tournament;
   if(t.mode==='friends')return renderFriendBracket(s);
