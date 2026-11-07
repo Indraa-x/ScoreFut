@@ -108,7 +108,6 @@ function overview(career, ui, rows, live) {
         <small>Último resultado · Rodada ${career.round}</small>
         <strong>${esc(careerClub(career, last.home).nome)} ${last.homeGoals} × ${last.awayGoals} ${esc(careerClub(career, last.away).nome)}</strong>
         ${last.scorers.length ? `<span>${last.scorers.map(scorer => esc(scorer.name) + (scorer.goals > 1 ? ` (${scorer.goals})` : '')).join(' · ')}</span>` : ''}
-        <span>Receita da partida: ${money(last.income)}</span>
       </div>` : ''}
     </section>
     ${liveMatch ? `<section class="career-card panel career-live-field" aria-label="Simulação da partida">
