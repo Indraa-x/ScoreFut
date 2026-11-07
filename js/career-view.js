@@ -1,4 +1,6 @@
 import {escapeHtml as esc} from './html.js';
+import {assetUrl} from './asset-url.js';
+import {competitionLogo} from '../data/competitions.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
 import {careerMarketCatalog, careerMarketPage} from './career-market.js';
 import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchSpeed} from './match-view.js';
@@ -35,7 +37,13 @@ const button = (label, action, value = '', primary = false, disabled = false) =>
   `<button type="button" class="btn ${primary ? 'btn-primary' : 'btn-outline'}" data-action="${action}" data-value="${esc(value)}"${disabled ? ' disabled' : ''}>${label}</button>`;
 const title = (label, description) => `<h2>${label}</h2><p class="muted">${description}</p>`;
 const roundLabel = (round, total) =>
-  `<span class="career-competition-name">Campeonato Brasileiro</span> · Rodada ${round}${total ? ` de ${total}` : ''}`;
+  `<span class="career-competition-round">
+    <span class="career-competition-brand">
+      <img src="${assetUrl(competitionLogo('brasileirao'))}" width="32" height="32" alt="" decoding="async">
+      <span class="career-competition-name">Campeonato Brasileiro</span>
+    </span>
+    <span>· Rodada ${round}${total ? ` de ${total}` : ''}</span>
+  </span>`;
 
 function clubBadge(career, id, ui) {
   const club = careerClub(career, id);

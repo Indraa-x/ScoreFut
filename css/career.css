@@ -47,6 +47,13 @@
   font-size: 12px;
 }
 .career-match { text-align: center; }
+.career-competition-round, .career-competition-brand {
+  display: inline-flex;
+  align-items: center;
+}
+.career-competition-round { flex-wrap: wrap; justify-content: center; gap: 3px 5px; }
+.career-competition-brand { gap: 8px; }
+.career-competition-brand img { display: block; flex: none; object-fit: contain; }
 .career-competition-name {
   display: inline-block;
   color: var(--green);
