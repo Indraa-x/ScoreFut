@@ -114,7 +114,8 @@ function overview(career, ui, rows, live) {
     ${liveMatch ? `<section class="career-card panel career-live-field" aria-label="Simulação da partida">
       <h2>Campinho</h2>
       ${renderLivePitch(live, {esc, icon: ui.icon, pitchLines: ui.pitchLines})}
-      ${renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed')}
+      ${renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
+        button('Simular até o fim', 'career-match-finish', '', true, matchHasEnded(live, liveMatch)))}
     </section>` : `<section class="career-card panel">
       <div class="career-card-heading"><h2>Escalação</h2><span class="career-pill">${FORMATIONS[career.formation].name}</span></div>
       ${pitch(career, ui)}
