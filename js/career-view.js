@@ -33,6 +33,8 @@ const money = amount => amount < 1000
 const button = (label, action, value = '', primary = false, disabled = false) =>
   `<button type="button" class="btn ${primary ? 'btn-primary' : 'btn-outline'}" data-action="${action}" data-value="${esc(value)}"${disabled ? ' disabled' : ''}>${label}</button>`;
 const title = (label, description) => `<h2>${label}</h2><p class="muted">${description}</p>`;
+const roundLabel = (round, total) =>
+  `<span class="career-competition-name">Campeonato Brasileiro</span> · Rodada ${round}${total ? ` de ${total}` : ''}`;
 
 function clubBadge(career, id, ui) {
   const club = careerClub(career, id);
@@ -68,7 +70,7 @@ function matchScoreboard(career, ui, live, match) {
   const homeName = careerClub(career, homeId).nome;
   const awayName = careerClub(career, awayId).nome;
   const side = (id, name, venue) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong><small>${venue}</small></div>`;
-  return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', match.stageLabel)}
+  return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', roundLabel(match.round))}
     <div class="career-matchup career-live-scoreboard match-scoreboard-style">
       ${side(homeId, homeName, 'Mandante')}
       <div class="score-center">
@@ -109,7 +111,7 @@ function overview(career, ui, rows, live) {
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const total = careerFixtures(career).length;
   const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
-    ? `${title('Próxima partida', `Campeonato Brasileiro · Rodada ${career.round + 1} de ${total}`)}
+    ? `${title('Próxima partida', roundLabel(career.round + 1, total))}
       <div class="career-matchup">${fixture.map((id, index) => `${index ? '<span aria-hidden="true">×</span>' : ''}
         <div>${clubBadge(career, id, ui)}<strong>${esc(careerClub(career, id).nome)}</strong><small>${index ? 'Visitante' : 'Mandante'}</small></div>`).join('')}</div>
       ${button(career.replay?.round === career.round ? 'Continuar partida' : 'Simular partida', 'career-play', `${career.season}:${career.round}`, true)}`

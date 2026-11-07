@@ -47,6 +47,22 @@
   font-size: 12px;
 }
 .career-match { text-align: center; }
+.career-competition-name {
+  display: inline-block;
+  color: var(--green);
+  font-weight: 750;
+}
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .career-competition-name {
+    background-image: linear-gradient(100deg, #486500, #222a52);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  html[data-theme="dark"] .career-competition-name {
+    background-image: linear-gradient(100deg, #caff38, #9eb7ff);
+  }
+}
 .career-matchup {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
