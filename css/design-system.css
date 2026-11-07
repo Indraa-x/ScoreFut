@@ -25,6 +25,7 @@ body:has(#app[data-screen="home"])::before {
   inset: 0;
   z-index: -1;
   background: url("../assets/home/stadium-background.jpg") center / cover no-repeat;
+  filter: brightness(.78);
   opacity: .80;
   pointer-events: none;
 }
