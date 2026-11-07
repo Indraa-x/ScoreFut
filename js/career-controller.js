@@ -1,5 +1,5 @@
 import {
-  CAREER_KEY, advanceCareerSeason, changeCareerFormation, changeCareerStarter, createCareer,
+  CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, createCareer,
   commitCareerRound, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {loadWorldCupSquads, worldCupSquads} from '../data/game-squads.js';
@@ -16,6 +16,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   let initial;
   let marketStatus = 'idle';
   let filters = {...marketDefaults};
+  const squad = {group: 'reserves', selectedId: null};
   const read = () => storage.read(CAREER_KEY) ?? (initial ??= createCareer(crypto.getRandomValues(new Uint32Array(1))[0]));
   const live = {screen: null, mode: 'career', userMatchIndex: 0, tournament: null, matchMinute: 0, matchSpeed: 4};
   const playback = initMatchPlayback({
@@ -99,6 +100,46 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   }
   function setTab(value) {
     tab = Object.hasOwn(CAREER_TABS, value) ? value : 'overview';
+    squad.selectedId = null;
+  }
+  function refreshSquad(update = render) {
+    const scroll = app.querySelector('.career-roster-list')?.scrollTop ?? 0;
+    update();
+    const list = app.querySelector('.career-roster-list');
+    if (list) list.scrollTop = scroll;
+  }
+  function cancelPick() {
+    squad.selectedId = null;
+    refreshSquad();
+  }
+  function selectSquadPlayer(id, fromRoster) {
+    if (squad.selectedId === id) {
+      cancelPick();
+      return;
+    }
+    if (!careerDestinations(read(), id).length) {
+      toast('Este jogador não tem outra posição compatível nesta formação.');
+      return;
+    }
+    squad.selectedId = id;
+    refreshSquad();
+    if (fromRoster) {
+      const field = app.querySelector('.career-edit-pitch');
+      if (matchMedia('(max-width: 760px)').matches) field?.scrollIntoView({block: 'nearest'});
+      field?.querySelector('.career-squad-slot.is-target')?.focus({preventScroll: true});
+    }
+  }
+  function pickSlot(slotId) {
+    const career = read();
+    const occupant = career.lineup[slotId];
+    if (!occupant) return;
+    const id = squad.selectedId;
+    if (!id || id === occupant) {
+      selectSquadPlayer(occupant);
+      return;
+    }
+    squad.selectedId = null;
+    refreshSquad(() => change(current => changeCareerStarter(current, slotId, id), 'Escalação atualizada.'));
   }
   function loadMarket() {
     if (worldCupSquads.length) marketStatus = 'ready';
@@ -127,14 +168,22 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     const career = read();
     if (career === initial) storage.write(CAREER_KEY, career);
     if (tab === 'market') loadMarket();
-    return renderCareer(career, tab, ui, live.tournament ? live : null, {status: marketStatus, filters});
+    return renderCareer(career, tab, ui, live.tournament ? live : null, {status: marketStatus, filters}, squad);
   }
   app.addEventListener('change', event => {
     if (app.dataset.screen !== 'career') return;
     const field = event.target;
     if (field.form?.id === 'career-market-filters' && field.name !== 'search') updateMarketFilters(field.form);
-    if (field.id === 'career-formation') change(career => changeCareerFormation(career, field.value));
-    if (field.dataset.careerSlot) change(career => changeCareerStarter(career, field.dataset.careerSlot, field.value));
+    if (field.id === 'career-formation') {
+      squad.selectedId = null;
+      refreshSquad(() => change(career => changeCareerFormation(career, field.value)));
+    }
+  });
+  app.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && app.dataset.screen === 'career' && tab === 'squad' && squad.selectedId) {
+      event.preventDefault();
+      cancelPick();
+    }
   });
   app.addEventListener('input', event => {
     if (event.target.id === 'career-market-search') updateMarketFilters(event.target.form);
@@ -161,6 +210,15 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     actions: {
       career: () => { setTab('overview'); navigate('career'); },
       'career-tab': value => { setTab(value); navigate('career'); },
+      'career-squad-group': value => {
+        if (!['reserves', 'starters'].includes(value) || squad.group === value) return;
+        squad.group = value;
+        squad.selectedId = null;
+        render();
+      },
+      'career-select-player': id => selectSquadPlayer(id, true),
+      'career-cancel-pick': cancelPick,
+      'career-pick-slot': pickSlot,
       'career-play': startMatch,
       'career-match-speed': value => {
         const speed = Number(value);
@@ -200,7 +258,10 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
         (card || app.querySelector('#career-market-count'))?.focus({preventScroll: true});
       },
       'career-upgrade': value => change(career => upgradeCareerFacility(career, value), 'Instalação melhorada.'),
-      'career-release': value => change(career => releaseCareerPlayer(career, value), 'Jogador liberado.'),
+      'career-release': value => {
+        if (squad.selectedId === value) squad.selectedId = null;
+        refreshSquad(() => change(career => releaseCareerPlayer(career, value), 'Jogador liberado.'));
+      },
     },
   };
 }
