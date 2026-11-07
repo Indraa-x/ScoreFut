@@ -32,7 +32,7 @@ test('career plays in the overview lineup panel with score between the crests an
   assert.match(before, /career-pitch-marker/);
   assert.doesNotMatch(before, /data-live-pitch/);
   const kickoff = renderCareer({...career, replay}, 'overview', ui, state);
-  assert.match(kickoff, /aria-current="page">Visão geral/);
+  assert.match(kickoff, /data-value="overview" aria-current="page">.*<span>Visão geral<\/span><\/button>/);
   assert.match(kickoff, /Mandante<\/small><\/div>\s*<div class="score-center">\s*<div class="score-numbers"[\s\S]*?class="match-clock-row"[\s\S]*?Visitante/);
   assert.match(kickoff, /class="score-clock">00:00<\/span>/);
   assert.match(kickoff, /career-live-field[\s\S]*?data-live-pitch[\s\S]*?aria-label="Velocidade da partida"/);
