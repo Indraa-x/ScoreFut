@@ -14,7 +14,11 @@ import {
 } from './career.js';
 
 export const CAREER_TABS = {
-  overview: 'Visão geral', squad: 'Elenco', market: 'Mercado', facilities: 'Instalações', club: 'Meu clube',
+  overview: {label: 'Visão geral', icon: 'chart'},
+  squad: {label: 'Elenco', icon: 'users'},
+  market: {label: 'Mercado', icon: 'subs'},
+  facilities: {label: 'Instalações', icon: 'bolt'},
+  club: {label: 'Meu clube', icon: 'shield'},
 };
 const badgeDesigns = [
   ['#11634b', '#9af1c9', '<circle cx="24" cy="22" r="9"/><path d="m24 18 4 3-1 4h-6l-1-4zM24 18v-5m4 8 4-2m-5 6 2 4m-8-4-2 4m1-8-4-2"/>'],
@@ -328,7 +332,7 @@ export function renderCareer(career, tab, ui, live = null, marketState, squadSta
   return `<div class="career-page">
     <header class="career-title"><span class="eyebrow accent">Modo carreira</span><h1>Carreira de Treinador</h1></header>
     <nav class="career-tabs" aria-label="Seções da carreira">
-      ${Object.entries(CAREER_TABS).map(([id, name]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === tab ? ' aria-current="page"' : ''}>${name}</button>`).join('')}
+      ${Object.entries(CAREER_TABS).map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === tab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
     </nav>
     <div class="career-summary panel">
       <div class="career-identity">${careerCrest(career.crest)}<strong>${esc(career.name)}</strong></div>
