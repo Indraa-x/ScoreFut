@@ -145,21 +145,9 @@
 .career-live-field .live-controls { padding: 10px 0 0; background: transparent; justify-content: center; flex-wrap: wrap; gap: 8px; }
 .career-live-field [data-action="career-match-finish"] { min-height: 44px; white-space: nowrap; }
 #app .career-live-field .match-speed button { min-width: clamp(72px, 9vw, 112px); }
-.career-live-scoreboard > .score-numbers {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  font-size: clamp(24px, 3.8vw, 44px);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.career-live-scoreboard .score-numbers i { font-size: .6em; font-style: normal; color: var(--muted); }
-.career-match-clock { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
-.career-match-clock .score-clock { font-size: 16px; }
-.career-match-clock small { color: var(--muted); }
-.career-match-clock small:empty { display: none; }
+.career-live-scoreboard > div { min-width: 0; }
+.career-live-scoreboard .score-center { gap: 2px; white-space: nowrap; }
+.career-live-scoreboard :is(.career-crest, .club-badge) { width: clamp(44px, 8vw, 74px); height: clamp(44px, 8vw, 74px); }
 .career-live-goals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; text-align: left; }
 .career-live-goals .match-scorers.away { text-align: right; }
 @media (max-width: 760px) {

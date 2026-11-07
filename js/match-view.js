@@ -33,6 +33,19 @@ export function renderMatchSpeed(speed, icon, action = 'match-speed', extraContr
   return `<div class="live-controls"><div class="match-speed" role="group" aria-label="Velocidade da partida"><div>${MATCH_SPEEDS.map(value => `<button class="${value===8?'match-speed-fast':'match-speed-normal'}" data-action="${action}" data-value="${value}" aria-label="${speedLabels[value]}" aria-pressed="${speed === value}">${value===8&&speed===8?icon('bolt'):''}${speedLabels[value]}</button>`).join('')}</div></div>${extraControl}</div>`;
 }
 
+export function renderMatchScore([home, away]) {
+  return `<div class="score-numbers" aria-label="Placar" aria-live="polite" aria-atomic="true"><span>${home}</span><i>–</i><span>${away}</span></div>`;
+}
+
+export function renderMatchClock(result, minute, hidePhase = false) {
+  const added = matchAddedMinutes(result, minute);
+  return `<div class="match-clock-row">
+    <span class="match-clock-time"><span class="score-clock">${formatMatchClock(minute, result)}</span>
+      <span class="match-added-time" data-match-added-time aria-label="${added} minutos de acréscimo"${added ? '' : ' hidden'}>+${added}</span>
+    </span><small data-match-phase>${hidePhase ? '' : matchPhase(result, minute)}</small>
+  </div>`;
+}
+
 export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const t = s.tournament, match = currentMatch(s);
   if (!match) return '';
@@ -59,8 +72,6 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const nextContent=friendMode?fixtures[0]||`<div class="calendar-empty">${icon('trophy')}<strong>Último jogo</strong><p>Avance para ver o campeão do torneio.</p></div>`:fixtures[0]||(preview.kind==='pending'?`<div class="fixture-pending">${icon('bracket')}<div><strong>${esc(preview.stageLabel)}</strong><span>${esc(pendingText)}</span></div></div>`:`<div class="calendar-empty">${icon('trophy')}<strong>${preview.kind==='complete'?'Campanha encerrada':'Último jogo'}</strong><p>${preview.kind==='complete'?'Confira o resultado da sua campanha.':'Tudo se decide em campo.'}</p></div>`);
   const nextGamePanel = `<section class="fixtures-panel panel ${t.mode === 'brasileirao' ? 'league-campaign' : ['champions','world-cup'].includes(t.mode) ? 'champions-next-game' : ''}" aria-label="Próximo jogo"><div class="calendar-heading"><div>${icon('calendar')}<h2>Próximo jogo</h2></div></div><div class="fixture-list">${nextContent}</div>${friendMode?btn(icon('bracket')+' Ver chave','bracket',false):''}</section>`;
   const championsPanel=['champions','world-cup'].includes(t.mode)?(match.stage!=='group'||championsGroup(t)?.complete?nextGamePanel:renderChampionsSidebar(t,{esc,icon,badge})):'';
-  const phase = matchPhase(result,s.matchMinute);
-  const addedMinutes = matchAddedMinutes(result,s.matchMinute);
   const morePlayed = s.userMatchIndex < t.userMatches.length - 1;
   const nextFixture = morePlayed ? t.userMatches[s.userMatchIndex+1] : upcoming[0];
   const nextLabel = friendMode?(morePlayed&&t.userMatches[s.userMatchIndex+1]?.tieId===match.tieId&&match.leg===1?'Jogar a volta':morePlayed?'Próxima partida':'Ver chave final') : morePlayed ? 'Rever próximo jogo' : twoLegged && match.leg===1 && match.stage!=='final' ? 'Jogar a volta' : match.stage==='final' ? 'Ver resultado' : s.pendingRound || canContinueTournament(t)
@@ -77,7 +88,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const outcome=ended ? winnerId===t.userTeamId?'victory':winnerId?'defeat':'draw' : 'playing';
   const statusLabel=deciding?'Em jogo':ended ? tie&&match.stage!=='final' ? outcome==='victory'?'Classificado':'Eliminado' : outcome==='victory'?'Vitória':outcome==='defeat'?'Derrota':'Empate' : 'Em jogo';
   return `<div class="screen-title match-page-title"><div>${logo ? `<img class="competition-logo${trophy?' competition-trophy':''}" src="${logo}" width="256" height="256" alt="">` : icon('trophy')}<div><h1>${s.mode==='world-cup'?`<button class="match-competition-link" data-action="champions-view" data-value="groups" aria-label="Ver competição da Copa do Mundo">${esc(competitionName(s.mode))}${icon('arrow')}</button>`:esc(competitionName(s.mode))}</h1><span>${esc(match.stageLabel)}</span></div></div>${btn(nextLabel+' '+icon('arrow'),'next-match',true,`class="match-next" ${ended?'':'disabled title="Disponível quando a partida terminar"'}`)}</div>
-<div class="match-layout"><section class="match-card panel" aria-label="Placar e campo"><div class="live-scoreboard">${teamInfo(home, 'home', homeKit)}<div class="score-center"><span class="match-status ${outcome}"><i></i>${statusLabel}</span><div class="score-numbers" aria-label="Placar" aria-live="polite" aria-atomic="true"><span>${scores[0]}</span><i>–</i><span>${scores[1]}</span></div><div class="match-clock-row"><span class="match-clock-time"><span class="score-clock">${formatMatchClock(s.matchMinute,result)}</span><span class="match-added-time" data-match-added-time aria-label="${addedMinutes} minutos de acréscimo"${addedMinutes ? "" : " hidden"}>+${addedMinutes}</span></span><small data-match-phase>${deciding||ended?'':phase}</small></div><div class="match-score-details">${aggregateScore}${penaltyScore}</div></div>${teamInfo(away, 'away', awayKit)}<div class="match-score-goals" data-match-goals data-home-name="${esc(displayName(home))}" data-away-name="${esc(displayName(away))}" aria-live="polite" aria-atomic="true" aria-label="Autores dos gols">${renderMatchGoals(result,s.matchMinute,{home:displayName(home),away:displayName(away)})}</div></div>
+<div class="match-layout"><section class="match-card panel match-scoreboard-style" aria-label="Placar e campo"><div class="live-scoreboard">${teamInfo(home, 'home', homeKit)}<div class="score-center"><span class="match-status ${outcome}"><i></i>${statusLabel}</span>${renderMatchScore(scores)}${renderMatchClock(result, s.matchMinute, deciding || ended)}<div class="match-score-details">${aggregateScore}${penaltyScore}</div></div>${teamInfo(away, 'away', awayKit)}<div class="match-score-goals" data-match-goals data-home-name="${esc(displayName(home))}" data-away-name="${esc(displayName(away))}" aria-live="polite" aria-atomic="true" aria-label="Autores dos gols">${renderMatchGoals(result,s.matchMinute,{home:displayName(home),away:displayName(away)})}</div></div>
 ${renderLivePitch(s, {esc, icon, pitchLines})}
 ${renderMatchSpeed(speed, icon)}</section>
 <aside class="match-calendar">${championsPanel}${['champions','world-cup'].includes(t.mode)?'':nextGamePanel}
