@@ -12,26 +12,41 @@ const rgb = color => {
   return [0, 2, 4].map(index => parseInt(hex.slice(index, index + 2), 16) || 0);
 };
 
-export function renderMatchView(s, { esc, icon, badge, pitchLines, btn, career = false }) {
-  const t = s.tournament, match = currentMatch(s);
-  if (!match) return '';
-  const result=match.result,ended=matchHasEnded(s,match),deciding=penaltyProgress(s,match).playing,friendMode=t.mode==='friends';
-  const twoLegged = !!match.tieId;
-  const home = t.teams.find(team => team.id === match.homeId), away = t.teams.find(team => team.id === match.awayId);
-  const scores = scoreAt(result, s.matchMinute), anchors = lineupAnchors(home, away);
-  const homeKit=home.id===t.userTeamId?'#13754b':'#3169b8';
-  const awayKit=away.id===t.userTeamId?'#13754b':'#3169b8';
-  const teamInfo = (team, side, kit) => {
-    return `<div class="match-team ${side}">${badge(team)}<div><span class="match-team-side"><i style="background:${esc(kit)}"></i>${side==='home'?'Casa':'Fora'}</span><h2>${esc(displayName(team))}</h2><small><b>OVR ${Math.round(team.strength.overall)}</b>${team.id===t.userTeamId||!team.ano?'':' · '+esc(team.ano)}</small></div></div>`;
-  };
+export function renderLivePitch(s, {esc, icon, pitchLines}) {
+  const t = s.tournament, match = currentMatch(s), result = match.result;
+  const home = t.teams.find(team => team.id === match.homeId);
+  const away = t.teams.find(team => team.id === match.awayId);
+  const anchors = lineupAnchors(home, away);
+  const homeKit = home.id === t.userTeamId ? '#13754b' : '#3169b8';
+  const awayKit = away.id === t.userTeamId ? '#13754b' : '#3169b8';
   const player = (entry, index, team, side) => {
     const anchor = anchors[(side === 'home' ? 0 : home.lineup.length) + index];
     const kit = entry.slot.position === 'GOL' ? team.id===t.userTeamId ? '#f0c757' : '#e99573' : side === 'home' ? homeKit : awayKit;
     const [r,g,b]=rgb(kit), numberColor=r*.299+g*.587+b*.114>160?'#17232b':'#fff';
     return `<span class="match-player ${side}${playerSentOff(result,side,entry.player.id,s.matchMinute)?' sent-off':''}" data-match-player style="left:${anchor.x}%;top:${anchor.y}%;--kit:${esc(kit)};--number-color:${numberColor}" title="Nº ${esc(entry.player.camisa || index + 1)} · ${esc(displayName(team))}"><b>${esc(entry.player.camisa || index + 1)}</b></span>`;
   };
+  return `<div class="live-field-wrap"><div class="live-pitch-area"><div class="live-pitch" data-live-pitch aria-label="Simulação das duas escalações em campo">${pitchLines(false)}${(home.lineup || []).map((entry, index) => player(entry, index, home, 'home')).join('')}${(away.lineup || []).map((entry, index) => player(entry, index, away, 'away')).join('')}<span class="match-ball" data-match-ball>${icon('ball')}</span><div class="set-piece-notice" data-set-piece-notice role="status" aria-live="polite" hidden><strong data-set-piece-title></strong><span data-set-piece-team></span></div><div class="goal-notice" data-goal-notice>${icon('ball')}<strong>Gol!</strong><span data-goal-name></span></div></div></div></div>`;
+}
+
+export function renderMatchSpeed(speed, icon, action = 'match-speed') {
+  const speedLabels = {4: 'Normal', 8: 'Rápido'};
+  return `<div class="live-controls"><div class="match-speed" role="group" aria-label="Velocidade da partida"><div>${MATCH_SPEEDS.map(value => `<button class="${value===8?'match-speed-fast':'match-speed-normal'}" data-action="${action}" data-value="${value}" aria-label="${speedLabels[value]}" aria-pressed="${speed === value}">${value===8&&speed===8?icon('bolt'):''}${speedLabels[value]}</button>`).join('')}</div></div></div>`;
+}
+
+export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
+  const t = s.tournament, match = currentMatch(s);
+  if (!match) return '';
+  const result=match.result,ended=matchHasEnded(s,match),deciding=penaltyProgress(s,match).playing,friendMode=t.mode==='friends';
+  const twoLegged = !!match.tieId;
+  const home = t.teams.find(team => team.id === match.homeId), away = t.teams.find(team => team.id === match.awayId);
+  const scores = scoreAt(result, s.matchMinute);
+  const homeKit=home.id===t.userTeamId?'#13754b':'#3169b8';
+  const awayKit=away.id===t.userTeamId?'#13754b':'#3169b8';
+  const teamInfo = (team, side, kit) => {
+    return `<div class="match-team ${side}">${badge(team)}<div><span class="match-team-side"><i style="background:${esc(kit)}"></i>${side==='home'?'Casa':'Fora'}</span><h2>${esc(displayName(team))}</h2><small><b>OVR ${Math.round(team.strength.overall)}</b>${team.id===t.userTeamId||!team.ano?'':' · '+esc(team.ano)}</small></div></div>`;
+  };
   const nextFriendMatch=friendMode?t.userMatches[s.userMatchIndex+1]:null;
-  const preview=career?{kind:'complete'}:friendMode?{kind:nextFriendMatch?'fixture':'complete',fixture:nextFriendMatch}:nextFixturePreview(s), upcoming=preview.fixture?[preview.fixture]:[];
+  const preview=friendMode?{kind:nextFriendMatch?'fixture':'complete',fixture:nextFriendMatch}:nextFixturePreview(s), upcoming=preview.fixture?[preview.fixture]:[];
   const visibleMatches=friendMode?t.userMatches.slice(0,s.userMatchIndex):t.userMatches;
   const recent = friendMode?[]:visibleMatches.map((fixture, index) => ({fixture, index})).filter(({fixture}) => fixture.id !== match.id).slice(-3).reverse();
   const fixtures = upcoming.slice(0, 1).map(fixture => {
@@ -61,11 +76,10 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn, career =
   const winnerId=tie?.winnerId || result.winnerId || (result.penalties ? result.penalties[0]>result.penalties[1] ? home.id : away.id : result.homeGoals>result.awayGoals ? home.id : result.awayGoals>result.homeGoals ? away.id : null);
   const outcome=ended ? winnerId===t.userTeamId?'victory':winnerId?'defeat':'draw' : 'playing';
   const statusLabel=deciding?'Em jogo':ended ? tie&&match.stage!=='final' ? outcome==='victory'?'Classificado':'Eliminado' : outcome==='victory'?'Vitória':outcome==='defeat'?'Derrota':'Empate' : 'Em jogo';
-  const speedLabels={4:'Normal',8:'Rápido'};
-  return `<div class="screen-title match-page-title"><div>${logo ? `<img class="competition-logo${trophy?' competition-trophy':''}" src="${logo}" width="256" height="256" alt="">` : icon('trophy')}<div><h1>${s.mode==='world-cup'?`<button class="match-competition-link" data-action="champions-view" data-value="groups" aria-label="Ver competição da Copa do Mundo">${esc(competitionName(s.mode))}${icon('arrow')}</button>`:career?'Carreira de Treinador':esc(competitionName(s.mode))}</h1><span>${esc(match.stageLabel)}</span></div></div>${btn((career?'Voltar à carreira':nextLabel)+' '+icon('arrow'),career?'career-match-return':'next-match',true,`class="match-next" ${ended?'':'disabled title="Disponível quando a partida terminar"'}`)}</div>
+  return `<div class="screen-title match-page-title"><div>${logo ? `<img class="competition-logo${trophy?' competition-trophy':''}" src="${logo}" width="256" height="256" alt="">` : icon('trophy')}<div><h1>${s.mode==='world-cup'?`<button class="match-competition-link" data-action="champions-view" data-value="groups" aria-label="Ver competição da Copa do Mundo">${esc(competitionName(s.mode))}${icon('arrow')}</button>`:esc(competitionName(s.mode))}</h1><span>${esc(match.stageLabel)}</span></div></div>${btn(nextLabel+' '+icon('arrow'),'next-match',true,`class="match-next" ${ended?'':'disabled title="Disponível quando a partida terminar"'}`)}</div>
 <div class="match-layout"><section class="match-card panel" aria-label="Placar e campo"><div class="live-scoreboard">${teamInfo(home, 'home', homeKit)}<div class="score-center"><span class="match-status ${outcome}"><i></i>${statusLabel}</span><div class="score-numbers" aria-label="Placar" aria-live="polite" aria-atomic="true"><span>${scores[0]}</span><i>–</i><span>${scores[1]}</span></div><div class="match-clock-row"><span class="match-clock-time"><span class="score-clock">${formatMatchClock(s.matchMinute,result)}</span><span class="match-added-time" data-match-added-time aria-label="${addedMinutes} minutos de acréscimo"${addedMinutes ? "" : " hidden"}>+${addedMinutes}</span></span><small data-match-phase>${deciding||ended?'':phase}</small></div><div class="match-score-details">${aggregateScore}${penaltyScore}</div></div>${teamInfo(away, 'away', awayKit)}<div class="match-score-goals" data-match-goals data-home-name="${esc(displayName(home))}" data-away-name="${esc(displayName(away))}" aria-live="polite" aria-atomic="true" aria-label="Autores dos gols">${renderMatchGoals(result,s.matchMinute,{home:displayName(home),away:displayName(away)})}</div></div>
-<div class="live-field-wrap"><div class="live-pitch-area"><div class="live-pitch" data-live-pitch aria-label="Simulação das duas escalações em campo">${pitchLines(false)}${(home.lineup || []).map((entry, index) => player(entry, index, home, 'home')).join('')}${(away.lineup || []).map((entry, index) => player(entry, index, away, 'away')).join('')}<span class="match-ball" data-match-ball>${icon('ball')}</span><div class="set-piece-notice" data-set-piece-notice role="status" aria-live="polite" hidden><strong data-set-piece-title></strong><span data-set-piece-team></span></div><div class="goal-notice" data-goal-notice>${icon('ball')}<strong>Gol!</strong><span data-goal-name></span></div></div></div></div>
-<div class="live-controls"><div class="match-speed" role="group" aria-label="Velocidade da partida"><div>${MATCH_SPEEDS.map(value => `<button class="${value===8?'match-speed-fast':'match-speed-normal'}" data-action="${career?'career-match-speed':'match-speed'}" data-value="${value}" aria-label="${speedLabels[value]}" aria-pressed="${speed === value}">${value===8&&speed===8?icon('bolt'):''}${speedLabels[value]}</button>`).join('')}</div></div></div></section>
-${career?'':`<aside class="match-calendar">${championsPanel}${['champions','world-cup'].includes(t.mode)?'':nextGamePanel}
-${recent.length ? `<details class="recent-panel panel"><summary>Jogos anteriores</summary><div class="recent-list">${recent.map(({fixture, index}) => {const opponent = t.teams.find(team => team.id === (fixture.homeId === t.userTeamId ? fixture.awayId : fixture.homeId));const own = fixture.homeId === t.userTeamId ? fixture.result.homeGoals : fixture.result.awayGoals, other = fixture.homeId === t.userTeamId ? fixture.result.awayGoals : fixture.result.homeGoals;return `<button class="recent-game" data-action="match-index" data-value="${index}" ${s.pendingRound ? 'disabled' : ''}>${badge(opponent)}<span><strong>${esc(displayName(opponent))}</strong><small>${esc(fixture.stageLabel)}</small></span><b>${own}–${other}</b></button>`;}).join('')}</div></details>` : ''}</aside>`}</div>`;
+${renderLivePitch(s, {esc, icon, pitchLines})}
+${renderMatchSpeed(speed, icon)}</section>
+<aside class="match-calendar">${championsPanel}${['champions','world-cup'].includes(t.mode)?'':nextGamePanel}
+${recent.length ? `<details class="recent-panel panel"><summary>Jogos anteriores</summary><div class="recent-list">${recent.map(({fixture, index}) => {const opponent = t.teams.find(team => team.id === (fixture.homeId === t.userTeamId ? fixture.awayId : fixture.homeId));const own = fixture.homeId === t.userTeamId ? fixture.result.homeGoals : fixture.result.awayGoals, other = fixture.homeId === t.userTeamId ? fixture.result.awayGoals : fixture.result.homeGoals;return `<button class="recent-game" data-action="match-index" data-value="${index}" ${s.pendingRound ? 'disabled' : ''}>${badge(opponent)}<span><strong>${esc(displayName(opponent))}</strong><small>${esc(fixture.stageLabel)}</small></span><b>${own}–${other}</b></button>`;}).join('')}</div></details>` : ''}</aside></div>`;
 }

@@ -2,7 +2,7 @@ import {
   CAREER_KEY, advanceCareerSeason, changeCareerFormation, changeCareerStarter, createCareer,
   commitCareerRound, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
-import {CAREER_TABS, careerCrest, renderCareer} from './career-view.js';
+import {CAREER_TABS, renderCareer} from './career-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
 import {currentMatch} from './match-session.js';
@@ -45,13 +45,19 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
       return false;
     }
   }
-  function leaveMatch() {
+  function pauseMatch() {
     if (live.screen !== 'match') return;
     playback.stop();
     live.matchPlaying = false;
     saveReplay();
   }
+  function leaveMatch() {
+    pauseMatch();
+    live.screen = null;
+    live.tournament = null;
+  }
   function attachMatch(active) {
+    active = active && tab === 'overview' && Boolean(live.tournament);
     live.screen = active ? 'match' : null;
     playback.attach();
     if (active && live.matchPlaying) playback.start();
@@ -65,7 +71,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
         save(career);
       }
       loadMatch(career);
-      navigate('career-match');
+      render();
     } catch (error) {
       toast(error.message);
     }
@@ -88,7 +94,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   function open() {
     const career = read();
     if (career === initial) storage.write(CAREER_KEY, career);
-    return renderCareer(career, tab, ui);
+    return renderCareer(career, tab, ui, live.tournament ? live : null);
   }
   app.addEventListener('change', event => {
     if (app.dataset.screen !== 'career') return;
@@ -104,12 +110,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   });
 
   return {
-    setTab, open, loadMatch, leaveMatch, attachMatch, get tab() { return tab; },
-    matchView: () => ui.renderMatch(live, {
-      career: true, badge: team => team.id === live.tournament.userTeamId
-        ? `<span class="club-badge career-match-crest">${careerCrest(team.crest)}</span>`
-        : ui.badge(team),
-    }),
+    setTab, open, loadMatch, pauseMatch, leaveMatch, attachMatch, get tab() { return tab; },
     actions: {
       career: () => { setTab('overview'); navigate('career'); },
       'career-tab': value => { setTab(value); navigate('career'); },
@@ -124,8 +125,8 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
       'career-match-return': () => {
         const match = currentMatch(live);
         if (live.screen !== 'match' || !match || !matchHasEnded(live, match) || !saveReplay(true)) return;
-        setTab('overview');
-        navigate('career');
+        leaveMatch();
+        render();
       },
       'career-next-season': value => change(career => career.season === Number(value) ? advanceCareerSeason(career) : career, 'Nova temporada iniciada.'),
       'career-sign': value => change(career => signCareerPlayer(career, value), 'Jogador contratado. Confira a reserva em Elenco.'),

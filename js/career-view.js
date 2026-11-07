@@ -1,5 +1,10 @@
 import {escapeHtml as esc} from './html.js';
 import {FORMATIONS, calculateTeam} from './engine.js';
+import {renderLivePitch, renderMatchSpeed} from './match-view.js';
+import {formatMatchClock, matchAddedMinutes, matchPhase, scoreAt} from './match-motion.js';
+import {renderMatchGoals} from './match-goals.js';
+import {currentMatch} from './match-session.js';
+import {matchHasEnded} from './match-penalties.js';
 import {
   CAREER_CRESTS, CAREER_TEAM, FACILITIES, MAX_CAREER_ROSTER, MAX_FACILITY_LEVEL, careerClub,
   careerFixtures, careerOffers, careerPicks, careerSlotOptions, careerTable, facilityPrice, nextCareerMatch,
@@ -18,7 +23,7 @@ const badgeDesigns = [
   ['#3d3210', '#ffda63', '<path fill="currentColor" d="m26 11-12 14h9l-2 10 13-15h-9Z"/>'],
   ['#333a48', '#eef1f6', '<path d="M16 13v7l3 3-2 9h14l-2-9 3-3v-7h-4v4h-2v-4h-4v4h-2v-4Zm8 12v3"/>'],
 ];
-export function careerCrest(id) {
+function careerCrest(id) {
   const [fill, color, art] = badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(id))];
   return `<svg class="career-crest" viewBox="0 0 48 48" aria-hidden="true" focusable="false" style="color:${color}"><path d="M24 3 42 9v11c0 11-7 19-18 24C13 39 6 31 6 20V9Z" fill="${fill}" stroke="currentColor" stroke-width="2"/><g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${art}</g></svg>`;
 }
@@ -56,12 +61,40 @@ function renderTable(career, ui, rows) {
   </details>`;
 }
 
-function overview(career, ui, rows) {
+function matchScoreboard(career, ui, live, match) {
+  const {result, homeId, awayId} = match;
+  const [homeGoals, awayGoals] = scoreAt(result, live.matchMinute);
+  const added = matchAddedMinutes(result, live.matchMinute);
+  const ended = matchHasEnded(live, match);
+  const homeName = careerClub(career, homeId).nome;
+  const awayName = careerClub(career, awayId).nome;
+  const side = (id, name, venue) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong><small>${venue}</small></div>`;
+  return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', match.stageLabel)}
+    <div class="career-matchup career-live-scoreboard">
+      ${side(homeId, homeName, 'Mandante')}
+      <div class="score-numbers" aria-label="Placar" aria-live="polite" aria-atomic="true">
+        <span>${homeGoals}</span><i>–</i><span>${awayGoals}</span>
+      </div>
+      ${side(awayId, awayName, 'Visitante')}
+    </div>
+    <div class="career-match-clock">
+      <span class="match-clock-time"><span class="score-clock">${formatMatchClock(live.matchMinute, result)}</span>
+        <span class="match-added-time" data-match-added-time aria-label="${added} minutos de acréscimo"${added ? '' : ' hidden'}>+${added}</span>
+      </span>
+      <small data-match-phase>${ended ? '' : matchPhase(result, live.matchMinute)}</small>
+    </div>
+    <div class="match-score-goals career-live-goals" data-match-goals data-home-name="${esc(homeName)}" data-away-name="${esc(awayName)}"
+      aria-label="Autores dos gols" aria-live="polite">${renderMatchGoals(result, live.matchMinute, {home: homeName, away: awayName})}</div>
+    ${ended ? button('Avançar', 'career-match-return', '', true) : ''}`;
+}
+
+function overview(career, ui, rows, live) {
+  const liveMatch = live ? currentMatch(live) : null;
   const fixture = nextCareerMatch(career);
   const last = career.results.at(-1)?.find(result => result.home === CAREER_TEAM || result.away === CAREER_TEAM);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const total = careerFixtures(career).length;
-  const match = fixture
+  const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
     ? `${title('Próxima partida', `Campeonato Brasileiro · Rodada ${career.round + 1} de ${total}`)}
       <div class="career-matchup">${fixture.map((id, index) => `${index ? '<span aria-hidden="true">×</span>' : ''}
         <div>${clubBadge(career, id, ui)}<strong>${esc(careerClub(career, id).nome)}</strong><small>${index ? 'Visitante' : 'Mandante'}</small></div>`).join('')}</div>
@@ -71,18 +104,22 @@ function overview(career, ui, rows) {
       ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
   return `<div class="career-columns">
     <section class="career-card panel career-match">${match}
-      ${last ? `<div class="career-last">
+      ${last && (!liveMatch || liveMatch.round !== career.round) ? `<div class="career-last">
         <small>Último resultado · Rodada ${career.round}</small>
         <strong>${esc(careerClub(career, last.home).nome)} ${last.homeGoals} × ${last.awayGoals} ${esc(careerClub(career, last.away).nome)}</strong>
         ${last.scorers.length ? `<span>${last.scorers.map(scorer => esc(scorer.name) + (scorer.goals > 1 ? ` (${scorer.goals})` : '')).join(' · ')}</span>` : ''}
         <span>Receita da partida: ${money(last.income)}</span>
       </div>` : ''}
     </section>
-    <section class="career-card panel">
+    ${liveMatch ? `<section class="career-card panel career-live-field" aria-label="Simulação da partida">
+      <h2>Campinho</h2>
+      ${renderLivePitch(live, {esc, icon: ui.icon, pitchLines: ui.pitchLines})}
+      ${renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed')}
+    </section>` : `<section class="career-card panel">
       <div class="career-card-heading"><h2>Escalação</h2><span class="career-pill">${FORMATIONS[career.formation].name}</span></div>
       ${pitch(career, ui)}
       ${button('Editar escalação', 'career-tab', 'squad')}
-    </section>
+    </section>`}
   </div>
   ${renderTable(career, ui, rows)}
   ${career.seasons.length ? `<details class="career-card panel"><summary>Temporadas anteriores</summary><ul class="career-history">${[...career.seasons].reverse().map(season =>
@@ -162,7 +199,7 @@ function club(career) {
   </section>`;
 }
 
-export function renderCareer(career, tab, ui) {
+export function renderCareer(career, tab, ui, live = null) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const pages = {overview, squad, market, facilities, club};
@@ -177,6 +214,6 @@ export function renderCareer(career, tab, ui) {
       <div><small>Posição</small><strong>${career.round ? `${position}º lugar` : '—'}</strong></div>
       <div><small>Orçamento</small><strong>${money(career.budget)}</strong></div>
     </div>
-    ${(pages[tab] || overview)(career, ui, rows)}
+    ${(pages[tab] || overview)(career, ui, rows, live)}
   </div>`;
 }
