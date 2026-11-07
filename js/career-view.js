@@ -1,5 +1,6 @@
 import {escapeHtml as esc} from './html.js';
-import {FORMATIONS, calculateTeam} from './engine.js';
+import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
+import {careerMarketCatalog, careerMarketPage} from './career-market.js';
 import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchSpeed} from './match-view.js';
 import {scoreAt} from './match-motion.js';
 import {renderMatchGoals} from './match-goals.js';
@@ -7,7 +8,7 @@ import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
   CAREER_CRESTS, CAREER_TEAM, FACILITIES, MAX_CAREER_ROSTER, MAX_FACILITY_LEVEL, careerClub,
-  careerFixtures, careerOffers, careerPicks, careerScorers, careerSlotOptions, careerTable, facilityPrice, nextCareerMatch,
+  careerFixtures, careerPicks, careerScorers, careerSlotOptions, careerTable, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -171,15 +172,79 @@ function squad(career, ui) {
   </section>`;
 }
 
-function market(career) {
-  const offers = careerOffers(career);
-  return `<section class="career-card panel">
-    ${title('Mercado de jogadores', 'As ofertas mudam a cada cinco rodadas. Jogadores contratados entram na reserva.')}
-    <div class="career-list">${offers.map(({player, price}) => `<div class="career-list-row">
-      <div><strong>${esc(player.nome)}</strong><small>${esc(player.tags.join(' / '))} · ${player.ovr} OVR</small></div>
-      <span class="career-price">${money(price)}</span>
-      ${button('Contratar', 'career-sign', player.id, false, career.budget < price || career.roster.length >= MAX_CAREER_ROSTER)}
-    </div>`).join('') || '<p>Sem ofertas nesta janela. Jogue as próximas rodadas para abrir novas oportunidades.</p>'}</div>
+export function renderCareerMarketResults(career, ui, filters) {
+  const {entries, total, owned, page, pages} = careerMarketPage(career, filters);
+  const full = career.roster.length >= MAX_CAREER_ROSTER;
+  return `<p class="career-market-count" id="career-market-count" tabindex="-1">${total.toLocaleString('pt-BR')} ${total === 1 ? 'versão encontrada' : 'versões encontradas'}</p>
+    ${full ? '<p class="career-market-note">Elenco cheio. Libere um reserva para contratar.</p>' : ''}
+    ${entries.length ? `<div class="career-market-grid">${entries.map(({id, player, squad, price}) => {
+      const signed = owned.has(player.id);
+      const affordable = career.budget >= price;
+      return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}">
+        <div class="career-market-player-head">
+          <span class="career-market-token" role="img" aria-label="${player.ovr} OVR">
+            ${ui.badge(squad).replace('<img ', '<img loading="lazy" ')}
+            <strong>${player.ovr}</strong>
+          </span>
+          <div>
+            <h3>${esc(player.nome)}</h3>
+            <p>${esc(squad.nome)} <span aria-hidden="true">·</span> ${esc(squad.ano)}</p>
+          </div>
+        </div>
+        <div class="career-market-positions" aria-label="Posições">${player.tags.map(tag => `<span>${esc(tag)}</span>`).join('')}</div>
+        <div class="career-market-deal">
+          <div><small>Transferência</small><strong>${money(price)}</strong></div>
+          ${button(signed ? 'No elenco' : full ? 'Sem vaga' : affordable ? 'Contratar' : 'Sem saldo', 'career-sign', id, affordable && !full && !signed, full || signed || !affordable)}
+        </div>
+      </article>`;
+    }).join('')}</div>` : `<div class="career-market-empty">${ui.icon('search')}<strong>Nenhum jogador encontrado</strong><p>Experimente outro nome ou limpe os filtros.</p></div>`}
+    ${pages > 1 ? `<nav class="career-market-pagination" aria-label="Páginas do mercado">
+      ${button('Anterior', 'career-market-page', page - 1, false, page === 1)}
+      <span>Página <strong>${page}</strong> de ${pages}</span>
+      ${button('Próxima', 'career-market-page', page + 1, false, page === pages)}
+    </nav>` : ''}`;
+}
+
+function market(career, ui, {status, filters}) {
+  const ready = status === 'ready';
+  const catalog = ready ? careerMarketCatalog() : null;
+  const option = (value, text, selected) =>
+    `<option value="${value}"${String(value) === selected ? ' selected' : ''}>${text}</option>`;
+  return `<section class="career-card panel career-market" aria-labelledby="career-market-title">
+    <header class="career-market-head">
+      <div>
+        <span class="eyebrow accent">${ui.icon('subs')} Central de transferências</span>
+        <h2 id="career-market-title">Mercado de jogadores</h2>
+        <p>Monte seu elenco com jogadores de clubes e seleções de todas as épocas do ScoreFut.</p>
+      </div>
+      <dl class="career-market-stats">
+        ${ready ? `<div><dt>Versões no catálogo</dt><dd>${catalog.offers.length.toLocaleString('pt-BR')}</dd></div>` : ''}
+        <div><dt>Vagas no elenco</dt><dd>${MAX_CAREER_ROSTER - career.roster.length}</dd></div>
+      </dl>
+    </header>
+    ${ready ? `<form id="career-market-filters" role="search" aria-label="Filtrar jogadores">
+      <label class="career-market-search">Buscar jogador
+        <span>${ui.icon('search')}<input type="search" id="career-market-search" name="search" placeholder="Nome, clube, seleção ou ano" value="${esc(filters.search)}"></span>
+      </label>
+      <label for="career-market-position">Posição<select name="position" id="career-market-position">
+        ${option('', 'Todas', filters.position)}
+        ${Object.keys(ROLE_COMPATIBILITY).map(tag => option(tag, tag, filters.position)).join('')}
+      </select></label>
+      <label for="career-market-decade">Época<select name="decade" id="career-market-decade">
+        ${option('', 'Todas as épocas', filters.decade)}
+        ${catalog.decades.map(decade => option(decade, `Anos ${decade}`, filters.decade)).join('')}
+      </select></label>
+      <label for="career-market-order">Ordenar por<select name="order" id="career-market-order">
+        ${[['overall', 'Maior OVR'], ['price', 'Menor preço'], ['recent', 'Mais recentes'], ['name', 'Nome (A–Z)']].map(([value, text]) => option(value, text, filters.order)).join('')}
+      </select></label>
+      <div class="career-market-filter-foot">
+        <label class="career-market-affordable"><input type="checkbox" name="affordable"${filters.affordable ? ' checked' : ''}> Dentro do orçamento</label>
+        <button type="reset" id="career-market-reset" class="btn btn-outline">Limpar filtros</button>
+      </div>
+    </form>
+    <div data-career-market-results>${renderCareerMarketResults(career, ui, filters)}</div>` :
+    status === 'error' ? `<div class="career-market-empty"><strong>O catálogo não carregou.</strong>${button('Tentar novamente', 'career-market-retry')}</div>` :
+    '<p role="status" class="career-market-note">Carregando elencos históricos…</p>'}
   </section>`;
 }
 
@@ -215,10 +280,10 @@ function club(career) {
   </section>`;
 }
 
-export function renderCareer(career, tab, ui, live = null) {
+export function renderCareer(career, tab, ui, live = null, marketState) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
-  const pages = {overview, squad, market, facilities, club};
+  const pages = {overview, squad, facilities, club};
   return `<div class="career-page">
     <header class="career-title"><span class="eyebrow accent">Modo carreira</span><h1>Carreira de Treinador</h1></header>
     <nav class="career-tabs" aria-label="Seções da carreira">
@@ -230,6 +295,6 @@ export function renderCareer(career, tab, ui, live = null) {
       <div><small>Posição</small><strong>${career.round ? `${position}º lugar` : '—'}</strong></div>
       <div><small>Orçamento</small><strong>${money(career.budget)}</strong></div>
     </div>
-    ${(pages[tab] || overview)(career, ui, rows, live)}
+    ${tab === 'market' ? market(career, ui, marketState) : (pages[tab] || overview)(career, ui, rows, live)}
   </div>`;
 }

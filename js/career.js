@@ -3,6 +3,7 @@ import {squadsForMode} from '../data/competitions.js';
 import {FORMATIONS, calculateTeam, mulberry32, positionFit, simulateMatch, squadTeam} from './engine.js';
 import {goalsAt} from './match-goals.js';
 import {formatMatchEventMinute} from './match-motion.js';
+import {careerMarketCatalog} from './career-market.js';
 
 export const CAREER_KEY = 'coach-career';
 export const CAREER_TEAM = 'career-user';
@@ -31,12 +32,6 @@ for (const squad of brazilianSquads) {
 }
 const opponents = new Map(brazilianSquads.map(squad => [squad.id, squad]));
 const opponentTeams = new Map();
-const activeLeaguePlayers = new Set([...clubs.values()].flatMap(squad => squad.jogadores.map(p => p.id)));
-const marketPlayers = [...new Map(
-  brazilianSquads.flatMap(squad => squad.jogadores)
-    .filter(p => !activeLeaguePlayers.has(p.id) && p.ovr >= 75 && p.ovr <= 88)
-    .map(p => [p.id, p])
-).values()];
 
 function shuffled(items, rng) {
   const copy = [...items];
@@ -140,16 +135,10 @@ export function changeCareerStarter(career, slotId, playerId) {
   return {...career, lineup};
 }
 
-export function careerOffers(career) {
-  return shuffled(marketPlayers, mulberry32(career.seed + career.season * 997 + Math.floor(career.round / 5) * 103))
-    .slice(0, 8)
-    .filter(candidate => !career.roster.some(p => p.id === candidate.id))
-    .map(candidate => ({player: candidate, price: 450 + (candidate.ovr - 72) * 170}));
-}
-
 export function signCareerPlayer(career, id) {
-  const offer = careerOffers(career).find(({player}) => player.id === id);
-  if (!offer) throw Error('Essa oferta não está mais disponível.');
+  const offer = careerMarketCatalog().byId.get(id);
+  if (!offer) throw Error('Jogador não encontrado no mercado.');
+  if (career.roster.some(player => player.id === offer.player.id)) throw Error('Esse jogador já está no elenco.');
   if (career.roster.length >= MAX_CAREER_ROSTER) throw Error('O elenco está cheio. Libere um reserva no Elenco.');
   if (career.budget < offer.price) throw Error('Saldo insuficiente para a contratação.');
   return {...career, budget: career.budget - offer.price, roster: [...career.roster, offer.player]};

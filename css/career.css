@@ -144,6 +144,144 @@
 .career-list-row small { display: block; font-size: 12px; }
 .career-list-row .btn { min-height: 36px; padding: 6px 10px; }
 .career-price { font-size: 13px; font-weight: 750; }
+.career-market-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: clamp(16px, 3vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(115deg, var(--accent-soft), transparent 75%), var(--surface-alt);
+}
+.career-market-head .eyebrow { display: flex; align-items: center; gap: 7px; }
+.career-market-head .eyebrow svg, .career-market-search svg { width: 17px; height: 17px; flex: none; }
+.career-market-head h2 { margin-top: 8px; font-size: clamp(23px, 3.5vw, 36px); line-height: 1.12; }
+.career-market-head p { color: var(--muted); max-width: 48ch; }
+.career-market-stats {
+  display: flex;
+  gap: clamp(12px, 2.5vw, 24px);
+  margin: 0;
+}
+.career-market-stats > div { padding-left: 12px; border-left: 1px solid var(--border); }
+.career-market-stats dt { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.career-market-stats dd {
+  margin: 4px 0 0;
+  color: var(--green);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+#career-market-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+#career-market-filters label { min-width: 0; font-size: 13px; font-weight: 700; }
+#career-market-filters :is(input[type="search"], select) { min-height: 42px; margin-top: 5px; font-size: 14px; }
+.career-market-search > span { display: block; position: relative; }
+.career-market-search svg { position: absolute; inset: 50% auto auto 11px; transform: translateY(-37%); color: var(--muted); pointer-events: none; }
+#career-market-filters .career-market-search input { padding-left: 35px; }
+.career-market-filter-foot {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.career-market-affordable { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+.career-card .career-market-affordable input[type="checkbox"] {
+  width: 16px;
+  min-height: 16px;
+  padding: 0;
+  margin: 0;
+  accent-color: var(--green);
+}
+.career-market-filter-foot .btn { min-height: 34px; padding: 5px 10px; }
+.career-market .career-market-count { margin: 16px 0 10px; color: var(--muted); font-size: 13px; }
+.career-market .career-market-note { margin: 14px 0; color: var(--muted); }
+.career-market-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.career-market-player {
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-alt);
+}
+.career-market-player:hover, .career-market-player:focus-visible { border-color: var(--green); }
+.career-market-player-head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
+.career-market-player h3 { margin: 0; font-size: 16px; line-height: 1.2; overflow-wrap: anywhere; }
+.career-market-player-head p { margin-top: 3px; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.career-market-token {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  width: 58px;
+  height: 58px;
+  padding-top: 5px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #f0f5ed;
+  color: #123628;
+  box-shadow: 0 3px 9px #091e1836;
+}
+.career-market-token .club-badge { width: 32px; height: 32px; font-size: 10px; }
+.career-market-token > strong {
+  position: absolute;
+  bottom: 1px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: #f0f5ed;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.career-market-positions { display: flex; flex-wrap: wrap; gap: 5px; }
+.career-market-positions span {
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+.career-market-deal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 7px; padding-top: 11px; border-top: 1px solid var(--border); }
+.career-market-deal small { display: block; color: var(--muted); font-size: 11px; }
+.career-market-deal strong { display: block; margin-top: 2px; font-size: 15px; }
+.career-market-deal .btn, .career-market-pagination .btn { min-height: 38px; padding: 6px 12px; }
+.career-market .btn:disabled { cursor: default; opacity: .65; }
+.career-market-empty {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 28px 12px;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+.career-market-empty svg { width: 25px; height: 25px; color: var(--green); }
+.career-market-empty p { margin: 0; color: var(--muted); }
+.career-market-pagination { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px 0 0; text-align: center; font-size: 13px; }
+@media (max-width: 880px) {
+  .career-market-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #career-market-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .career-market-head { align-items: flex-start; flex-direction: column; gap: 14px; }
+  .career-market-grid { grid-template-columns: minmax(0, 1fr); }
+  .career-market-search { grid-column: 1 / -1; }
+}
 .career-starters > div { display: grid; grid-template-columns: 36px minmax(0, 1fr); align-items: center; gap: 8px; }
 .career-card :is(input:not([type="radio"]), select) {
   width: 100%;

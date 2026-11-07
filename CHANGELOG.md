@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.11 — 07/11/2026
+
+O Mercado da Carreira reúne as versões históricas dos jogadores de clubes e seleções. Os cartões mostram o escudo de origem, o OVR, a temporada, as posições e o preço. Use a busca, os filtros e a ordenação para encontrar um reforço e contratar a versão desejada com o orçamento do clube.
+
 ## Beta 0.10 — 07/11/2026
 
 Modo Carreira de Treinador com campeonato de ida e volta, classificação, premiação e temporadas sucessivas. Monte os titulares, contrate reforços, melhore as instalações e personalize o Meu time com um nome e um dos oito escudos. A carreira fica salva no navegador.
