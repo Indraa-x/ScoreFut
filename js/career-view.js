@@ -1,7 +1,7 @@
 import {escapeHtml as esc} from './html.js';
 import {FORMATIONS, calculateTeam} from './engine.js';
-import {renderLivePitch, renderMatchSpeed} from './match-view.js';
-import {formatMatchClock, matchAddedMinutes, matchPhase, scoreAt} from './match-motion.js';
+import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchSpeed} from './match-view.js';
+import {scoreAt} from './match-motion.js';
 import {renderMatchGoals} from './match-goals.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
@@ -63,25 +63,19 @@ function renderTable(career, ui, rows) {
 
 function matchScoreboard(career, ui, live, match) {
   const {result, homeId, awayId} = match;
-  const [homeGoals, awayGoals] = scoreAt(result, live.matchMinute);
-  const added = matchAddedMinutes(result, live.matchMinute);
+  const score = scoreAt(result, live.matchMinute);
   const ended = matchHasEnded(live, match);
   const homeName = careerClub(career, homeId).nome;
   const awayName = careerClub(career, awayId).nome;
   const side = (id, name, venue) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong><small>${venue}</small></div>`;
   return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', match.stageLabel)}
-    <div class="career-matchup career-live-scoreboard">
+    <div class="career-matchup career-live-scoreboard match-scoreboard-style">
       ${side(homeId, homeName, 'Mandante')}
-      <div class="score-numbers" aria-label="Placar" aria-live="polite" aria-atomic="true">
-        <span>${homeGoals}</span><i>–</i><span>${awayGoals}</span>
+      <div class="score-center">
+        ${renderMatchScore(score)}
+        ${renderMatchClock(result, live.matchMinute, ended)}
       </div>
       ${side(awayId, awayName, 'Visitante')}
-    </div>
-    <div class="career-match-clock">
-      <span class="match-clock-time"><span class="score-clock">${formatMatchClock(live.matchMinute, result)}</span>
-        <span class="match-added-time" data-match-added-time aria-label="${added} minutos de acréscimo"${added ? '' : ' hidden'}>+${added}</span>
-      </span>
-      <small data-match-phase>${ended ? '' : matchPhase(result, live.matchMinute)}</small>
     </div>
     <div class="match-score-goals career-live-goals" data-match-goals data-home-name="${esc(homeName)}" data-away-name="${esc(awayName)}"
       aria-label="Autores dos gols" aria-live="polite">${renderMatchGoals(result, live.matchMinute, {home: homeName, away: awayName})}</div>
