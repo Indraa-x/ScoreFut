@@ -225,11 +225,17 @@
   background: transparent;
   transform: translate(-50%, -50%);
 }
+.career-squad-slot[data-value="gol"] { transform: translate(-50%, -60%); }
 .career-squad-slot:disabled { opacity: .43; }
 .career-squad-slot:is(.is-target, .is-origin, :focus-visible) { z-index: 1; }
-.career-squad-slot .career-squad-token { width: clamp(28px, 12cqw, 48px); height: clamp(28px, 12cqw, 48px); padding-top: 1px; }
+.career-squad-slot .career-squad-token {
+  width: clamp(32px, 13.5cqw, 56px);
+  height: auto;
+  aspect-ratio: 1;
+  padding-top: 1px;
+}
 .career-squad-token .career-crest { width: 75%; height: auto; }
-.career-squad-slot .career-squad-token > strong { font-size: clamp(10px, 3.5cqw, 15px); }
+.career-squad-slot .career-squad-token > strong { font-size: clamp(11px, 3.8cqw, 17px); }
 .career-squad-slot:is(:hover:not(:disabled), .is-origin) .career-squad-token { box-shadow: 0 0 0 3px #fff8; }
 .career-squad-slot.is-target .career-squad-token { border-color: #78efb4; box-shadow: 0 0 0 4px #52db97a6; }
 .career-squad-role {
