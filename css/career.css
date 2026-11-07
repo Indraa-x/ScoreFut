@@ -40,7 +40,7 @@
 @media (max-width: 620px) {
   .career-tabs {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(min-content, 1fr));
     width: 100%;
     gap: 3px;
   }
