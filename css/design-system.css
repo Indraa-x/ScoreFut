@@ -25,12 +25,12 @@ body:has(#app[data-screen="home"])::before {
   inset: 0;
   z-index: -1;
   background: url("../assets/home/stadium-background.jpg") center / cover no-repeat;
-  filter: brightness(.78);
-  opacity: .80;
+  filter: brightness(.50);
+  opacity: .60;
   pointer-events: none;
 }
 html[data-theme="light"] body:has(#app[data-screen="home"])::before {
-  opacity: .24;
+  opacity: .16;
 }
 .home-intro{justify-content:space-between;margin-bottom:26px}
 .home-intro .eyebrow{font-size:10px;color:var(--green)}
