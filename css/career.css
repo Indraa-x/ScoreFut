@@ -214,11 +214,7 @@
 .career-squad-field h2 { margin-top: 3px; }
 .career-squad-overall { color: var(--green); font-size: 26px; font-weight: 800; line-height: 1; white-space: nowrap; }
 .career-squad-overall small { color: var(--muted); font-size: 11px; }
-.career-squad-guide { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 47px; margin-top: 12px; padding: 5px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-alt); }
-.career-squad-guide p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
-.career-squad-guide strong { color: var(--green); }
-.career-squad-guide .btn { min-height: 32px; padding: 4px 8px; }
-.career-edit-pitch { width: min(100%, 396px); container-type: inline-size; }
+.career-edit-pitch { width: min(100%, 460px); container-type: inline-size; }
 .career-squad-slot {
   position: absolute;
   display: grid;
@@ -261,7 +257,9 @@
   line-height: 1.25;
   text-shadow: 0 1px 3px #071d12;
 }
-.career-squad-formation { display: grid; grid-template-columns: auto minmax(0, 130px); gap: 10px; align-items: center; justify-content: center; font-weight: 700; }
+.career-squad-formation { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; font-weight: 700; }
+.career-squad-formation #career-formation { width: 130px; }
+.career-squad-formation .btn { min-height: 38px; padding: 6px 10px; }
 .career-list, .career-customize form { display: grid; gap: 10px; margin-top: 16px; }
 .career-list-row {
   display: grid;
