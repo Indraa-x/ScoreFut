@@ -23,20 +23,24 @@ test('a prepared career match resumes from storage and credits the round only at
   assert.equal(commitCareerRound(final), final);
 });
 
-test('career plays in the overview lineup panel with score between the crests and speed below the field', () => {
-  const career = createCareer(32);
+test('career plays in the lineup panel with speed and finish controls grouped under the score', () => {
+  const initial = createCareer(32);
+  const previous = prepareCareerRound(initial);
+  const career = commitCareerRound({...initial, replay: {...previous, minute: previous.tournament.userMatches[0].result.duration}});
   const replay = prepareCareerRound(career);
   const state = {mode: 'career', tournament: replay.tournament, userMatchIndex: 0, matchMinute: 0, matchSpeed: 4};
   const {result} = replay.tournament.userMatches[0];
   const before = renderCareer(career, 'overview', ui);
   assert.match(before, /career-pitch-marker/);
+  assert.match(before, /Último resultado · Rodada 1/);
   assert.doesNotMatch(before, /data-live-pitch/);
   const kickoff = renderCareer({...career, replay}, 'overview', ui, state);
   assert.match(kickoff, /data-value="overview" aria-current="page">.*<span>Visão geral<\/span><\/button>/);
   assert.match(kickoff, /Mandante<\/small><\/div>\s*<div class="score-center">\s*<div class="score-numbers"[\s\S]*?class="match-clock-row"[\s\S]*?Visitante/);
   assert.match(kickoff, /class="score-clock">00:00<\/span>/);
-  assert.match(kickoff, /career-live-field[\s\S]*?data-live-pitch[\s\S]*?aria-label="Velocidade da partida"/);
-  assert.doesNotMatch(kickoff, /career-pitch-marker|data-action="career-match-return"/);
+  assert.match(kickoff, /class="career-card panel career-match"[\s\S]*?<div class="live-controls">[\s\S]*?aria-label="Velocidade da partida"[\s\S]*?data-action="career-match-finish"[^>]*>Simular até o fim<\/button><\/div>\s*<\/section>/);
+  assert.match(kickoff, /career-live-field[\s\S]*?data-live-pitch/);
+  assert.doesNotMatch(kickoff, /Último resultado|career-pitch-marker|data-action="career-match-return"/);
   assert.equal(kickoff.match(/data-match-player/g).length, 22);
   assert.match(kickoff, /data-action="career-match-speed" data-value="4"[^>]*aria-pressed="true"/);
   assert.match(kickoff, /data-action="career-match-speed" data-value="8"/);

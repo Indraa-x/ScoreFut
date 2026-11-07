@@ -435,9 +435,30 @@
 .career-live-field .live-pitch { width: 100%; aspect-ratio: 1.65; }
 .career-live-field .live-pitch .match-player { width: clamp(14px, 1.7vw, 23px); height: clamp(14px, 1.7vw, 23px); border-width: 1px; }
 .career-live-field .live-pitch .match-player b { font-size: clamp(8px, .8vw, 11px); }
-.career-live-field .live-controls { padding: 10px 0 0; background: transparent; justify-content: center; flex-wrap: wrap; gap: 8px; }
-.career-live-field [data-action="career-match-finish"] { min-height: 44px; white-space: nowrap; }
-#app .career-live-field .match-speed button { min-width: clamp(72px, 9vw, 112px); }
+.career-match > .live-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+  gap: 4px;
+  width: min(100%, 410px);
+  margin: 18px auto 0;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--soft);
+}
+#app .career-match .live-controls .match-speed > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+#app .career-match .match-speed button { min-width: 0; padding-inline: 4px; }
+.career-match > .live-controls .btn { min-height: 44px; padding-inline: 6px; border-radius: 8px; }
+@media (max-width: 360px) {
+  .career-match > .live-controls { grid-template-columns: 1fr; }
+}
 .career-live-scoreboard > div { min-width: 0; }
 .career-live-scoreboard .score-center { gap: 2px; white-space: nowrap; }
 .career-live-scoreboard :is(.career-crest, .club-badge) { width: clamp(44px, 8vw, 74px); height: clamp(44px, 8vw, 74px); }
