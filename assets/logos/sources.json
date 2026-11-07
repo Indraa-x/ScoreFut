@@ -102,8 +102,10 @@
     },
     {
       "clubId": "corinthians",
-      "file": "corinthians.png",
-      "source": "https://assets.football-logos.cc/logos/brazil/256x256/corinthians.f3b00d5d.png"
+      "file": "corinthians-atual.png",
+      "source": "Imagem fornecida por Indraa",
+      "dimensions": "395x500",
+      "sha256": "1632c6345773ec435a813369e051586e89977323d1ef2e71a4254f1fb0cd4fb8"
     },
     {
       "clubId": "flamengo",
