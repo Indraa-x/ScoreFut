@@ -164,15 +164,25 @@
   display: grid;
   grid-template-columns: minmax(260px, .78fr) minmax(0, 1.22fr);
   gap: 18px;
-  align-items: start;
 }
-.career-roster { padding: 0; overflow: hidden; }
+.career-roster { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
 .career-roster .career-card-heading { padding: 18px 16px 12px; }
 .career-roster-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0 14px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg); }
 .career-roster-switch button { min-height: 36px; border-radius: 6px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 750; }
 .career-roster-switch button[aria-pressed="true"] { background: var(--accent-soft); color: var(--green); }
 .career-roster-switch span { margin-left: 3px; font-variant-numeric: tabular-nums; }
-.career-roster-list { list-style: none; margin: 0; padding: 0; max-height: min(530px, 65vh); overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
+.career-roster-list {
+  flex: 1;
+  min-height: 0;
+  /* Let the pitch set the shared height when the panels are side by side. */
+  contain: size;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+}
 .career-roster-row { display: flex; align-items: stretch; border-top: 1px solid var(--border); }
 .career-roster-player {
   display: grid;
@@ -466,7 +476,7 @@
 .career-live-goals .match-scorers.away { text-align: right; }
 @media (max-width: 760px) {
   .career-columns, .career-squad-layout { grid-template-columns: minmax(0, 1fr); }
-  .career-roster-list { max-height: min(260px, 43vh); }
+  .career-roster-list { flex: auto; contain: none; max-height: min(260px, 43vh); }
   .career-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 0; }
   .career-summary .career-identity { grid-column: 1 / -1; }
   .career-summary > div:nth-child(2) { border-left: 0; }
