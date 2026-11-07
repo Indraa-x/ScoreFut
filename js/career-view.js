@@ -132,7 +132,8 @@ function overview(career, ui, rows, live) {
       ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
   return `<div class="career-columns">
     <section class="career-card panel career-match">${match}
-      ${last && (!liveMatch || liveMatch.round !== career.round) ? `<div class="career-last">
+      ${liveMatch ? renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
+        button('Simular até o fim', 'career-match-finish', '', true, matchHasEnded(live, liveMatch))) : last ? `<div class="career-last">
         <small>Último resultado · Rodada ${career.round}</small>
         <strong>${esc(careerClub(career, last.home).nome)} ${last.homeGoals} × ${last.awayGoals} ${esc(careerClub(career, last.away).nome)}</strong>
         ${lastMatchScorers(career, last)}
@@ -141,8 +142,6 @@ function overview(career, ui, rows, live) {
     ${liveMatch ? `<section class="career-card panel career-live-field" aria-label="Simulação da partida">
       <h2>Campinho</h2>
       ${renderLivePitch(live, {esc, icon: ui.icon, pitchLines: ui.pitchLines})}
-      ${renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
-        button('Simular até o fim', 'career-match-finish', '', true, matchHasEnded(live, liveMatch)))}
     </section>` : `<section class="career-card panel">
       <div class="career-card-heading"><h2>Escalação</h2><span class="career-pill">${FORMATIONS[career.formation].name}</span></div>
       ${pitch(career, ui)}
