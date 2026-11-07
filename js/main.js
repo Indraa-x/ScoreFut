@@ -26,8 +26,10 @@ import {beginPenaltyReplay,matchHasEnded} from './match-penalties.js';
 import {MATCH_SPEEDS,normalizeMatchSpeed} from './match-motion.js';
 import {initMatchPlayback} from './match-playback.js';
 import {initCelebration} from './celebration.js';
+import {initCareer} from './career-controller.js';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 const homeCounters=initHomeCounters();
+const career = initCareer({app, navigate, render, storage, toast, ui});
 const browserProgressReady=storage.initializeBrowserProgress();
 const competitionProgressReady=storage.archiveRetiredCompetition();
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0;
@@ -37,10 +39,11 @@ const gameScreens=new Set(['draft','summary','match','bracket']);
 const sessionId=draft=>draft?(draft.challenge?`challenge:${draft.challenge.code}:${draft.date}`:`${draft.mode}:${draft.date}:${draft.seed}`):null;
 const campaignId=()=>state.draft?.challenge?`challenge-${state.draft.challenge.code}-${state.draft.date}`:`11-${state.mode}-${state.draft.seed}-${state.draft.date}`;
 function rememberSession(){if(gameScreens.has(state.screen)&&state.draft&&state.draft.mode===state.mode&&!state.resultRecord){navigationSessions.set(sessionId(state.draft),{...state});}}
-function currentRoute(){return {screen:state.screen,mode:state.mode,quickStep:state.quickStep,...(gameScreens.has(state.screen)?{session:sessionId(state.draft)}:{}),...(['result','bracket'].includes(state.screen)&&state.resultRecord?{recordId:state.resultRecord.id}:{}),...(state.screen==='bracket'?{championsView:state.championsView,returnScreen:state.returnScreen}:{})};}
+function currentRoute(){return {screen:state.screen,mode:state.mode,quickStep:state.quickStep,...(state.screen==='career'?{careerTab:career.tab}:{}),...(gameScreens.has(state.screen)?{session:sessionId(state.draft)}:{}),...(['result','bracket'].includes(state.screen)&&state.resultRecord?{recordId:state.resultRecord.id}:{}),...(state.screen==='bracket'?{championsView:state.championsView,returnScreen:state.returnScreen}:{})};}
 function visitRoute(route){
   navigationVersion++;rememberSession();stopPlayback();if(modal.open)modal.close();
   const requested=route.screen;
+  if (requested === 'career') career.setTab(route.careerTab);
   if(requested==='bracket'&&route.recordId){const record=storage.read('history',[]).find(r=>r.id===route.recordId);if(record?.tournament&&record.mode!=='euro'){state.resultRecord=record;state.tournament=record.tournament;state.mode=record.mode;state.screen='bracket';state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'result';}else state.screen='achievements';}
   else if(gameScreens.has(requested)){
     const id=route.session||sessionId(state.draft)||sessionId(storage.read('active')?.draft);
@@ -78,7 +81,7 @@ function hydrateDraft(){if(!state.draft)return;const pool=draftPool();state.draf
 function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,friendChallenge:state.friendChallenge,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed,penaltyReplay:state.penaltyReplay||null};}
 function persist(){rememberSession();if(!state.draft)return;const saved=snapshot();storage.write('active',saved);}
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
-function navigate(screen){navigationVersion++;rememberSession();if(state.screen==='match'&&['home','achievements','bracket'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
+function navigate(screen){navigationVersion++;rememberSession();if(state.screen==='match'&&['home','achievements','bracket','career'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
 function browserAchievements(history){
   const saved=storage.read('achievements');
   const ledger=updateAchievementLedger(history,pendingAchievementLedger||saved);
@@ -90,8 +93,14 @@ function browserAchievements(history){
   return ledger;
 }
 function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
-  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;homeCounters.update(app,state.screen);document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.action===(state.screen==='achievements'?'achievements':'home')));
+  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'career':html=career.open();break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
+  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;homeCounters.update(app,state.screen);const activeNav = ['achievements', 'career'].includes(state.screen) ? state.screen : 'home';
+  document.querySelectorAll('.nav-link').forEach(button => {
+    const current = button.dataset.action === activeNav;
+    button.classList.toggle('active', current);
+    if (current) button.setAttribute('aria-current', 'page');
+    else button.removeAttribute('aria-current');
+  });
   if(state.screen==='bracket'&&matchMedia('(max-width: 980px)').matches)scrollKnockoutRound(app,app.querySelector('.champions-round-picker [aria-pressed="true"]')?.dataset.value);
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
   celebration.attach();
@@ -346,7 +355,7 @@ async function launchFromHome(button){
 }
 function resumeGame(){const saved=savedDraft();if(saved){const router=navigation;navigation=null;restore(saved);navigation=router;navigation?.push();window.scrollTo(0,0);}return;}
 const actionContext={state, MODES, FORMATIONS, MATCH_SPEEDS, modal, ui, storage, renderReleaseDetails, navigate, openSetup, openChallenge, launchFromHome, render, startDraft, resumeGame, roll, selectPlayer, slotAction, startTournament, chooseQuickTeam, nextMatch, persist, app, stopPlayback, downloadResult, toast};
-const actionHandlers={...navigationActions(actionContext), ...draftActions(actionContext), ...matchActions(actionContext), ...resultActions(actionContext)};
+const actionHandlers={...navigationActions(actionContext), ...draftActions(actionContext), ...matchActions(actionContext), ...resultActions(actionContext), ...career.actions};
 async function action(name,value,element){if(['mode','start','setup','play-home','resume'].includes(name)){const mode=name==='resume'?savedDraft()?.mode:name==='play-home'?'world-cup':value||state.mode;if(mode==='world-cup')await loadWorldCupSquads();}if(state.rolling&&['draw','reroll-club','reroll-season','player'].includes(name))return;return actionHandlers[name]?.(value,element);
 }
 document.addEventListener('click',event=>{const element=event.target.closest('[data-action]');if(element&&!element.disabled)action(element.dataset.action,element.dataset.value,element).catch(error=>{console.error(error);toast('Não foi possível completar a ação. '+error.message);});});
@@ -361,4 +370,3 @@ navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});
 navigation.start();
 const sharedChallengeUrl=new URL(window.location.href),sharedChallenge=sharedChallengeUrl.searchParams.get('desafio');
 if(sharedChallenge!==null){sharedChallengeUrl.searchParams.delete('desafio');history.replaceState(history.state,'',sharedChallengeUrl.href);void openChallenge('enter',sharedChallenge).catch(error=>toast(error.message));}
-

@@ -1,5 +1,11 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.10',date:'07/11/2026',title:'Carreira de Treinador',changes:[
+  {icon:'ball',title:'Seu clube no Campeonato Brasileiro',detail:'Simule partidas de ida e volta, acompanhe a classificação e avance por várias temporadas.'},
+  {icon:'field',title:'Escalação e mercado',detail:'Escolha a formação, monte seus titulares no campinho e contrate reforços dentro do orçamento.'},
+  {icon:'shield',title:'Identidade e instalações',detail:'Escolha o nome e um dos oito escudos. Melhore o centro de treinamento, a academia de base e o estádio.'},
+  {icon:'clock',title:'Progresso salvo no navegador',detail:'A carreira tem um espaço próprio de salvamento e pode ser retomada no mesmo navegador.'},
+ ]},
  {version:'0.9',date:'05/11/2026',title:'Torneio local com amigos',changes:[
   {icon:'players',title:'Escolha entre 2 ou 4 participantes',detail:'Defina os nomes e a formação antes do sorteio. Cada pessoa monta seu time em sequência no mesmo aparelho.'},
   {icon:'bracket',title:'Ida e volta em todas as fases',detail:'Com 2 jogadores, a final tem 2 partidas. Com 4, são duas semifinais e uma final, totalizando 6 partidas.'},

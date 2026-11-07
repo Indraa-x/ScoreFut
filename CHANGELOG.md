@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.10 — 07/11/2026
+
+Modo Carreira de Treinador com campeonato de ida e volta, classificação, premiação e temporadas sucessivas. Monte os titulares, contrate reforços, melhore as instalações e personalize o Meu time com um nome e um dos oito escudos. A carreira fica salva no navegador.
+
 ## Beta 0.9 — 05/11/2026
 
 Desafio com amigos reformulado como torneio local. Antes do sorteio, escolha 2 ou 4 participantes, informe os nomes e selecione a formação; cada pessoa monta seu time em sequência no mesmo aparelho. Com 2 participantes, a final tem ida e volta (2 partidas). Com 4, há duas semifinais e uma final, todas de ida e volta (6 partidas). O agregado decide quem avança; empate leva à prorrogação e, se necessário, aos pênaltis. A chave revela os resultados conforme cada jogo termina, e o progresso fica salvo no navegador. O resumo da força usa o mesmo padrão das competições solo, com medidor, perfil por setor, média OVR e formação. A escolha de competição saiu da configuração do torneio. Códigos antigos continuam aceitos no fluxo legado; o torneio novo não sincroniza entre aparelhos. [Detalhes técnicos](docs/CHALLENGES.md).

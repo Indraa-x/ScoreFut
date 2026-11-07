@@ -16,10 +16,10 @@
 .eyebrow{letter-spacing:1.1px;font-size:10px}
 /* Home: one primary entry point, with the historic portraits preserved. */
 #app[data-screen="home"]{max-width:1440px;padding-top:32px}
-body:has(#app:is([data-screen="home"], [data-screen="achievements"]), #app[data-screen="setup"] > .setup-layout) {
+body:has(#app:is([data-screen="home"], [data-screen="achievements"], [data-screen="career"]), #app[data-screen="setup"] > .setup-layout) {
   isolation: isolate;
 }
-body:has(#app:is([data-screen="home"], [data-screen="achievements"]), #app[data-screen="setup"] > .setup-layout)::before {
+body:has(#app:is([data-screen="home"], [data-screen="achievements"], [data-screen="career"]), #app[data-screen="setup"] > .setup-layout)::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -29,7 +29,7 @@ body:has(#app:is([data-screen="home"], [data-screen="achievements"]), #app[data-
   opacity: .60;
   pointer-events: none;
 }
-html[data-theme="light"] body:has(#app:is([data-screen="home"], [data-screen="achievements"]), #app[data-screen="setup"] > .setup-layout)::before {
+html[data-theme="light"] body:has(#app:is([data-screen="home"], [data-screen="achievements"], [data-screen="career"]), #app[data-screen="setup"] > .setup-layout)::before {
   opacity: .16;
 }
 .home-intro{justify-content:space-between;margin-bottom:26px}
