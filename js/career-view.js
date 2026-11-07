@@ -18,7 +18,7 @@ const badgeDesigns = [
   ['#3d3210', '#ffda63', '<path fill="currentColor" d="m26 11-12 14h9l-2 10 13-15h-9Z"/>'],
   ['#333a48', '#eef1f6', '<path d="M16 13v7l3 3-2 9h14l-2-9 3-3v-7h-4v4h-2v-4h-4v4h-2v-4Zm8 12v3"/>'],
 ];
-function crest(id) {
+export function careerCrest(id) {
   const [fill, color, art] = badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(id))];
   return `<svg class="career-crest" viewBox="0 0 48 48" aria-hidden="true" focusable="false" style="color:${color}"><path d="M24 3 42 9v11c0 11-7 19-18 24C13 39 6 31 6 20V9Z" fill="${fill}" stroke="currentColor" stroke-width="2"/><g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${art}</g></svg>`;
 }
@@ -31,7 +31,7 @@ const title = (label, description) => `<h2>${label}</h2><p class="muted">${descr
 
 function clubBadge(career, id, ui) {
   const club = careerClub(career, id);
-  return id === CAREER_TEAM ? crest(career.crest) : ui.badge(club);
+  return id === CAREER_TEAM ? careerCrest(career.crest) : ui.badge(club);
 }
 
 function pitch(career, ui, details = false) {
@@ -65,7 +65,7 @@ function overview(career, ui, rows) {
     ? `${title('Próxima partida', `Campeonato Brasileiro · Rodada ${career.round + 1} de ${total}`)}
       <div class="career-matchup">${fixture.map((id, index) => `${index ? '<span aria-hidden="true">×</span>' : ''}
         <div>${clubBadge(career, id, ui)}<strong>${esc(careerClub(career, id).nome)}</strong><small>${index ? 'Visitante' : 'Mandante'}</small></div>`).join('')}</div>
-      ${button('Simular partida', 'career-play', `${career.season}:${career.round}`, true)}`
+      ${button(career.replay?.round === career.round ? 'Continuar partida' : 'Simular partida', 'career-play', `${career.season}:${career.round}`, true)}`
     : `${title('Temporada encerrada', position === 1 ? 'Seu clube conquistou o título!' : `Seu clube terminou em ${position}º lugar.`)}
       <p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
       ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
@@ -154,7 +154,7 @@ function club(career) {
       <fieldset><legend>Escolha seu escudo</legend><div class="career-crest-options">
         ${CAREER_CRESTS.map(id => `<label class="career-crest-choice">
           <input type="radio" name="crest" value="${id}" aria-label="Escudo ${id}"${career.crest === id ? ' checked' : ''}>
-          ${crest(id)}
+          ${careerCrest(id)}
         </label>`).join('')}
       </div></fieldset>
       <button class="btn btn-primary" type="submit">Salvar clube</button>
@@ -172,7 +172,7 @@ export function renderCareer(career, tab, ui) {
       ${Object.entries(CAREER_TABS).map(([id, name]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === tab ? ' aria-current="page"' : ''}>${name}</button>`).join('')}
     </nav>
     <div class="career-summary panel">
-      <div class="career-identity">${crest(career.crest)}<strong>${esc(career.name)}</strong></div>
+      <div class="career-identity">${careerCrest(career.crest)}<strong>${esc(career.name)}</strong></div>
       <div><small>Temporada</small><strong>${career.season}</strong></div>
       <div><small>Posição</small><strong>${career.round ? `${position}º lugar` : '—'}</strong></div>
       <div><small>Orçamento</small><strong>${money(career.budget)}</strong></div>

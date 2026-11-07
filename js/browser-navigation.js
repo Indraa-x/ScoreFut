@@ -1,4 +1,4 @@
-const SCREENS=new Set(['home','setup','draft','summary','match','bracket','result','achievements','career']);
+const SCREENS=new Set(['home','setup','draft','summary','match','bracket','result','achievements','career','career-match']);
 const canonical=route=>route?.screen==='history'?{...route,screen:'achievements'}:route;
 const valid=route=>route&&SCREENS.has(route.screen);
 

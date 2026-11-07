@@ -137,6 +137,31 @@
 .career-table :is(.career-crest, .club-badge) { width: 24px; height: 24px; vertical-align: middle; }
 .career-own-row { background: var(--accent-soft); }
 .career-history { padding-left: 20px; margin-top: 12px; font-size: 13px; }
+#app[data-screen="match"][data-mode="career"] .match-layout { grid-template-columns: minmax(0, 1fr); }
+.career-match-crest .career-crest { width: 100%; height: 100%; }
+@media (min-width: 1050px) {
+  #app[data-mode="career"] .match-card {
+    display: grid;
+    grid-template-columns: minmax(340px, .85fr) minmax(0, 1.4fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-self: start;
+  }
+  #app[data-mode="career"] .match-card .live-scoreboard {
+    grid-row: 1 / 3;
+    align-content: center;
+    grid-template-columns: minmax(0, 1fr) 116px minmax(0, 1fr);
+    gap: 12px 8px;
+    padding-inline: 12px;
+    border-right: 1px solid var(--border);
+  }
+  #app[data-mode="career"] .match-card .match-team {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  #app[data-mode="career"] .match-card .match-team h2 { font-size: clamp(13px, 1.25vw, 19px); overflow-wrap: anywhere; }
+  #app[data-mode="career"] .match-card .live-field-wrap { min-height: clamp(290px, 31vw, 430px); }
+}
 @media (max-width: 760px) {
   .career-columns { grid-template-columns: minmax(0, 1fr); }
   .career-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 0; }
