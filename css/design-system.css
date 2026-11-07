@@ -16,6 +16,24 @@
 .eyebrow{letter-spacing:1.1px;font-size:10px}
 /* Home: one primary entry point, with the historic portraits preserved. */
 #app[data-screen="home"]{max-width:1440px;padding-top:32px}
+body:has(#app[data-screen="home"]) {
+  position: relative;
+  isolation: isolate;
+}
+body:has(#app[data-screen="home"])::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: clamp(580px, 43vw, 1050px);
+  background: url("../assets/home/stadium-background.jpg") center / cover no-repeat;
+  mask-image: linear-gradient(#000 55%, transparent);
+  opacity: .64;
+  pointer-events: none;
+}
+html[data-theme="light"] body:has(#app[data-screen="home"])::before {
+  opacity: .18;
+}
 .home-intro{justify-content:space-between;margin-bottom:26px}
 .home-intro .eyebrow{font-size:10px;color:var(--green)}
 .home-intro .live-indicator{font-size:11px;color:var(--muted)}
