@@ -7,7 +7,7 @@ import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
   CAREER_CRESTS, CAREER_TEAM, FACILITIES, MAX_CAREER_ROSTER, MAX_FACILITY_LEVEL, careerClub,
-  careerFixtures, careerOffers, careerPicks, careerSlotOptions, careerTable, facilityPrice, nextCareerMatch,
+  careerFixtures, careerOffers, careerPicks, careerScorers, careerSlotOptions, careerTable, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -82,6 +82,26 @@ function matchScoreboard(career, ui, live, match) {
     ${ended ? button('Avançar', 'career-match-return', '', true) : ''}`;
 }
 
+function lastMatchScorers(career, last) {
+  const replay = career.replay;
+  const oldReplay = replay?.season === career.season && replay.round === career.round - 1
+    ? replay.tournament.userMatches[0] : null;
+  const scorers = last.scorers || [];
+  const details = scorers.some(scorer => !scorer.minutes) &&
+    oldReplay?.homeId === last.home && oldReplay.awayId === last.away
+    ? careerScorers(oldReplay.result) : scorers;
+
+  return `<div class="career-last-goals">${['home', 'away'].map(side => {
+    const club = careerClub(career, last[side]).nome;
+    const entries = details.filter(scorer => scorer.team === side);
+    return `<ul class="career-last-scorers ${side}" aria-label="Gols de ${esc(club)}">
+      ${entries.map(({name, minutes, goals}) => `<li><span class="career-scorer-name">${esc(name)}</span>
+        ${minutes?.length ? `<span class="career-scorer-minute">${esc(minutes.join(', '))}</span>` : goals > 1 ? `<span>(${goals})</span>` : ''}
+      </li>`).join('') || '<li><span>Sem gols</span></li>'}
+    </ul>`;
+  }).join('')}</div>`;
+}
+
 function overview(career, ui, rows, live) {
   const liveMatch = live ? currentMatch(live) : null;
   const fixture = nextCareerMatch(career);
@@ -101,7 +121,7 @@ function overview(career, ui, rows, live) {
       ${last && (!liveMatch || liveMatch.round !== career.round) ? `<div class="career-last">
         <small>Último resultado · Rodada ${career.round}</small>
         <strong>${esc(careerClub(career, last.home).nome)} ${last.homeGoals} × ${last.awayGoals} ${esc(careerClub(career, last.away).nome)}</strong>
-        ${last.scorers.length ? `<span>${last.scorers.map(scorer => esc(scorer.name) + (scorer.goals > 1 ? ` (${scorer.goals})` : '')).join(' · ')}</span>` : ''}
+        ${lastMatchScorers(career, last)}
       </div>` : ''}
     </section>
     ${liveMatch ? `<section class="career-card panel career-live-field" aria-label="Simulação da partida">

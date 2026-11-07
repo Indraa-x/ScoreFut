@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
+import {CAREER_TEAM, careerScorers, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
 import * as ui from '../js/ui.js';
 import {renderCareer} from '../js/career-view.js';
 import {initCareer} from '../js/career-controller.js';
@@ -68,4 +68,31 @@ test('simulating to the end uses the prepared result and credits only one round'
   const final = saved;
   controller.actions['career-match-finish']();
   assert.equal(saved, final);
+});
+
+test('the last result puts names and minutes in home and away columns, including old replays', () => {
+  const career = createCareer(42);
+  const away = career.opponentIds[0];
+  const result = {duration: 94, events: [
+    {type: 'goal', minute: 19, team: 'home', player: {id: 'a', nome: 'Pedro Leal'}},
+    {type: 'goal', minute: 54, team: 'away', player: {id: 'b', nome: 'Jogador Visitante'}},
+    {type: 'goal', minute: 92, team: 'home', player: {id: 'a', nome: 'Pedro Leal'}},
+  ]};
+  const scorers = careerScorers(result);
+  const last = {home: CAREER_TEAM, away, homeGoals: 2, awayGoals: 1, scorers};
+  const completed = {...career, round: 1, results: [[last]]};
+  const html = renderCareer(completed, 'overview', ui);
+  const homeColumn = html.match(/career-last-scorers home[^>]*>([\s\S]*?)<\/ul>/)[1];
+  const awayColumn = html.match(/career-last-scorers away[^>]*>([\s\S]*?)<\/ul>/)[1];
+  assert.match(homeColumn, /Pedro Leal[\s\S]*?19′, 90\+2′/);
+  assert.doesNotMatch(homeColumn, /Jogador Visitante/);
+  assert.match(awayColumn, /Jogador Visitante[\s\S]*?54′/);
+  assert.doesNotMatch(awayColumn, /Pedro Leal/);
+
+  const oldLast = {...last, scorers: scorers.map(({name, team, goals}) => ({name, team, goals}))};
+  const replay = {season: career.season, round: 0, minute: 94, income: 400, results: [oldLast],
+    tournament: {userMatches: [{homeId: CAREER_TEAM, awayId: away, result}]}};
+  assert.match(renderCareer({...completed, results: [[oldLast]], replay}, 'overview', ui), /19′, 90\+2′/);
+  assert.deepEqual(commitCareerRound({...career, replay}).results[0][0].scorers, scorers);
+  assert.match(renderCareer({...completed, results: [[oldLast]]}, 'overview', ui), /Pedro Leal/);
 });

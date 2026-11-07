@@ -67,6 +67,19 @@
 .career-card > .btn { margin: 12px auto 0; display: flex; width: fit-content; }
 .career-last { display: grid; gap: 3px; margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--border); overflow-wrap: anywhere; }
 .career-last span { color: var(--muted); font-size: 12px; }
+.career-last-goals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 8px 16px;
+  margin-top: 6px;
+}
+.career-last-scorers { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; text-align: left; }
+.career-last-scorers.away { text-align: right; }
+.career-last-scorers li { display: flex; flex-wrap: wrap; gap: 2px 6px; align-items: baseline; }
+.career-last-scorers.away li { justify-content: flex-end; }
+.career-last-scorers .career-scorer-name { color: var(--text); font-weight: 650; }
+.career-scorer-minute { font-variant-numeric: tabular-nums; }
 .career-pitch {
   position: relative;
   margin: 16px auto;
