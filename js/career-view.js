@@ -191,11 +191,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
         <div><span class="eyebrow accent">11 titulares</span><h2 id="career-squad-title">Escalação titular</h2></div>
         <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
       </div>
-      <div class="career-squad-guide">
-        <p id="career-squad-hint" aria-live="polite">${selected ? `<strong>${esc(selected.nome)}</strong> · Escolha uma posição destacada.` : 'Selecione um jogador na lista ou no campo para trocar a escalação.'}</p>
-        ${selected ? button('Cancelar', 'career-cancel-pick') : ''}
-      </div>
-      <div class="career-pitch career-edit-pitch" role="group" aria-label="Posições no campo" aria-describedby="career-squad-hint">
+      <div class="career-pitch career-edit-pitch" role="group" aria-label="${selected ? esc(`Escolha uma posição destacada para ${selected.nome}`) : 'Posições no campo'}">
         ${ui.pitchLines()}
         ${picks.map(({slot, player}) => {
           const origin = player.id === selectedId;
@@ -214,6 +210,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
         <label for="career-formation">Formação</label>
         <select id="career-formation">${Object.entries(FORMATIONS).map(([id, formation]) =>
           `<option value="${id}"${id === career.formation ? ' selected' : ''}>${formation.name}</option>`).join('')}</select>
+        ${selected ? button('Cancelar troca', 'career-cancel-pick') : ''}
       </div>
     </section>
   </div>`;
