@@ -1,6 +1,6 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, createCareer,
-  commitCareerRound, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
+  commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {loadWorldCupSquads, worldCupSquads} from '../data/game-squads.js';
 import {CAREER_TABS, renderCareer, renderCareerMarketResults} from './career-view.js';
@@ -17,7 +17,13 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   let marketStatus = 'idle';
   let filters = {...marketDefaults};
   const squad = {group: 'reserves', selectedId: null};
-  const read = () => storage.read(CAREER_KEY) ?? (initial ??= createCareer(crypto.getRandomValues(new Uint32Array(1))[0]));
+  function read() {
+    const saved = storage.read(CAREER_KEY);
+    if (!saved) return initial ??= createCareer(crypto.getRandomValues(new Uint32Array(1))[0]);
+    const career = migrateCareerRoster(saved);
+    if (career !== saved) storage.write(CAREER_KEY, career);
+    return career;
+  }
   const live = {screen: null, mode: 'career', userMatchIndex: 0, tournament: null, matchMinute: 0, matchSpeed: 4};
   const playback = initMatchPlayback({
     app, state: live,

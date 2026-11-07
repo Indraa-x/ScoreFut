@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.13 — 07/11/2026
+
+O elenco inicial e os reforços da academia usam jogadores reais do catálogo. As carreiras salvas substituem jogadores fictícios por opções compatíveis e preservam as contratações, a formação, o orçamento e os resultados registrados.
+
 ## Beta 0.12 — 07/11/2026
 
 O Elenco da Carreira usa a seleção por clique no campinho. Escolha um titular ou reserva e toque em uma posição destacada para trocar a escalação. Os marcadores mostram o escudo do clube e o OVR de cada titular.
