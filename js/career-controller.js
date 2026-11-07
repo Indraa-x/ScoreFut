@@ -16,8 +16,12 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   const playback = initMatchPlayback({
     app, state: live,
     onSave: () => saveReplay(),
-    onFinish: () => { saveReplay(true); render(); },
+    onFinish: finishMatch,
   });
+  function finishMatch() {
+    saveReplay(true);
+    render();
+  }
   function save(next) {
     if (!storage.write(CAREER_KEY, next)) throw Error('O navegador não conseguiu salvar a carreira.');
   }
@@ -121,6 +125,15 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
         live.matchSpeed = speed;
         saveReplay(true);
         render();
+      },
+      'career-match-finish': () => {
+        const match = currentMatch(live);
+        if (live.screen !== 'match' || !match || matchHasEnded(live, match)) return;
+        playback.stop();
+        live.matchPlaying = false;
+        live.matchMinute = match.result.duration;
+        finishMatch();
+        app.querySelector('[data-action="career-match-return"]')?.focus({preventScroll: true});
       },
       'career-match-return': () => {
         const match = currentMatch(live);

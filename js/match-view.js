@@ -28,9 +28,9 @@ export function renderLivePitch(s, {esc, icon, pitchLines}) {
   return `<div class="live-field-wrap"><div class="live-pitch-area"><div class="live-pitch" data-live-pitch aria-label="Simulação das duas escalações em campo">${pitchLines(false)}${(home.lineup || []).map((entry, index) => player(entry, index, home, 'home')).join('')}${(away.lineup || []).map((entry, index) => player(entry, index, away, 'away')).join('')}<span class="match-ball" data-match-ball>${icon('ball')}</span><div class="set-piece-notice" data-set-piece-notice role="status" aria-live="polite" hidden><strong data-set-piece-title></strong><span data-set-piece-team></span></div><div class="goal-notice" data-goal-notice>${icon('ball')}<strong>Gol!</strong><span data-goal-name></span></div></div></div></div>`;
 }
 
-export function renderMatchSpeed(speed, icon, action = 'match-speed') {
+export function renderMatchSpeed(speed, icon, action = 'match-speed', extraControl = '') {
   const speedLabels = {4: 'Normal', 8: 'Rápido'};
-  return `<div class="live-controls"><div class="match-speed" role="group" aria-label="Velocidade da partida"><div>${MATCH_SPEEDS.map(value => `<button class="${value===8?'match-speed-fast':'match-speed-normal'}" data-action="${action}" data-value="${value}" aria-label="${speedLabels[value]}" aria-pressed="${speed === value}">${value===8&&speed===8?icon('bolt'):''}${speedLabels[value]}</button>`).join('')}</div></div></div>`;
+  return `<div class="live-controls"><div class="match-speed" role="group" aria-label="Velocidade da partida"><div>${MATCH_SPEEDS.map(value => `<button class="${value===8?'match-speed-fast':'match-speed-normal'}" data-action="${action}" data-value="${value}" aria-label="${speedLabels[value]}" aria-pressed="${speed === value}">${value===8&&speed===8?icon('bolt'):''}${speedLabels[value]}</button>`).join('')}</div></div>${extraControl}</div>`;
 }
 
 export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {

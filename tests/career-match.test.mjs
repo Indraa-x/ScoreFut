@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
 import * as ui from '../js/ui.js';
 import {renderCareer} from '../js/career-view.js';
+import {initCareer} from '../js/career-controller.js';
 import {scoreAt} from '../js/match-motion.js';
 
 test('a prepared career match resumes from storage and credits the round only at full time', () => {
@@ -38,7 +39,32 @@ test('career plays in the overview lineup panel with score between the crests an
   assert.equal(kickoff.match(/data-match-player/g).length, 22);
   assert.match(kickoff, /data-action="career-match-speed" data-value="4"[^>]*aria-pressed="true"/);
   assert.match(kickoff, /data-action="career-match-speed" data-value="8"/);
+  assert.match(kickoff, /aria-label="Velocidade da partida"[\s\S]*?data-action="career-match-finish" data-value="">Simular até o fim/);
   assert.deepEqual(scoreAt(result, 0), [0, 0]);
   assert.deepEqual(scoreAt(result, result.duration), [result.homeGoals, result.awayGoals]);
-  assert.match(renderCareer({...career, replay}, 'overview', ui, {...state, matchMinute: result.duration}), /data-action="career-match-return"[^>]*>Avançar/);
+  const final = renderCareer({...career, replay}, 'overview', ui, {...state, matchMinute: result.duration});
+  assert.match(final, /data-action="career-match-return"[^>]*>Avançar/);
+  assert.match(final, /data-action="career-match-finish"[^>]* disabled/);
+});
+
+test('simulating to the end uses the prepared result and credits only one round', () => {
+  const career = createCareer(23);
+  const replay = prepareCareerRound(career);
+  let saved = {...career, replay: {...replay, minute: 15}};
+  const controller = initCareer({
+    app: {addEventListener() {}, querySelector: () => null},
+    storage: {read: () => saved, write: (_key, next) => { saved = next; return true; }},
+    ui, render() {}, toast: message => assert.fail(message),
+  });
+  assert.ok(controller.loadMatch());
+  controller.attachMatch(true);
+  controller.actions['career-match-finish']();
+  assert.equal(saved.replay.minute, replay.tournament.userMatches[0].result.duration);
+  assert.equal(saved.round, 1);
+  assert.equal(saved.budget, career.budget + replay.income);
+  assert.deepEqual(saved.results, [replay.results]);
+
+  const final = saved;
+  controller.actions['career-match-finish']();
+  assert.equal(saved, final);
 });
