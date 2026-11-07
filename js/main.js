@@ -42,7 +42,8 @@ function rememberSession(){if(gameScreens.has(state.screen)&&state.draft&&state.
 function currentRoute(){return {screen:state.screen,mode:state.mode,quickStep:state.quickStep,...(state.screen==='career'?{careerTab:career.tab}:{}),...(gameScreens.has(state.screen)?{session:sessionId(state.draft)}:{}),...(['result','bracket'].includes(state.screen)&&state.resultRecord?{recordId:state.resultRecord.id}:{}),...(state.screen==='bracket'?{championsView:state.championsView,returnScreen:state.returnScreen}:{})};}
 function visitRoute(route){
   navigationVersion++;rememberSession();stopPlayback();if(modal.open)modal.close();
-  const requested=route.screen;
+  career.leaveMatch();
+  const requested = route.screen === 'career-match' && !career.loadMatch() ? 'career' : route.screen;
   if (requested === 'career') career.setTab(route.careerTab);
   if(requested==='bracket'&&route.recordId){const record=storage.read('history',[]).find(r=>r.id===route.recordId);if(record?.tournament&&record.mode!=='euro'){state.resultRecord=record;state.tournament=record.tournament;state.mode=record.mode;state.screen='bracket';state.championsView=route.championsView||'groups';state.returnScreen=route.returnScreen||'result';}else state.screen='achievements';}
   else if(gameScreens.has(requested)){
@@ -81,7 +82,7 @@ function hydrateDraft(){if(!state.draft)return;const pool=draftPool();state.draf
 function snapshot(){const draft=state.draft?{...state.draft}:null;if(draft){delete draft.currentSquad;delete draft.otherSeasonAvailable;}return {rulesVersion:2,matchFlowVersion:MATCH_FLOW_VERSION,screen:state.screen,mode:state.mode,formation:state.formation,teamName:state.teamName,quickSquadId:state.quickSquadId,draft,tournament:state.tournament,friendChallenge:state.friendChallenge,pendingRound:state.pendingRound,userMatchIndex:state.userMatchIndex,matchUnlockedIndex:state.matchUnlockedIndex,matchMinute:state.matchMinute,matchSpeed:state.matchSpeed,penaltyReplay:state.penaltyReplay||null};}
 function persist(){rememberSession();if(!state.draft)return;const saved=snapshot();storage.write('active',saved);}
 function stopPlayback(){playback.stop();state.matchPlaying=false;}
-function navigate(screen){navigationVersion++;rememberSession();if(state.screen==='match'&&['home','achievements','bracket','career'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
+function navigate(screen){navigationVersion++;rememberSession();career.leaveMatch();if(state.screen==='match'&&['home','achievements','bracket','career'].includes(screen))persist();stopPlayback();state.screen=screen;navigation?.push();render();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(['draft','summary','match'].includes(screen))persist();}
 function browserAchievements(history){
   const saved=storage.read('achievements');
   const ledger=updateAchievementLedger(history,pendingAchievementLedger||saved);
@@ -93,8 +94,9 @@ function browserAchievements(history){
   return ledger;
 }
 function render(){rememberSession();navigation?.sync();const screenChanged=state.screen!==lastRenderedScreen;const active=document.activeElement;const focusId=active?.id,focusAction=active?.dataset.action,focusValue=active?.dataset.value;const focusInApp=app.contains(active);hydrateDraft();const history=storage.read('history',[]),stats=storage.statistics(history);let html='';
-  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'career':html=career.open();break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
-  app.innerHTML=html;app.dataset.screen=state.screen;app.dataset.mode=state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;homeCounters.update(app,state.screen);const activeNav = ['achievements', 'career'].includes(state.screen) ? state.screen : 'home';
+  switch(state.screen){case'home':html=ui.renderHome({stats,clubs});break;case'setup':html=ui.renderSetup(state);break;case'draft':html=ui.renderDraft(state);break;case'summary':html=ui.renderSummary(state);break;case'match':html=ui.renderMatch(state);break;case'bracket':html=ui.renderBracket(state);break;case'result':html=ui.renderResult(state.resultRecord,state.tournament);break;case'career':html=career.open();break;case'career-match':html=career.matchView();break;case'achievements':html=ui.renderAchievements(history,stats,browserAchievements(history));break;default:html=ui.renderHome({stats,clubs});}
+  const careerMatch = state.screen === 'career-match';
+  app.innerHTML=html;app.dataset.screen=careerMatch?'match':state.screen;app.dataset.mode=careerMatch?'career':state.mode;app.classList.toggle('screen-arrive',screenChanged);lastRenderedScreen=state.screen;homeCounters.update(app,state.screen);const activeNav = careerMatch ? 'career' : ['achievements', 'career'].includes(state.screen) ? state.screen : 'home';
   document.querySelectorAll('.nav-link').forEach(button => {
     const current = button.dataset.action === activeNav;
     button.classList.toggle('active', current);
@@ -103,6 +105,7 @@ function render(){rememberSession();navigation?.sync();const screenChanged=state
   });
   if(state.screen==='bracket'&&matchMedia('(max-width: 980px)').matches)scrollKnockoutRound(app,app.querySelector('.champions-round-picker [aria-pressed="true"]')?.dataset.value);
   playback.attach();if(state.screen==='match'&&state.matchPlaying)playback.start();
+  career.attachMatch(careerMatch);
   celebration.attach();
   if(screenChanged&&state.screen==='result'){const notice=document.getElementById('game-announcement');if(notice)notice.textContent=state.resultRecord?.champion?'Campanha encerrada. Campeão!':'Campanha encerrada.';}
   if(focusInApp){let target=focusId?document.getElementById(focusId):[...app.querySelectorAll('[data-action]')].find(el=>el.dataset.action===focusAction&&el.dataset.value===focusValue);if(target?.disabled)target=app.querySelector('[data-action="next-match"],[data-action="player"]:not(:disabled),[data-action="draw"]');target?.focus({preventScroll:true});}
@@ -362,8 +365,8 @@ document.addEventListener('click',event=>{const element=event.target.closest('[d
 app.addEventListener('change',event=>{if(event.target.id==='quick-season')action('quick-team',event.target.value,event.target).catch(error=>toast(error.message));});
 app.addEventListener('input',event=>{if(event.target.id==='quick-search'&&state.mode==='quick'&&state.screen==='setup')updateQuickSearch(event.target.value);});
 modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
-document.addEventListener('visibilitychange',()=>{if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});
-window.addEventListener('pagehide',()=>{stopPlayback();if(['draft','summary','match'].includes(state.screen))persist();});
+document.addEventListener('visibilitychange',()=>{if(state.screen==='career-match'){if(document.hidden)career.leaveMatch();render();}else if(state.screen==='match'){if(document.hidden){stopPlayback();persist();}render();}});
+window.addEventListener('pagehide',()=>{career.leaveMatch();stopPlayback();if(['draft','summary','match'].includes(state.screen))persist();});
 if(!browserProgressReady||!competitionProgressReady){storageWarning=true;toast('Não foi possível concluir o salvamento neste navegador. Seu progresso anterior foi mantido.');}
 if(storage.read('active')?.draft?.mode==='world-cup')await loadWorldCupSquads();
 navigation=initBrowserNavigation({getRoute:currentRoute,onVisit:visitRoute});

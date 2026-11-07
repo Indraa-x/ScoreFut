@@ -220,26 +220,48 @@ function matchTeam(career, id) {
     if (!pick.player || positionFit(pick.player, pick.slot) === null) throw Error('Complete a escalação antes de jogar.');
     return {...pick, player: {...pick.player, ovr: Math.min(99, pick.player.ovr + bonus)}, clubId: CAREER_TEAM, ano: career.season};
   });
-  return {id, name: career.name, isUser: true, lineup, strength: calculateTeam(lineup), formation: career.formation};
+  return {id, name: career.name, crest: career.crest, isUser: true, lineup, strength: calculateTeam(lineup), formation: career.formation};
 }
 
-export function playCareerRound(career) {
+export function prepareCareerRound(career) {
   const fixtures = careerFixtures(career)[career.round];
   if (!fixtures) throw Error('A temporada já terminou.');
-  const rng = mulberry32(career.seed + career.season * 1009 + career.round * 71);
+  const seed = career.seed + career.season * 1009 + career.round * 71;
+  const rng = mulberry32(seed);
+  const id = `${career.season}:${career.round}`;
+  let replay;
   let income = 0;
   const round = fixtures.map(([home, away]) => {
-    const match = simulateMatch(matchTeam(career, home), matchTeam(career, away), rng, {neutral: false});
+    const teams = [matchTeam(career, home), matchTeam(career, away)];
+    const userMatch = home === CAREER_TEAM || away === CAREER_TEAM;
+    const match = simulateMatch(...teams, rng, {neutral: false, stoppageTimeAllowed: userMatch});
     const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals};
-    if (home === CAREER_TEAM || away === CAREER_TEAM) {
+    if (userMatch) {
       income = (home === CAREER_TEAM ? 260 + (career.facilities.stadium - 1) * 120 : 100)
         + (match.winnerId === CAREER_TEAM ? 160 : match.homeGoals === match.awayGoals ? 80 : 0);
       result.income = income;
       result.scorers = match.scorers.map(({nome, team, goals}) => ({name: nome, team, goals}));
+      replay = {
+        seed, mode: 'career', teams, userTeamId: CAREER_TEAM,
+        userMatches: [{
+          id, homeId: home, awayId: away, round: career.round + 1, stage: 'league',
+          stageLabel: `Campeonato Brasileiro · Rodada ${career.round + 1}`, result: match,
+        }],
+      };
     }
     return result;
   });
-  return {...career, round: career.round + 1, results: [...career.results, round], budget: career.budget + income};
+  return {id, round: career.round, season: career.season, tournament: replay, results: round, income, minute: 0};
+}
+
+export function commitCareerRound(career) {
+  const replay = career.replay;
+  if (!replay || career.round !== replay.round || career.season !== replay.season ||
+      replay.minute < replay.tournament.userMatches[0].result.duration) return career;
+  return {
+    ...career, round: career.round + 1, results: [...career.results, replay.results],
+    budget: career.budget + replay.income,
+  };
 }
 
 export function advanceCareerSeason(career) {
@@ -248,6 +270,6 @@ export function advanceCareerSeason(career) {
   const position = table.findIndex(row => row.id === CAREER_TEAM) + 1;
   const prize = 2500 + (table.length - position) * 200;
   const season = {number: career.season, position, points: table[position - 1].points, prize};
-  const next = {...career, season: career.season + 1, round: 0, results: [], budget: career.budget + prize, seasons: [...career.seasons, season]};
+  const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
   return career.facilities.academy > 1 ? addAcademyPlayer(next, 'season') : next;
 }

@@ -1,6 +1,7 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
  {version:'0.10',date:'07/11/2026',title:'Carreira de Treinador',changes:[
+  {icon:'clock',title:'Acompanhe as partidas da carreira',detail:'Veja os lances no campinho, acompanhe o placar em tempo real e alterne entre os ritmos Normal e Rápido.'},
   {icon:'ball',title:'Seu clube no Campeonato Brasileiro',detail:'Simule partidas de ida e volta, acompanhe a classificação e avance por várias temporadas.'},
   {icon:'field',title:'Escalação e mercado',detail:'Escolha a formação, monte seus titulares no campinho e contrate reforços dentro do orçamento.'},
   {icon:'shield',title:'Identidade e instalações',detail:'Escolha o nome e um dos oito escudos. Melhore o centro de treinamento, a academia de base e o estádio.'},
