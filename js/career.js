@@ -1,6 +1,8 @@
 import {allSquads} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
 import {FORMATIONS, calculateTeam, mulberry32, positionFit, simulateMatch, squadTeam} from './engine.js';
+import {goalsAt} from './match-goals.js';
+import {formatMatchEventMinute} from './match-motion.js';
 
 export const CAREER_KEY = 'coach-career';
 export const CAREER_TEAM = 'career-user';
@@ -223,6 +225,18 @@ function matchTeam(career, id) {
   return {id, name: career.name, crest: career.crest, isUser: true, lineup, strength: calculateTeam(lineup), formation: career.formation};
 }
 
+export function careerScorers(match) {
+  const scorers = new Map();
+  for (const goal of goalsAt(match, match.duration)) {
+    const key = `${goal.team}:${goal.player.id}`;
+    if (!scorers.has(key)) scorers.set(key, {name: goal.player.nome, team: goal.team, goals: 0, minutes: []});
+    const scorer = scorers.get(key);
+    scorer.goals++;
+    scorer.minutes.push(formatMatchEventMinute(match, goal.minute) + '′');
+  }
+  return [...scorers.values()];
+}
+
 export function prepareCareerRound(career) {
   const fixtures = careerFixtures(career)[career.round];
   if (!fixtures) throw Error('A temporada já terminou.');
@@ -240,7 +254,7 @@ export function prepareCareerRound(career) {
       income = (home === CAREER_TEAM ? 260 + (career.facilities.stadium - 1) * 120 : 100)
         + (match.winnerId === CAREER_TEAM ? 160 : match.homeGoals === match.awayGoals ? 80 : 0);
       result.income = income;
-      result.scorers = match.scorers.map(({nome, team, goals}) => ({name: nome, team, goals}));
+      result.scorers = careerScorers(match);
       replay = {
         seed, mode: 'career', teams, userTeamId: CAREER_TEAM,
         userMatches: [{
@@ -258,8 +272,14 @@ export function commitCareerRound(career) {
   const replay = career.replay;
   if (!replay || career.round !== replay.round || career.season !== replay.season ||
       replay.minute < replay.tournament.userMatches[0].result.duration) return career;
+  const match = replay.tournament.userMatches[0];
+  const results = replay.results.map(result =>
+    result.home === match.homeId && result.away === match.awayId && result.scorers?.some(scorer => !scorer.minutes)
+      ? {...result, scorers: careerScorers(match.result)}
+      : result
+  );
   return {
-    ...career, round: career.round + 1, results: [...career.results, replay.results],
+    ...career, round: career.round + 1, results: [...career.results, results],
     budget: career.budget + replay.income,
   };
 }
