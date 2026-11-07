@@ -1,5 +1,9 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.13',date:'07/11/2026',title:'Jogadores reais na Carreira',changes:[
+  {icon:'players',title:'Elenco inicial e base com jogadores do catálogo',detail:'As novas carreiras começam com jogadores reais, e a academia traz reforços com as posições e os OVRs das versões cadastradas.'},
+  {icon:'shield',title:'Carreiras antigas atualizadas',detail:'Ao abrir o save, os jogadores fictícios do elenco são substituídos por jogadores reais compatíveis. Contratações, orçamento, escalação e resultados são preservados.'},
+ ]},
  {version:'0.12',date:'07/11/2026',title:'Escalação interativa na Carreira',changes:[
   {icon:'field',title:'Escale direto no campinho',detail:'Selecione um jogador na lista ou no campo e clique em uma posição destacada. A troca é salva automaticamente.'},
   {icon:'players',title:'Titulares e reservas em uma lista',detail:'Alterne entre os grupos para ver nomes, posições e OVRs. No campo, os marcadores mostram o escudo do seu clube e a nota de cada titular.'},

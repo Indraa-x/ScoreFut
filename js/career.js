@@ -11,20 +11,12 @@ export const CAREER_TEAM = 'career-user';
 export const CAREER_CRESTS = ['bola', 'leao', 'aguia', 'montanha', 'estrela', 'listras', 'raio', 'torre'];
 export const FACILITIES = {
   training: {name: 'Centro de treinamento', effect: 'Cada melhoria dá +1 de OVR efetivo aos titulares durante as partidas.', cost: 1400},
-  academy: {name: 'Academia de base', effect: 'Revela um jogador ao melhorar. A partir do nível 2, revela outro a cada nova temporada.', cost: 1000},
+  academy: {name: 'Academia de base', effect: 'Traz um jogador real do catálogo ao melhorar. A partir do nível 2, traz outro a cada nova temporada.', cost: 1000},
   stadium: {name: 'Estádio', effect: 'Cada melhoria aumenta em R$ 120 mil a receita por jogo em casa.', cost: 1800},
 };
 export const MAX_FACILITY_LEVEL = 5;
 export const MAX_CAREER_ROSTER = 32;
-const STARTERS = [
-  ['Caio Reis', 77, 'GOL'], ['André Matos', 74, 'GOL'],
-  ['Igor Tavares', 77, 'LD/MD'], ['Rafael Moura', 79, 'ZAG'], ['Bruno Dias', 78, 'ZAG/VOL'],
-  ['Daniel Luz', 76, 'LE/ME'], ['João Prado', 75, 'ZAG/LE'], ['Felipe Nunes', 74, 'LD/ZAG'],
-  ['Lucas Melo', 79, 'VOL/MC'], ['Pedro Leal', 78, 'MC/MEI'], ['Vítor Costa', 77, 'MC/MD'],
-  ['Rui Castro', 75, 'VOL/MC'], ['Gustavo Lima', 79, 'PE/ME/SA'],
-  ['Mateus Rocha', 78, 'PD/MD'], ['Diego Campos', 80, 'CA'], ['Renan Alves', 76, 'CA/SA'],
-];
-const player = (id, nome, ovr, tags) => ({id, nome, ovr, tags});
+const CAREER_VERSION = 2;
 const brazilianSquads = squadsForMode(allSquads, 'copa-do-brasil');
 const clubs = new Map();
 for (const squad of brazilianSquads) {
@@ -33,6 +25,28 @@ for (const squad of brazilianSquads) {
 }
 const opponents = new Map(brazilianSquads.map(squad => [squad.id, squad]));
 const opponentTeams = new Map();
+const careerPlayerPool = brazilianSquads.flatMap(squad => squad.jogadores);
+// The order matches the starter IDs used by saves before the catalog roster.
+const startingRoster = [
+  ['cruzeiro-1997', 'dida'],
+  ['vasco-1997', 'carlos-germano'],
+  ['gremio-2001', 'anderson-lima'],
+  ['sao-paulo-2006', 'miranda'],
+  ['gremio-2001', 'anderson-polga'],
+  ['atletico-mineiro-2021', 'guilherme-arana'],
+  ['internacional-2008', 'marcao-marcos-alberto-skavinski'],
+  ['flamengo-2025', 'danilo-luiz-da-silva'],
+  ['flamengo-2022', 'joao-gomes'],
+  ['vasco-1997', 'juninho-pernambucano'],
+  ['gremio-2017', 'ramiro'],
+  ['fluminense-2023', 'andre-trindade-da-costa-neto'],
+  ['sao-paulo-2008', 'dagoberto'],
+  ['flamengo-2025', 'luiz-araujo'],
+  ['flamengo-2009', 'adriano'],
+  ['fluminense-2012', 'rafael-sobis'],
+].map(([squadId, id]) => opponents.get(squadId).jogadores.find(player => player.id === id));
+const isLegacyPlayer = player => /^career-(?:starter|youth)-/.test(player.id);
+const ratingGap = (player, target) => Math.abs(player.ovr - target);
 
 function shuffled(items, rng) {
   const copy = [...items];
@@ -95,14 +109,36 @@ function bestLineup(roster, formation) {
 }
 
 export function createCareer(seed) {
-  const roster = STARTERS.map(([name, ovr, roles], index) => player('career-starter-' + index, name, ovr, roles.split('/')));
+  const roster = [...startingRoster];
   const opponentIds = [...clubs.values()].slice(0, 15).map(squad => squad.id);
   if (opponentIds.length % 2 === 0) opponentIds.pop();
   return {
-    version: 1, seed, name: 'Meu time', crest: CAREER_CRESTS[0],
+    version: CAREER_VERSION, seed, name: 'Meu time', crest: CAREER_CRESTS[0],
     season: 1, round: 0, budget: 8500, facilities: {training: 1, academy: 1, stadium: 1},
     roster, opponentIds, formation: '4-3-3', lineup: bestLineup(roster, '4-3-3'), results: [], seasons: [],
   };
+}
+
+export function migrateCareerRoster(career) {
+  if (career.version >= CAREER_VERSION) return career;
+  const used = new Set(career.roster.filter(player => !isLegacyPlayer(player)).map(player => player.id));
+  const lineup = {...career.lineup};
+  const slots = new Map(FORMATIONS[career.formation].slots.map(slot => [lineup[slot.id], slot]));
+  const roster = career.roster.map(player => {
+    if (!isLegacyPlayer(player)) return player;
+    const slot = slots.get(player.id);
+    const role = slot ?? player.tags[0];
+    const available = candidate => candidate && !used.has(candidate.id) && positionFit(candidate, role) !== null;
+    const preferred = startingRoster[Number(player.id.match(/^career-starter-(\d+)$/)?.[1])];
+    const missingRoles = candidate => player.tags.filter(tag => positionFit(candidate, tag) === null).length;
+    const replacement = available(preferred) ? preferred : careerPlayerPool.filter(available).sort((a, b) =>
+      missingRoles(a) - missingRoles(b) || ratingGap(a, player.ovr) - ratingGap(b, player.ovr)
+    )[0];
+    used.add(replacement.id);
+    if (slot) lineup[slot.id] = replacement.id;
+    return replacement;
+  });
+  return {...career, version: CAREER_VERSION, roster, lineup};
 }
 
 export function careerPicks(career) {
@@ -158,15 +194,17 @@ export function facilityPrice(career, key) {
   return FACILITIES[key].cost * career.facilities[key];
 }
 
-function addAcademyPlayer(career, suffix) {
+function addAcademyPlayer(career) {
   if (career.roster.length >= MAX_CAREER_ROSTER) return career;
-  const id = `career-youth-${career.season}-${suffix}`;
+  const used = new Set(career.roster.map(player => player.id));
+  const target = 69 + career.facilities.academy * 2;
+  const eligible = careerPlayerPool.filter(player => !used.has(player.id)).sort((a, b) => ratingGap(a, target) - ratingGap(b, target));
+  const closest = eligible[0];
+  if (!closest) return career;
+  const prospects = [...new Map(eligible.filter(player => ratingGap(player, target) === ratingGap(closest, target))
+    .map(player => [player.id, player])).values()];
   const rng = mulberry32(career.seed + career.season * 19 + career.facilities.academy * 47);
-  const roles = ['ZAG/VOL', 'MC/MEI', 'LE/ME', 'PD/SA', 'CA/SA', 'LD/MD', 'GOL'];
-  const names = ['Davi', 'Henrique', 'Breno', 'Iago', 'Nicolas', 'Luan', 'Alex'];
-  const index = Math.floor(rng() * roles.length);
-  const prospect = player(id, `${names[index]} da Base`, 69 + career.facilities.academy * 2, roles[index].split('/'));
-  return {...career, roster: [...career.roster, prospect]};
+  return {...career, roster: [...career.roster, prospects[Math.floor(rng() * prospects.length)]]};
 }
 
 export function upgradeCareerFacility(career, key) {
@@ -175,7 +213,7 @@ export function upgradeCareerFacility(career, key) {
   const price = facilityPrice(career, key);
   if (career.budget < price) throw Error('Saldo insuficiente para a melhoria.');
   const updated = {...career, budget: career.budget - price, facilities: {...career.facilities, [key]: career.facilities[key] + 1}};
-  return key === 'academy' ? addAcademyPlayer(updated, 'upgrade-' + updated.facilities.academy) : updated;
+  return key === 'academy' ? addAcademyPlayer(updated) : updated;
 }
 
 export function careerTable(career) {
@@ -278,5 +316,5 @@ export function advanceCareerSeason(career) {
   const prize = 2500 + (table.length - position) * 200;
   const season = {number: career.season, position, points: table[position - 1].points, prize};
   const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
-  return career.facilities.academy > 1 ? addAcademyPlayer(next, 'season') : next;
+  return career.facilities.academy > 1 ? addAcademyPlayer(next) : next;
 }

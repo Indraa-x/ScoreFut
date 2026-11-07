@@ -34,8 +34,8 @@ test('a starter swaps with another only when both players fit their new slots', 
 
 test('the roster renders the selected reserve and highlights only its compatible destination', () => {
   const career = createCareer(42);
-  const html = renderCareer(career, 'squad', ui, null, undefined, {group: 'reserves', selectedId: 'career-starter-1'});
-  assert.match(html, /data-action="career-select-player" data-value="career-starter-1" aria-pressed="true"/);
+  const html = renderCareer(career, 'squad', ui, null, undefined, {group: 'reserves', selectedId: 'carlos-germano'});
+  assert.match(html, /data-action="career-select-player" data-value="carlos-germano" aria-pressed="true"/);
   const targets = [...html.matchAll(/class="career-squad-slot is-target"[^>]*data-value="([^"]+)"/g)];
   assert.deepEqual(targets.map(match => match[1]), ['gol']);
   assert.equal(html.match(/data-action="career-pick-slot"[^>]* disabled/g).length, 10);
