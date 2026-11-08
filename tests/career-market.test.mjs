@@ -54,6 +54,7 @@ test('market cards show the season, crest, OVR, source price and purchase action
   const html = renderCareer(career, 'market', ui, null, {search: 'mbappe madrid'});
   assert.match(html, /career-market-token[^>]+aria-label="\d+ OVR"[\s\S]*?league-laliga\.webp/);
   assert.match(html, /<h3>Kylian Mbappé<\/h3>[\s\S]*?Real Madrid[\s\S]*?2026\/27/);
+  assert.match(html, /<small>Valor de mercado<\/small>\s*<strong>R\$ 1,11 Bi<\/strong>/);
   assert.match(html, /transfermarkt\.com\.br[^"]+"[^>]*>€ 180\.000\.000<\/a>/);
   assert.match(html, /data-action="career-sign" data-value="career26-laliga-243\/kylian-mbappe">Contratar/);
 });
