@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
 import {
   advanceCareerSeason, careerFixtures, careerPicks, changeCareerFormation, createCareer,
-  migrateCareerRoster, prepareCareerRound, signCareerPlayer, upgradeCareerFacility,
+  migrateCareerRoster, prepareCareerRound, upgradeCareerFacility,
 } from '../js/career.js';
 import {FORMATIONS, positionFit} from '../js/engine.js';
 
@@ -37,13 +37,14 @@ test('the academy adds an unused catalog player on upgrade and on season rollove
 });
 
 test('old saves replace fictitious players, avoid existing signings and retain progress and the pending replay', () => {
-  const career = signCareerPlayer(createCareer(42), 'nation-brazil-1958/pele');
+  const initial = createCareer(42);
+  const pele = allSquads.find(squad => squad.id === 'nation-brazil-1958').jogadores.find(player => player.id === 'pele');
   const formerStarter = {id: 'career-starter-0', nome: 'Caio Reis', tags: ['GOL'], ovr: 77};
   const formerYouth = {id: 'career-youth-2-season', nome: 'Alex da Base', tags: ['VOL'], ovr: 73};
   const old = {
-    ...career, version: 1, name: 'Time salvo', season: 2, budget: 12345,
-    roster: [...career.roster, formerStarter, formerYouth],
-    lineup: {...career.lineup, gol: formerStarter.id},
+    ...initial, version: 1, name: 'Time salvo', season: 2, budget: 12345,
+    roster: [...initial.roster, pele, formerStarter, formerYouth],
+    lineup: {...initial.lineup, gol: formerStarter.id},
   };
   const saved = {...old, replay: prepareCareerRound(old)};
   const migrated = migrateCareerRoster(saved);
@@ -56,6 +57,6 @@ test('old saves replace fictitious players, avoid existing signings and retain p
   for (const field of ['name', 'season', 'formation', 'budget', 'results', 'seasons', 'replay']) {
     assert.equal(migrated[field], saved[field]);
   }
-  assert.equal(migrated.roster.find(player => player.id === 'pele'), career.roster.at(-1));
+  assert.equal(migrated.roster.find(player => player.id === 'pele'), pele);
   assert.equal(migrateCareerRoster(migrated), migrated);
 });

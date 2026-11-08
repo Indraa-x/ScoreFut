@@ -2,7 +2,6 @@ import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, createCareer,
   commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
-import {loadWorldCupSquads, worldCupSquads} from '../data/game-squads.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {CAREER_TABS, renderCareer, renderCareerIntro, renderCareerMarketResults} from './career-view.js';
 import {renderCareerSetup} from './career-setup-view.js';
@@ -11,14 +10,13 @@ import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 
-const marketDefaults = {search: '', position: '', decade: '', order: 'overall', affordable: false, page: 1};
+const marketDefaults = {search: '', position: '', leagueId: '', order: 'overall', affordable: false, page: 1};
 const activeCareerKey = 'coach-career-active';
 const careerSlot = clubId => clubId ? `${CAREER_KEY}:${clubId}` : CAREER_KEY;
 
 export function initCareer({app, navigate, render, storage, toast, ui}) {
   let tab = 'intro';
   let initial;
-  let marketStatus = 'idle';
   let filters = {...marketDefaults};
   const squad = {group: 'reserves', selectedId: null};
   const selection = {leagueId: null, clubId: null};
@@ -155,17 +153,6 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     squad.selectedId = null;
     refreshSquad(() => change(current => changeCareerStarter(current, slotId, id), 'Escalação atualizada.'));
   }
-  function loadMarket() {
-    if (worldCupSquads.length) marketStatus = 'ready';
-    if (marketStatus !== 'idle') return;
-    marketStatus = 'loading';
-    loadWorldCupSquads().then(
-      () => { marketStatus = 'ready'; },
-      () => { marketStatus = 'error'; },
-    ).then(() => {
-      if (tab === 'market' && app.dataset.screen === 'career') render();
-    });
-  }
   function updateMarketResults() {
     const results = app.querySelector('[data-career-market-results]');
     if (results) results.innerHTML = renderCareerMarketResults(read(), ui, filters);
@@ -173,7 +160,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   function updateMarketFilters(form) {
     const fields = new FormData(form);
     filters = {
-      search: fields.get('search'), position: fields.get('position'), decade: fields.get('decade'),
+      search: fields.get('search'), position: fields.get('position'), leagueId: fields.get('leagueId'),
       order: fields.get('order'), affordable: fields.has('affordable'), page: 1,
     };
     updateMarketResults();
@@ -187,8 +174,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     }
     const career = read();
     if (career === initial) storage.write(activeSlot(), career);
-    if (tab === 'market') loadMarket();
-    return renderCareer(career, tab, ui, live.tournament ? live : null, {status: marketStatus, filters}, squad);
+    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad);
   }
   async function startCampaign(button) {
     if (tab !== 'intro' || button?.disabled) return;
@@ -313,10 +299,6 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
         filters.page = Number(value);
         updateMarketResults();
         app.querySelector('#career-market-count')?.focus();
-      },
-      'career-market-retry': () => {
-        marketStatus = 'idle';
-        render();
       },
       'career-sign': value => {
         change(career => signCareerPlayer(career, value), 'Jogador contratado. Confira a reserva em Elenco.');
