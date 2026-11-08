@@ -9,6 +9,28 @@ import {movableSlots} from './draft.js';
 
 export const CAREER_KEY = 'coach-career';
 export const CAREER_TEAM = 'career-user';
+export const CAREER_STYLES = {
+  balanced: {name: 'Equilibrado', description: 'Equilíbrio entre atacar e defender.'},
+  attacking: {
+    name: 'Ofensivo', description: 'Acelera o jogo e cria mais chances, mas deixa espaços na defesa.',
+    profile: {attack: 1.12, midfield: 1, defense: 0.94, tempo: 0.18},
+  },
+  defensive: {
+    name: 'Defensivo', description: 'Protege a defesa e diminui o ritmo, com menos chegada ao ataque.',
+    profile: {attack: 0.92, midfield: 1, defense: 1.12, tempo: -0.18},
+  },
+  counter: {
+    name: 'Contra-ataque', description: 'Reforça a defesa e sai rápido quando recupera a bola, cedendo espaço no meio.',
+    profile: {attack: 1.04, midfield: 0.88, defense: 1.07, tempo: -0.04},
+  },
+};
+export const careerStyle = career => Object.hasOwn(CAREER_STYLES, career.playStyle) ? career.playStyle : 'balanced';
+
+export function changeCareerStyle(career, style) {
+  if (!Object.hasOwn(CAREER_STYLES, style)) throw Error('Escolha um estilo de jogo válido.');
+  return {...career, playStyle: style};
+}
+
 export const CAREER_CRESTS = ['bola', 'leao', 'aguia', 'montanha', 'estrela', 'listras', 'raio', 'torre'];
 export const FACILITIES = {
   training: {name: 'Centro de treinamento', effect: 'Cada melhoria dá +1 de OVR efetivo aos titulares durante as partidas.', cost: 1400},
@@ -286,7 +308,8 @@ function matchTeam(career, id) {
     if (!pick.player || positionFit(pick.player, pick.slot) === null) throw Error('Complete a escalação antes de jogar.');
     return {...pick, player: {...pick.player, ovr: Math.min(99, pick.player.ovr + bonus)}, clubId: CAREER_TEAM, ano: career.season};
   });
-  return {id, name: career.name, crest: career.crest, isUser: true, lineup, strength: calculateTeam(lineup), formation: career.formation};
+  const tacticalProfile = CAREER_STYLES[careerStyle(career)].profile;
+  return {id, name: career.name, crest: career.crest, isUser: true, lineup, strength: calculateTeam(lineup), formation: career.formation, ...(tacticalProfile && {tacticalProfile})};
 }
 
 export function careerScorers(match) {

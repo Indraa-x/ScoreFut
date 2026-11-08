@@ -282,14 +282,18 @@ export function expectedGoals(team, opponent, settings = SIMULATION_SETTINGS) {
  */
 const SIMULATION_METRICS=Symbol('simulation-metrics');
 function effectiveMetrics(team,settings){
-  return team[SIMULATION_METRICS] || (team.lineup?.length?calculateTeam(team.lineup,settings):team.strength || calculateTeam([],settings));
+  if(team[SIMULATION_METRICS])return team[SIMULATION_METRICS];
+  const metrics=team.lineup?.length?calculateTeam(team.lineup,settings):team.strength || calculateTeam([],settings);
+  const profile=team.tacticalProfile;
+  if(!profile)return metrics;
+  return {...metrics,attack:metrics.attack*profile.attack,midfield:metrics.midfield*profile.midfield,defense:metrics.defense*profile.defense};
 }
 // Tempo changes both scoring rates together, rather than awarding free wins.
 const FORMATION_TEMPO=Object.freeze({'4-3-3':0,'4-4-2':0,'4-2-3-1':-.005,'4-2-4':.05,'3-5-2':.005,'5-3-2':-.04,'4-5-1':-.025,'3-4-3':.04});
-function formationTempo(team){
+function teamTempo(team){
   const entries=team.lineup || [];
   const formation=Object.keys(FORMATIONS).find(key=>entries.length===11 && FORMATIONS[key].slots.every(slot=>entries.some(entry=>entry.slot.id===slot.id && entry.slot.label===slot.label)));
-  return FORMATION_TEMPO[formation] || 0;
+  return (FORMATION_TEMPO[formation] || 0) + (team.tacticalProfile?.tempo ?? 0);
 }
 
 function smoothExpectedGoals(team,opponent,settings){
@@ -305,7 +309,7 @@ function smoothExpectedGoals(team,opponent,settings){
       +(settings.midfieldWeight??.4)*Math.log(Math.max(1,one.midfield??one.overall??85)/Math.max(1,two.midfield??two.overall??85))+assist;
   };
   const difference=clamp(quality(a,b,team.isUser,opponent.isUser)-quality(b,a,opponent.isUser,team.isUser),-6,6);
-  const pace=1+(formationTempo(team)+formationTempo(opponent))/2;
+  const pace=1+(teamTempo(team)+teamTempo(opponent))/2;
   return clamp(2*settings.baseXG*pace/(1+Math.exp(-difference)),settings.minXG,settings.maxXG);
 }
 

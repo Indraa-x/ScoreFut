@@ -11,7 +11,7 @@ import {renderMatchGoals} from './match-goals.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
-  CAREER_CRESTS, CAREER_TEAM, FACILITIES, MAX_FACILITY_LEVEL, careerClub,
+  CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, FACILITIES, MAX_FACILITY_LEVEL, careerClub, careerStyle,
   careerCompetitionName, careerDestinations, careerFixtures, careerPicks, careerRosterLimit, careerScorers, careerTable, facilityPrice, nextCareerMatch,
 } from './career.js';
 
@@ -247,6 +247,7 @@ function playerToken(player, crest, className) {
 }
 
 function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
+  const style = careerStyle(career);
   const picks = careerPicks(career);
   const starters = new Map(picks.map(({slot, player}) => [player.id, slot.label]));
   const reserves = career.roster.filter(player => !starters.has(player.id)).sort((a, b) => b.ovr - a.ovr);
@@ -296,9 +297,15 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
         }).join('')}
       </div>
       <div class="career-squad-formation">
-        <label for="career-formation">Formação</label>
-        <select id="career-formation">${Object.entries(FORMATIONS).map(([id, formation]) =>
-          `<option value="${id}"${id === career.formation ? ' selected' : ''}>${formation.name}</option>`).join('')}</select>
+        <label>Formação
+          <select id="career-formation">${Object.entries(FORMATIONS).map(([id, formation]) =>
+            `<option value="${id}"${id === career.formation ? ' selected' : ''}>${formation.name}</option>`).join('')}</select>
+        </label>
+        <label>Estilo de jogo
+          <select id="career-play-style" aria-describedby="career-style-description">${Object.entries(CAREER_STYLES).map(([id, preset]) =>
+            `<option value="${id}"${id === style ? ' selected' : ''}>${preset.name}</option>`).join('')}</select>
+        </label>
+        <p id="career-style-description" class="muted">${CAREER_STYLES[style].description}</p>
       </div>
     </section>
   </div>`;
