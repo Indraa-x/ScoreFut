@@ -1,10 +1,36 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {CAREER_TEAM, careerScorers, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
+import {CAREER_TEAM, careerScorers, changeCareerStyle, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
+import {expectedGoals} from '../js/engine.js';
 import * as ui from '../js/ui.js';
 import {renderCareer} from '../js/career-view.js';
 import {initCareer} from '../js/career-controller.js';
 import {scoreAt} from '../js/match-motion.js';
+
+test('career styles persist, change match expectations and leave the balanced default intact', () => {
+  const career = createCareer(42);
+  const round = style => prepareCareerRound(JSON.parse(JSON.stringify(changeCareerStyle(career, style))));
+  const baseline = round('balanced');
+  assert.deepEqual(prepareCareerRound(career), baseline);
+  assert.throws(() => changeCareerStyle(career, 'unknown'), /estilo de jogo válido/);
+  const rates = replay => {
+    const teams = replay.tournament.teams;
+    const user = teams.find(team => team.id === CAREER_TEAM);
+    const opponent = teams.find(team => team.id !== CAREER_TEAM);
+    return [expectedGoals(user, opponent), expectedGoals(opponent, user)];
+  };
+  const neutral = rates(baseline);
+  const attacking = rates(round('attacking'));
+  const defensive = rates(round('defensive'));
+  const counter = rates(round('counter'));
+  assert.ok(attacking[0] > neutral[0] && attacking[1] > neutral[1]);
+  assert.ok(defensive[0] < neutral[0] && defensive[1] < neutral[1]);
+  assert.notDeepEqual(counter, defensive);
+  assert.notDeepEqual(round('attacking').tournament.userMatches[0].result.xG, baseline.tournament.userMatches[0].result.xG);
+  const saved = JSON.parse(JSON.stringify(changeCareerStyle({...career, replay: baseline}, 'counter')));
+  assert.deepEqual(saved.replay, baseline);
+  assert.match(renderCareer(saved, 'squad', ui), /<option value="counter" selected>Contra-ataque<\/option>/);
+});
 
 test('a prepared career match resumes from storage and credits the round only at full time', () => {
   const career = createCareer(42);

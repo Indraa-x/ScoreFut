@@ -1,5 +1,5 @@
 import {
-  CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, createCareer,
+  CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
   commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
@@ -214,6 +214,10 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     if (field.id === 'career-formation') {
       squad.selectedId = null;
       refreshSquad(() => change(career => changeCareerFormation(career, field.value)));
+    }
+    if (field.id === 'career-play-style') {
+      refreshSquad(() => change(career => changeCareerStyle(career, field.value)));
+      app.querySelector('#career-play-style')?.focus({preventScroll: true});
     }
   });
   app.addEventListener('keydown', event => {

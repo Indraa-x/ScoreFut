@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.17 — 08/11/2026
+
+O Elenco da Carreira ganhou quatro estilos de jogo ao lado da formação. O estilo escolhido fica salvo na campanha e altera o ritmo e a criação de chances nas próximas partidas.
+
 ## Beta 0.16 — 08/11/2026
 
 O Mercado da Carreira reúne os elencos europeus 2026/27 e do Brasileirão 2026. O filtro de liga substitui o de época, e o custo da contratação usa o valor de mercado publicado pelo Transfermarkt, convertido para reais. Cada cartão com preço traz a referência em euros e o link da fonte.
