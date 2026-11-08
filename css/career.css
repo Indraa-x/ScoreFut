@@ -1,4 +1,47 @@
 #app[data-screen="career"] { max-width: 1240px; }
+#app[data-screen="career"]:has(.career-hero) { max-width: 1440px; padding-top: 32px; }
+.career-hero .hero-play-content { gap: 12px; white-space: normal; }
+.career-hero .hero-play-label { font-size: clamp(20px, 2vw, 27px); }
+#app .career-hero .hero-play-cta { max-width: 100%; min-width: 0; padding-inline: clamp(14px, 2.2vw, 32px); }
+.career-coaches { position: relative; }
+.career-coaches:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+.career-coach-slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  mask-image: linear-gradient(#000 71%, #000c 85%, transparent 100%);
+  animation: career-coach-cycle 16s linear infinite;
+}
+.career-coach-trio { opacity: 1; animation-delay: -.8s; }
+.career-coach-solo:nth-child(2) { animation-delay: 3.2s; }
+.career-coach-solo:nth-child(3) { animation-delay: 7.2s; }
+.career-coach-solo:nth-child(4) { animation-delay: 11.2s; }
+.career-coaches:is(:hover, :focus-within) .career-coach-slide { animation-play-state: paused; }
+.career-coach {
+  position: absolute;
+  top: var(--coach-top);
+  left: 50%;
+  width: auto;
+  height: var(--coach-height);
+  max-width: none;
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+.career-coach--guardiola { --coach-x: 19%; --coach-center: 31.5%; --coach-top: -17%; --coach-height: 143%; }
+.career-coach--ferguson { --coach-x: 48%; --coach-center: 58%; --coach-top: 3.5%; --coach-height: 155%; }
+.career-coach--brasileirao { --coach-x: 81%; --coach-center: 57%; --coach-top: -4%; --coach-height: 138%; }
+.career-coach-trio .career-coach { left: var(--coach-x); transform: translateX(calc(-1 * var(--coach-center))); }
+.career-coach-trio .career-coach--ferguson { z-index: 1; }
+@keyframes career-coach-cycle {
+  0%, 30%, 100% { opacity: 0; }
+  5%, 25% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .career-coach-slide { animation: none; }
+  .career-coach-solo { display: none; }
+}
 .career-page { display: grid; gap: 20px; }
 .career-title { text-align: center; padding-block: 10px 0; }
 .career-title h1 { margin-top: 4px; font-size: clamp(27px, 4vw, 46px); line-height: 1.15; }

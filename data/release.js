@@ -1,5 +1,9 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.14',date:'07/11/2026',title:'Nova entrada para a Carreira',changes:[
+  {icon:'field',title:'Treinadores no gramado',detail:'O modo Carreira ganhou uma entrada no estilo da página inicial, com os retratos dos treinadores alternando no campo.'},
+  {icon:'play',title:'Comece ou retome sua campanha',detail:'O botão mostra a ação disponível conforme o progresso salvo neste navegador.'},
+ ]},
  {version:'0.13',date:'07/11/2026',title:'Jogadores reais na Carreira',changes:[
   {icon:'players',title:'Elenco inicial e base com jogadores do catálogo',detail:'As novas carreiras começam com jogadores reais, e a academia traz reforços com as posições e os OVRs das versões cadastradas.'},
   {icon:'shield',title:'Carreiras antigas atualizadas',detail:'Ao abrir o save, os jogadores fictícios do elenco são substituídos por jogadores reais compatíveis. Contratações, orçamento, escalação e resultados são preservados.'},

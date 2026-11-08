@@ -3,7 +3,7 @@ import {
   commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {loadWorldCupSquads, worldCupSquads} from '../data/game-squads.js';
-import {CAREER_TABS, renderCareer, renderCareerMarketResults} from './career-view.js';
+import {CAREER_TABS, renderCareer, renderCareerIntro, renderCareerMarketResults} from './career-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
 import {currentMatch} from './match-session.js';
@@ -12,7 +12,7 @@ import {matchHasEnded} from './match-penalties.js';
 const marketDefaults = {search: '', position: '', decade: '', order: 'overall', affordable: false, page: 1};
 
 export function initCareer({app, navigate, render, storage, toast, ui}) {
-  let tab = 'overview';
+  let tab = 'intro';
   let initial;
   let marketStatus = 'idle';
   let filters = {...marketDefaults};
@@ -40,6 +40,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   function loadMatch(career = read()) {
     const replay = career.replay;
     if (!replay) return false;
+    setTab('overview');
     live.tournament = replay.tournament;
     live.matchMinute = replay.minute;
     live.matchSpeed = normalizeMatchSpeed(career.matchSpeed);
@@ -105,7 +106,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     render();
   }
   function setTab(value) {
-    tab = Object.hasOwn(CAREER_TABS, value) ? value : 'overview';
+    tab = Object.hasOwn(CAREER_TABS, value) ? value : 'intro';
     squad.selectedId = null;
   }
   function refreshSquad(update = render) {
@@ -171,6 +172,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     updateMarketResults();
   }
   function open() {
+    if (tab === 'intro') return renderCareerIntro(Boolean(storage.read(CAREER_KEY) || initial));
     const career = read();
     if (career === initial) storage.write(CAREER_KEY, career);
     if (tab === 'market') loadMarket();
@@ -214,7 +216,8 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   return {
     setTab, open, loadMatch, pauseMatch, leaveMatch, attachMatch, get tab() { return tab; },
     actions: {
-      career: () => { setTab('overview'); navigate('career'); },
+      career: () => { setTab('intro'); navigate('career'); },
+      'career-start': () => { setTab('overview'); navigate('career'); },
       'career-tab': value => { setTab(value); navigate('career'); },
       'career-squad-group': value => {
         if (!['reserves', 'starters'].includes(value) || squad.group === value) return;
