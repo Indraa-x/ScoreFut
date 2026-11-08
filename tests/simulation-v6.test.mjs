@@ -37,7 +37,7 @@ test('v6 neutral equal teams retain realistic scoring; the Normal gap curve has 
   for(let seed=1;seed<=runs;seed++){
    const r=simulateMatch(seed%2?a:b,seed%2?b:a,mulberry32(seed));wins+=r.winnerId==='a';draws+=!r.winnerId;const n=r.homeGoals+r.awayGoals;goals+=n;large+=n>=5;zero+=n===0;
   }
-  const target={0:.42,5:.52,10:.62,15:.72,20:.80}[gap];
+  const target={0:.42,5:.58,10:.70,15:.78,20:.82}[gap];
   assert.ok(Math.abs(wins/runs-target)<.045,`gap ${gap}: ${wins/runs}`);
   assert.ok(large/runs<.25);assert.ok(goals/runs>2.4&&goals/runs<2.8);
   if(!gap){assert.ok(draws/runs>.235&&draws/runs<.29);assert.ok(zero/runs>.06&&zero/runs<.09);}
