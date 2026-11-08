@@ -33,6 +33,7 @@ test('hiring debits the verified market value in reais and requires a listed pri
   const unknown = offers.find(offer => offer.price === null);
   assert.equal(mbappe.euros, 180_000_000);
   assert.equal(mbappe.price, 1_106_082);
+  assert.equal(byId.get('career26-brasileirao-20008/neymar').euros, 8_000_000);
   const signed = signCareerPlayer(career, mbappe.id);
   assert.deepEqual(signed.roster.at(-1), mbappe.player);
   assert.equal(signed.budget, career.budget - mbappe.price);
