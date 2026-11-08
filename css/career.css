@@ -153,7 +153,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-card .career-identity { display: flex; align-items: center; gap: 10px; }
 .career-matchup .career-season-crest { width: clamp(44px, 8vw, 74px); height: clamp(44px, 8vw, 74px); }
 .career-table .career-season-crest { width: 24px; height: 24px; vertical-align: middle; }
-.career-squad-token .career-season-crest { width: 76%; height: auto; aspect-ratio: 1; }
+.career-squad-token .career-season-crest { width: 76%; height: auto; aspect-ratio: 1; background-color: transparent; }
 .career-market-token .career-season-crest { width: 32px; height: 32px; }
 @media (max-width: 580px) {
   .career-setup .screen-title { align-items: flex-start; flex-wrap: wrap; }
@@ -395,6 +395,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   height: auto;
   aspect-ratio: 1;
   padding-top: 1px;
+  overflow: hidden;
 }
 .career-squad-token .career-crest { width: 75%; height: auto; }
 .career-squad-slot .career-squad-token > strong { font-size: clamp(11px, 3.8cqw, 17px); }
