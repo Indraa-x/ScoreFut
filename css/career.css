@@ -3,6 +3,16 @@
 .career-hero .hero-play-content { gap: 12px; white-space: normal; }
 .career-hero .hero-play-label { font-size: clamp(20px, 2vw, 27px); }
 #app .career-hero .hero-play-cta { max-width: 100%; min-width: 0; padding-inline: clamp(14px, 2.2vw, 32px); }
+.career-hero .hero-actions .career-tactic-icon { width: 36px; height: 36px; flex: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .career-tactic-icon { transition: transform .22s ease-out; }
+  .career-hero .hero-play-cta:is(:hover, :focus-visible) .career-tactic-icon { transform: translateY(-2px) rotate(-6deg); }
+  .career-tactic-route { stroke-dasharray: 1; animation: career-tactic-draw .75s ease-out .15s both; }
+  @keyframes career-tactic-draw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+}
 .career-coaches { position: relative; }
 .career-coach-trio {
   position: absolute;

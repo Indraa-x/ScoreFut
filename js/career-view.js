@@ -37,7 +37,13 @@ export function renderCareerIntro(hasSave) {
       <div class="hero-actions">
         <button type="button" class="btn btn-primary hero-play-cta" data-action="career-start">
           <span class="hero-play-content">
-            <span class="hero-play-ball" aria-hidden="true"><img src="${assetUrl('assets/play-ball.svg')}" width="48" height="48" alt="" draggable="false"></span>
+            <svg class="career-tactic-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 5H8a2 2 0 0 0-2 2v21a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/>
+              <rect x="12" y="2" width="8" height="6" rx="2"/>
+              <circle cx="11" cy="23" r="1.45" fill="currentColor" stroke="none"/>
+              <circle cx="21" cy="23" r="1.45" fill="currentColor" stroke="none"/>
+              <path class="career-tactic-route" pathLength="1" d="M11 20v-1a4 4 0 0 1 4-4h5m-3-3 3 3-3 3"/>
+            </svg>
             <span class="hero-play-label">${action}</span>
           </span>
         </button>
