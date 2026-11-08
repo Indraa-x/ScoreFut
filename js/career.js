@@ -1,5 +1,6 @@
 import {allSquads} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
+import {careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {FORMATIONS, calculateTeam, mulberry32, positionFit, simulateMatch, squadTeam} from './engine.js';
 import {goalsAt} from './match-goals.js';
 import {formatMatchEventMinute} from './match-motion.js';
@@ -16,6 +17,7 @@ export const FACILITIES = {
 };
 export const MAX_FACILITY_LEVEL = 5;
 export const MAX_CAREER_ROSTER = 32;
+export const careerRosterLimit = career => Math.max(MAX_CAREER_ROSTER, (careerSeasonTeam(career.clubId)?.jogadores.length ?? 0) + 3);
 const CAREER_VERSION = 2;
 const brazilianSquads = squadsForMode(allSquads, 'copa-do-brasil');
 const clubs = new Map();
@@ -77,9 +79,11 @@ export function nextCareerMatch(career) {
 }
 
 export function careerClub(career, id) {
-  if (id === CAREER_TEAM) return {nome: career.name, crest: career.crest};
-  return opponents.get(id);
+  if (id === CAREER_TEAM) return careerSeasonTeam(career.clubId) ?? {nome: career.name, crest: career.crest};
+  return careerSeasonTeam(id) ?? opponents.get(id);
 }
+
+export const careerCompetitionName = career => careerLeague(career.leagueId)?.name ?? 'Campeonato Brasileiro';
 
 // Use an augmenting path so flexible players can move aside for a teammate
 // who only fits one role. The final assignment always uses distinct players.
@@ -104,11 +108,31 @@ function bestLineup(roster, formation) {
     place(candidate, new Set());
     if (Object.keys(assigned).length === slots.length) break;
   }
-  if (Object.keys(assigned).length !== slots.length) throw Error('O elenco não tem jogadores compatíveis com todas as vagas dessa formação.');
+  if (Object.keys(assigned).length !== slots.length) return null;
   return Object.fromEntries(Object.entries(assigned).map(([slot, candidate]) => [slot, candidate.id]));
 }
 
-export function createCareer(seed) {
+function startingLineup(roster) {
+  for (const formation of Object.keys(FORMATIONS)) {
+    const lineup = bestLineup(roster, formation);
+    if (lineup) return {formation, lineup};
+  }
+  throw Error('O elenco não tem onze jogadores compatíveis.');
+}
+
+export function createCareer(seed, clubId) {
+  if (clubId) {
+    const club = careerSeasonTeam(clubId);
+    if (!club) throw Error('Escolha um clube válido.');
+    const league = careerLeague(club.leagueId);
+    const roster = [...club.jogadores];
+    return {
+      version: CAREER_VERSION, seed, clubId, leagueId: league.id, name: club.nome,
+      season: 1, round: 0, budget: 8500, facilities: {training: 1, academy: 1, stadium: 1},
+      roster, opponentIds: league.teams.filter(team => team.id !== clubId).map(team => team.id),
+      ...startingLineup(roster), results: [], seasons: [],
+    };
+  }
   const roster = [...startingRoster];
   const opponentIds = [...clubs.values()].slice(0, 15).map(squad => squad.id);
   if (opponentIds.length % 2 === 0) opponentIds.pop();
@@ -149,7 +173,9 @@ export function careerPicks(career) {
 
 export function changeCareerFormation(career, formation) {
   if (!Object.hasOwn(FORMATIONS, formation)) throw Error('Escolha uma formação válida.');
-  return {...career, formation, lineup: bestLineup(career.roster, formation)};
+  const lineup = bestLineup(career.roster, formation);
+  if (!lineup) throw Error('O elenco não tem jogadores compatíveis com todas as vagas dessa formação.');
+  return {...career, formation, lineup};
 }
 
 export function careerDestinations(career, playerId) {
@@ -170,10 +196,10 @@ export function changeCareerStarter(career, slotId, playerId) {
 }
 
 export function signCareerPlayer(career, id) {
-  const offer = careerMarketCatalog().byId.get(id);
+  const offer = careerMarketCatalog(career).byId.get(id);
   if (!offer) throw Error('Jogador não encontrado no mercado.');
   if (career.roster.some(player => player.id === offer.player.id)) throw Error('Esse jogador já está no elenco.');
-  if (career.roster.length >= MAX_CAREER_ROSTER) throw Error('O elenco está cheio. Libere um reserva no Elenco.');
+  if (career.roster.length >= careerRosterLimit(career)) throw Error('O elenco está cheio. Libere um reserva no Elenco.');
   if (career.budget < offer.price) throw Error('Saldo insuficiente para a contratação.');
   return {...career, budget: career.budget - offer.price, roster: [...career.roster, offer.player]};
 }
@@ -185,6 +211,7 @@ export function releaseCareerPlayer(career, id) {
 }
 
 export function renameCareerClub(career, name, crest) {
+  if (career.clubId) throw Error('Esta campanha usa a identidade oficial do clube.');
   const clean = name.trim().replace(/\s+/g, ' ');
   if (!clean || clean.length > 32 || !CAREER_CRESTS.includes(crest)) throw Error('Escolha um escudo e informe um nome de até 32 caracteres.');
   return {...career, name: clean, crest};
@@ -195,10 +222,12 @@ export function facilityPrice(career, key) {
 }
 
 function addAcademyPlayer(career) {
-  if (career.roster.length >= MAX_CAREER_ROSTER) return career;
+  if (career.roster.length >= careerRosterLimit(career)) return career;
   const used = new Set(career.roster.map(player => player.id));
   const target = 69 + career.facilities.academy * 2;
-  const eligible = careerPlayerPool.filter(player => !used.has(player.id)).sort((a, b) => ratingGap(a, target) - ratingGap(b, target));
+  const league = careerLeague(career.leagueId);
+  const pool = league ? league.teams.flatMap(team => team.jogadores) : careerPlayerPool;
+  const eligible = pool.filter(player => !used.has(player.id)).sort((a, b) => ratingGap(a, target) - ratingGap(b, target));
   const closest = eligible[0];
   if (!closest) return career;
   const prospects = [...new Map(eligible.filter(player => ratingGap(player, target) === ratingGap(closest, target))
@@ -209,7 +238,7 @@ function addAcademyPlayer(career) {
 
 export function upgradeCareerFacility(career, key) {
   if (!Object.hasOwn(FACILITIES, key) || career.facilities[key] >= MAX_FACILITY_LEVEL) throw Error('Essa melhoria não está disponível.');
-  if (key === 'academy' && career.roster.length >= MAX_CAREER_ROSTER) throw Error('Libere uma vaga no elenco para receber o jogador da base.');
+  if (key === 'academy' && career.roster.length >= careerRosterLimit(career)) throw Error('Libere uma vaga no elenco para receber o jogador da base.');
   const price = facilityPrice(career, key);
   if (career.budget < price) throw Error('Saldo insuficiente para a melhoria.');
   const updated = {...career, budget: career.budget - price, facilities: {...career.facilities, [key]: career.facilities[key] + 1}};
@@ -239,7 +268,16 @@ export function careerTable(career) {
 
 function matchTeam(career, id) {
   if (id !== CAREER_TEAM) {
-    if (!opponentTeams.has(id)) opponentTeams.set(id, squadTeam(opponents.get(id)));
+    if (!opponentTeams.has(id)) {
+      const club = careerSeasonTeam(id);
+      if (club) {
+        const {formation, lineup: assignments} = startingLineup(club.jogadores);
+        const lineup = FORMATIONS[formation].slots.map(slot => ({
+          slot, player: club.jogadores.find(player => player.id === assignments[slot.id]), clubId: id, ano: club.ano,
+        }));
+        opponentTeams.set(id, {id, name: club.nome, clubId: id, lineup, strength: calculateTeam(lineup), formation});
+      } else opponentTeams.set(id, squadTeam(opponents.get(id)));
+    }
     return opponentTeams.get(id);
   }
   const bonus = career.facilities.training - 1;
@@ -284,7 +322,7 @@ export function prepareCareerRound(career) {
         seed, mode: 'career', teams, userTeamId: CAREER_TEAM,
         userMatches: [{
           id, homeId: home, awayId: away, round: career.round + 1, stage: 'league',
-          stageLabel: `Campeonato Brasileiro · Rodada ${career.round + 1}`, result: match,
+          stageLabel: `${careerCompetitionName(career)} · Rodada ${career.round + 1}`, result: match,
         }],
       };
     }

@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.15 — 08/11/2026
+
+Novas campanhas da Carreira começam pela escolha de uma das cinco ligas e de um clube. Os clubes europeus usam a temporada 2026/27 e o Brasileirão usa a edição 2026. Os elencos europeus usam OVRs de lançamento do EA FC 27. No Brasil, as notas sem correspondência oficial são identificadas como estimativas. As campanhas ficam salvas separadamente por clube.
+
 ## Beta 0.14 — 07/11/2026
 
 A Carreira tem um menu de entrada no estilo da página inicial, com os retratos dos treinadores no gramado e um botão para começar ou continuar a campanha.

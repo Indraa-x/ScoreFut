@@ -3,13 +3,17 @@ import {
   commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {loadWorldCupSquads, worldCupSquads} from '../data/game-squads.js';
+import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {CAREER_TABS, renderCareer, renderCareerIntro, renderCareerMarketResults} from './career-view.js';
+import {renderCareerSetup} from './career-setup-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 
 const marketDefaults = {search: '', position: '', decade: '', order: 'overall', affordable: false, page: 1};
+const activeCareerKey = 'coach-career-active';
+const careerSlot = clubId => clubId ? `${CAREER_KEY}:${clubId}` : CAREER_KEY;
 
 export function initCareer({app, navigate, render, storage, toast, ui}) {
   let tab = 'intro';
@@ -17,11 +21,14 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
   let marketStatus = 'idle';
   let filters = {...marketDefaults};
   const squad = {group: 'reserves', selectedId: null};
+  const selection = {leagueId: null, clubId: null};
+  const activeSlot = () => careerSlot(careerSeasonTeam(storage.read(activeCareerKey))?.id);
+  const savedCareer = () => storage.read(activeSlot());
   function read() {
-    const saved = storage.read(CAREER_KEY);
+    const saved = savedCareer();
     if (!saved) return initial ??= createCareer(crypto.getRandomValues(new Uint32Array(1))[0]);
     const career = migrateCareerRoster(saved);
-    if (career !== saved) storage.write(CAREER_KEY, career);
+    if (career !== saved) storage.write(activeSlot(), career);
     return career;
   }
   const live = {screen: null, mode: 'career', userMatchIndex: 0, tournament: null, matchMinute: 0, matchSpeed: 4};
@@ -35,7 +42,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     render();
   }
   function save(next) {
-    if (!storage.write(CAREER_KEY, next)) throw Error('O navegador não conseguiu salvar a carreira.');
+    if (!storage.write(activeSlot(), next)) throw Error('O navegador não conseguiu salvar a carreira.');
   }
   function loadMatch(career = read()) {
     const replay = career.replay;
@@ -106,7 +113,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     render();
   }
   function setTab(value) {
-    tab = Object.hasOwn(CAREER_TABS, value) ? value : 'intro';
+    tab = value === 'setup' || Object.hasOwn(CAREER_TABS, value) ? value : 'intro';
     squad.selectedId = null;
   }
   function refreshSquad(update = render) {
@@ -172,9 +179,14 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     updateMarketResults();
   }
   function open() {
-    if (tab === 'intro') return renderCareerIntro(storage.read(CAREER_KEY) ?? initial, ui);
+    if (tab === 'intro') return renderCareerIntro(savedCareer() ?? initial, ui);
+    if (tab === 'setup') {
+      const ids = [null, ...CAREER_LEAGUES.flatMap(league => league.teams.map(team => team.id))];
+      const saves = ids.map(id => storage.read(careerSlot(id))).filter(Boolean);
+      return renderCareerSetup(selection.leagueId, selection.clubId, saves, ui);
+    }
     const career = read();
-    if (career === initial) storage.write(CAREER_KEY, career);
+    if (career === initial) storage.write(activeSlot(), career);
     if (tab === 'market') loadMarket();
     return renderCareer(career, tab, ui, live.tournament ? live : null, {status: marketStatus, filters}, squad);
   }
@@ -190,8 +202,24 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
       ).map(animation => animation.finished.catch(() => {})));
     }
     if (tab !== 'intro' || (button && !app.contains(button))) return;
-    setTab('overview');
+    setTab(savedCareer() || initial ? 'overview' : 'setup');
     navigate('career');
+  }
+  function openCampaign(clubId, create = false) {
+    if (tab !== 'setup' || (clubId && !careerSeasonTeam(clubId))) return;
+    try {
+      const slot = careerSlot(clubId);
+      if (!storage.read(slot)) {
+        if (!create || !clubId) return;
+        const campaign = createCareer(crypto.getRandomValues(new Uint32Array(1))[0], clubId);
+        if (!storage.write(slot, campaign)) throw Error('O navegador não conseguiu salvar a carreira.');
+      }
+      if (!storage.write(activeCareerKey, clubId || null)) throw Error('O navegador não conseguiu abrir a carreira.');
+      setTab('overview');
+      navigate('career');
+    } catch (error) {
+      toast(error.message);
+    }
   }
   app.addEventListener('change', event => {
     if (app.dataset.screen !== 'career') return;
@@ -233,6 +261,20 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     actions: {
       career: () => { setTab('intro'); navigate('career'); },
       'career-start': (_value, button) => startCampaign(button),
+      'career-new': () => { setTab('setup'); navigate('career'); },
+      'career-select-league': id => {
+        if (tab !== 'setup' || !careerLeague(id)) return;
+        selection.leagueId = id;
+        selection.clubId = null;
+        render();
+      },
+      'career-select-club': id => {
+        if (tab !== 'setup' || careerSeasonTeam(id)?.leagueId !== selection.leagueId) return;
+        selection.clubId = id;
+        render();
+      },
+      'career-create': () => openCampaign(selection.clubId, true),
+      'career-load': id => openCampaign(id),
       'career-tab': value => { setTab(value); navigate('career'); },
       'career-squad-group': value => {
         if (!['reserves', 'starters'].includes(value) || squad.group === value) return;

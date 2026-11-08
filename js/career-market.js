@@ -1,4 +1,5 @@
 import {allSquads} from '../data/game-squads.js';
+import {CAREER_LEAGUES} from '../data/career-leagues.js';
 const PAGE_SIZE = 12;
 const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
 const orders = {
@@ -8,11 +9,18 @@ const orders = {
   name: (a, b) => a.player.nome.localeCompare(b.player.nome, 'pt-BR'),
 };
 let source;
-let catalog;
+const catalogs = new Map();
+const modernSquads = CAREER_LEAGUES.flatMap(league => league.teams);
 
-export function careerMarketCatalog() {
-  if (source === allSquads) return catalog;
-  const offers = allSquads.flatMap(squad => squad.jogadores.map(player => ({
+export function careerMarketCatalog(career) {
+  if (source !== allSquads) {
+    source = allSquads;
+    catalogs.clear();
+  }
+  const modern = Boolean(career?.leagueId);
+  if (catalogs.has(modern)) return catalogs.get(modern);
+  const squads = modern ? [...allSquads, ...modernSquads] : allSquads;
+  const offers = squads.flatMap(squad => squad.jogadores.map(player => ({
     id: `${squad.id}/${player.id}`,
     player,
     squad,
@@ -21,15 +29,15 @@ export function careerMarketCatalog() {
     search: normalize(`${player.nome} ${squad.nome} ${squad.ano}`),
   })));
   const decades = [...new Set(offers.map(offer => offer.decade))].sort((a, b) => b - a);
-  catalog = {offers, decades, byId: new Map(offers.map(offer => [offer.id, offer]))};
-  source = allSquads;
+  const catalog = {offers, decades, byId: new Map(offers.map(offer => [offer.id, offer]))};
+  catalogs.set(modern, catalog);
   return catalog;
 }
 
 export function careerMarketPage(career, {
   search = '', position = '', decade = '', order = 'overall', affordable = false, page = 1,
 } = {}) {
-  const {offers} = careerMarketCatalog();
+  const {offers} = careerMarketCatalog(career);
   const owned = new Set(career.roster.map(player => player.id));
   const words = normalize(search.trim()).split(/\s+/).filter(Boolean);
   const matches = offers.filter(offer =>

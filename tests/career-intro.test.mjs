@@ -6,20 +6,23 @@ import * as ui from '../js/ui.js';
 
 function entry(saved = null) {
   const destinations = [];
+  const slots = new Map(saved ? [[CAREER_KEY, saved]] : []);
   let writes = 0;
   const career = initCareer({
     app: {addEventListener() {}},
     navigate: screen => destinations.push(screen),
+    render() {},
+    toast(message) { assert.fail(message); },
     storage: {
-      read: key => key === CAREER_KEY ? saved : null,
-      write: (_key, value) => { saved = value; writes++; return true; },
+      read: key => slots.get(key) ?? null,
+      write: (key, value) => { slots.set(key, value); writes++; return true; },
     },
     ui,
   });
-  return {career, destinations, get saved() { return saved; }, get writes() { return writes; }};
+  return {career, destinations, slots, get writes() { return writes; }};
 }
 
-test('the career intro renders the three coaches and creates a save only when the campaign begins', () => {
+test('the career intro opens league and club selection before creating a campaign', () => {
   const page = entry();
   const html = page.career.open();
   assert.match(html, /Começar campanha/);
@@ -28,10 +31,17 @@ test('the career intro renders the three coaches and creates a save only when th
   for (const asset of ['guardiola', 'ferguson', 'brasileirao-coach']) assert.ok(html.includes(`assets/career/${asset}.webp`));
   assert.equal(page.writes, 0);
   page.career.actions['career-start']();
+  const setup = page.career.open();
+  assert.equal(setup.match(/data-action="career-select-league"/g).length, 5);
+  assert.equal(page.writes, 0);
+  page.career.actions['career-select-league']('premier');
+  assert.equal(page.career.open().match(/data-action="career-select-club"/g).length, 20);
+  page.career.actions['career-select-club']('career26-premier-1');
+  page.career.actions['career-create']();
   assert.match(page.career.open(), /Próxima partida/);
-  assert.equal(page.writes, 1);
-  assert.equal(page.saved.season, 1);
-  assert.deepEqual(page.destinations, ['career']);
+  assert.equal(page.slots.get(`${CAREER_KEY}:career26-premier-1`).name, 'Arsenal');
+  assert.ok(!page.slots.has(CAREER_KEY));
+  assert.deepEqual(page.destinations, ['career', 'career']);
 });
 
 test('the career intro continues the existing save and returning to it leaves the campaign intact', () => {
@@ -46,6 +56,15 @@ test('the career intro continues the existing save and returning to it leaves th
   assert.match(page.career.open(), /Clube salvo/);
   page.career.actions.career();
   assert.match(page.career.open(), /Continuar campanha/);
-  assert.equal(page.saved, saved);
+  assert.equal(page.slots.get(CAREER_KEY), saved);
   assert.equal(page.writes, 0);
+  page.career.actions['career-new']();
+  page.career.actions['career-select-league']('bundesliga');
+  page.career.actions['career-select-club']('career26-bundesliga-21');
+  page.career.actions['career-create']();
+  assert.match(page.career.open(), /Bayern Munich/);
+  page.career.actions['career-new']();
+  page.career.actions['career-load']('');
+  assert.match(page.career.open(), /Clube salvo/);
+  assert.equal(page.slots.get(CAREER_KEY), saved);
 });
