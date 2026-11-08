@@ -34,6 +34,53 @@
 .career-coach--ferguson { --coach-x: 48.4%; --coach-center: 58%; --coach-top: -.5%; --coach-height: 150.4%; z-index: 1; }
 .career-coach--brasileirao { --coach-x: 17%; --coach-center: 57%; --coach-top: -5.4%; --coach-height: 129.6%; }
 .career-coach--guardiola { --coach-x: 114.4%; --coach-center: 100%; --coach-top: -23.4%; --coach-height: 154.6%; z-index: 2; }
+.career-intro-hub { margin-top: clamp(18px, 3vw, 38px); }
+.career-intro-hub > h2 { margin: 0 0 12px; font: 800 clamp(19px, 2.1vw, 25px)/1.2 var(--body); }
+.career-intro-season {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+}
+.career-intro-identity, .career-intro-opponent { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.career-intro-season small, .career-intro-stats dt { display: block; color: var(--muted); font-size: 12px; }
+.career-intro-season strong { display: block; overflow-wrap: anywhere; }
+.career-intro-season :is(.career-crest, .club-badge, .career-intro-opponent > svg) { width: 36px; height: 36px; flex: none; }
+.career-intro-opponent > svg { padding: 6px; color: var(--gold); }
+.career-intro-stats { display: grid; grid-template-columns: .9fr .7fr 1.2fr; gap: 8px; margin: 0; }
+.career-intro-stats > div { padding-left: 10px; border-left: 1px solid var(--border); }
+.career-intro-stats dd { margin: 0; color: var(--green); font-weight: 800; font-variant-numeric: tabular-nums; }
+.career-intro-shortcuts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.career-intro-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  min-width: 0;
+  padding: 16px;
+  color: var(--text);
+  text-align: left;
+  border-radius: 12px;
+}
+button.career-intro-card:hover { border-color: var(--green); background: var(--surface-alt); }
+.career-intro-icon { display: grid; place-items: center; flex: none; width: 34px; height: 34px; border-radius: 8px; background: var(--accent-soft); color: var(--green); }
+.career-intro-icon svg { width: 18px; height: 18px; }
+.career-intro-card-copy { display: grid; gap: 3px; flex: 1; min-width: 0; }
+.career-intro-card-copy small { color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.career-intro-card-copy strong { font-size: 15px; line-height: 1.25; }
+.career-intro-card-copy > span { color: var(--muted); font-size: 12px; }
+.career-intro-arrow { flex: none; align-self: center; width: 16px; height: 16px; color: var(--green); }
+@media (max-width: 820px) {
+  .career-intro-season { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .career-intro-stats { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (max-width: 560px) {
+  .career-intro-shortcuts { grid-template-columns: 1fr; gap: 8px; }
+  .career-intro-season { gap: 12px; padding: 12px; }
+  .career-intro-season :is(.career-crest, .club-badge, .career-intro-opponent > svg) { width: 28px; height: 28px; }
+}
 .career-page { display: grid; gap: 20px; }
 .career-title { text-align: center; padding-block: 10px 0; }
 .career-title h1 { margin-top: 4px; font-size: clamp(27px, 4vw, 46px); line-height: 1.15; }

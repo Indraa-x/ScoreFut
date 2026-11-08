@@ -172,7 +172,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     updateMarketResults();
   }
   function open() {
-    if (tab === 'intro') return renderCareerIntro(Boolean(storage.read(CAREER_KEY) || initial));
+    if (tab === 'intro') return renderCareerIntro(storage.read(CAREER_KEY) ?? initial, ui);
     const career = read();
     if (career === initial) storage.write(CAREER_KEY, career);
     if (tab === 'market') loadMarket();
