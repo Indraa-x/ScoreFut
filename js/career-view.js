@@ -316,7 +316,7 @@ export function renderCareerMarketResults(career, ui, filters) {
   const full = career.roster.length >= careerRosterLimit(career);
   return `<p class="career-market-count" id="career-market-count" tabindex="-1">${total.toLocaleString('pt-BR')} ${total === 1 ? 'jogador encontrado' : 'jogadores encontrados'}</p>
     ${full ? '<p class="career-market-note">Elenco cheio. Libere um reserva para contratar.</p>' : ''}
-    ${entries.length ? `<div class="career-market-grid">${entries.map(({id, player, squad, league, price, euros, sourceUrl, valuedOn}) => {
+    ${entries.length ? `<div class="career-market-grid">${entries.map(({id, player, squad, league, price}) => {
       const signed = owned.has(player.id);
       const affordable = price !== null && career.budget >= price;
       const label = signed ? 'No elenco' : price === null ? 'Sem cotação' : full ? 'Sem vaga' : affordable ? 'Contratar' : 'Sem saldo';
@@ -333,7 +333,6 @@ export function renderCareerMarketResults(career, ui, filters) {
           <div>
             <small>Valor de mercado</small>
             <strong>${price === null ? 'Indisponível' : money(price)}</strong>
-            ${price === null ? '' : `<small><a class="accent" href="${esc(sourceUrl)}" target="_blank" rel="noopener noreferrer" aria-label="€ ${euros.toLocaleString('pt-BR')} no Transfermarkt">€ ${euros.toLocaleString('pt-BR')}</a>${valuedOn ? ` · <time datetime="${valuedOn}">${valuedOn.split('-').reverse().join('/')}</time>` : ''}</small>`}
           </div>
           ${button(label, 'career-sign', id, affordable && !full && !signed, full || signed || !affordable)}
         </div>
