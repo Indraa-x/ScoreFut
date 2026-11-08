@@ -299,7 +299,6 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
         <label for="career-formation">Formação</label>
         <select id="career-formation">${Object.entries(FORMATIONS).map(([id, formation]) =>
           `<option value="${id}"${id === career.formation ? ' selected' : ''}>${formation.name}</option>`).join('')}</select>
-        ${selected ? button('Cancelar troca', 'career-cancel-pick') : ''}
       </div>
     </section>
   </div>`;
