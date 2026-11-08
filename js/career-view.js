@@ -21,15 +21,15 @@ export const CAREER_TABS = {
   club: {label: 'Meu clube', icon: 'shield'},
 };
 const careerCoaches = [
-  {name: 'Pep Guardiola', src: 'assets/career/guardiola.webp', key: 'guardiola'},
   {name: 'Alex Ferguson', src: 'assets/career/ferguson.webp', key: 'ferguson'},
   {name: 'Treinador com a taça do Brasileirão', src: 'assets/career/brasileirao-coach.webp', key: 'brasileirao'},
+  {name: 'Pep Guardiola com a taça da Champions League', src: 'assets/career/guardiola.webp', key: 'guardiola'},
 ];
 
 export function renderCareerIntro(hasSave) {
   const action = hasSave ? 'Continuar campanha' : 'Começar campanha';
-  const portrait = ({name, src, key}, decorative = false) =>
-    `<img class="career-coach career-coach--${key}" src="${assetUrl(src)}" width="560" height="750" alt="${decorative ? '' : name}" decoding="async" draggable="false">`;
+  const portrait = ({name, src, key}) =>
+    `<img class="career-coach career-coach--${key}" src="${assetUrl(src)}" width="560" height="750" alt="${name}" decoding="async" draggable="false">`;
   return `<section class="home-hero career-hero">
     <div class="hero-copy">
       <h1>Comande seu time.<br><span>Faça história.</span></h1>
@@ -49,9 +49,8 @@ export function renderCareerIntro(hasSave) {
         <li><span>${MAX_CAREER_ROSTER}</span> Vagas no elenco</li>
       </ul>
     </div>
-    <section class="home-stars career-coaches" aria-label="Retratos de treinadores" tabindex="0">
-      <div class="career-coach-slide career-coach-trio">${careerCoaches.map(coach => portrait(coach)).join('')}</div>
-      ${careerCoaches.map(coach => `<div class="career-coach-slide career-coach-solo" aria-hidden="true">${portrait(coach, true)}</div>`).join('')}
+    <section class="home-stars career-coaches" aria-label="Retratos de treinadores">
+      <div class="career-coach-trio">${careerCoaches.map(portrait).join('')}</div>
     </section>
   </section>`;
 }
