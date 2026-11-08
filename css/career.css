@@ -21,9 +21,9 @@
   pointer-events: none;
   user-select: none;
 }
-.career-coach--ferguson { --coach-x: 22%; --coach-center: 58%; --coach-top: 7%; --coach-height: 136%; z-index: 1; }
-.career-coach--brasileirao { --coach-x: 49%; --coach-center: 57%; --coach-top: 0%; --coach-height: 128%; }
-.career-coach--guardiola { --coach-top: -9%; --coach-height: 112%; left: auto; right: 1%; transform: none; z-index: 2; }
+.career-coach--ferguson { --coach-x: 48.4%; --coach-center: 58%; --coach-top: -.5%; --coach-height: 150.4%; z-index: 1; }
+.career-coach--brasileirao { --coach-x: 17%; --coach-center: 57%; --coach-top: -5.4%; --coach-height: 129.6%; }
+.career-coach--guardiola { --coach-x: 114.4%; --coach-center: 100%; --coach-top: -23.4%; --coach-height: 154.6%; z-index: 2; }
 .career-page { display: grid; gap: 20px; }
 .career-title { text-align: center; padding-block: 10px 0; }
 .career-title h1 { margin-top: 4px; font-size: clamp(27px, 4vw, 46px); line-height: 1.15; }
