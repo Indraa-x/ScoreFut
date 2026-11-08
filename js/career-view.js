@@ -27,9 +27,10 @@ const careerCoaches = [
   {name: 'Treinador com a taça do Brasileirão', src: 'assets/career/brasileirao-coach.webp', key: 'brasileirao'},
   {name: 'Pep Guardiola com a taça da Champions League', src: 'assets/career/guardiola.webp', key: 'guardiola'},
 ];
+const CAREER_MODE_ENABLED = false;
 
 export function renderCareerIntro(career, ui) {
-  const action = career ? 'Continuar campanha' : 'Começar campanha';
+  const action = CAREER_MODE_ENABLED ? career ? 'Continuar campanha' : 'Começar campanha' : 'EM DESENVOLVIMENTO';
   const portrait = ({name, src, key}) =>
     `<img class="career-coach career-coach--${key}" src="${assetUrl(src)}" width="560" height="750" alt="${name}" decoding="async" draggable="false">`;
   return `<section class="home-hero career-hero">
@@ -37,7 +38,7 @@ export function renderCareerIntro(career, ui) {
       <h1>Comande seu time.<br><span>Faça história.</span></h1>
       <p>Escolha sua liga, monte sua escalação e leve seu clube ao título no modo Carreira de Treinador.</p>
       <div class="hero-actions">
-        <button type="button" class="btn btn-primary hero-play-cta" data-action="career-start">
+        <button type="button" class="btn btn-primary hero-play-cta" data-action="career-start"${CAREER_MODE_ENABLED ? '' : ' disabled aria-label="Modo Carreira em desenvolvimento"'}>
           <span class="hero-play-content">
             <svg class="career-tactic-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <path d="M12 5H8a2 2 0 0 0-2 2v21a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/>
@@ -50,7 +51,7 @@ export function renderCareerIntro(career, ui) {
           </span>
         </button>
       </div>
-      ${career ? `<div class="career-new-campaign">${button('Nova campanha', 'career-new')}</div>` : ''}
+      ${career ? `<div class="career-new-campaign">${button('Nova campanha', 'career-new', '', false, !CAREER_MODE_ENABLED)}</div>` : ''}
       <ul class="hero-steps" aria-label="Opções disponíveis na Carreira">
         <li><span>${Object.keys(FORMATIONS).length}</span> Formações</li>
         <li><span>${CAREER_CRESTS.length}</span> Escudos</li>
@@ -96,7 +97,7 @@ function renderCareerHub(career, ui) {
         const {label, icon} = CAREER_TABS[id];
         const content = `<span class="career-intro-icon">${ui.icon(icon)}</span>
           <span class="career-intro-card-copy"><small>${label}</small><strong>${subtitle}</strong><span>${description}</span></span>`;
-        return career
+        return CAREER_MODE_ENABLED && career
           ? `<button type="button" class="career-intro-card panel" data-action="career-tab" data-value="${id}">${content}${ui.icon('arrow', 'class="career-intro-arrow"')}</button>`
           : `<article class="career-intro-card panel">${content}</article>`;
       }).join('')}

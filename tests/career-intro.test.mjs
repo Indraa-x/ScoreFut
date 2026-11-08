@@ -22,40 +22,29 @@ function entry(saved = null) {
   return {career, destinations, slots, get writes() { return writes; }};
 }
 
-test('the career intro opens league and club selection before creating a campaign', () => {
+test('the career intro marks the unavailable mode as in development', () => {
   const page = entry();
   const html = page.career.open();
-  assert.match(html, /Começar campanha/);
+  assert.match(html, /EM DESENVOLVIMENTO/);
+  assert.match(html, /data-action="career-start" disabled/);
   assert.match(html, /Central da Carreira/);
   assert.doesNotMatch(html, /data-action="career-tab"/);
   for (const asset of ['guardiola', 'ferguson', 'brasileirao-coach']) assert.ok(html.includes(`assets/career/${asset}.webp`));
   assert.equal(page.writes, 0);
-  page.career.actions['career-start']();
-  const setup = page.career.open();
-  assert.equal(setup.match(/data-action="career-select-league"/g).length, 5);
-  assert.equal(page.writes, 0);
-  page.career.actions['career-select-league']('premier');
-  assert.equal(page.career.open().match(/data-action="career-select-club"/g).length, 20);
-  page.career.actions['career-select-club']('career26-premier-1');
-  page.career.actions['career-create']();
-  assert.match(page.career.open(), /Próxima partida/);
-  assert.equal(page.slots.get(`${CAREER_KEY}:career26-premier-1`).name, 'Arsenal');
-  assert.ok(!page.slots.has(CAREER_KEY));
-  assert.deepEqual(page.destinations, ['career', 'career']);
+  assert.deepEqual(page.destinations, []);
 });
 
-test('the career intro continues the existing save and returning to it leaves the campaign intact', () => {
+test('the saved career stays visible while every intro control is disabled', () => {
   const saved = {...createCareer(42), name: 'Clube salvo', season: 10, budget: 60710};
   const page = entry(saved);
   const intro = page.career.open();
-  assert.match(intro, /Continuar campanha/);
+  assert.match(intro, /EM DESENVOLVIMENTO/);
+  assert.match(intro, /data-action="career-start" disabled/);
   assert.match(intro, /Campanha salva<\/small><strong>Clube salvo/);
   assert.match(intro, /Próxima partida · Rodada 1/);
-  assert.equal(intro.match(/class="career-intro-card panel" data-action="career-tab"/g).length, 3);
-  page.career.actions['career-start']();
-  assert.match(page.career.open(), /Clube salvo/);
-  page.career.actions.career();
-  assert.match(page.career.open(), /Continuar campanha/);
+  assert.equal(intro.match(/class="career-intro-card panel" data-action="career-tab"/g), null);
+  assert.match(intro, /data-action="career-new"[^>]* disabled/);
+  assert.doesNotMatch(intro, /data-action="career-tab"/);
   assert.equal(page.slots.get(CAREER_KEY), saved);
   assert.equal(page.writes, 0);
   page.career.actions['career-new']();
