@@ -26,8 +26,8 @@ const careerCoaches = [
   {name: 'Pep Guardiola com a taça da Champions League', src: 'assets/career/guardiola.webp', key: 'guardiola'},
 ];
 
-export function renderCareerIntro(hasSave) {
-  const action = hasSave ? 'Continuar campanha' : 'Começar campanha';
+export function renderCareerIntro(career, ui) {
+  const action = career ? 'Continuar campanha' : 'Começar campanha';
   const portrait = ({name, src, key}) =>
     `<img class="career-coach career-coach--${key}" src="${assetUrl(src)}" width="560" height="750" alt="${name}" decoding="async" draggable="false">`;
   return `<section class="home-hero career-hero">
@@ -58,6 +58,46 @@ export function renderCareerIntro(hasSave) {
     <section class="home-stars career-coaches" aria-label="Retratos de treinadores">
       <div class="career-coach-trio">${careerCoaches.map(portrait).join('')}</div>
     </section>
+  </section>
+  ${renderCareerHub(career, ui)}`;
+}
+
+function renderCareerHub(career, ui) {
+  const fixture = career && nextCareerMatch(career);
+  const opponent = fixture && careerClub(career, fixture.find(id => id !== CAREER_TEAM));
+  const position = career?.round ? careerTable(career).findIndex(row => row.id === CAREER_TEAM) + 1 : null;
+  const features = [
+    ['squad', 'Monte o time no campinho', 'Escolha os titulares, teste formações e organize o banco.'],
+    ['market', 'Busque novos reforços', 'Encontre jogadores históricos de clubes e seleções.'],
+    ['facilities', 'Evolua a estrutura', 'Invista no estádio, na base e no centro de treinamento.'],
+  ];
+  return `<section class="career-intro-hub" aria-labelledby="career-hub-title">
+    <h2 id="career-hub-title">Central da Carreira</h2>
+    ${career ? `<div class="career-intro-season panel">
+      <div class="career-intro-identity">${careerCrest(career.crest)}
+        <div><small>Campanha salva</small><strong>${esc(career.name)}</strong></div>
+      </div>
+      <dl class="career-intro-stats">
+        <div><dt>Temporada</dt><dd>${career.season}</dd></div>
+        <div><dt>Posição</dt><dd>${position ? `${position}º` : '—'}</dd></div>
+        <div><dt>Orçamento</dt><dd>${money(career.budget)}</dd></div>
+      </dl>
+      <div class="career-intro-opponent">
+        ${opponent ? ui.badge(opponent) : ui.icon('trophy')}
+        <div><small>${opponent ? `Próxima partida · Rodada ${career.round + 1}` : 'Brasileirão'}</small>
+          <strong>${opponent ? esc(opponent.nome) : 'Temporada encerrada'}</strong></div>
+      </div>
+    </div>` : ''}
+    <div class="career-intro-shortcuts">
+      ${features.map(([id, subtitle, description]) => {
+        const {label, icon} = CAREER_TABS[id];
+        const content = `<span class="career-intro-icon">${ui.icon(icon)}</span>
+          <span class="career-intro-card-copy"><small>${label}</small><strong>${subtitle}</strong><span>${description}</span></span>`;
+        return career
+          ? `<button type="button" class="career-intro-card panel" data-action="career-tab" data-value="${id}">${content}${ui.icon('arrow', 'class="career-intro-arrow"')}</button>`
+          : `<article class="career-intro-card panel">${content}</article>`;
+      }).join('')}
+    </div>
   </section>`;
 }
 

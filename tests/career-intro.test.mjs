@@ -23,6 +23,8 @@ test('the career intro renders the three coaches and creates a save only when th
   const page = entry();
   const html = page.career.open();
   assert.match(html, /Começar campanha/);
+  assert.match(html, /Central da Carreira/);
+  assert.doesNotMatch(html, /data-action="career-tab"/);
   for (const asset of ['guardiola', 'ferguson', 'brasileirao-coach']) assert.ok(html.includes(`assets/career/${asset}.webp`));
   assert.equal(page.writes, 0);
   page.career.actions['career-start']();
@@ -35,7 +37,11 @@ test('the career intro renders the three coaches and creates a save only when th
 test('the career intro continues the existing save and returning to it leaves the campaign intact', () => {
   const saved = {...createCareer(42), name: 'Clube salvo', season: 10, budget: 60710};
   const page = entry(saved);
-  assert.match(page.career.open(), /Continuar campanha/);
+  const intro = page.career.open();
+  assert.match(intro, /Continuar campanha/);
+  assert.match(intro, /Campanha salva<\/small><strong>Clube salvo/);
+  assert.match(intro, /Próxima partida · Rodada 1/);
+  assert.equal(intro.match(/class="career-intro-card panel" data-action="career-tab"/g).length, 3);
   page.career.actions['career-start']();
   assert.match(page.career.open(), /Clube salvo/);
   page.career.actions.career();
