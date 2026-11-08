@@ -1,5 +1,10 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.15',date:'08/11/2026',title:'Cinco ligas na Carreira',changes:[
+  {icon:'field',title:'Escolha a liga e o clube',detail:'Comece com um dos 98 clubes da Bundesliga, Premier League, LaLiga, Brasileirão ou Serie A italiana. Cada liga tem classificação e calendário de ida e volta.'},
+  {icon:'players',title:'Elencos atuais e OVRs do EA FC 27',detail:'Use as versões do EA FC 27 nas ligas europeias. No Brasileirão 2026, as notas sem correspondência oficial aparecem como estimativas do ScoreFut.'},
+  {icon:'shield',title:'Campanhas salvas por clube',detail:'Comece com outro clube e retome campanhas anteriores pelo seletor de campanhas salvas.'},
+ ]},
  {version:'0.14',date:'07/11/2026',title:'Nova entrada para a Carreira',changes:[
   {icon:'field',title:'Treinadores no gramado',detail:'O modo Carreira ganhou uma entrada no estilo da página inicial, com os três treinadores juntos no campo.'},
   {icon:'play',title:'Comece ou retome sua campanha',detail:'O botão mostra a ação disponível conforme o progresso salvo neste navegador.'},

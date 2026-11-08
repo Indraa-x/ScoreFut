@@ -47,7 +47,9 @@
 .career-coach--brasileirao { --coach-x: 17%; --coach-center: 57%; --coach-top: -5.4%; --coach-height: 129.6%; }
 .career-coach--guardiola { --coach-x: 114.4%; --coach-center: 100%; --coach-top: -23.4%; --coach-height: 154.6%; z-index: 2; }
 .career-intro-hub { margin-top: clamp(18px, 3vw, 38px); }
-.career-intro-hub > h2 { margin: 0 0 12px; font: 800 clamp(19px, 2.1vw, 25px)/1.2 var(--body); }
+.career-intro-hub > .career-card-heading { margin-bottom: 12px; }
+.career-intro-hub h2 { font: 800 clamp(19px, 2.1vw, 25px)/1.2 var(--body); }
+.career-intro-hub > .career-card-heading .btn { min-height: 36px; padding: 6px 12px; }
 .career-intro-season {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr);
@@ -94,6 +96,72 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   .career-intro-season :is(.career-crest, .club-badge, .career-intro-opponent > svg) { width: 28px; height: 28px; }
 }
 .career-page { display: grid; gap: 20px; }
+.career-setup { display: grid; gap: 16px; }
+.career-setup .screen-title { margin-bottom: 0; }
+.career-setup :is(.career-setup-leagues, .career-setup-clubs) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 178px), 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.career-setup :is(.career-setup-leagues, .career-setup-clubs) button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 63px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text);
+  background: var(--surface-alt);
+  text-align: left;
+}
+.career-setup :is(.career-setup-leagues, .career-setup-clubs) button:hover { border-color: var(--green); }
+.career-setup :is(.career-setup-leagues, .career-setup-clubs) [aria-pressed="true"] { border-color: var(--green); background: var(--accent-soft); }
+.career-setup button span:not(.career-season-crest) { min-width: 0; overflow-wrap: anywhere; }
+.career-setup button small { display: block; color: var(--muted); font-size: 11px; }
+.career-setup-saves { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.career-setup-confirm {
+  position: sticky;
+  bottom: 10px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  pointer-events: none;
+}
+.career-setup-confirm .btn {
+  max-width: 100%;
+  white-space: normal;
+  pointer-events: auto;
+  box-shadow: var(--shadow);
+}
+.career-setup-confirm .btn svg { flex: none; }
+.career-season-crest {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 7px;
+  background-color: #f1f5f0;
+  background-repeat: no-repeat;
+  background-size: 600% 400%;
+}
+.career-competition-brand .career-season-crest { width: 32px; height: 32px; }
+.career-intro-season .career-season-crest { width: 36px; height: 36px; }
+.career-card .career-identity { display: flex; align-items: center; gap: 10px; }
+.career-matchup .career-season-crest { width: clamp(44px, 8vw, 74px); height: clamp(44px, 8vw, 74px); }
+.career-table .career-season-crest { width: 24px; height: 24px; vertical-align: middle; }
+.career-squad-token .career-season-crest { width: 76%; height: auto; aspect-ratio: 1; }
+.career-market-token .career-season-crest { width: 32px; height: 32px; }
+@media (max-width: 580px) {
+  .career-setup .screen-title { align-items: flex-start; flex-wrap: wrap; }
+  .career-setup .career-setup-clubs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .career-setup .career-setup-clubs button { gap: 5px; padding-inline: 6px; }
+  .career-setup .career-setup-clubs .career-season-crest { width: 32px; height: 32px; }
+  .career-intro-season .career-season-crest { width: 28px; height: 28px; }
+}
 .career-title { text-align: center; padding-block: 10px 0; }
 .career-title h1 { margin-top: 4px; font-size: clamp(27px, 4vw, 46px); line-height: 1.15; }
 .career-tabs {

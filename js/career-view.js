@@ -1,6 +1,8 @@
 import {escapeHtml as esc} from './html.js';
 import {assetUrl} from './asset-url.js';
 import {competitionLogo} from '../data/competitions.js';
+import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
+import {seasonCrest} from './career-setup-view.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
 import {careerMarketCatalog, careerMarketPage} from './career-market.js';
 import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchSpeed} from './match-view.js';
@@ -9,8 +11,8 @@ import {renderMatchGoals} from './match-goals.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
-  CAREER_CRESTS, CAREER_TEAM, FACILITIES, MAX_CAREER_ROSTER, MAX_FACILITY_LEVEL, careerClub,
-  careerDestinations, careerFixtures, careerPicks, careerScorers, careerTable, facilityPrice, nextCareerMatch,
+  CAREER_CRESTS, CAREER_TEAM, FACILITIES, MAX_FACILITY_LEVEL, careerClub,
+  careerCompetitionName, careerDestinations, careerFixtures, careerPicks, careerRosterLimit, careerScorers, careerTable, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -33,7 +35,7 @@ export function renderCareerIntro(career, ui) {
   return `<section class="home-hero career-hero">
     <div class="hero-copy">
       <h1>Comande seu time.<br><span>Faça história.</span></h1>
-      <p>Monte sua escalação, contrate reforços e leve seu clube ao título do Brasileirão no modo Carreira de Treinador.</p>
+      <p>Escolha sua liga, monte sua escalação e leve seu clube ao título no modo Carreira de Treinador.</p>
       <div class="hero-actions">
         <button type="button" class="btn btn-primary hero-play-cta" data-action="career-start">
           <span class="hero-play-content">
@@ -52,7 +54,7 @@ export function renderCareerIntro(career, ui) {
         <li><span>${Object.keys(FORMATIONS).length}</span> Formações</li>
         <li><span>${CAREER_CRESTS.length}</span> Escudos</li>
         <li><span>${Object.keys(FACILITIES).length}</span> Instalações</li>
-        <li><span>${MAX_CAREER_ROSTER}</span> Vagas no elenco</li>
+        <li><span>${CAREER_LEAGUES.length}</span> Ligas</li>
       </ul>
     </div>
     <section class="home-stars career-coaches" aria-label="Retratos de treinadores">
@@ -72,9 +74,12 @@ function renderCareerHub(career, ui) {
     ['facilities', 'Evolua a estrutura', 'Invista no estádio, na base e no centro de treinamento.'],
   ];
   return `<section class="career-intro-hub" aria-labelledby="career-hub-title">
-    <h2 id="career-hub-title">Central da Carreira</h2>
+    <div class="career-card-heading">
+      <h2 id="career-hub-title">Central da Carreira</h2>
+      ${career ? button('Nova campanha', 'career-new') : ''}
+    </div>
     ${career ? `<div class="career-intro-season panel">
-      <div class="career-intro-identity">${careerCrest(career.crest)}
+      <div class="career-intro-identity">${clubBadge(career, CAREER_TEAM, ui)}
         <div><small>Campanha salva</small><strong>${esc(career.name)}</strong></div>
       </div>
       <dl class="career-intro-stats">
@@ -83,8 +88,8 @@ function renderCareerHub(career, ui) {
         <div><dt>Orçamento</dt><dd>${money(career.budget)}</dd></div>
       </dl>
       <div class="career-intro-opponent">
-        ${opponent ? ui.badge(opponent) : ui.icon('trophy')}
-        <div><small>${opponent ? `Próxima partida · Rodada ${career.round + 1}` : 'Brasileirão'}</small>
+        ${opponent ? clubBadge(career, opponent.id, ui) : ui.icon('trophy')}
+        <div><small>${opponent ? `Próxima partida · Rodada ${career.round + 1}` : esc(careerCompetitionName(career))}</small>
           <strong>${opponent ? esc(opponent.nome) : 'Temporada encerrada'}</strong></div>
       </div>
     </div>` : ''}
@@ -121,17 +126,20 @@ const money = amount => amount < 1000
 const button = (label, action, value = '', primary = false, disabled = false) =>
   `<button type="button" class="btn ${primary ? 'btn-primary' : 'btn-outline'}" data-action="${action}" data-value="${esc(value)}"${disabled ? ' disabled' : ''}>${label}</button>`;
 const title = (label, description) => `<h2>${label}</h2><p class="muted">${description}</p>`;
-const roundLabel = (round, total) =>
-  `<span class="career-competition-round">
+const roundLabel = (career, round, total) => {
+  const league = careerLeague(career.leagueId);
+  return `<span class="career-competition-round">
     <span class="career-competition-brand">
-      <img src="${assetUrl(competitionLogo('brasileirao'))}" width="32" height="32" alt="" decoding="async">
-      <span class="career-competition-name">Campeonato Brasileiro</span>
+      ${league ? seasonCrest(league) : `<img src="${assetUrl(competitionLogo('brasileirao'))}" width="32" height="32" alt="" decoding="async">`}
+      <span class="career-competition-name">${esc(careerCompetitionName(career))}</span>
     </span>
     <span>· Rodada ${round}${total ? ` de ${total}` : ''}</span>
   </span>`;
+};
 
 function clubBadge(career, id, ui) {
   const club = careerClub(career, id);
+  if (club.leagueId) return seasonCrest(careerLeague(club.leagueId), club.crestIndex);
   return id === CAREER_TEAM ? careerCrest(career.crest) : ui.badge(club);
 }
 
@@ -163,7 +171,7 @@ function matchScoreboard(career, ui, live, match) {
   const homeName = careerClub(career, homeId).nome;
   const awayName = careerClub(career, awayId).nome;
   const side = (id, name, venue) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong><small>${venue}</small></div>`;
-  return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', roundLabel(match.round))}
+  return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', roundLabel(career, match.round))}
     <div class="career-matchup career-live-scoreboard match-scoreboard-style">
       ${side(homeId, homeName, 'Mandante')}
       <div class="score-center">
@@ -204,7 +212,7 @@ function overview(career, ui, rows, live) {
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const total = careerFixtures(career).length;
   const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
-    ? `${title('Próxima partida', roundLabel(career.round + 1, total))}
+    ? `${title('Próxima partida', roundLabel(career, career.round + 1, total))}
       <div class="career-matchup">${fixture.map((id, index) => `${index ? '<span aria-hidden="true">×</span>' : ''}
         <div>${clubBadge(career, id, ui)}<strong>${esc(careerClub(career, id).nome)}</strong><small>${index ? 'Visitante' : 'Mandante'}</small></div>`).join('')}</div>
       ${button(career.replay?.round === career.round ? 'Continuar partida' : 'Simular partida', 'career-play', `${career.season}:${career.round}`, true)}`
@@ -246,11 +254,11 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
   const players = showingReserves ? reserves : picks.map(({player}) => player);
   const selected = career.roster.find(player => player.id === selectedId);
   const targets = new Set(careerDestinations(career, selectedId).map(slot => slot.id));
-  const crest = careerCrest(career.crest);
+  const crest = clubBadge(career, CAREER_TEAM, ui);
   return `<div class="career-squad-layout">
     <section class="career-card panel career-roster" aria-labelledby="career-roster-title">
       <div class="career-card-heading">
-        <h2 id="career-roster-title">Jogadores</h2><span class="career-pill">${career.roster.length} / ${MAX_CAREER_ROSTER}</span>
+        <h2 id="career-roster-title">Jogadores</h2><span class="career-pill">${career.roster.length} / ${careerRosterLimit(career)}</span>
       </div>
       <div class="career-roster-switch" role="group" aria-label="Grupo de jogadores">
         <button type="button" data-action="career-squad-group" data-value="reserves" aria-pressed="${showingReserves}">Reservas <span>${reserves.length}</span></button>
@@ -261,7 +269,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
           <button type="button" class="career-roster-player" data-action="career-select-player" data-value="${esc(player.id)}" aria-pressed="${selectedId === player.id}">
             <span class="career-roster-position">${esc(starters.get(player.id) ?? player.tags[0])}</span>
             <span class="career-roster-name"><strong>${esc(player.nome)}</strong><small>${esc(player.tags.join(' / '))}</small></span>
-            <span class="career-roster-rating">${player.ovr}<small>OVR</small></span>
+            <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
           ${showingReserves ? `<button type="button" class="career-roster-release" data-action="career-release" data-value="${esc(player.id)}" aria-label="Liberar ${esc(player.nome)}" title="Liberar ${esc(player.nome)}">${ui.icon('close')}</button>` : ''}
         </li>`).join('') || '<li class="career-roster-empty">Sem jogadores na reserva.</li>'}
@@ -299,7 +307,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
 
 export function renderCareerMarketResults(career, ui, filters) {
   const {entries, total, owned, page, pages} = careerMarketPage(career, filters);
-  const full = career.roster.length >= MAX_CAREER_ROSTER;
+  const full = career.roster.length >= careerRosterLimit(career);
   return `<p class="career-market-count" id="career-market-count" tabindex="-1">${total.toLocaleString('pt-BR')} ${total === 1 ? 'versão encontrada' : 'versões encontradas'}</p>
     ${full ? '<p class="career-market-note">Elenco cheio. Libere um reserva para contratar.</p>' : ''}
     ${entries.length ? `<div class="career-market-grid">${entries.map(({id, player, squad, price}) => {
@@ -307,10 +315,10 @@ export function renderCareerMarketResults(career, ui, filters) {
       const affordable = career.budget >= price;
       return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}">
         <div class="career-market-player-head">
-          ${playerToken(player, ui.badge(squad).replace('<img ', '<img loading="lazy" '), 'career-market-token')}
+          ${playerToken(player, squad.leagueId ? seasonCrest(careerLeague(squad.leagueId), squad.crestIndex) : ui.badge(squad).replace('<img ', '<img loading="lazy" '), 'career-market-token')}
           <div>
             <h3>${esc(player.nome)}</h3>
-            <p>${esc(squad.nome)} <span aria-hidden="true">·</span> ${esc(squad.ano)}</p>
+            <p>${esc(squad.nome)} <span aria-hidden="true">·</span> ${esc(careerLeague(squad.leagueId)?.season ?? squad.ano)}${player.ratingKind === 'career-estimate' ? ' · OVR estimado' : ''}</p>
           </div>
         </div>
         <div class="career-market-positions" aria-label="Posições">${player.tags.map(tag => `<span>${esc(tag)}</span>`).join('')}</div>
@@ -329,7 +337,7 @@ export function renderCareerMarketResults(career, ui, filters) {
 
 function market(career, ui, {status, filters}) {
   const ready = status === 'ready';
-  const catalog = ready ? careerMarketCatalog() : null;
+  const catalog = ready ? careerMarketCatalog(career) : null;
   const option = (value, text, selected) =>
     `<option value="${value}"${String(value) === selected ? ' selected' : ''}>${text}</option>`;
   return `<section class="career-card panel career-market" aria-labelledby="career-market-title">
@@ -341,7 +349,7 @@ function market(career, ui, {status, filters}) {
       </div>
       <dl class="career-market-stats">
         ${ready ? `<div><dt>Versões no catálogo</dt><dd>${catalog.offers.length.toLocaleString('pt-BR')}</dd></div>` : ''}
-        <div><dt>Vagas no elenco</dt><dd>${MAX_CAREER_ROSTER - career.roster.length}</dd></div>
+        <div><dt>Vagas no elenco</dt><dd>${careerRosterLimit(career) - career.roster.length}</dd></div>
       </dl>
     </header>
     ${ready ? `<form id="career-market-filters" role="search" aria-label="Filtrar jogadores">
@@ -379,13 +387,18 @@ function facilities(career) {
       const price = facilityPrice(career, key);
       return `<div class="career-list-row">
         <div><strong>${facility.name}</strong> <span class="career-pill">Nível ${level}</span><small>${facility.effect}</small></div>
-        ${maxed ? '<span>Nível máximo</span>' : `<span class="career-price">${money(price)}</span>${button('Melhorar', 'career-upgrade', key, false, career.budget < price || key === 'academy' && career.roster.length >= MAX_CAREER_ROSTER)}`}
+        ${maxed ? '<span>Nível máximo</span>' : `<span class="career-price">${money(price)}</span>${button('Melhorar', 'career-upgrade', key, false, career.budget < price || key === 'academy' && career.roster.length >= careerRosterLimit(career))}`}
       </div>`;
     }).join('')}</div>
   </section>`;
 }
 
-function club(career) {
+function club(career, ui) {
+  const league = careerLeague(career.leagueId);
+  if (league) return `<section class="career-card panel">
+    <div class="career-identity">${clubBadge(career, CAREER_TEAM, ui)}<h2>${esc(career.name)}</h2></div>
+    <p class="muted">${esc(league.name)} · Elenco de ${league.season}</p>
+  </section>`;
   return `<section class="career-card panel career-customize">
     ${title('Personalizar clube', 'Escolha o nome e o escudo que vão acompanhar sua carreira.')}
     <form id="career-club-form">
@@ -412,7 +425,7 @@ export function renderCareer(career, tab, ui, live = null, marketState, squadSta
       ${Object.entries(CAREER_TABS).map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === tab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
     </nav>
     <div class="career-summary panel">
-      <div class="career-identity">${careerCrest(career.crest)}<strong>${esc(career.name)}</strong></div>
+      <div class="career-identity">${clubBadge(career, CAREER_TEAM, ui)}<strong>${esc(career.name)}</strong></div>
       <div><small>Temporada</small><strong>${career.season}</strong></div>
       <div><small>Posição</small><strong>${career.round ? `${position}º lugar` : '—'}</strong></div>
       <div><small>Orçamento</small><strong>${money(career.budget)}</strong></div>
