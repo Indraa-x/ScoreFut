@@ -25,7 +25,7 @@ function entry(saved = null) {
 test('the career intro marks the unavailable mode as in development', () => {
   const page = entry();
   const html = page.career.open();
-  assert.match(html, /EM DESENVOLVIMENTO/);
+  assert.match(html, /Em desenvolvimento/);
   assert.match(html, /data-action="career-start" disabled/);
   assert.match(html, /Central da Carreira/);
   assert.doesNotMatch(html, /data-action="career-tab"/);
@@ -38,7 +38,7 @@ test('the saved career stays visible while every intro control is disabled', () 
   const saved = {...createCareer(42), name: 'Clube salvo', season: 10, budget: 60710};
   const page = entry(saved);
   const intro = page.career.open();
-  assert.match(intro, /EM DESENVOLVIMENTO/);
+  assert.match(intro, /Em desenvolvimento/);
   assert.match(intro, /data-action="career-start" disabled/);
   assert.match(intro, /Campanha salva<\/small><strong>Clube salvo/);
   assert.match(intro, /Próxima partida · Rodada 1/);
