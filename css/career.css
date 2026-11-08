@@ -3,6 +3,7 @@
 .career-hero .hero-play-content { gap: 12px; white-space: normal; }
 .career-hero .hero-play-label { font-size: clamp(20px, 2vw, 27px); }
 #app .career-hero .hero-play-cta { max-width: 100%; min-width: 0; padding-inline: clamp(14px, 2.2vw, 32px); }
+#app .career-hero .hero-play-cta:disabled { cursor: default; opacity: 1; }
 .career-hero .hero-actions .career-tactic-icon { width: 36px; height: 36px; flex: none; }
 #app .career-hero .hero-play-cta.is-career-launching:disabled { opacity: 1; cursor: progress; }
 @media (prefers-reduced-motion: no-preference) {
