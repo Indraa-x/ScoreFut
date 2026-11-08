@@ -2,7 +2,7 @@
 @property --home-competition-a{syntax:"<color>";inherits:false;initial-value:#ffe13a}
 @property --home-competition-b{syntax:"<color>";inherits:false;initial-value:#ffc400}
 @property --home-competition-c{syntax:"<color>";inherits:false;initial-value:#00e88c}
-html #app[data-screen="home"] .hero-copy h1>span{
+html #app:is([data-screen="home"],[data-screen="career"]) .hero-copy h1>span{
  --world-a:#ffe13a;--world-b:#ffc400;--world-c:#00e88c;
  --brazil-a:#278bff;--brazil-b:#00ec88;--brazil-c:#ffda24;
  --champions-a:#3478f6;--champions-b:#449bff;--champions-c:#77d0ff;
@@ -11,7 +11,7 @@ html #app[data-screen="home"] .hero-copy h1>span{
  background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
  animation:home-competition-colors 6s linear infinite;
 }
-html[data-theme="light"] #app[data-screen="home"] .hero-copy h1>span{
+html[data-theme="light"] #app:is([data-screen="home"],[data-screen="career"]) .hero-copy h1>span{
  --world-a:#9b6100;--world-b:#ad7400;--world-c:#00844c;
  --brazil-a:#0755df;--brazil-b:#00864d;--brazil-c:#9b6100;
  --champions-a:#1852b8;--champions-b:#2169c8;--champions-c:#1482bd;
@@ -22,5 +22,5 @@ html[data-theme="light"] #app[data-screen="home"] .hero-copy h1>span{
  66.666%,90%{--home-competition-a:var(--champions-a);--home-competition-b:var(--champions-b);--home-competition-c:var(--champions-c)}
 }
 @media(prefers-reduced-motion:reduce){
- html #app[data-screen="home"] .hero-copy h1>span{animation:none}
+ html #app:is([data-screen="home"],[data-screen="career"]) .hero-copy h1>span{animation:none}
 }

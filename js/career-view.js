@@ -20,6 +20,42 @@ export const CAREER_TABS = {
   facilities: {label: 'Instalações', icon: 'bolt'},
   club: {label: 'Meu clube', icon: 'shield'},
 };
+const careerCoaches = [
+  {name: 'Pep Guardiola', src: 'assets/career/guardiola.webp', key: 'guardiola'},
+  {name: 'Alex Ferguson', src: 'assets/career/ferguson.webp', key: 'ferguson'},
+  {name: 'Treinador com a taça do Brasileirão', src: 'assets/career/brasileirao-coach.webp', key: 'brasileirao'},
+];
+
+export function renderCareerIntro(hasSave) {
+  const action = hasSave ? 'Continuar campanha' : 'Começar campanha';
+  const portrait = ({name, src, key}, decorative = false) =>
+    `<img class="career-coach career-coach--${key}" src="${assetUrl(src)}" width="560" height="750" alt="${decorative ? '' : name}" decoding="async" draggable="false">`;
+  return `<section class="home-hero career-hero">
+    <div class="hero-copy">
+      <h1>Comande seu time.<br><span>Faça história.</span></h1>
+      <p>Monte sua escalação, contrate reforços e leve seu clube ao título do Brasileirão no modo Carreira de Treinador.</p>
+      <div class="hero-actions">
+        <button type="button" class="btn btn-primary hero-play-cta" data-action="career-start">
+          <span class="hero-play-content">
+            <span class="hero-play-ball" aria-hidden="true"><img src="${assetUrl('assets/play-ball.svg')}" width="48" height="48" alt="" draggable="false"></span>
+            <span class="hero-play-label">${action}</span>
+          </span>
+        </button>
+      </div>
+      <ul class="hero-steps" aria-label="Opções disponíveis na Carreira">
+        <li><span>${Object.keys(FORMATIONS).length}</span> Formações</li>
+        <li><span>${CAREER_CRESTS.length}</span> Escudos</li>
+        <li><span>${Object.keys(FACILITIES).length}</span> Instalações</li>
+        <li><span>${MAX_CAREER_ROSTER}</span> Vagas no elenco</li>
+      </ul>
+    </div>
+    <section class="home-stars career-coaches" aria-label="Retratos de treinadores" tabindex="0">
+      <div class="career-coach-slide career-coach-trio">${careerCoaches.map(coach => portrait(coach)).join('')}</div>
+      ${careerCoaches.map(coach => `<div class="career-coach-slide career-coach-solo" aria-hidden="true">${portrait(coach, true)}</div>`).join('')}
+    </section>
+  </section>`;
+}
+
 const badgeDesigns = [
   ['#11634b', '#9af1c9', '<circle cx="24" cy="22" r="9"/><path d="m24 18 4 3-1 4h-6l-1-4zM24 18v-5m4 8 4-2m-5 6 2 4m-8-4-2 4m1-8-4-2"/>'],
   ['#342613', '#ffd37d', '<path d="m14 18 3-6 5 2 4-3 6 4 3 7-3 4-4-1-4 6-6-3-4-5Zm5 0 4 2 6-2m-3 5 3 2m-8 2 3-4"/>'],

@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.14 — 07/11/2026
+
+A Carreira tem um menu de entrada no estilo da página inicial, com os retratos dos treinadores no gramado e um botão para começar ou continuar a campanha.
+
 ## Beta 0.13 — 07/11/2026
 
 O elenco inicial e os reforços da academia usam jogadores reais do catálogo. As carreiras salvas substituem jogadores fictícios por opções compatíveis e preservam as contratações, a formação, o orçamento e os resultados registrados.
