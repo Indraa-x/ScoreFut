@@ -1,7 +1,7 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
  {version:'0.14',date:'07/11/2026',title:'Nova entrada para a Carreira',changes:[
-  {icon:'field',title:'Treinadores no gramado',detail:'O modo Carreira ganhou uma entrada no estilo da página inicial, com os retratos dos treinadores alternando no campo.'},
+  {icon:'field',title:'Treinadores no gramado',detail:'O modo Carreira ganhou uma entrada no estilo da página inicial, com os três treinadores juntos no campo.'},
   {icon:'play',title:'Comece ou retome sua campanha',detail:'O botão mostra a ação disponível conforme o progresso salvo neste navegador.'},
  ]},
  {version:'0.13',date:'07/11/2026',title:'Jogadores reais na Carreira',changes:[
