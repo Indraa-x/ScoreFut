@@ -178,6 +178,21 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     if (tab === 'market') loadMarket();
     return renderCareer(career, tab, ui, live.tournament ? live : null, {status: marketStatus, filters}, squad);
   }
+  async function startCampaign(button) {
+    if (tab !== 'intro' || button?.disabled) return;
+    if (button && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+      button.classList.add('is-career-launching');
+      const animations = button.getAnimations?.({subtree: true}) ?? [];
+      await Promise.all(animations.filter(animation =>
+        ['career-tactic-press', 'career-tactic-replay'].includes(animation.animationName)
+      ).map(animation => animation.finished.catch(() => {})));
+    }
+    if (tab !== 'intro' || (button && !app.contains(button))) return;
+    setTab('overview');
+    navigate('career');
+  }
   app.addEventListener('change', event => {
     if (app.dataset.screen !== 'career') return;
     const field = event.target;
@@ -217,7 +232,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     setTab, open, loadMatch, pauseMatch, leaveMatch, attachMatch, get tab() { return tab; },
     actions: {
       career: () => { setTab('intro'); navigate('career'); },
-      'career-start': () => { setTab('overview'); navigate('career'); },
+      'career-start': (_value, button) => startCampaign(button),
       'career-tab': value => { setTab(value); navigate('career'); },
       'career-squad-group': value => {
         if (!['reserves', 'starters'].includes(value) || squad.group === value) return;
