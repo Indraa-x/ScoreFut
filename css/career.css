@@ -47,9 +47,9 @@
 .career-coach--brasileirao { --coach-x: 17%; --coach-center: 57%; --coach-top: -5.4%; --coach-height: 129.6%; }
 .career-coach--guardiola { --coach-x: 114.4%; --coach-center: 100%; --coach-top: -23.4%; --coach-height: 154.6%; z-index: 2; }
 .career-intro-hub { margin-top: clamp(18px, 3vw, 38px); }
-.career-intro-hub > .career-card-heading { margin-bottom: 12px; }
-.career-intro-hub h2 { font: 800 clamp(19px, 2.1vw, 25px)/1.2 var(--body); }
-.career-intro-hub > .career-card-heading .btn { min-height: 36px; padding: 6px 12px; }
+.career-intro-hub > h2 { margin-bottom: 12px; font: 800 clamp(19px, 2.1vw, 25px)/1.2 var(--body); }
+.career-new-campaign { margin-top: 16px; }
+.career-new-campaign .btn { min-height: 36px; padding: 6px 12px; }
 .career-intro-season {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr);

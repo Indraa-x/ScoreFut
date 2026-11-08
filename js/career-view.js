@@ -50,6 +50,7 @@ export function renderCareerIntro(career, ui) {
           </span>
         </button>
       </div>
+      ${career ? `<div class="career-new-campaign">${button('Nova campanha', 'career-new')}</div>` : ''}
       <ul class="hero-steps" aria-label="Opções disponíveis na Carreira">
         <li><span>${Object.keys(FORMATIONS).length}</span> Formações</li>
         <li><span>${CAREER_CRESTS.length}</span> Escudos</li>
@@ -74,10 +75,7 @@ function renderCareerHub(career, ui) {
     ['facilities', 'Evolua a estrutura', 'Invista no estádio, na base e no centro de treinamento.'],
   ];
   return `<section class="career-intro-hub" aria-labelledby="career-hub-title">
-    <div class="career-card-heading">
-      <h2 id="career-hub-title">Central da Carreira</h2>
-      ${career ? button('Nova campanha', 'career-new') : ''}
-    </div>
+    <h2 id="career-hub-title">Central da Carreira</h2>
     ${career ? `<div class="career-intro-season panel">
       <div class="career-intro-identity">${clubBadge(career, CAREER_TEAM, ui)}
         <div><small>Campanha salva</small><strong>${esc(career.name)}</strong></div>
