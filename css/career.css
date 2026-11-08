@@ -428,7 +428,6 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 .career-squad-formation { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; font-weight: 700; }
 .career-squad-formation #career-formation { width: 130px; }
-.career-squad-formation .btn { min-height: 38px; padding: 6px 10px; }
 .career-list, .career-customize form { display: grid; gap: 10px; margin-top: 16px; }
 .career-list-row {
   display: grid;

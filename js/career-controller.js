@@ -269,7 +269,6 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
         render();
       },
       'career-select-player': id => selectSquadPlayer(id, true),
-      'career-cancel-pick': cancelPick,
       'career-pick-slot': pickSlot,
       'career-play': startMatch,
       'career-match-speed': value => {
