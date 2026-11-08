@@ -1,5 +1,9 @@
 # Atualizações do ScoreFut
 
+## Beta 0.16 — 08/11/2026
+
+O Mercado da Carreira reúne os elencos europeus 2026/27 e do Brasileirão 2026. O filtro de liga substitui o de época, e o custo da contratação usa o valor de mercado publicado pelo Transfermarkt, convertido para reais. Cada cartão com preço traz a referência em euros e o link da fonte.
+
 ## Beta 0.15 — 08/11/2026
 
 Novas campanhas da Carreira começam pela escolha de uma das cinco ligas e de um clube. Os clubes europeus usam a temporada 2026/27 e o Brasileirão usa a edição 2026. Os elencos europeus usam OVRs de lançamento do EA FC 27. No Brasil, as notas sem correspondência oficial são identificadas como estimativas. As campanhas ficam salvas separadamente por clube.

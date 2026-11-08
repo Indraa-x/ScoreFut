@@ -1,53 +1,58 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {allSquads} from '../data/game-squads.js';
+import {CAREER_LEAGUES} from '../data/career-leagues.js';
 import {createCareer, MAX_CAREER_ROSTER, signCareerPlayer} from '../js/career.js';
 import {careerMarketCatalog, careerMarketPage} from '../js/career-market.js';
 import {renderCareer} from '../js/career-view.js';
 import * as ui from '../js/ui.js';
 
-test('career market indexes all club and national squad versions and pages the results', () => {
-  const career = createCareer(42);
-  const {byId} = careerMarketCatalog();
-  assert.equal(byId.size, allSquads.reduce((total, squad) => total + squad.jogadores.length, 0));
-  for (const squad of allSquads) {
-    assert.ok(squad.jogadores.every(player => byId.get(`${squad.id}/${player.id}`)?.player === player));
+const {offers, byId} = careerMarketCatalog();
+const mbappe = byId.get('career26-laliga-243/kylian-mbappe');
+
+test('the market uses only the current career leagues and pages filtered results', () => {
+  const squads = CAREER_LEAGUES.flatMap(league => league.teams);
+  assert.equal(byId.size, squads.reduce((total, squad) => total + squad.jogadores.length, 0));
+  assert.ok(offers.every(offer => squads.includes(offer.squad) && offer.squad.ano === 2026));
+  for (const league of CAREER_LEAGUES) {
+    assert.ok(offers.some(offer => offer.league === league && offer.price > 0));
   }
-  const first = careerMarketPage(career);
-  const second = careerMarketPage(career, {page: 2});
-  assert.equal(first.total, byId.size);
-  assert.equal(first.entries.length, 12);
-  assert.equal(second.page, 2);
-  assert.ok(second.entries.every(entry => !first.entries.includes(entry)));
-  const found = careerMarketPage(career, {search: 'pele brasil', decade: '1950', position: 'SA'});
-  assert.deepEqual(found.entries.map(offer => offer.id), ['nation-brazil-1958/pele']);
+  for (const career of [createCareer(42), createCareer(42, squads[0].id)]) {
+    const first = careerMarketPage(career);
+    const second = careerMarketPage(career, {page: 2});
+    assert.equal(first.total, byId.size);
+    assert.equal(first.entries.length, 12);
+    assert.ok(second.entries.every(entry => !first.entries.includes(entry)));
+    assert.equal(careerMarketPage(career, {search: 'Pelé'}).total, 0);
+    assert.deepEqual(careerMarketPage(career, {search: 'mbappe madrid', leagueId: 'laliga', position: 'CA'}).entries, [mbappe]);
+    assert.equal(careerMarketPage(career, {search: 'mbappe madrid', leagueId: 'premier'}).total, 0);
+  }
 });
 
-test('hiring retains the selected historical version and enforces budget, space and identity', () => {
-  const career = createCareer(42);
-  const nationalId = 'nation-brazil-1958/pele';
-  const clubId = 'santos-1963/pele';
-  const national = careerMarketCatalog().byId.get(nationalId);
-  const club = careerMarketCatalog().byId.get(clubId);
-  assert.notEqual(national.player.ovr, club.player.ovr);
-  const signed = signCareerPlayer(career, nationalId);
-  assert.deepEqual(signed.roster.at(-1), national.player);
-  assert.equal(signed.budget, career.budget - national.price);
+test('hiring debits the verified market value in reais and requires a listed price', () => {
+  const career = {...createCareer(42), budget: 2_000_000};
+  const unknown = offers.find(offer => offer.price === null);
+  assert.equal(mbappe.euros, 180_000_000);
+  assert.equal(mbappe.price, 1_106_082);
+  const signed = signCareerPlayer(career, mbappe.id);
+  assert.deepEqual(signed.roster.at(-1), mbappe.player);
+  assert.equal(signed.budget, career.budget - mbappe.price);
   assert.deepEqual(signed.lineup, career.lineup);
-  const restored = JSON.parse(JSON.stringify(signed));
-  assert.throws(() => signCareerPlayer(restored, clubId), /já está no elenco/);
-  assert.throws(() => signCareerPlayer({...career, budget: national.price - 1}, nationalId), /Saldo insuficiente/);
+  assert.throws(() => signCareerPlayer(JSON.parse(JSON.stringify(signed)), mbappe.id), /já está no elenco/);
+  assert.throws(() => signCareerPlayer({...career, budget: mbappe.price - 1}, mbappe.id), /Saldo insuficiente/);
+  assert.throws(() => signCareerPlayer(career, 'nation-brazil-1958/pele'), /Jogador não encontrado/);
+  assert.throws(() => signCareerPlayer({...career, roster: []}, unknown.id), /sem valor de mercado confirmado/);
   const roster = Array.from({length: MAX_CAREER_ROSTER}, (_, index) => ({id: `reserve-${index}`}));
-  assert.throws(() => signCareerPlayer({...career, roster}, nationalId), /elenco está cheio/);
-  assert.ok(careerMarketPage(restored, {search: 'pelé', affordable: true}).entries.every(
-    offer => offer.player.id !== national.player.id && offer.price <= restored.budget,
+  assert.throws(() => signCareerPlayer({...career, roster}, mbappe.id), /elenco está cheio/);
+  assert.ok(careerMarketPage(career, {affordable: true, order: 'price'}).entries.every(
+    offer => offer.price !== null && offer.price <= career.budget,
   ));
 });
 
-test('a market card shows the selected source crest, OVR and purchase action', () => {
-  const filters = {search: 'pele brasil 1958'};
-  const html = renderCareer(createCareer(42), 'market', ui, null, {status: 'ready', filters});
-  assert.match(html, /career-market-token[^>]+aria-label="\d+ OVR"[\s\S]*?nation-brazil\.png/);
-  assert.match(html, /<h3>Pelé<\/h3>[\s\S]*?Brasil[\s\S]*?1958/);
-  assert.match(html, /data-action="career-sign" data-value="nation-brazil-1958\/pele">Contratar/);
+test('market cards show the season, crest, OVR, source price and purchase action', () => {
+  const career = {...createCareer(42), budget: 2_000_000};
+  const html = renderCareer(career, 'market', ui, null, {search: 'mbappe madrid'});
+  assert.match(html, /career-market-token[^>]+aria-label="\d+ OVR"[\s\S]*?league-laliga\.webp/);
+  assert.match(html, /<h3>Kylian Mbappé<\/h3>[\s\S]*?Real Madrid[\s\S]*?2026\/27/);
+  assert.match(html, /transfermarkt\.com\.br[^"]+"[^>]*>€ 180\.000\.000<\/a>/);
+  assert.match(html, /data-action="career-sign" data-value="career26-laliga-243\/kylian-mbappe">Contratar/);
 });

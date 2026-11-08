@@ -1,5 +1,9 @@
 /** New releases go first; published entries stay in the history. */
 export const RELEASE_HISTORY=Object.freeze([
+ {version:'0.16',date:'08/11/2026',title:'Mercado da temporada atual',changes:[
+  {icon:'players',title:'Reforços dos elencos atuais',detail:'O Mercado da Carreira reúne os elencos europeus 2026/27 e do Brasileirão 2026, com filtro por liga e posição.'},
+  {icon:'subs',title:'Valores de mercado do Transfermarkt',detail:'As contratações usam os valores verificados, convertidos de euros para reais. Jogadores sem valor confirmado aparecem como indisponíveis para contratação.'},
+ ]},
  {version:'0.15',date:'08/11/2026',title:'Cinco ligas na Carreira',changes:[
   {icon:'field',title:'Escolha a liga e o clube',detail:'Comece com um dos 98 clubes da Bundesliga, Premier League, LaLiga, Brasileirão ou Serie A italiana. Cada liga tem classificação e calendário de ida e volta.'},
   {icon:'players',title:'Elencos atuais e OVRs do EA FC 27',detail:'Use as versões do EA FC 27 nas ligas europeias. No Brasileirão 2026, as notas sem correspondência oficial aparecem como estimativas do ScoreFut.'},

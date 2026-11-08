@@ -1,49 +1,48 @@
-import {allSquads} from '../data/game-squads.js';
 import {CAREER_LEAGUES} from '../data/career-leagues.js';
+import {MARKET_VALUES, MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
+
 const PAGE_SIZE = 12;
 const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
+const byPrice = (a, b, direction) => {
+  if (a.price === null) return b.price === null ? 0 : 1;
+  if (b.price === null) return -1;
+  return (a.price - b.price) * direction;
+};
 const orders = {
-  overall: (a, b) => b.player.ovr - a.player.ovr || b.squad.ano - a.squad.ano,
-  price: (a, b) => a.price - b.price,
-  recent: (a, b) => b.squad.ano - a.squad.ano || b.player.ovr - a.player.ovr,
+  overall: (a, b) => b.player.ovr - a.player.ovr,
+  price: (a, b) => byPrice(a, b, 1),
+  expensive: (a, b) => byPrice(a, b, -1),
   name: (a, b) => a.player.nome.localeCompare(b.player.nome, 'pt-BR'),
 };
-let source;
-const catalogs = new Map();
-const modernSquads = CAREER_LEAGUES.flatMap(league => league.teams);
 
-export function careerMarketCatalog(career) {
-  if (source !== allSquads) {
-    source = allSquads;
-    catalogs.clear();
-  }
-  const modern = Boolean(career?.leagueId);
-  if (catalogs.has(modern)) return catalogs.get(modern);
-  const squads = modern ? [...allSquads, ...modernSquads] : allSquads;
-  const offers = squads.flatMap(squad => squad.jogadores.map(player => ({
+const offers = CAREER_LEAGUES.flatMap(league => league.teams.flatMap(squad => squad.jogadores.map(player => {
+  const [euros, source, valuedOn] = MARKET_VALUES[squad.id]?.[player.id] ?? [];
+  const sourceUrl = typeof source === 'number'
+    ? `https://www.transfermarkt.com.br/-/profil/spieler/${source}`
+    : source;
+  return {
     id: `${squad.id}/${player.id}`,
-    player,
-    squad,
-    decade: Math.floor(squad.ano / 10) * 10,
-    price: Math.max(350, 450 + (player.ovr - 72) * 170),
-    search: normalize(`${player.nome} ${squad.nome} ${squad.ano}`),
-  })));
-  const decades = [...new Set(offers.map(offer => offer.decade))].sort((a, b) => b - a);
-  const catalog = {offers, decades, byId: new Map(offers.map(offer => [offer.id, offer]))};
-  catalogs.set(modern, catalog);
+    player, squad, league, euros, sourceUrl, valuedOn,
+    // Career balances are stored in thousands of reais.
+    price: euros === undefined ? null : Math.round(euros * MARKET_EUR_TO_BRL / 1000),
+    search: normalize(`${player.nome} ${squad.nome} ${league.name} ${league.season}`),
+  };
+})));
+const catalog = {offers, byId: new Map(offers.map(offer => [offer.id, offer]))};
+
+export function careerMarketCatalog() {
   return catalog;
 }
 
 export function careerMarketPage(career, {
-  search = '', position = '', decade = '', order = 'overall', affordable = false, page = 1,
+  search = '', position = '', leagueId = '', order = 'overall', affordable = false, page = 1,
 } = {}) {
-  const {offers} = careerMarketCatalog(career);
   const owned = new Set(career.roster.map(player => player.id));
   const words = normalize(search.trim()).split(/\s+/).filter(Boolean);
   const matches = offers.filter(offer =>
     (!position || offer.player.tags.includes(position)) &&
-    (!decade || offer.decade === Number(decade)) &&
-    (!affordable || offer.price <= career.budget && !owned.has(offer.player.id)) &&
+    (!leagueId || offer.league.id === leagueId) &&
+    (!affordable || offer.price !== null && offer.price <= career.budget && !owned.has(offer.player.id)) &&
     words.every(word => offer.search.includes(word))
   ).sort(Object.hasOwn(orders, order) ? orders[order] : orders.overall);
   const pages = Math.max(1, Math.ceil(matches.length / PAGE_SIZE));
