@@ -8,7 +8,7 @@ Os escudos dos clubes brasileiros vêm da CBF, com o arquivo do Corinthians já 
 
 ## Valores de mercado
 
-Os valores em euros vêm da última avaliação disponível no recorte público de dados do Transfermarkt. Para jogadores com dados ausentes ou desatualizados nesse recorte, o catálogo também usa tabelas verificadas diretamente nas páginas de clubes e competições do Transfermarkt. Cada oferta informa o valor em euros, a fonte e a data da avaliação quando disponível. Os vínculos com os clubes seguem os elencos do ScoreFut. [Transfermarkt](https://www.transfermarkt.com.br/) · [Recorte público dos dados](https://github.com/dcaribou/transfermarkt-datasets)
+Os valores em euros vêm da última avaliação disponível no recorte público de dados do Transfermarkt. Para jogadores com dados ausentes ou desatualizados nesse recorte, o catálogo também usa tabelas verificadas diretamente nas páginas de clubes e competições do Transfermarkt. A base registra o valor em euros, a fonte e a data da avaliação quando disponível. Os cartões mostram o preço em reais. Os vínculos com os clubes seguem os elencos do ScoreFut. [Transfermarkt](https://www.transfermarkt.com.br/) · [Recorte público dos dados](https://github.com/dcaribou/transfermarkt-datasets)
 
 Neymar está no Santos na edição 2026. Seu OVR é uma estimativa do ScoreFut. [Anúncio do Santos](https://www.santosfc.com.br/santos-fc-e-neymar-jr-renovam-contrato-ate-o-fim-de-2026/) · [Perfil no Transfermarkt](https://www.transfermarkt.com.br/neymar/profil/spieler/68290)
 
