@@ -4,6 +4,16 @@
 .career-hero .hero-play-label { font-size: clamp(20px, 2vw, 27px); }
 #app .career-hero .hero-play-cta { max-width: 100%; min-width: 0; padding-inline: clamp(14px, 2.2vw, 32px); }
 #app .career-hero .hero-play-cta:disabled { cursor: default; opacity: 1; }
+#app .career-hero .hero-play-cta.is-development { position: relative; overflow: hidden; padding-bottom: 13px; }
+#app .career-hero .hero-play-cta.is-development::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 8px;
+  background: repeating-linear-gradient(135deg, #f7cf43 0 10px, #172019 10px 20px);
+  content: "";
+}
 .career-hero .hero-actions .career-tactic-icon { width: 36px; height: 36px; flex: none; }
 #app .career-hero .hero-play-cta.is-career-launching:disabled { opacity: 1; cursor: progress; }
 @media (prefers-reduced-motion: no-preference) {
