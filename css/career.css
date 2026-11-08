@@ -4,13 +4,25 @@
 .career-hero .hero-play-label { font-size: clamp(20px, 2vw, 27px); }
 #app .career-hero .hero-play-cta { max-width: 100%; min-width: 0; padding-inline: clamp(14px, 2.2vw, 32px); }
 .career-hero .hero-actions .career-tactic-icon { width: 36px; height: 36px; flex: none; }
+#app .career-hero .hero-play-cta.is-career-launching:disabled { opacity: 1; cursor: progress; }
 @media (prefers-reduced-motion: no-preference) {
   .career-tactic-icon { transition: transform .22s ease-out; }
   .career-hero .hero-play-cta:is(:hover, :focus-visible) .career-tactic-icon { transform: translateY(-2px) rotate(-6deg); }
   .career-tactic-route { stroke-dasharray: 1; animation: career-tactic-draw .75s ease-out .15s both; }
+  .is-career-launching .career-tactic-icon { animation: career-tactic-press .34s ease-out both; }
+  .is-career-launching .career-tactic-route { animation: career-tactic-replay .34s ease-out both; }
   @keyframes career-tactic-draw {
     from { stroke-dashoffset: 1; }
     to { stroke-dashoffset: 0; }
+  }
+  @keyframes career-tactic-press {
+    0%, 100% { transform: translateY(0) scale(1); }
+    22% { transform: translateY(2px) rotate(5deg) scale(.86); }
+    62% { transform: translateY(-3px) rotate(-8deg) scale(1.1); }
+  }
+  @keyframes career-tactic-replay {
+    0%, 18% { stroke-dashoffset: 1; }
+    100% { stroke-dashoffset: 0; }
   }
 }
 .career-coaches { position: relative; }
