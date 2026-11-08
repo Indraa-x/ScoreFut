@@ -118,9 +118,11 @@ function careerCrest(id) {
   const [fill, color, art] = badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(id))];
   return `<svg class="career-crest" viewBox="0 0 48 48" aria-hidden="true" focusable="false" style="color:${color}"><path d="M24 3 42 9v11c0 11-7 19-18 24C13 39 6 31 6 20V9Z" fill="${fill}" stroke="currentColor" stroke-width="2"/><g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${art}</g></svg>`;
 }
-const money = amount => amount < 1000
-  ? `R$ ${amount.toLocaleString('pt-BR')} mil`
-  : `R$ ${(amount / 1000).toLocaleString('pt-BR', {maximumFractionDigits: 2})} mi`;
+const money = amount => {
+  if (amount < 1000) return `R$ ${amount.toLocaleString('pt-BR')} mil`;
+  const [divisor, unit] = amount >= 1_000_000 ? [1_000_000, 'Bi'] : [1000, 'mi'];
+  return `R$ ${(amount / divisor).toLocaleString('pt-BR', {maximumFractionDigits: 2})} ${unit}`;
+};
 const button = (label, action, value = '', primary = false, disabled = false) =>
   `<button type="button" class="btn ${primary ? 'btn-primary' : 'btn-outline'}" data-action="${action}" data-value="${esc(value)}"${disabled ? ' disabled' : ''}>${label}</button>`;
 const title = (label, description) => `<h2>${label}</h2><p class="muted">${description}</p>`;
