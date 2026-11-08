@@ -30,7 +30,7 @@ const careerCoaches = [
 const CAREER_MODE_ENABLED = false;
 
 export function renderCareerIntro(career, ui) {
-  const action = CAREER_MODE_ENABLED ? career ? 'Continuar campanha' : 'Começar campanha' : 'EM DESENVOLVIMENTO';
+  const action = CAREER_MODE_ENABLED ? career ? 'Continuar campanha' : 'Começar campanha' : 'Em desenvolvimento';
   const portrait = ({name, src, key}) =>
     `<img class="career-coach career-coach--${key}" src="${assetUrl(src)}" width="560" height="750" alt="${name}" decoding="async" draggable="false">`;
   return `<section class="home-hero career-hero">
@@ -38,7 +38,7 @@ export function renderCareerIntro(career, ui) {
       <h1>Comande seu time.<br><span>Faça história.</span></h1>
       <p>Escolha sua liga, monte sua escalação e leve seu clube ao título no modo Carreira de Treinador.</p>
       <div class="hero-actions">
-        <button type="button" class="btn btn-primary hero-play-cta" data-action="career-start"${CAREER_MODE_ENABLED ? '' : ' disabled aria-label="Modo Carreira em desenvolvimento"'}>
+        <button type="button" class="btn btn-primary hero-play-cta${CAREER_MODE_ENABLED ? '' : ' is-development'}" data-action="career-start"${CAREER_MODE_ENABLED ? '' : ' disabled aria-label="Modo Carreira em desenvolvimento"'}>
           <span class="hero-play-content">
             <svg class="career-tactic-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <path d="M12 5H8a2 2 0 0 0-2 2v21a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/>
