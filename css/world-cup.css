@@ -24,3 +24,22 @@
 [data-mode="world-cup"] .champions-tree-trophy>img{height:118px;width:62px;object-fit:contain}
 [data-mode="world-cup"] .champions-knockout-heading>span{max-width:245px;text-align:right}
 @media(max-width:760px){.mode-grid{grid-template-columns:1fr}.home-stars-footer>span:last-child{font-size:9px}[data-mode="world-cup"] .champions-knockout-heading>span{max-width:none;text-align:left}}
+.mode-grid>.mode-card{
+  transition:transform .28s cubic-bezier(.2,.7,.3,1),box-shadow .28s ease,filter .28s ease;
+  transform-origin:center;
+}
+.mode-card .mode-icon,.mode-card .mode-card-bottom svg{
+  transition:transform .28s cubic-bezier(.2,.7,.3,1);
+}
+@media (hover:hover) and (pointer:fine){
+  .mode-grid>.mode-card:is(:hover,:focus-visible){transform:translateY(-5px) scale(1.015);z-index:2}
+  .mode-grid>.mode-card[data-value="world-cup"]:is(:hover,:focus-visible){box-shadow:0 18px 34px #0005,0 0 24px #d6ad444d}
+  .mode-grid>.mode-card[data-value="copa-do-brasil"]:is(:hover,:focus-visible){box-shadow:0 18px 34px #0005,0 0 24px #16835455}
+  .mode-grid>.mode-card[data-value="champions"]:is(:hover,:focus-visible){box-shadow:0 18px 34px #0005,0 0 24px #344bd966}
+  .mode-grid>.mode-card:is(:hover,:focus-visible) .mode-icon{transform:translateY(-3px) rotate(-4deg) scale(1.06)}
+  .mode-grid>.mode-card:is(:hover,:focus-visible) .mode-card-bottom svg{transform:translateX(4px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .mode-grid>.mode-card,.mode-card .mode-icon,.mode-card .mode-card-bottom svg{transition:none!important}
+  .mode-grid>.mode-card:is(:hover,:focus-visible){transform:none}
+}
