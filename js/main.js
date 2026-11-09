@@ -207,7 +207,7 @@ async function roll(kind='new'){
       state.draft=resultDraft;drawn=true;persist();
     }else{
       render();
-      await waitForRoll(1000);
+      await waitForRoll(800);
       if(!isCurrent())return;
       state.draft=drawSquad(draftAtStart,pool,state.formation,kind,state.mode,cryptoRandomIndex);drawn=true;persist();
     }
