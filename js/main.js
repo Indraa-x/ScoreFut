@@ -351,7 +351,7 @@ async function launchFromHome(button){
     if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
       const animations=button.getAnimations?.({subtree:true});
       if(animations)await Promise.all(animations.filter(animation=>animation.animationName?.startsWith('sf-play-')).map(animation=>animation.finished.catch(()=>{})));
-      else await new Promise(resolve=>setTimeout(resolve,620));
+      else await new Promise(resolve=>setTimeout(resolve,350));
     }
   }
   if(state.screen==='home'&&navigationVersion===versionAtStart)openSetup('world-cup');

@@ -1,6 +1,6 @@
 /* One clear play action, with a single coordinated launch. */
 #app .hero-actions .hero-play-cta {
-  --play-duration: 620ms;
+  --play-duration: 350ms;
   position: relative;
   isolation: isolate;
   min-width: 232px;
