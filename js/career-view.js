@@ -156,7 +156,8 @@ function pitch(career, ui) {
 }
 
 function renderTable(career, ui, rows) {
-  return `<details class="career-card panel career-league"><summary>Classificação do campeonato</summary>
+  return `<details class="career-card panel career-league">
+    <summary><span class="career-section-icon">${ui.icon('chart')}</span><strong>Classificação do campeonato</strong>${ui.icon('arrow', 'class="career-summary-arrow"')}</summary>
     <div class="career-table-wrap"><table class="career-table"><thead><tr>
       <th scope="col">Pos.</th><th scope="col">Clube</th><th scope="col">Pts</th><th scope="col">J</th><th scope="col">V</th><th scope="col">SG</th>
     </tr></thead><tbody>${rows.map((row, index) => `<tr${row.id === CAREER_TEAM ? ' class="career-own-row"' : ''}>
@@ -222,7 +223,7 @@ function overview(career, ui, rows, live) {
       <p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
       ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
   return `<div class="career-columns">
-    <section class="career-card panel career-match">${match}
+    <section class="career-card panel career-match${liveMatch && !matchHasEnded(live, liveMatch) ? ' is-live' : ''}">${match}
       ${liveMatch ? renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
         button('Simular até o fim', 'career-match-finish', '', true, matchHasEnded(live, liveMatch))) : last ? `<div class="career-last">
         <small>Último resultado · Rodada ${career.round}</small>
@@ -231,9 +232,15 @@ function overview(career, ui, rows, live) {
       </div>` : ''}
     </section>
     ${liveMatch ? `<section class="career-card panel career-live-field" aria-label="Simulação da partida">
-      <h2>Campinho</h2>
+      <div class="career-card-heading">
+        <h2>Campinho</h2>
+        <span class="career-match-status${matchHasEnded(live, liveMatch) ? '' : ' is-live'}">${matchHasEnded(live, liveMatch) ? 'Encerrada' : 'Em jogo'}</span>
+      </div>
       ${renderLivePitch(live, {esc, icon: ui.icon, pitchLines: ui.pitchLines})}
-    </section>` : `<section class="career-card panel">
+      <div class="career-pitch-legend">
+        ${[liveMatch.homeId, liveMatch.awayId].map(id => `<span><i class="${id === live.tournament.userTeamId ? 'is-own' : ''}" aria-hidden="true"></i>${esc(careerClub(career, id).nome)}</span>`).join('')}
+      </div>
+    </section>` : `<section class="career-card panel career-lineup-preview">
       <div class="career-card-heading"><h2>Escalação</h2><span class="career-pill">${FORMATIONS[career.formation].name}</span></div>
       ${pitch(career, ui)}
       ${button('Editar escalação', 'career-tab', 'squad')}
@@ -401,27 +408,41 @@ function market(career, ui, filters = {}) {
   </section>`;
 }
 
-function facilities(career) {
-  return `<section class="career-card panel">
-    ${title('Instalações do clube', 'Invista o orçamento em estrutura para fortalecer o clube ao longo da carreira.')}
-    <div class="career-list">${Object.entries(FACILITIES).map(([key, facility]) => {
+function facilities(career, ui) {
+  const icons = {training: 'bolt', academy: 'users', stadium: 'shield'};
+  return `<section class="career-card panel career-facilities">
+    ${title('Instalações do clube', 'Invista na estrutura do clube para melhorar o desempenho, a formação de jogadores e a receita.')}
+    <div class="career-facility-grid">${Object.entries(FACILITIES).map(([key, facility]) => {
       const level = career.facilities[key];
       const maxed = level >= MAX_FACILITY_LEVEL;
       const price = facilityPrice(career, key);
-      return `<div class="career-list-row">
-        <div><strong>${facility.name}</strong> <span class="career-pill">Nível ${level}</span><small>${facility.effect}</small></div>
-        ${maxed ? '<span>Nível máximo</span>' : `<span class="career-price">${money(price)}</span>${button('Melhorar', 'career-upgrade', key, false, career.budget < price || key === 'academy' && career.roster.length >= careerRosterLimit(career))}`}
-      </div>`;
+      const canUpgrade = career.budget >= price && (key !== 'academy' || career.roster.length < careerRosterLimit(career));
+      return `<article class="career-facility">
+        <div class="career-card-heading"><span class="career-section-icon">${ui.icon(icons[key])}</span><span class="career-pill">Nível ${level} de ${MAX_FACILITY_LEVEL}</span></div>
+        <h3>${facility.name}</h3><p>${facility.effect}</p>
+        <div class="career-level-meter" aria-hidden="true">${Array.from({length: MAX_FACILITY_LEVEL}, (_, index) => `<span${index < level ? ' class="is-filled"' : ''}></span>`).join('')}</div>
+        <div class="career-facility-action">${maxed ? '<strong>Nível máximo</strong>' : `<strong>${money(price)}</strong>${button('Melhorar', 'career-upgrade', key, true, !canUpgrade)}`}</div>
+      </article>`;
     }).join('')}</div>
   </section>`;
 }
 
 function club(career, ui) {
   const league = careerLeague(career.leagueId);
-  if (league) return `<section class="career-card panel">
-    <div class="career-identity">${clubBadge(career, CAREER_TEAM, ui)}<h2>${esc(career.name)}</h2></div>
-    <p class="muted">${esc(league.name)} · Elenco de ${league.season}</p>
-  </section>`;
+  if (league) {
+    const overall = Math.round(calculateTeam(careerPicks(career)).overall);
+    return `<section class="career-card panel career-club-profile">
+      <div class="career-identity"><span class="career-club-emblem">${clubBadge(career, CAREER_TEAM, ui)}</span>
+        <div><h2>${esc(career.name)}</h2><p class="muted">${esc(league.name)} · ${esc(league.season)}</p></div>
+      </div>
+      <dl class="career-club-facts">
+        <div><dt>Jogadores no elenco</dt><dd>${career.roster.length} / ${careerRosterLimit(career)}</dd></div>
+        <div><dt>Força dos titulares</dt><dd>${overall} OVR</dd></div>
+        <div><dt>Formação</dt><dd>${FORMATIONS[career.formation].name}</dd></div>
+      </dl>
+      ${button('Ver elenco', 'career-tab', 'squad')}
+    </section>`;
+  }
   return `<section class="career-card panel career-customize">
     ${title('Personalizar clube', 'Escolha o nome e o escudo que vão acompanhar sua carreira.')}
     <form id="career-club-form">
@@ -441,18 +462,31 @@ function club(career, ui) {
 export function renderCareer(career, tab, ui, live = null, marketFilters, squadState) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
+  const league = careerLeague(career.leagueId);
   const pages = {overview, facilities, club};
+  const activeTab = Object.hasOwn(CAREER_TABS, tab) ? tab : 'overview';
   return `<div class="career-page">
-    <header class="career-title"><span class="eyebrow accent">Modo carreira</span><h1>Carreira de Treinador</h1></header>
+    <header class="career-dashboard-header">
+      <div class="career-dashboard-backdrop" aria-hidden="true">${ui.pitchLines(false)}</div>
+      <div class="career-title">
+        <span class="career-club-emblem">${clubBadge(career, CAREER_TEAM, ui)}</span>
+        <div>
+          <span class="eyebrow accent">Carreira de treinador</span>
+          <h1>${esc(career.name)}</h1>
+          <p>${esc(careerCompetitionName(career))}${league ? ` · ${esc(league.season)}` : ''}</p>
+        </div>
+      </div>
+      <dl class="career-summary">
+        <div><dt>${ui.icon('calendar')} Temporada</dt><dd>${career.season}</dd></div>
+        <div><dt>${ui.icon('chart')} Posição</dt><dd>${career.round ? `${position}º lugar` : '—'}</dd></div>
+        <div><dt>${ui.icon('card')} Orçamento</dt><dd>${money(career.budget)}</dd></div>
+      </dl>
+    </header>
     <nav class="career-tabs" aria-label="Seções da carreira">
-      ${Object.entries(CAREER_TABS).map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === tab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
+      ${Object.entries(CAREER_TABS).map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === activeTab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
     </nav>
-    <div class="career-summary panel">
-      <div class="career-identity">${clubBadge(career, CAREER_TEAM, ui)}<strong>${esc(career.name)}</strong></div>
-      <div><small>Temporada</small><strong>${career.season}</strong></div>
-      <div><small>Posição</small><strong>${career.round ? `${position}º lugar` : '—'}</strong></div>
-      <div><small>Orçamento</small><strong>${money(career.budget)}</strong></div>
+    <div class="career-content" data-career-tab="${activeTab}">
+      ${activeTab === 'market' ? market(career, ui, marketFilters) : activeTab === 'squad' ? squad(career, ui, squadState) : pages[activeTab](career, ui, rows, live)}
     </div>
-    ${tab === 'market' ? market(career, ui, marketFilters) : tab === 'squad' ? squad(career, ui, squadState) : (pages[tab] || overview)(career, ui, rows, live)}
   </div>`;
 }
