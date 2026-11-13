@@ -4,7 +4,7 @@ Os OVRs europeus usam as notas base de lançamento do EA FC 27, publicadas na [b
 
 O Brasileirão segue a [edição 2026 da CBF](https://www.cbf.com.br/futebol-brasileiro/tabelas/campeonato-brasileiro/serie-a/2026). Os elencos iniciais são recortes de 28 jogadores reais por clube, cruzando as listas da CBF com [elencos e estatísticas da Série A na ESPN](https://www.espn.com.br/futebol/classificacao/_/liga/bra.1). Os atletas de [Bahia](https://www.ea.com/pt-br/games/ea-sports-fc/ratings/leagues-ratings/liga-do-brasil/2267) e [Botafogo](https://www.ea.com/games/ea-sports-fc/ratings?team=517) com correspondência identificada mantêm o OVR oficial. Para os demais, o ScoreFut estima o OVR com participação na liga, produção ofensiva, desempenho do clube e a última nota recente do catálogo quando há correspondência. Se a fonte informa apenas o setor em campo, o jogo permite as funções daquele setor.
 
-Os escudos dos clubes brasileiros vêm da CBF, com o arquivo do Corinthians já adotado no ScoreFut. Os escudos europeus e os ícones das ligas europeias vêm da ESPN, com o ícone da Serie A Enilive fornecido pela Lega Serie A. As origens estão em [crest-sources.json](crest-sources.json). A marca do Brasileirão reaproveita a imagem já usada no ScoreFut.
+A folha de escudos do Brasileirão reúne os PNGs transparentes já usados no ScoreFut, incluindo o Corinthians, e os escudos da ESPN para os demais clubes. Os escudos europeus e os ícones das ligas europeias vêm da ESPN, com o ícone da Serie A Enilive fornecido pela Lega Serie A. As origens estão em [crest-sources.json](crest-sources.json). A marca do Brasileirão reaproveita a imagem já usada no ScoreFut.
 
 ## Retratos dos jogadores
 
