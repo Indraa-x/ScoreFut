@@ -307,7 +307,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
           return `<button type="button" class="career-squad-slot${target ? ' is-target' : ''}${origin ? ' is-origin' : ''}"
             style="left:${slot.x}%;top:${slot.y}%" data-action="career-pick-slot" data-value="${slot.id}"
             aria-label="${esc(label)}" title="${esc(label)}" aria-pressed="${origin}"${selected && !origin && !target ? ' disabled' : ''}>
-            ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-squad-photo', 56))}
+            ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-token-photo', 56))}
             <span class="career-squad-role">${slot.label}</span>
             <span class="career-squad-name">${esc(player.nome)}</span>
           </button>`;
@@ -338,7 +338,7 @@ export function renderCareerMarketResults(career, ui, filters) {
       const label = signed ? 'No elenco' : price === null ? 'Sem cotação' : full ? 'Sem vaga' : affordable ? 'Contratar' : 'Sem saldo';
       return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}">
         <div class="career-market-player-head">
-          ${playerToken(player, seasonCrest(league, squad.crestIndex), 'career-market-token')}
+          ${playerToken(player, seasonCrest(league, squad.crestIndex), 'career-market-token', playerPortrait(player, 'career-token-photo', 58))}
           <div>
             <h3>${esc(player.nome)}</h3>
             <p>${esc(squad.nome)} <span aria-hidden="true">·</span> ${esc(league.season)}${player.ratingKind === 'career-estimate' ? ' · OVR estimado' : ''}</p>

@@ -465,17 +465,18 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   overflow: hidden;
 }
 .career-squad-token .career-crest { width: 75%; height: auto; }
-.career-squad-photo {
+.career-token-photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   padding-bottom: 20%;
   object-fit: contain;
+  border-radius: inherit;
   background: #f0f5ed;
   visibility: hidden;
 }
-.career-squad-photo.is-loaded { visibility: visible; }
+.career-token-photo.is-loaded { visibility: visible; }
 .career-squad-slot .career-squad-token > strong { font-size: clamp(11px, 3.8cqw, 17px); }
 .career-squad-slot:is(:hover:not(:disabled), .is-origin) .career-squad-token { box-shadow: 0 0 0 3px #fff8; }
 .career-squad-slot.is-target .career-squad-token { border-color: #78efb4; box-shadow: 0 0 0 4px #52db97a6; }
