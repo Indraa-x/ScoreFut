@@ -273,7 +273,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 .career-competition-brand[data-league="bundesliga"] {
   --league-gradient-light: linear-gradient(100deg, #a9071b, #cc3545);
-  --league-gradient-dark: linear-gradient(100deg, #ff5968, #fff5f5);
+  --league-gradient-dark: linear-gradient(100deg, #ff4652 22%, #fff 92%);
 }
 .career-competition-brand[data-league="premier"] {
   --league-gradient-light: linear-gradient(100deg, #38003c, #752385);
