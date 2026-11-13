@@ -956,7 +956,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   position: relative;
   background-image: radial-gradient(ellipse at 50% 36%, var(--accent-soft), transparent 66%);
 }
-.career-columns > .career-match.is-live {
+.career-columns:has(.career-match-status.is-live) > .career-match {
   border-color: color-mix(in srgb, var(--green) 40%, var(--border));
 }
 .career-matchup {
@@ -1044,7 +1044,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   .career-content .career-market-player:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .career-content[data-career-tab="overview"] .career-match.is-live .career-live-scoreboard,
+  .career-columns:has(.career-match-status.is-live) .career-live-scoreboard,
   .career-content[data-career-tab="overview"] .career-live-field .live-pitch { animation: career-dashboard-in .27s ease-out both; }
   .career-match-status.is-live::before { animation: career-live-pulse 1.8s ease-out infinite; }
   .career-league[open] .career-table-wrap,

@@ -223,7 +223,7 @@ function overview(career, ui, rows, live) {
       <p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
       ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
   return `<div class="career-columns">
-    <section class="career-card panel career-match${liveMatch && !matchHasEnded(live, liveMatch) ? ' is-live' : ''}">${match}
+    <section class="career-card panel career-match">${match}
       ${liveMatch ? renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
         button('Simular até o fim', 'career-match-finish', '', true, matchHasEnded(live, liveMatch))) : last ? `<div class="career-last">
         <small>Último resultado · Rodada ${career.round}</small>
