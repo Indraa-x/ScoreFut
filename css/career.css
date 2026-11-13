@@ -534,14 +534,6 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   font-weight: 700;
 }
 .career-squad-formation label select { min-width: 0; font-size: 14px; font-weight: 700; }
-.career-squad-formation p {
-  grid-column: 1 / -1;
-  margin: 0;
-  padding-top: 9px;
-  border-top: 1px solid var(--border);
-  font-size: 12px;
-  line-height: 1.45;
-}
 .career-list, .career-customize form { display: grid; gap: 10px; margin-top: 16px; }
 .career-list-row {
   display: grid;

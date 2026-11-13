@@ -316,10 +316,9 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
             `<option value="${id}"${id === career.formation ? ' selected' : ''}>${formation.name}</option>`).join('')}</select>
         </label>
         <label>Estilo de jogo
-          <select id="career-play-style" aria-describedby="career-style-description">${Object.entries(CAREER_STYLES).map(([id, preset]) =>
+          <select id="career-play-style">${Object.entries(CAREER_STYLES).map(([id, preset]) =>
             `<option value="${id}"${id === style ? ' selected' : ''}>${preset.name}</option>`).join('')}</select>
         </label>
-        <p id="career-style-description" class="muted">${CAREER_STYLES[style].description}</p>
       </div>
     </section>
   </div>`;
