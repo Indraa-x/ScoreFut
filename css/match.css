@@ -193,6 +193,14 @@ body:has(#app[data-screen="match"])>footer{display:none}
 .match-scorers p{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;font-size:12px;line-height:1.5;margin:0}
 .match-scorers p+p{margin-top:3px}
 .match-scorers strong{font-weight:700}
+.match-goal-ball{
+  display:inline-block;
+  width:1em;
+  height:1em;
+  margin-inline-end:.4em;
+  vertical-align:-.12em;
+  color:var(--green);
+}
 .match-scorers span{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
 .match-scorers.away p{justify-content:flex-end;text-align:right}
 .match-scorers.away{text-align:right}

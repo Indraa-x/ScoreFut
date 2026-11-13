@@ -8,7 +8,7 @@ import {careerMarketCatalog, careerMarketPage} from './career-market.js';
 import {careerPortraitUrl} from '../data/career-2026/player-portraits.js';
 import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchSpeed} from './match-view.js';
 import {scoreAt} from './match-motion.js';
-import {renderMatchGoals} from './match-goals.js';
+import {goalBallIcon, renderMatchGoals} from './match-goals.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
@@ -244,7 +244,7 @@ function lastMatchScorers(career, last) {
     const club = careerClub(career, last[side]).nome;
     const entries = details.filter(scorer => scorer.team === side);
     return `<ul class="career-last-scorers ${side}" aria-label="Gols de ${esc(club)}">
-      ${entries.map(({name, minutes, goals}) => `<li><span class="career-scorer-name">${esc(name)}</span>
+      ${entries.map(({name, minutes, goals}) => `<li><span class="career-scorer-name">${goalBallIcon}${esc(name)}</span>
         ${minutes?.length ? `<span class="career-scorer-minute">${esc(minutes.join(', '))}</span>` : goals > 1 ? `<span>(${goals})</span>` : ''}
       </li>`).join('') || '<li><span>Sem gols</span></li>'}
     </ul>`;
