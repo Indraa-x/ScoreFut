@@ -514,10 +514,34 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   line-height: 1.25;
   text-shadow: 0 1px 3px #071d12;
 }
-.career-squad-formation { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; font-weight: 700; }
-.career-squad-formation label { display: flex; align-items: center; gap: 8px; }
-.career-squad-formation label select { width: auto; min-width: 112px; }
-.career-squad-formation p { flex-basis: 100%; margin: 0; text-align: center; font-size: 13px; font-weight: 500; }
+.career-squad-formation {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  gap: 10px 14px;
+  width: min(100%, 460px);
+  margin-inline: auto;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-alt);
+}
+.career-squad-formation label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.career-squad-formation label select { min-width: 0; font-size: 14px; font-weight: 700; }
+.career-squad-formation p {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  line-height: 1.45;
+}
 .career-list, .career-customize form { display: grid; gap: 10px; margin-top: 16px; }
 .career-list-row {
   display: grid;
