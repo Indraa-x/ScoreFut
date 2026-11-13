@@ -413,6 +413,19 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 .career-summary > div:last-child dd { color: var(--green); }
 .career-matchup small, .career-last small { color: var(--muted); }
+.career-match-venue {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.career-match-venue svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--green);
+}
 .career-content { display: grid; gap: 16px; min-width: 0; }
 .career-content > .career-card, .career-columns > .career-card, .career-squad-layout > .career-card { border-radius: 15px; }
 .career-crest { display: inline-block; width: 48px; height: 48px; flex: none; vertical-align: middle; }

@@ -196,21 +196,28 @@ function standings(career, ui, rows) {
   </section>`;
 }
 
+function matchVenue(isHome) {
+  const outline = isHome
+    ? 'm3 11 9-8 9 8M5 10v10h14V10M10 20v-6h4v6'
+    : 'M8 7V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M8 8v12m8-12v12M5 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z';
+  return `<small class="career-match-venue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${outline}"/></svg>${isHome ? 'Mandante' : 'Visitante'}</small>`;
+}
+
 function matchScoreboard(career, ui, live, match) {
   const {result, homeId, awayId} = match;
   const score = scoreAt(result, live.matchMinute);
   const ended = matchHasEnded(live, match);
   const homeName = careerClub(career, homeId).nome;
   const awayName = careerClub(career, awayId).nome;
-  const side = (id, name, venue) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong><small>${venue}</small></div>`;
+  const side = (id, name, isHome) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong>${matchVenue(isHome)}</div>`;
   return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', roundLabel(career, match.round))}
     <div class="career-matchup career-live-scoreboard match-scoreboard-style">
-      ${side(homeId, homeName, 'Mandante')}
+      ${side(homeId, homeName, true)}
       <div class="score-center">
         ${renderMatchScore(score)}
         ${renderMatchClock(result, live.matchMinute, ended)}
       </div>
-      ${side(awayId, awayName, 'Visitante')}
+      ${side(awayId, awayName, false)}
     </div>
     <div class="match-score-goals career-live-goals" data-match-goals data-home-name="${esc(homeName)}" data-away-name="${esc(awayName)}"
       aria-label="Autores dos gols" aria-live="polite">${renderMatchGoals(result, live.matchMinute, {home: homeName, away: awayName})}</div>
@@ -246,7 +253,7 @@ function overview(career, ui, rows, live) {
   const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
     ? `${title('Próxima partida', roundLabel(career, career.round + 1, total))}
       <div class="career-matchup">${fixture.map((id, index) => `${index ? '<span aria-hidden="true">×</span>' : ''}
-        <div>${clubBadge(career, id, ui)}<strong>${esc(careerClub(career, id).nome)}</strong><small>${index ? 'Visitante' : 'Mandante'}</small></div>`).join('')}</div>
+        <div>${clubBadge(career, id, ui)}<strong>${esc(careerClub(career, id).nome)}</strong>${matchVenue(index === 0)}</div>`).join('')}</div>
       ${button(career.replay?.round === career.round ? 'Continuar partida' : 'Simular partida', 'career-play', `${career.season}:${career.round}`, true)}`
     : `${title('Temporada encerrada', position === 1 ? 'Seu clube conquistou o título!' : `Seu clube terminou em ${position}º lugar.`)}
       <p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
