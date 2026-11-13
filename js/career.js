@@ -36,8 +36,13 @@ export const FACILITIES = {
   training: {name: 'Centro de treinamento', effect: 'Cada melhoria dá +1 de OVR efetivo aos titulares durante as partidas.', cost: 1400},
   academy: {name: 'Academia de base', effect: 'Traz um jogador real do catálogo ao melhorar. A partir do nível 2, traz outro a cada nova temporada.', cost: 1000},
   stadium: {name: 'Estádio', effect: 'Cada melhoria aumenta em R$ 120 mil a receita por jogo em casa.', cost: 1800},
+  gym: {name: 'Academia de preparação física', effect: 'Cada melhoria aumenta em 2% a força defensiva usada na simulação.', cost: 1250},
+  shop: {name: 'Loja oficial', effect: 'Cada melhoria rende R$ 65 mil extras por partida com a venda de produtos.', cost: 1100},
 };
 export const MAX_FACILITY_LEVEL = 5;
+const initialFacilityLevels = Object.fromEntries(Object.keys(FACILITIES).map(key => [key, 1]));
+
+export const careerFacilityLevel = (career, key) => career.facilities[key] ?? 1;
 export const MAX_CAREER_ROSTER = 32;
 export const careerRosterLimit = career => Math.max(MAX_CAREER_ROSTER, (careerSeasonTeam(career.clubId)?.jogadores.length ?? 0) + 3);
 const CAREER_VERSION = 2;
@@ -150,7 +155,7 @@ export function createCareer(seed, clubId) {
     const roster = [...club.jogadores];
     return {
       version: CAREER_VERSION, seed, clubId, leagueId: league.id, name: club.nome,
-      season: 1, round: 0, budget: 8500, facilities: {training: 1, academy: 1, stadium: 1},
+      season: 1, round: 0, budget: 8500, facilities: {...initialFacilityLevels},
       roster, opponentIds: league.teams.filter(team => team.id !== clubId).map(team => team.id),
       ...startingLineup(roster), results: [], seasons: [],
     };
@@ -160,7 +165,7 @@ export function createCareer(seed, clubId) {
   if (opponentIds.length % 2 === 0) opponentIds.pop();
   return {
     version: CAREER_VERSION, seed, name: 'Meu time', crest: CAREER_CRESTS[0],
-    season: 1, round: 0, budget: 8500, facilities: {training: 1, academy: 1, stadium: 1},
+    season: 1, round: 0, budget: 8500, facilities: {...initialFacilityLevels},
     roster, opponentIds, formation: '4-3-3', lineup: bestLineup(roster, '4-3-3'), results: [], seasons: [],
   };
 }
@@ -241,7 +246,7 @@ export function renameCareerClub(career, name, crest) {
 }
 
 export function facilityPrice(career, key) {
-  return FACILITIES[key].cost * career.facilities[key];
+  return FACILITIES[key].cost * careerFacilityLevel(career, key);
 }
 
 function addAcademyPlayer(career) {
@@ -260,11 +265,12 @@ function addAcademyPlayer(career) {
 }
 
 export function upgradeCareerFacility(career, key) {
-  if (!Object.hasOwn(FACILITIES, key) || career.facilities[key] >= MAX_FACILITY_LEVEL) throw Error('Essa melhoria não está disponível.');
+  const level = careerFacilityLevel(career, key);
+  if (!Object.hasOwn(FACILITIES, key) || level >= MAX_FACILITY_LEVEL) throw Error('Essa melhoria não está disponível.');
   if (key === 'academy' && career.roster.length >= careerRosterLimit(career)) throw Error('Libere uma vaga no elenco para receber o jogador da base.');
   const price = facilityPrice(career, key);
   if (career.budget < price) throw Error('Saldo insuficiente para a melhoria.');
-  const updated = {...career, budget: career.budget - price, facilities: {...career.facilities, [key]: career.facilities[key] + 1}};
+  const updated = {...career, budget: career.budget - price, facilities: {...career.facilities, [key]: level + 1}};
   return key === 'academy' ? addAcademyPlayer(updated) : updated;
 }
 
@@ -308,7 +314,14 @@ function matchTeam(career, id) {
     if (!pick.player || positionFit(pick.player, pick.slot) === null) throw Error('Complete a escalação antes de jogar.');
     return {...pick, player: {...pick.player, ovr: Math.min(99, pick.player.ovr + bonus)}, clubId: CAREER_TEAM, ano: career.season};
   });
-  const tacticalProfile = CAREER_STYLES[careerStyle(career)].profile;
+  const style = CAREER_STYLES[careerStyle(career)].profile;
+  const defenseBonus = (careerFacilityLevel(career, 'gym') - 1) * 0.02;
+  const tacticalProfile = defenseBonus ? {
+    attack: style?.attack ?? 1,
+    midfield: style?.midfield ?? 1,
+    defense: (style?.defense ?? 1) * (1 + defenseBonus),
+    tempo: style?.tempo ?? 0,
+  } : style;
   return {id, name: career.name, crest: career.crest, isUser: true, lineup, strength: calculateTeam(lineup), formation: career.formation, ...(tacticalProfile && {tacticalProfile})};
 }
 
@@ -338,7 +351,8 @@ export function prepareCareerRound(career) {
     const match = simulateMatch(...teams, rng, {neutral: false, stoppageTimeAllowed: userMatch});
     const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals};
     if (userMatch) {
-      income = (home === CAREER_TEAM ? 260 + (career.facilities.stadium - 1) * 120 : 100)
+      const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 65;
+      income = (home === CAREER_TEAM ? 260 + (career.facilities.stadium - 1) * 120 : 100) + shopIncome
         + (match.winnerId === CAREER_TEAM ? 160 : match.homeGoals === match.awayGoals ? 80 : 0);
       result.income = income;
       result.scorers = careerScorers(match);

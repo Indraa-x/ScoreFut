@@ -13,7 +13,7 @@ import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
   CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, FACILITIES, MAX_FACILITY_LEVEL, careerClub, careerStyle,
-  careerCompetitionName, careerDestinations, careerFixtures, careerPicks, careerRosterLimit, careerScorers, careerTable, facilityPrice, nextCareerMatch,
+  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRosterLimit, careerScorers, careerTable, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -444,21 +444,30 @@ function market(career, ui, filters = {}) {
 }
 
 function facilities(career, ui) {
-  const icons = {training: 'bolt', academy: 'users', stadium: 'shield'};
+  const cards = {
+    training: {icon: 'bolt', photo: 'assets/career/facilities/training.jpg'},
+    academy: {icon: 'users', photo: 'assets/career/facilities/academy.jpg'},
+    stadium: {icon: 'shield', photo: 'assets/career/facilities/stadium.jpg'},
+    gym: {icon: 'ball', photo: 'assets/career/facilities/gym.jpg'},
+    shop: {icon: 'card', photo: 'assets/career/facilities/shop.jpg'},
+  };
   return `<section class="career-card panel career-facilities">
     ${title('Instalações do clube', 'Invista na estrutura do clube para melhorar o desempenho, a formação de jogadores e a receita.')}
     <div class="career-facility-grid">${Object.entries(FACILITIES).map(([key, facility]) => {
-      const level = career.facilities[key];
+      const {icon, photo} = cards[key];
+      const level = careerFacilityLevel(career, key);
       const maxed = level >= MAX_FACILITY_LEVEL;
       const price = facilityPrice(career, key);
       const canUpgrade = career.budget >= price && (key !== 'academy' || career.roster.length < careerRosterLimit(career));
-      return `<article class="career-facility">
-        <div class="career-card-heading"><span class="career-section-icon">${ui.icon(icons[key])}</span><span class="career-pill">Nível ${level} de ${MAX_FACILITY_LEVEL}</span></div>
+      return `<article class="career-facility" data-facility="${key}">
+        <img class="career-facility-photo" src="${assetUrl(photo)}" alt="" loading="lazy" decoding="async">
+        <div class="career-card-heading"><span class="career-section-icon">${ui.icon(icon)}</span><span class="career-pill">Nível ${level} de ${MAX_FACILITY_LEVEL}</span></div>
         <h3>${facility.name}</h3><p>${facility.effect}</p>
         <div class="career-level-meter" aria-hidden="true">${Array.from({length: MAX_FACILITY_LEVEL}, (_, index) => `<span${index < level ? ' class="is-filled"' : ''}></span>`).join('')}</div>
         <div class="career-facility-action">${maxed ? '<strong>Nível máximo</strong>' : `<strong>${money(price)}</strong>${button('Melhorar', 'career-upgrade', key, true, !canUpgrade)}`}</div>
       </article>`;
     }).join('')}</div>
+    <a class="career-facility-credits" href="CREDITS.md">Créditos das fotos</a>
   </section>`;
 }
 
