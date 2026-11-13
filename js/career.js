@@ -385,12 +385,15 @@ export function commitCareerRound(career) {
   };
 }
 
+export const LAST_SAFE_POSITION = 16;
+
 export function advanceCareerSeason(career) {
   if (career.round < careerFixtures(career).length) throw Error('Termine a temporada antes de avançar.');
   const table = careerTable(career);
   const position = table.findIndex(row => row.id === CAREER_TEAM) + 1;
   const prize = 2500 + (table.length - position) * 200;
-  const season = {number: career.season, position, points: table[position - 1].points, prize};
+  const relegated = table.slice(LAST_SAFE_POSITION).map(row => row.id);
+  const season = {number: career.season, position, points: table[position - 1].points, prize, relegated};
   const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
   return career.facilities.academy > 1 ? addAcademyPlayer(next) : next;
 }

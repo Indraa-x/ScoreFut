@@ -999,6 +999,33 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-own-row { background: var(--accent-soft); }
 .career-own-row > :first-child { box-shadow: inset 3px 0 var(--green); }
 .career-own-row strong { color: var(--green); }
+.career-relegation-row > :first-child { box-shadow: inset 3px 0 var(--red); }
+.career-relegation-row .career-table-rank { color: var(--red); font-weight: 800; }
+.career-table-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.career-standings .career-relegation-legend {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.career-relegation-legend::before {
+  content: '';
+  width: 3px;
+  height: 13px;
+  flex: none;
+  border-radius: 2px;
+  background: var(--red);
+}
+.career-history small { display: block; margin-bottom: 8px; color: var(--muted); }
 @media (hover: hover) {
   .career-table tbody tr:not(.career-own-row):hover { background: var(--surface-alt); }
 }
