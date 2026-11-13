@@ -339,7 +339,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-club-emblem :is(.career-crest, .career-season-crest, .club-badge) { width: 72%; height: auto; aspect-ratio: 1; }
 .career-tabs {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 5px;
   padding: 5px;
   border: 1px solid var(--border);
@@ -373,8 +373,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 @media (max-width: 620px) {
   .career-tabs {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
     gap: 3px;
   }
@@ -899,12 +898,66 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-crest-choice .career-crest { width: 42px; height: 42px; }
 .career-customize .btn { justify-self: start; }
 .career-card summary { cursor: pointer; font-weight: 750; }
-.career-table-wrap { overflow-x: auto; margin-top: 12px; }
-.career-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-.career-table :is(th, td) { padding: 6px; border-bottom: 1px solid var(--border); }
-.career-table th[scope="row"] { white-space: nowrap; }
-.career-table :is(.career-crest, .club-badge) { width: 24px; height: 24px; vertical-align: middle; }
+.career-standings-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(13px, 2vw, 20px);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: radial-gradient(ellipse at 0 0, var(--accent-soft), transparent 70%), var(--surface-alt);
+}
+.career-standings-highlights { display: flex; flex-wrap: wrap; gap: 8px; }
+.career-standings-highlights > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+}
+.career-standings-highlights small { display: block; color: var(--muted); font-size: 11px; }
+.career-standings-highlights strong { font-size: 13px; overflow-wrap: anywhere; }
+.career-standings-highlights :is(.career-season-crest, .career-crest, .club-badge, .career-section-icon) { width: 30px; height: 30px; }
+.career-table-wrap { overflow-x: auto; margin-top: 16px; border: 1px solid var(--border); border-radius: 12px; }
+.career-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; }
+.career-table :is(th, td) { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+.career-table tbody tr:last-child > * { border-bottom: 0; }
+.career-table thead { background: var(--surface-alt); color: var(--muted); font-size: 11px; }
+.career-table thead th:nth-child(2), .career-table th[scope="row"] { text-align: left; }
+.career-table th[scope="row"] { width: 46%; }
+.career-table-team { display: flex; align-items: center; gap: 8px; }
+.career-table-team > span:not(.career-season-crest) { overflow-wrap: anywhere; }
+.career-table :is(.career-crest, .club-badge) { width: 24px; height: 24px; flex: none; }
+.career-table-team small {
+  padding: 2px 5px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--green);
+  font-size: 9px;
+  white-space: nowrap;
+}
+.career-table-rank { display: inline-grid; place-items: center; min-width: 24px; min-height: 24px; border-radius: 6px; }
+.career-table-rank.is-leader { background: var(--accent-soft); color: var(--green); font-weight: 800; }
 .career-own-row { background: var(--accent-soft); }
+.career-own-row > :first-child { box-shadow: inset 3px 0 var(--green); }
+.career-own-row strong { color: var(--green); }
+@media (hover: hover) {
+  .career-table tbody tr:not(.career-own-row):hover { background: var(--surface-alt); }
+}
+@media (max-width: 620px) {
+  .career-table :is(th, td) { padding: 7px 5px; }
+  .career-table :is(.career-table-detail, .career-table-team small) { display: none; }
+}
+@media (max-width: 380px) {
+  .career-table { font-size: 12px; }
+  .career-table-team { gap: 4px; }
+  .career-table :is(.career-season-crest, .career-crest, .club-badge) { width: 18px; height: 18px; }
+}
 .career-history { padding-left: 20px; margin-top: 12px; font-size: 13px; }
 .career-live-field .live-field-wrap { min-height: 0; padding: 0; margin: 16px 0; background: transparent; }
 .career-live-field .live-pitch-area { container-type: normal; }
@@ -1004,13 +1057,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-pitch-legend i { background: #639aed; }
 .career-pitch-legend i.is-own { background: #52cf99; }
 .career-lineup-preview .career-pitch, .career-squad-field .career-pitch { box-shadow: 0 7px 16px #0003; }
-.career-league > summary { display: flex; align-items: center; gap: 10px; list-style: none; }
-.career-league > summary::-webkit-details-marker { display: none; }
-.career-summary-arrow { margin-left: auto; width: 17px; height: 17px; color: var(--muted); transition: transform .2s ease; }
-.career-league[open] .career-summary-arrow { transform: rotate(90deg); }
-.career-league > summary:hover .career-summary-arrow { color: var(--green); }
-.career-table th[scope="col"] { color: var(--muted); }
-.career-table tr:hover td, .career-table tr:hover th[scope="row"] { background: var(--surface-alt); }
+
 .career-content .career-market-head {
   border-radius: 13px;
   background-image: radial-gradient(ellipse at 5% 0, var(--accent-soft), transparent 65%);
@@ -1047,7 +1094,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   .career-columns:has(.career-match-status.is-live) .career-live-scoreboard,
   .career-content[data-career-tab="overview"] .career-live-field .live-pitch { animation: career-dashboard-in .27s ease-out both; }
   .career-match-status.is-live::before { animation: career-live-pulse 1.8s ease-out infinite; }
-  .career-league[open] .career-table-wrap,
+  .career-standings .career-table-wrap,
   .career-content :is(.career-facility-grid, .career-club-facts) { animation: career-dashboard-in .23s ease-out both; }
 }
 @keyframes career-dashboard-in {
@@ -1059,6 +1106,6 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   45% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 25%, transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .career-page :is(.career-tabs button, .career-summary-arrow, .career-market-player, .career-roster-player, .career-squad-token) { transition: none; }
+  .career-page :is(.career-tabs button, .career-market-player, .career-roster-player, .career-squad-token) { transition: none; }
 }
 

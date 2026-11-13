@@ -18,6 +18,7 @@ import {
 
 export const CAREER_TABS = {
   overview: {label: 'Visão geral', icon: 'chart'},
+  standings: {label: 'Classificação', icon: 'trophy'},
   squad: {label: 'Elenco', icon: 'users'},
   market: {label: 'Mercado', icon: 'subs'},
   facilities: {label: 'Instalações', icon: 'bolt'},
@@ -135,7 +136,7 @@ const roundLabel = (career, round, total) => {
       ${league ? seasonCrest(league) : `<img src="${assetUrl(competitionLogo('brasileirao'))}" width="32" height="32" alt="" decoding="async">`}
       <span class="career-competition-name">${esc(careerCompetitionName(career))}</span>
     </span>
-    <span>· Rodada ${round}${total ? ` de ${total}` : ''}</span>
+    <span>· ${round ? `Rodada ${round}${total ? ` de ${total}` : ''}` : 'Pré-temporada'}</span>
   </span>`;
 };
 
@@ -155,16 +156,44 @@ function pitch(career, ui) {
   </div>`;
 }
 
-function renderTable(career, ui, rows) {
-  return `<details class="career-card panel career-league">
-    <summary><span class="career-section-icon">${ui.icon('chart')}</span><strong>Classificação do campeonato</strong>${ui.icon('arrow', 'class="career-summary-arrow"')}</summary>
-    <div class="career-table-wrap"><table class="career-table"><thead><tr>
-      <th scope="col">Pos.</th><th scope="col">Clube</th><th scope="col">Pts</th><th scope="col">J</th><th scope="col">V</th><th scope="col">SG</th>
-    </tr></thead><tbody>${rows.map((row, index) => `<tr${row.id === CAREER_TEAM ? ' class="career-own-row"' : ''}>
-      <td>${index + 1}</td><th scope="row">${clubBadge(career, row.id, ui)} ${esc(careerClub(career, row.id).nome)}</th>
-      <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${row.goalsFor - row.goalsAgainst}</td>
-    </tr>`).join('')}</tbody></table></div>
-  </details>`;
+function standings(career, ui, rows) {
+  const totalRounds = careerFixtures(career).length;
+  const leader = rows[0];
+  const ownIndex = rows.findIndex(row => row.id === CAREER_TEAM);
+  const own = rows[ownIndex];
+  return `<section class="career-card panel career-standings" aria-labelledby="career-standings-title">
+    <header class="career-standings-header">
+      <div>
+        <h2 id="career-standings-title">Classificação do campeonato</h2>
+        <p class="muted">${roundLabel(career, career.round, totalRounds)}</p>
+      </div>
+      <div class="career-standings-highlights">
+        <div><span class="career-section-icon">${ui.icon('shield')}</span><div><small>Seu clube</small><strong>${career.round ? `${ownIndex + 1}º lugar · ${own.points} pts` : 'Aguardando estreia'}</strong></div></div>
+        ${career.round ? `<div>${clubBadge(career, leader.id, ui)}<div><small>Líder · ${leader.points} pts</small><strong>${esc(careerClub(career, leader.id).nome)}</strong></div></div>` : ''}
+      </div>
+    </header>
+    <div class="career-table-wrap">
+      <table class="career-table" aria-labelledby="career-standings-title">
+        <thead><tr>
+          <th scope="col" title="Posição">Pos.</th><th scope="col">Clube</th><th scope="col" title="Pontos">PTS</th>
+          <th scope="col" title="Jogos">J</th><th scope="col" title="Vitórias">V</th><th scope="col" title="Empates">E</th><th scope="col" title="Derrotas">D</th>
+          <th scope="col" title="Gols marcados" class="career-table-detail">GP</th><th scope="col" title="Gols sofridos" class="career-table-detail">GC</th><th scope="col" title="Saldo de gols">SG</th>
+        </tr></thead>
+        <tbody>${rows.map((row, index) => {
+          const isOwn = row.id === CAREER_TEAM;
+          const draws = row.points - row.wins * 3;
+          const losses = row.played - row.wins - draws;
+          const difference = row.goalsFor - row.goalsAgainst;
+          return `<tr${isOwn ? ' class="career-own-row"' : ''}>
+            <td><span class="career-table-rank${index === 0 && career.round ? ' is-leader' : ''}">${index + 1}</span></td>
+            <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<small>Seu clube</small>' : ''}</span></th>
+            <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
+            <td class="career-table-detail">${row.goalsFor}</td><td class="career-table-detail">${row.goalsAgainst}</td><td>${difference > 0 ? '+' : ''}${difference}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>
+  </section>`;
 }
 
 function matchScoreboard(career, ui, live, match) {
@@ -246,7 +275,6 @@ function overview(career, ui, rows, live) {
       ${button('Editar escalação', 'career-tab', 'squad')}
     </section>`}
   </div>
-  ${renderTable(career, ui, rows)}
   ${career.seasons.length ? `<details class="career-card panel"><summary>Temporadas anteriores</summary><ul class="career-history">${[...career.seasons].reverse().map(season =>
     `<li>Temporada ${season.number} · ${season.position === 1 ? 'Campeão' : `${season.position}º lugar`} · ${season.points} pts · ${money(season.prize)} em premiação</li>`).join('')}</ul></details>` : ''}`;
 }
@@ -463,7 +491,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const league = careerLeague(career.leagueId);
-  const pages = {overview, facilities, club};
+  const pages = {overview, standings, facilities, club};
   const activeTab = Object.hasOwn(CAREER_TABS, tab) ? tab : 'overview';
   return `<div class="career-page">
     <header class="career-dashboard-header">
