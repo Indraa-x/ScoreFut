@@ -5,6 +5,7 @@ import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
 import {seasonCrest} from './career-setup-view.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
 import {careerMarketCatalog, careerMarketPage} from './career-market.js';
+import {careerPortraitUrl} from '../data/career-2026/player-portraits.js';
 import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchSpeed} from './match-view.js';
 import {scoreAt} from './match-motion.js';
 import {renderMatchGoals} from './match-goals.js';
@@ -247,6 +248,14 @@ function playerToken(player, crest, className) {
   return `<span class="${className}" role="img" aria-label="${player.ovr} OVR">${crest}<strong>${player.ovr}</strong></span>`;
 }
 
+function rosterPortrait(player, position) {
+  const portrait = careerPortraitUrl(player.id);
+  return `<span class="career-roster-avatar">
+    ${portrait ? `<img class="career-roster-photo" src="${portrait}" alt="" width="44" height="44" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}
+    <span class="career-roster-position">${esc(position)}</span>
+  </span>`;
+}
+
 function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
   const style = careerStyle(career);
   const picks = careerPicks(career);
@@ -269,7 +278,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
       <ul class="career-roster-list" aria-label="${showingReserves ? 'Reservas' : 'Titulares'}">
         ${players.map(player => `<li class="career-roster-row">
           <button type="button" class="career-roster-player" data-action="career-select-player" data-value="${esc(player.id)}" aria-pressed="${selectedId === player.id}">
-            <span class="career-roster-position">${esc(starters.get(player.id) ?? player.tags[0])}</span>
+            ${rosterPortrait(player, starters.get(player.id) ?? player.tags[0])}
             <span class="career-roster-name"><strong>${esc(player.nome)}</strong><small>${esc(player.tags.join(' / '))}</small></span>
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>

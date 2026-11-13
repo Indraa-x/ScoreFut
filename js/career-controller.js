@@ -207,6 +207,11 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
       toast(error.message);
     }
   }
+  app.addEventListener('load', event => {
+    if (event.target.classList?.contains('career-roster-photo')) {
+      event.target.classList.add('is-loaded');
+    }
+  }, true);
   app.addEventListener('change', event => {
     if (app.dataset.screen !== 'career') return;
     const field = event.target;

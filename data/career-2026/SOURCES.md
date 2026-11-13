@@ -6,6 +6,10 @@ O Brasileirão segue a [edição 2026 da CBF](https://www.cbf.com.br/futebol-bra
 
 Os escudos dos clubes brasileiros vêm da CBF, com o arquivo do Corinthians já adotado no ScoreFut. Os escudos europeus e os ícones das ligas europeias vêm da ESPN, com o ícone da Serie A Enilive fornecido pela Lega Serie A. As origens estão em [crest-sources.json](crest-sources.json). A marca do Brasileirão reaproveita a imagem já usada no ScoreFut.
 
+## Retratos do elenco
+
+Os retratos da aba Elenco vêm do CDN usado pelas [páginas oficiais de jogadores do EA SPORTS FC 27](https://www.ea.com/games/ea-sports-fc/ratings). O catálogo vincula cada foto pelo ID oficial do jogador, incluindo quem tem um identificador legado no ScoreFut. Quando o jogador não tem retrato oficial associado ou a imagem não carrega, a lista exibe o indicador de posição.
+
 ## Valores de mercado
 
 Os valores em euros vêm da última avaliação disponível no recorte público de dados do Transfermarkt. Para jogadores com dados ausentes ou desatualizados nesse recorte, o catálogo também usa tabelas verificadas diretamente nas páginas de clubes e competições do Transfermarkt. A base registra o valor em euros, a fonte e a data da avaliação quando disponível. Os cartões mostram o preço em reais. Os vínculos com os clubes seguem os elencos do ScoreFut. [Transfermarkt](https://www.transfermarkt.com.br/) · [Recorte público dos dados](https://github.com/dcaribou/transfermarkt-datasets)
