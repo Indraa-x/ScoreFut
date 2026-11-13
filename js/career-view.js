@@ -177,7 +177,7 @@ function standings(career, ui, rows) {
         <thead><tr>
           <th scope="col" title="Posição">Pos.</th><th scope="col">Clube</th><th scope="col" title="Pontos">PTS</th>
           <th scope="col" title="Jogos">J</th><th scope="col" title="Vitórias">V</th><th scope="col" title="Empates">E</th><th scope="col" title="Derrotas">D</th>
-          <th scope="col" title="Gols marcados" class="career-table-detail">GP</th><th scope="col" title="Gols sofridos" class="career-table-detail">GC</th><th scope="col" title="Saldo de gols">SG</th>
+          <th scope="col" title="Saldo de gols">SG</th>
         </tr></thead>
         <tbody>${rows.map((row, index) => {
           const isOwn = row.id === CAREER_TEAM;
@@ -188,7 +188,7 @@ function standings(career, ui, rows) {
             <td><span class="career-table-rank${index === 0 && career.round ? ' is-leader' : ''}">${index + 1}</span></td>
             <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<small>Seu clube</small>' : ''}</span></th>
             <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
-            <td class="career-table-detail">${row.goalsFor}</td><td class="career-table-detail">${row.goalsAgainst}</td><td>${difference > 0 ? '+' : ''}${difference}</td>
+            <td>${difference > 0 ? '+' : ''}${difference}</td>
           </tr>`;
         }).join('')}</tbody>
       </table>

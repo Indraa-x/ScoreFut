@@ -1004,7 +1004,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 @media (max-width: 620px) {
   .career-table :is(th, td) { padding: 7px 5px; }
-  .career-table :is(.career-table-detail, .career-table-team small) { display: none; }
+  .career-table-team small { display: none; }
 }
 @media (max-width: 380px) {
   .career-table { font-size: 12px; }
