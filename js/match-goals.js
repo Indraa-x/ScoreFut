@@ -3,7 +3,7 @@ import {matchIncidentsAt} from './match-discipline.js';
 import { formatMatchEventMinute } from './match-motion.js';
 
 
-export const goalBallIcon = '<svg class="match-goal-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m12 8 4 3-1.5 4h-5L8 11Zm0-5v5m9 2-5 1m1.5 8L14.5 15m-8 4L9.5 15M3 10l5 1"/></svg>';
+export const goalBallIcon = '<svg class="match-goal-ball" viewBox="0 0 24 24" stroke="#151515" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10" fill="#fff"/><path fill="#151515" stroke="none" d="m12 7 4.8 3.5-1.8 5.7H9l-1.8-5.7ZM9 2.5 12 2l3 .5L12 5ZM2.5 9l3.1 1.5L2.8 15 2 12Zm19 0 .5 3-.8 3-2.8-4.5ZM5.3 19.4l4.3-.8-.8 2.9Zm13.4 0-3.5 2.1-.8-2.9Z"/><path fill="none" d="M12 4v3m4.8 3.5 2.9-.7m-4.7 6.4 1.6 2.7m-7.6-2.7-1.6 2.7m-.2-8.4-2.9-.7"/></svg>';
 
 export function goalsAt(result,minute){
   return result.events.filter(event=>event.type==='goal'&&!event.shootout&&event.minute<=minute).sort((a,b)=>a.minute-b.minute);
