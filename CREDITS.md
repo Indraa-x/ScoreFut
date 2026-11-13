@@ -29,7 +29,7 @@ As fotos foram redimensionadas e são usadas como fundos com sobreposição no j
 | Instalação | Foto e autor | Licença |
 | --- | --- | --- |
 | Centro de treinamento | [MUFC training ground Carrington](https://commons.wikimedia.org/wiki/File:MUFC_training_ground_Carrington.jpg), North West Air Ambulance | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) |
-| Academia de base | [Youth training at a football field 05](https://commons.wikimedia.org/wiki/File:Youth_training_at_a_football_field_05.jpg), Alameen khalid200 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Academia de base | [Coaching youth sports](https://commons.wikimedia.org/wiki/File:Coaching_youth_sports_150309-A-UG106-482.jpg), Sgt. Daniel Schroeder / U.S. Army | Domínio público. |
 | Estádio | [Camp Nou stadium, 18 de abril de 2009](https://commons.wikimedia.org/wiki/File:-2009-04-18_Camp_Nou_stadium,_Barcalona,_Spain_(4).JPG), Kolforn | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Academia de preparação física | [Dallas Jesuit Ranger Performance Center Weight Room](https://commons.wikimedia.org/wiki/File:Dallas_Jesuit_Ranger_Performance_Center_Weight_Room.jpg), Ropo17 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Loja oficial | [Real Madrid Football Club Shop](https://commons.wikimedia.org/wiki/File:Real_Madrid_Football_Club_Shop_@moveinblue.JPG), MoveinBlue | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
