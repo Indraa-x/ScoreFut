@@ -75,7 +75,7 @@ test('career plays in the lineup panel with speed and finish controls grouped un
   assert.deepEqual(scoreAt(result, result.duration), [result.homeGoals, result.awayGoals]);
   const final = renderCareer({...career, replay}, 'overview', ui, {...state, matchMinute: result.duration});
   assert.match(final, /data-action="career-match-return"[^>]*>Avançar/);
-  assert.match(final, /data-action="career-match-finish"[^>]* disabled/);
+  assert.doesNotMatch(final, /class="live-controls"|data-action="career-match-(speed|finish)"/);
 });
 
 test('simulating to the end uses the prepared result and credits only one round', () => {

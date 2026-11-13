@@ -1073,6 +1073,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-live-scoreboard :is(.career-crest, .club-badge) { width: clamp(44px, 8vw, 74px); height: clamp(44px, 8vw, 74px); }
 .career-live-goals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; text-align: left; }
 .career-live-goals .match-scorers.away { text-align: right; }
+.career-match > [data-action="career-match-return"] { margin: 20px auto 0; }
 @media (max-width: 760px) {
   .career-columns, .career-squad-layout { grid-template-columns: minmax(0, 1fr); }
   .career-roster-list { flex: auto; contain: none; max-height: min(260px, 43vh); }

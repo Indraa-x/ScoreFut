@@ -227,7 +227,8 @@ function matchScoreboard(career, ui, live, match) {
     </div>
     <div class="match-score-goals career-live-goals" data-match-goals data-home-name="${esc(homeName)}" data-away-name="${esc(awayName)}"
       aria-label="Autores dos gols" aria-live="polite">${renderMatchGoals(result, live.matchMinute, {home: homeName, away: awayName})}</div>
-    ${ended ? button('Avançar', 'career-match-return', '', true) : ''}`;
+    ${ended ? button('Avançar', 'career-match-return', '', true) : renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
+      button('Simular até o fim', 'career-match-finish', '', true))}`;
 }
 
 function lastMatchScorers(career, last) {
@@ -266,8 +267,7 @@ function overview(career, ui, rows, live) {
       ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
   return `<div class="career-columns">
     <section class="career-card panel career-match">${match}
-      ${liveMatch ? renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
-        button('Simular até o fim', 'career-match-finish', '', true, matchHasEnded(live, liveMatch))) : last ? `<div class="career-last">
+      ${!liveMatch && last ? `<div class="career-last">
         <small>Último resultado · Rodada ${career.round}</small>
         <strong>${esc(careerClub(career, last.home).nome)} ${last.homeGoals} × ${last.awayGoals} ${esc(careerClub(career, last.away).nome)}</strong>
         ${lastMatchScorers(career, last)}
