@@ -405,7 +405,11 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   place-items: center;
   width: 44px;
   height: 44px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--green);
 }
+.career-roster-avatar > svg { width: 20px; height: 20px; }
 .career-roster-photo {
   position: absolute;
   inset: 0;
@@ -417,32 +421,18 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   visibility: hidden;
 }
 .career-roster-photo.is-loaded { visibility: visible; }
-.career-roster-position {
-  display: grid;
-  place-items: center;
-  min-width: 34px;
-  min-height: 34px;
-  border-radius: 6px;
-  background: var(--accent-soft);
-  color: var(--green);
-  font-size: 11px;
-  font-weight: 800;
-}
-.career-roster-photo.is-loaded + .career-roster-position {
-  position: absolute;
-  right: -3px;
-  bottom: -1px;
-  min-width: 0;
-  min-height: 0;
-  padding: 1px 4px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--surface);
-  font-size: 9px;
-}
 .career-roster-name { min-width: 0; line-height: 1.22; overflow-wrap: anywhere; }
 .career-roster-name strong { display: block; }
-.career-roster-name small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+.career-roster-position {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+}
 .career-roster-rating { text-align: center; font-size: 22px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
 .career-roster-rating small { display: block; margin-top: 3px; color: var(--muted); font-size: 8px; }
 .career-roster-release { flex: 0 0 40px; border-left: 1px solid var(--border); background: transparent; color: var(--muted); }

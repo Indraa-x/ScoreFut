@@ -253,10 +253,10 @@ function playerPortrait(player, className, size) {
   return portrait ? `<img class="${className}" data-career-portrait src="${portrait}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
 }
 
-function rosterPortrait(player, position) {
-  return `<span class="career-roster-avatar">
+function rosterPortrait(player, ui) {
+  return `<span class="career-roster-avatar" aria-hidden="true">
+    ${ui.icon('users')}
     ${playerPortrait(player, 'career-roster-photo', 44)}
-    <span class="career-roster-position">${esc(position)}</span>
   </span>`;
 }
 
@@ -282,8 +282,11 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
       <ul class="career-roster-list" aria-label="${showingReserves ? 'Reservas' : 'Titulares'}">
         ${players.map(player => `<li class="career-roster-row">
           <button type="button" class="career-roster-player" data-action="career-select-player" data-value="${esc(player.id)}" aria-pressed="${selectedId === player.id}">
-            ${rosterPortrait(player, starters.get(player.id) ?? player.tags[0])}
-            <span class="career-roster-name"><strong>${esc(player.nome)}</strong><small>${esc(player.tags.join(' / '))}</small></span>
+            ${rosterPortrait(player, ui)}
+            <span class="career-roster-name">
+              <strong>${esc(player.nome)}</strong>
+              <small class="career-roster-position">${esc(starters.get(player.id) ?? player.tags[0])}</small>
+            </span>
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
           ${showingReserves ? `<button type="button" class="career-roster-release" data-action="career-release" data-value="${esc(player.id)}" aria-label="Liberar ${esc(player.nome)}" title="Liberar ${esc(player.nome)}">${ui.icon('close')}</button>` : ''}
