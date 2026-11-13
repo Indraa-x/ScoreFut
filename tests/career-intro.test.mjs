@@ -22,11 +22,11 @@ function entry(saved = null) {
   return {career, destinations, slots, get writes() { return writes; }};
 }
 
-test('the career intro marks the unavailable mode as in development', () => {
+test('the career intro lets a new player start a campaign', () => {
   const page = entry();
   const html = page.career.open();
-  assert.match(html, /Em desenvolvimento/);
-  assert.match(html, /data-action="career-start" disabled/);
+  assert.match(html, /Começar campanha/);
+  assert.match(html, /data-action="career-start">/);
   assert.match(html, /Central da Carreira/);
   assert.doesNotMatch(html, /data-action="career-tab"/);
   for (const asset of ['guardiola', 'ferguson', 'brasileirao-coach']) assert.ok(html.includes(`assets/career/${asset}.webp`));
@@ -34,17 +34,16 @@ test('the career intro marks the unavailable mode as in development', () => {
   assert.deepEqual(page.destinations, []);
 });
 
-test('the saved career stays visible while every intro control is disabled', () => {
+test('the saved career can be continued and the intro offers a new campaign', () => {
   const saved = {...createCareer(42), name: 'Clube salvo', season: 10, budget: 60710};
   const page = entry(saved);
   const intro = page.career.open();
-  assert.match(intro, /Em desenvolvimento/);
-  assert.match(intro, /data-action="career-start" disabled/);
+  assert.match(intro, /Continuar campanha/);
+  assert.match(intro, /data-action="career-start">/);
   assert.match(intro, /Campanha salva<\/small><strong>Clube salvo/);
   assert.match(intro, /Próxima partida · Rodada 1/);
-  assert.equal(intro.match(/class="career-intro-card panel" data-action="career-tab"/g), null);
-  assert.match(intro, /data-action="career-new"[^>]* disabled/);
-  assert.doesNotMatch(intro, /data-action="career-tab"/);
+  assert.equal(intro.match(/class="career-intro-card panel" data-action="career-tab"/g)?.length, 3);
+  assert.match(intro, /data-action="career-new" data-value="">Nova campanha/);
   assert.equal(page.slots.get(CAREER_KEY), saved);
   assert.equal(page.writes, 0);
   page.career.actions['career-new']();

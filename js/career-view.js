@@ -27,7 +27,7 @@ const careerCoaches = [
   {name: 'Treinador com a taça do Brasileirão', src: 'assets/career/brasileirao-coach.webp', key: 'brasileirao'},
   {name: 'Pep Guardiola com a taça da Champions League', src: 'assets/career/guardiola.webp', key: 'guardiola'},
 ];
-const CAREER_MODE_ENABLED = false;
+const CAREER_MODE_ENABLED = true;
 
 export function renderCareerIntro(career, ui) {
   const action = CAREER_MODE_ENABLED ? career ? 'Continuar campanha' : 'Começar campanha' : 'Em desenvolvimento';
