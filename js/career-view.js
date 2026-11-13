@@ -130,7 +130,7 @@ const title = (label, description) => `<h2>${label}</h2><p class="muted">${descr
 const roundLabel = (career, round, total) => {
   const league = careerLeague(career.leagueId);
   return `<span class="career-competition-round">
-    <span class="career-competition-brand">
+    <span class="career-competition-brand" data-league="${esc(league?.id ?? 'brasileirao')}">
       ${league ? seasonCrest(league) : `<img src="${assetUrl(competitionLogo('brasileirao'))}" width="32" height="32" alt="" decoding="async">`}
       <span class="career-competition-name">${esc(careerCompetitionName(career))}</span>
     </span>

@@ -267,6 +267,26 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-competition-round { flex-wrap: wrap; justify-content: center; gap: 3px 5px; }
 .career-competition-brand { gap: 8px; }
 .career-competition-brand img { display: block; flex: none; object-fit: contain; }
+.career-competition-brand {
+  --league-gradient-light: linear-gradient(100deg, #486500, #222a52);
+  --league-gradient-dark: linear-gradient(100deg, #d7fa43, #a2bbff);
+}
+.career-competition-brand[data-league="bundesliga"] {
+  --league-gradient-light: linear-gradient(100deg, #a9071b, #cc3545);
+  --league-gradient-dark: linear-gradient(100deg, #ff5968, #fff5f5);
+}
+.career-competition-brand[data-league="premier"] {
+  --league-gradient-light: linear-gradient(100deg, #38003c, #752385);
+  --league-gradient-dark: linear-gradient(100deg, #c779df, #e8b3f0);
+}
+.career-competition-brand[data-league="laliga"] {
+  --league-gradient-light: linear-gradient(100deg, #b52a2a, #a02c4b);
+  --league-gradient-dark: linear-gradient(100deg, #ff5050, #ff9692);
+}
+.career-competition-brand[data-league="seriea"] {
+  --league-gradient-light: linear-gradient(100deg, #123a88, #00778e);
+  --league-gradient-dark: linear-gradient(100deg, #6f9dff, #52ddf1);
+}
 .career-competition-name {
   display: inline-block;
   color: var(--green);
@@ -274,13 +294,13 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 @supports ((background-clip: text) or (-webkit-background-clip: text)) {
   .career-competition-name {
-    background-image: linear-gradient(100deg, #486500, #222a52);
+    background-image: var(--league-gradient-light);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   html[data-theme="dark"] .career-competition-name {
-    background-image: linear-gradient(100deg, #caff38, #9eb7ff);
+    background-image: var(--league-gradient-dark);
   }
 }
 .career-matchup {
