@@ -208,7 +208,7 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     }
   }
   app.addEventListener('load', event => {
-    if (event.target.classList?.contains('career-roster-photo')) {
+    if (event.target.hasAttribute?.('data-career-portrait')) {
       event.target.classList.add('is-loaded');
     }
   }, true);

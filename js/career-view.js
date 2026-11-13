@@ -244,14 +244,18 @@ function overview(career, ui, rows, live) {
     `<li>Temporada ${season.number} · ${season.position === 1 ? 'Campeão' : `${season.position}º lugar`} · ${season.points} pts · ${money(season.prize)} em premiação</li>`).join('')}</ul></details>` : ''}`;
 }
 
-function playerToken(player, crest, className) {
-  return `<span class="${className}" role="img" aria-label="${player.ovr} OVR">${crest}<strong>${player.ovr}</strong></span>`;
+function playerToken(player, crest, className, portrait = '') {
+  return `<span class="${className}" role="img" aria-label="${player.ovr} OVR">${crest}${portrait}<strong>${player.ovr}</strong></span>`;
+}
+
+function playerPortrait(player, className, size) {
+  const portrait = careerPortraitUrl(player.id);
+  return portrait ? `<img class="${className}" data-career-portrait src="${portrait}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
 }
 
 function rosterPortrait(player, position) {
-  const portrait = careerPortraitUrl(player.id);
   return `<span class="career-roster-avatar">
-    ${portrait ? `<img class="career-roster-photo" src="${portrait}" alt="" width="44" height="44" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}
+    ${playerPortrait(player, 'career-roster-photo', 44)}
     <span class="career-roster-position">${esc(position)}</span>
   </span>`;
 }
@@ -300,7 +304,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
           return `<button type="button" class="career-squad-slot${target ? ' is-target' : ''}${origin ? ' is-origin' : ''}"
             style="left:${slot.x}%;top:${slot.y}%" data-action="career-pick-slot" data-value="${slot.id}"
             aria-label="${esc(label)}" title="${esc(label)}" aria-pressed="${origin}"${selected && !origin && !target ? ' disabled' : ''}>
-            ${playerToken(player, crest, 'career-squad-token')}
+            ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-squad-photo', 56))}
             <span class="career-squad-role">${slot.label}</span>
             <span class="career-squad-name">${esc(player.nome)}</span>
           </button>`;
