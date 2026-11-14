@@ -33,6 +33,9 @@ As fotos foram redimensionadas e são usadas como fundos com sobreposição no j
 | Estádio | [Camp Nou stadium, 18 de abril de 2009](https://commons.wikimedia.org/wiki/File:-2009-04-18_Camp_Nou_stadium,_Barcalona,_Spain_(4).JPG), Kolforn | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Academia de preparação física | [Dallas Jesuit Ranger Performance Center Weight Room](https://commons.wikimedia.org/wiki/File:Dallas_Jesuit_Ranger_Performance_Center_Weight_Room.jpg), Ropo17 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Loja oficial | [Real Madrid Football Club Shop](https://commons.wikimedia.org/wiki/File:Real_Madrid_Football_Club_Shop_@moveinblue.JPG), MoveinBlue | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
+| Centro de recuperação | [Atendimento em clínica de reabilitação](https://commons.wikimedia.org/wiki/File:Athlete_undergoing_knee_treatment_during_rehabilitation_session_in_clinic.jpg), Shixart1985 | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) |
+| Análise de desempenho | [Câmera panorâmica para análise de partidas](https://commons.wikimedia.org/wiki/File:Stadium_Installed_Match_Analysis_K2_Panoramic_Video_Camera_System.jpg), MMAston | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Camarotes | [Área de hospitalidade do Tottenham Hotspur Stadium](https://commons.wikimedia.org/wiki/File:Bar_in_hospitality_area_at_Tottenham_Hotspur_Stadium.jpg), Hzh | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 ## Dados históricos e OVR
 

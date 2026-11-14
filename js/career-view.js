@@ -497,6 +497,9 @@ function facilities(career, ui) {
     stadium: {icon: 'shield', photo: 'assets/career/facilities/stadium.jpg'},
     gym: {icon: 'ball', photo: 'assets/career/facilities/gym.jpg'},
     shop: {icon: 'card', photo: 'assets/career/facilities/shop.jpg'},
+    recovery: {icon: 'shield', photo: 'assets/career/facilities/recovery.jpg'},
+    analysis: {icon: 'chart', photo: 'assets/career/facilities/analysis.jpg'},
+    hospitality: {icon: 'users', photo: 'assets/career/facilities/hospitality.jpg'},
   };
   return `<section class="career-card panel career-facilities">
     ${title('Instalações do clube', 'Invista na estrutura do clube para melhorar o desempenho, a formação de jogadores e a receita.')}

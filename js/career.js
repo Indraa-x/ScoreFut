@@ -38,6 +38,9 @@ export const FACILITIES = {
   stadium: {name: 'Estádio', effect: 'Cada melhoria aumenta em R$ 120 mil a receita por jogo em casa.', cost: 1800},
   gym: {name: 'Academia de preparação física', effect: 'Cada melhoria aumenta em 2% a força defensiva usada na simulação.', cost: 1250},
   shop: {name: 'Loja oficial', effect: 'Cada melhoria rende R$ 65 mil extras por partida com a venda de produtos.', cost: 1100},
+  recovery: {name: 'Centro de recuperação', effect: 'Cada melhoria aumenta em 2% a força do meio-campo na simulação.', cost: 1350},
+  analysis: {name: 'Análise de desempenho', effect: 'Cada melhoria aumenta em 2% a força ofensiva na simulação.', cost: 1450},
+  hospitality: {name: 'Camarotes', effect: 'Cada melhoria rende R$ 100 mil extras por partida em casa.', cost: 1600},
 };
 export const MAX_FACILITY_LEVEL = 5;
 const initialFacilityLevels = Object.fromEntries(Object.keys(FACILITIES).map(key => [key, 1]));
@@ -388,9 +391,11 @@ function matchTeam(career, id) {
   });
   const style = CAREER_STYLES[careerStyle(career)].profile;
   const defenseBonus = (careerFacilityLevel(career, 'gym') - 1) * 0.02;
-  const tacticalProfile = defenseBonus ? {
-    attack: style?.attack ?? 1,
-    midfield: style?.midfield ?? 1,
+  const midfieldBonus = (careerFacilityLevel(career, 'recovery') - 1) * 0.02;
+  const attackBonus = (careerFacilityLevel(career, 'analysis') - 1) * 0.02;
+  const tacticalProfile = defenseBonus || midfieldBonus || attackBonus ? {
+    attack: (style?.attack ?? 1) * (1 + attackBonus),
+    midfield: (style?.midfield ?? 1) * (1 + midfieldBonus),
     defense: (style?.defense ?? 1) * (1 + defenseBonus),
     tempo: style?.tempo ?? 0,
   } : style;
@@ -426,7 +431,8 @@ export function prepareCareerRound(career) {
     const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers};
     if (userMatch) {
       const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 65;
-      income = (home === CAREER_TEAM ? 260 + (career.facilities.stadium - 1) * 120 : 100) + shopIncome
+      const homeIncome = 260 + (career.facilities.stadium - 1) * 120 + (careerFacilityLevel(career, 'hospitality') - 1) * 100;
+      income = (home === CAREER_TEAM ? homeIncome : 100) + shopIncome
         + (match.winnerId === CAREER_TEAM ? 160 : match.homeGoals === match.awayGoals ? 80 : 0);
       result.income = income;
       replay = {
