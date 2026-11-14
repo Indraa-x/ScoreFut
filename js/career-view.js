@@ -195,17 +195,21 @@ function standings(career, ui, rows) {
       <table class="career-table" aria-labelledby="career-standings-title">
         <thead><tr>
           <th scope="col" title="Posição">Pos.</th><th scope="col">Clube</th>
-          <th scope="col" title="Jogos">J</th><th scope="col" title="Saldo de gols">SG</th><th scope="col" title="Pontos">Pts</th>
+          <th scope="col" title="Pontos">Pts</th><th scope="col" title="Jogos">J</th>
+          <th scope="col" title="Vitórias">V</th><th scope="col" title="Derrotas">D</th><th scope="col" title="Saldo de gols">SG</th>
         </tr></thead>
         <tbody>${rows.map((row, index) => {
           const isOwn = row.id === CAREER_TEAM;
           const inRelegationZone = index >= LAST_SAFE_POSITION;
           const rowClass = [isOwn && 'career-own-row', inRelegationZone && 'career-relegation-row'].filter(Boolean).join(' ');
+          const draws = row.points - row.wins * 3;
+          const losses = row.played - row.wins - draws;
           const difference = row.goalsFor - row.goalsAgainst;
           return `<tr${rowClass ? ` class="${rowClass}"` : ''}>
             <td>${index + 1}</td>
             <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<span class="career-table-status">Seu clube</span>' : ''}${inRelegationZone ? `<span class="career-table-status">${seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento'}</span>` : ''}</span></th>
-            <td>${row.played}</td><td>${difference > 0 ? '+' : ''}${difference}</td><td><strong>${row.points}</strong></td>
+            <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${losses}</td>
+            <td>${difference > 0 ? '+' : ''}${difference}</td>
           </tr>`;
         }).join('')}</tbody>
       </table>
