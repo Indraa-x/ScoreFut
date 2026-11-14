@@ -8,8 +8,9 @@ function entry(saved = null) {
   const destinations = [];
   const slots = new Map(saved ? [[CAREER_KEY, saved]] : []);
   let writes = 0;
+  const app = {addEventListener() {}, querySelector() { return null; }};
   const career = initCareer({
-    app: {addEventListener() {}},
+    app,
     navigate: screen => destinations.push(screen),
     render() {},
     toast(message) { assert.fail(message); },
@@ -19,7 +20,7 @@ function entry(saved = null) {
     },
     ui,
   });
-  return {career, destinations, slots, get writes() { return writes; }};
+  return {app, career, destinations, slots, get writes() { return writes; }};
 }
 
 test('the career intro lets a new player start a campaign', () => {
@@ -55,4 +56,22 @@ test('the saved career can be continued and the intro offers a new campaign', ()
   page.career.actions['career-load']('');
   assert.match(page.career.open(), /Clube salvo/);
   assert.equal(page.slots.get(CAREER_KEY), saved);
+});
+
+test('career navigation animates on entry and on a tab change', () => {
+  const {app, career} = entry(createCareer(42));
+  career.setTab('overview');
+  assert.match(career.open(), /class="career-tabs is-entering"/);
+
+  const content = {dataset: {careerTab: 'overview'}};
+  app.querySelector = selector => selector === '.career-content' ? content : null;
+  assert.match(career.open(), /class="career-tabs"/);
+
+  career.actions['career-tab']('standings');
+  const html = career.open();
+  assert.match(html, /class="career-tabs is-switching"/);
+  assert.match(html, /data-value="standings" aria-current="page"/);
+
+  content.dataset.careerTab = 'standings';
+  assert.match(career.open(), /class="career-tabs"/);
 });

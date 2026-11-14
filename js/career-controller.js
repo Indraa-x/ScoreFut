@@ -199,7 +199,8 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     }
     const career = read();
     if (career === initial) storage.write(activeSlot(), career);
-    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad);
+    const previousTab = app.querySelector('.career-content')?.dataset.careerTab;
+    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab);
   }
   async function startCampaign(button) {
     if (tab !== 'intro' || button?.disabled) return;

@@ -530,12 +530,14 @@ function club(career, ui) {
   </section>`;
 }
 
-export function renderCareer(career, tab, ui, live = null, marketFilters, squadState) {
+export function renderCareer(career, tab, ui, live = null, marketFilters, squadState, previousTab) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const league = careerLeague(career.leagueId);
   const pages = {overview, standings, facilities, club};
   const activeTab = Object.hasOwn(CAREER_TABS, tab) ? tab : 'overview';
+  const entering = previousTab === undefined;
+  const switching = !entering && previousTab !== activeTab;
   return `<div class="career-page">
     <header class="career-dashboard-header">
       <div class="career-dashboard-backdrop" aria-hidden="true">${ui.pitchLines(false)}</div>
@@ -553,7 +555,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
         <div><dt>${ui.icon('card')} Orçamento</dt><dd>${money(career.budget)}</dd></div>
       </dl>
     </header>
-    <nav class="career-tabs" aria-label="Seções da carreira">
+    <nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}" aria-label="Seções da carreira">
       ${Object.entries(CAREER_TABS).map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === activeTab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
     </nav>
     <div class="career-content" data-career-tab="${activeTab}">
