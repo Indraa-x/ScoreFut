@@ -159,21 +159,20 @@ function pitch(career, ui) {
 function scoringLeaders(career, ui) {
   const {players, incomplete} = careerTopScorers(career);
   let rank = 0;
-  return `<section class="career-scoring-leaders" aria-labelledby="career-scoring-title">
-    <header><span class="career-section-icon">${goalBallIcon}</span><h3 id="career-scoring-title">Artilheiros do campeonato</h3></header>
-    ${players.length ? `<table aria-labelledby="career-scoring-title">
+  return `<section class="career-standings-scorers" aria-label="Artilheiros do campeonato">
+    ${players.length ? `<table class="career-table" aria-label="Artilheiros do campeonato">
       <thead><tr><th scope="col">Pos.</th><th scope="col">Jogador</th><th scope="col">Gols</th></tr></thead>
       <tbody>${players.slice(0, 10).map(({name, clubId, goals}, index) => {
         if (goals !== players[index - 1]?.goals) rank = index + 1;
         const club = clubId === CAREER_TEAM ? career.name : careerClub(career, clubId).nome;
-        return `<tr${rank === 1 ? ' class="is-leader"' : ''}>
-          <td><span class="career-table-rank">${rank}</span></td>
-          <th scope="row"><span class="career-scoring-player">${clubBadge(career, clubId, ui)}<span><strong>${esc(name)}</strong><small>${esc(club)}</small></span></span></th>
+        return `<tr>
+          <td>${rank}</td>
+          <th scope="row"><span class="career-table-team">${clubBadge(career, clubId, ui)}<span>${esc(name)}<small class="career-scoring-club">${esc(club)}</small></span></span></th>
           <td><strong>${goals}</strong></td>
         </tr>`;
       }).join('')}</tbody>
     </table>` : `<p class="muted">${incomplete ? 'Ainda não há artilheiros registrados para esta temporada.' : 'Os artilheiros aparecem após os primeiros gols da temporada.'}</p>`}
-    ${incomplete ? '<p class="muted">Ranking parcial. Algumas partidas antigas foram salvas sem os autores dos gols.</p>' : ''}
+    ${incomplete ? '<p class="muted">Ranking parcial. Faltam os autores dos gols de partidas antigas.</p>' : ''}
   </section>`;
 }
 
@@ -182,48 +181,39 @@ function standings(career, ui, rows) {
   const seasonFinished = career.round >= totalRounds;
   const hasRelegationZone = rows.length > LAST_SAFE_POSITION;
   const relegationLabel = seasonFinished ? 'Rebaixados' : 'Zona de rebaixamento';
-  const leader = rows[0];
-  const ownIndex = rows.findIndex(row => row.id === CAREER_TEAM);
-  const own = rows[ownIndex];
   return `<section class="career-card panel career-standings" aria-labelledby="career-standings-title">
     <header class="career-standings-header">
-      <div>
-        <h2 id="career-standings-title">Classificação do campeonato</h2>
-        <p class="muted">${roundLabel(career, career.round, totalRounds)}</p>
-      </div>
-      <div class="career-standings-highlights">
-        <div><span class="career-section-icon">${ui.icon('shield')}</span><div><small>Seu clube</small><strong>${career.round ? `${ownIndex + 1}º lugar · ${own.points} pts` : 'Aguardando estreia'}</strong></div></div>
-        ${career.round ? `<div>${clubBadge(career, leader.id, ui)}<div><small>Líder · ${leader.points} pts</small><strong>${esc(careerClub(career, leader.id).nome)}</strong></div></div>` : ''}
-      </div>
+      <h2 id="career-standings-title">Classificação</h2>
+      <p class="muted">${esc(careerCompetitionName(career))} · ${career.round ? `Rodada ${career.round} de ${totalRounds}` : 'Pré-temporada'}</p>
     </header>
-    <div class="career-standings-grid">
-    <div>
+    <div class="career-standings-switch" role="group" aria-label="Tabela do campeonato">
+      <label><input type="radio" name="career-standings-view" value="clubs" aria-controls="career-standings-clubs" checked><span>Clubes</span></label>
+      <label><input type="radio" name="career-standings-view" value="scorers" aria-controls="career-standings-scorers"><span>Artilheiros</span></label>
+    </div>
+    <div class="career-standings-clubs" id="career-standings-clubs">
     <div class="career-table-wrap">
       <table class="career-table" aria-labelledby="career-standings-title">
         <thead><tr>
-          <th scope="col" title="Posição">Pos.</th><th scope="col">Clube</th><th scope="col" title="Pontos">PTS</th>
-          <th scope="col" title="Jogos">J</th><th scope="col" title="Vitórias">V</th><th scope="col" title="Empates">E</th><th scope="col" title="Derrotas">D</th>
-          <th scope="col" title="Saldo de gols">SG</th>
+          <th scope="col" title="Posição">Pos.</th><th scope="col">Clube</th>
+          <th scope="col" title="Jogos">J</th><th scope="col" title="Saldo de gols">SG</th><th scope="col" title="Pontos">Pts</th>
         </tr></thead>
         <tbody>${rows.map((row, index) => {
           const isOwn = row.id === CAREER_TEAM;
           const inRelegationZone = index >= LAST_SAFE_POSITION;
           const rowClass = [isOwn && 'career-own-row', inRelegationZone && 'career-relegation-row'].filter(Boolean).join(' ');
-          const draws = row.points - row.wins * 3;
-          const losses = row.played - row.wins - draws;
           const difference = row.goalsFor - row.goalsAgainst;
           return `<tr${rowClass ? ` class="${rowClass}"` : ''}>
-            <td><span class="career-table-rank${index === 0 && career.round ? ' is-leader' : ''}">${index + 1}</span></td>
-            <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<small>Seu clube</small>' : ''}${inRelegationZone ? `<span class="career-table-status">${seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento'}</span>` : ''}</span></th>
-            <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
-            <td>${difference > 0 ? '+' : ''}${difference}</td>
+            <td>${index + 1}</td>
+            <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<span class="career-table-status">Seu clube</span>' : ''}${inRelegationZone ? `<span class="career-table-status">${seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento'}</span>` : ''}</span></th>
+            <td>${row.played}</td><td>${difference > 0 ? '+' : ''}${difference}</td><td><strong>${row.points}</strong></td>
           </tr>`;
         }).join('')}</tbody>
       </table>
     </div>
     ${hasRelegationZone ? `<p class="career-relegation-legend">${relegationLabel} · ${LAST_SAFE_POSITION + 1}º ao ${rows.length}º lugar</p>` : ''}
     </div>
-    ${scoringLeaders(career, ui)}
+    <div id="career-standings-scorers">
+      ${scoringLeaders(career, ui)}
     </div>
   </section>`;
 }
