@@ -29,6 +29,23 @@ const offers = CAREER_LEAGUES.flatMap(league => league.teams.flatMap(squad => sq
   };
 })));
 const catalog = {offers, byId: new Map(offers.map(offer => [offer.id, offer]))};
+const offersByPlayer = new Map();
+for (const offer of offers) {
+  const previous = offersByPlayer.get(offer.player.id) ?? [];
+  offersByPlayer.set(offer.player.id, [...previous, offer]);
+}
+
+export function careerPlayerValuation(player) {
+  if (player.marketOfferId) {
+    const offer = catalog.byId.get(player.marketOfferId);
+    return offer?.player.id === player.id ? offer : null;
+  }
+  const matches = offersByPlayer.get(player.id) ?? [];
+  if (matches.length === 1) return matches[0];
+  const identified = matches.filter(({player: candidate}) =>
+    candidate.nome === player.nome && candidate.camisa === player.camisa && candidate.ovr === player.ovr);
+  return identified.length === 1 ? identified[0] : null;
+}
 
 export function careerMarketCatalog() {
   return catalog;

@@ -4,7 +4,7 @@ import {careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {FORMATIONS, calculateTeam, mulberry32, positionFit, simulateMatch, squadTeam} from './engine.js';
 import {goalsAt} from './match-goals.js';
 import {formatMatchEventMinute} from './match-motion.js';
-import {careerMarketCatalog} from './career-market.js';
+import {careerMarketCatalog, careerPlayerValuation} from './career-market.js';
 import {movableSlots} from './draft.js';
 
 export const CAREER_KEY = 'coach-career';
@@ -229,7 +229,33 @@ export function signCareerPlayer(career, id) {
   if (career.roster.length >= careerRosterLimit(career)) throw Error('O elenco está cheio. Libere um reserva no Elenco.');
   if (offer.price === null) throw Error('Jogador sem valor de mercado confirmado.');
   if (career.budget < offer.price) throw Error('Saldo insuficiente para a contratação.');
-  return {...career, budget: career.budget - offer.price, roster: [...career.roster, offer.player]};
+  const player = careerPlayerValuation(offer.player)?.id === offer.id
+    ? offer.player : {...offer.player, marketOfferId: offer.id};
+  return {...career, budget: career.budget - offer.price, roster: [...career.roster, player]};
+}
+
+export function careerSale(career, id) {
+  const player = career.roster.find(candidate => candidate.id === id);
+  if (!player) throw Error('Jogador não encontrado no elenco.');
+  const valuation = careerPlayerValuation(player);
+  if (valuation?.price == null || valuation.price <= 0) throw Error('Jogador sem valor de mercado confirmado no Transfermarkt.');
+
+  const roster = career.roster.filter(candidate => candidate.id !== id);
+  const slot = FORMATIONS[career.formation].slots.find(slot => career.lineup[slot.id] === id);
+  let lineup = career.lineup;
+  if (slot) {
+    const starters = new Set(Object.values(lineup));
+    const replacement = roster.filter(candidate => !starters.has(candidate.id) && positionFit(candidate, slot) !== null)
+      .sort((a, b) => positionFit(a, slot) - positionFit(b, slot) || b.ovr - a.ovr)[0];
+    lineup = replacement ? {...lineup, [slot.id]: replacement.id} : bestLineup(roster, career.formation);
+    if (!lineup) throw Error('A venda deixaria o time sem onze titulares compatíveis com a formação atual.');
+  }
+  return {player, valuation, roster, lineup, changesLineup: Boolean(slot)};
+}
+
+export function sellCareerPlayer(career, id) {
+  const {valuation, roster, lineup} = careerSale(career, id);
+  return {...career, budget: career.budget + valuation.price, roster, lineup};
 }
 
 export function releaseCareerPlayer(career, id) {

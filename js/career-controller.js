@@ -1,9 +1,10 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
-  commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub, signCareerPlayer, upgradeCareerFacility,
+  careerSale, commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub,
+  sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
-import {CAREER_TABS, renderCareer, renderCareerIntro, renderCareerMarketResults} from './career-view.js';
+import {CAREER_TABS, renderCareer, renderCareerIntro, renderCareerMarketResults, renderCareerSale} from './career-view.js';
 import {renderCareerSetup} from './career-setup-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
@@ -14,7 +15,7 @@ const marketDefaults = {search: '', position: '', leagueId: '', order: 'overall'
 const activeCareerKey = 'coach-career-active';
 const careerSlot = clubId => clubId ? `${CAREER_KEY}:${clubId}` : CAREER_KEY;
 
-export function initCareer({app, navigate, render, storage, toast, ui}) {
+export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let tab = 'intro';
   let initial;
   let filters = {...marketDefaults};
@@ -119,6 +120,30 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
     update();
     const list = app.querySelector('.career-roster-list');
     if (list) list.scrollTop = scroll;
+  }
+  function openSale(id) {
+    if (tab !== 'squad' || !modal || modal.open) return;
+    try {
+      const sale = careerSale(read(), id);
+      modal.querySelector('#modal-content').innerHTML = renderCareerSale(sale, ui);
+      modal.showModal();
+    } catch (error) {
+      toast(error.message);
+    }
+  }
+  function confirmSale(id) {
+    if (tab !== 'squad' || !modal?.open || modal.querySelector('[data-action="career-sell-confirm"]')?.dataset.value !== id) return;
+    try {
+      save(sellCareerPlayer(read(), id));
+      squad.selectedId = null;
+      modal.close();
+      refreshSquad();
+      app.querySelector('.career-roster-switch [aria-pressed="true"]')?.focus({preventScroll: true});
+      toast('Jogador vendido. O valor entrou no orçamento.');
+    } catch (error) {
+      modal.close();
+      toast(error.message);
+    }
   }
   function cancelPick() {
     squad.selectedId = null;
@@ -314,6 +339,8 @@ export function initCareer({app, navigate, render, storage, toast, ui}) {
         (card || app.querySelector('#career-market-count'))?.focus({preventScroll: true});
       },
       'career-upgrade': value => change(career => upgradeCareerFacility(career, value), 'Instalação melhorada.'),
+      'career-sell': openSale,
+      'career-sell-confirm': confirmSale,
       'career-release': value => {
         if (squad.selectedId === value) squad.selectedId = null;
         refreshSquad(() => change(career => releaseCareerPlayer(career, value), 'Jogador liberado.'));

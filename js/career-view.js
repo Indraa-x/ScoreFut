@@ -310,6 +310,24 @@ function rosterPortrait(player, ui) {
   </span>`;
 }
 
+export function renderCareerSale({player, valuation, changesLineup}, ui) {
+  return `<section class="career-sale-dialog">
+    <div class="modal-head">
+      <h2 id="modal-title">Vender ${esc(player.nome)}?</h2>
+      <button type="button" class="icon-button" data-action="close-modal" aria-label="Fechar">${ui.icon('close')}</button>
+    </div>
+    <div class="career-sale-value">
+      <span>Receita da venda</span><strong>${money(valuation.price)}</strong>
+      ${valuation.sourceUrl ? `<a href="${esc(valuation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Valor de mercado no Transfermarkt</a>` : '<small>Valor de mercado do Transfermarkt</small>'}
+    </div>
+    <p class="muted">O jogador sai do elenco e o valor entra no orçamento.${changesLineup ? ' A escalação será ajustada automaticamente.' : ''}</p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-outline" data-action="close-modal" autofocus>Cancelar</button>
+      ${button('Confirmar venda', 'career-sell-confirm', player.id, true)}
+    </div>
+  </section>`;
+}
+
 function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
   const style = careerStyle(career);
   const picks = careerPicks(career);
@@ -339,6 +357,7 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
             </span>
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
+          <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Vender ${esc(player.nome)}">Vender</button>
           ${showingReserves ? `<button type="button" class="career-roster-release" data-action="career-release" data-value="${esc(player.id)}" aria-label="Liberar ${esc(player.nome)}" title="Liberar ${esc(player.nome)}">${ui.icon('close')}</button>` : ''}
         </li>`).join('') || '<li class="career-roster-empty">Sem jogadores na reserva.</li>'}
       </ul>

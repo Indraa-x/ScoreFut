@@ -29,7 +29,7 @@ import {initCelebration} from './celebration.js';
 import {initCareer} from './career-controller.js';
 const app=document.getElementById('app'), modal=document.getElementById('modal');
 const homeCounters=initHomeCounters();
-const career = initCareer({app, navigate, render, storage, toast, ui});
+const career = initCareer({app, modal, navigate, render, storage, toast, ui});
 const browserProgressReady=storage.initializeBrowserProgress();
 const competitionProgressReady=storage.archiveRetiredCompetition();
 let toastTimer=null,storageWarning=false,lastRenderedScreen=null,navigation=null,navigationVersion=0;

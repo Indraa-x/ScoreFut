@@ -622,6 +622,30 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-roster-release { flex: 0 0 40px; border-left: 1px solid var(--border); background: transparent; color: var(--muted); }
 .career-roster-release:hover { background: var(--surface-alt); color: var(--red); }
 .career-roster-release svg { width: 16px; height: 16px; }
+.career-roster-sell {
+  flex: none;
+  padding: 0 7px;
+  border-left: 1px solid var(--border);
+  background: transparent;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 750;
+}
+.career-roster-sell:hover { background: var(--accent-soft); }
+.career-roster-sell:focus-visible { outline-offset: -3px; }
+.career-sale-value {
+  display: grid;
+  gap: 4px;
+  margin: 14px 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--muted);
+}
+.career-sale-value strong { color: var(--green); font-size: 24px; }
+.career-sale-value a { width: fit-content; color: var(--text); font-size: 12px; text-decoration: underline; }
+.career-sale-dialog .dialog-actions { margin-top: 16px; }
 .career-roster-empty { padding: 16px; color: var(--muted); }
 .career-squad-field { scroll-margin-top: 16px; }
 .career-squad-field h2 { margin-top: 3px; }
