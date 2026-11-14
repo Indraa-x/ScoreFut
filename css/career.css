@@ -1000,9 +1000,9 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-market-rating {
   padding: 3px 6px;
   border-radius: 6px;
-  background: var(--accent-soft);
-  color: var(--green);
-  font-size: 16px;
+  background: #176344;
+  color: #fff;
+  font-size: 19px;
   font-weight: 800;
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
