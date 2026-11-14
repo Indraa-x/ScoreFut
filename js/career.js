@@ -333,6 +333,40 @@ export function careerTable(career) {
   );
 }
 
+export function careerTopScorers(career) {
+  const goals = [];
+  const identities = new Map();
+  let incomplete = false;
+  for (const round of career.results) for (const match of round) {
+    for (const side of ['home', 'away']) {
+      const clubId = match[side];
+      const scorers = (match.scorers ?? []).filter(scorer => scorer.team === side);
+      if (scorers.reduce((total, scorer) => total + scorer.goals, 0) < match[`${side}Goals`]) incomplete = true;
+      for (const scorer of scorers) {
+        const legacyKey = JSON.stringify([clubId, scorer.name]);
+        goals.push({...scorer, clubId, legacyKey});
+        if (!scorer.playerId) continue;
+        if (!identities.has(legacyKey)) identities.set(legacyKey, new Set());
+        identities.get(legacyKey).add(scorer.playerId);
+      }
+    }
+  }
+
+  const players = new Map();
+  for (const {playerId, name, goals: count, clubId, legacyKey} of goals) {
+    const knownIds = identities.get(legacyKey);
+    const id = playerId || (knownIds?.size === 1 ? knownIds.values().next().value : null);
+    const key = JSON.stringify([clubId, id, id ? null : name]);
+    if (!players.has(key)) players.set(key, {name, goals: 0, clubId});
+    const player = players.get(key);
+    player.goals += count;
+  }
+  return {
+    players: [...players.values()].sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name, 'pt-BR')),
+    incomplete,
+  };
+}
+
 function matchTeam(career, id) {
   if (id !== CAREER_TEAM) {
     if (!opponentTeams.has(id)) {
@@ -367,7 +401,7 @@ export function careerScorers(match) {
   const scorers = new Map();
   for (const goal of goalsAt(match, match.duration)) {
     const key = `${goal.team}:${goal.player.id}`;
-    if (!scorers.has(key)) scorers.set(key, {name: goal.player.nome, team: goal.team, goals: 0, minutes: []});
+    if (!scorers.has(key)) scorers.set(key, {playerId: goal.player.id, name: goal.player.nome, team: goal.team, goals: 0, minutes: []});
     const scorer = scorers.get(key);
     scorer.goals++;
     scorer.minutes.push(formatMatchEventMinute(match, goal.minute) + '′');
@@ -387,13 +421,14 @@ export function prepareCareerRound(career) {
     const teams = [matchTeam(career, home), matchTeam(career, away)];
     const userMatch = home === CAREER_TEAM || away === CAREER_TEAM;
     const match = simulateMatch(...teams, rng, {neutral: false, stoppageTimeAllowed: userMatch});
-    const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals};
+    const scorers = userMatch ? careerScorers(match)
+      : match.scorers.map(({playerId, name, team, goals}) => ({playerId, name, team, goals}));
+    const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers};
     if (userMatch) {
       const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 65;
       income = (home === CAREER_TEAM ? 260 + (career.facilities.stadium - 1) * 120 : 100) + shopIncome
         + (match.winnerId === CAREER_TEAM ? 160 : match.homeGoals === match.awayGoals ? 80 : 0);
       result.income = income;
-      result.scorers = careerScorers(match);
       replay = {
         seed, mode: 'career', teams, userTeamId: CAREER_TEAM,
         userMatches: [{
@@ -413,7 +448,8 @@ export function commitCareerRound(career) {
       replay.minute < replay.tournament.userMatches[0].result.duration) return career;
   const match = replay.tournament.userMatches[0];
   const results = replay.results.map(result =>
-    result.home === match.homeId && result.away === match.awayId && result.scorers?.some(scorer => !scorer.minutes)
+    result.home === match.homeId && result.away === match.awayId &&
+      (!result.scorers || result.scorers.some(scorer => !scorer.minutes || !scorer.playerId))
       ? {...result, scorers: careerScorers(match.result)}
       : result
   );

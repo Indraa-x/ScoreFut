@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {CAREER_TEAM, careerScorers, changeCareerStyle, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
+import {CAREER_TEAM, careerScorers, careerTopScorers, changeCareerStyle, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
 import {expectedGoals} from '../js/engine.js';
 import * as ui from '../js/ui.js';
 import {renderCareer} from '../js/career-view.js';
@@ -47,6 +47,42 @@ test('a prepared career match resumes from storage and credits the round only at
   assert.equal(final.budget, career.budget + replay.income);
   assert.deepEqual(final.results, [replay.results]);
   assert.equal(commitCareerRound(final), final);
+});
+
+test('the league scoring chart counts every completed match and hides pending goals', () => {
+  const initial = createCareer(42);
+  assert.match(renderCareer(initial, 'standings', ui), /Os artilheiros aparecem após os primeiros gols/);
+  const replay = prepareCareerRound(initial);
+  const pending = {...initial, replay};
+  assert.deepEqual(careerTopScorers(pending), {players: [], incomplete: false});
+
+  const final = commitCareerRound({...pending, replay: {...replay, minute: replay.tournament.userMatches[0].result.duration}});
+  const {players, incomplete} = careerTopScorers(final);
+  const roundGoals = replay.results.reduce((sum, match) => sum + match.homeGoals + match.awayGoals, 0);
+  assert.equal(players.reduce((sum, player) => sum + player.goals, 0), roundGoals);
+  assert.equal(incomplete, false);
+  assert.ok(players.some(player => ![CAREER_TEAM, replay.results[0].away].includes(player.clubId)));
+  const html = renderCareer(final, 'standings', ui);
+  assert.match(html, /Artilheiros do campeonato/);
+  assert.match(html, /scope="col">Gols/);
+  assert.doesNotMatch(html, /Ranking parcial/);
+});
+
+test('older saves keep known goals and report missing scorers without merging namesakes across clubs', () => {
+  const career = createCareer(42);
+  const [away, other] = career.opponentIds;
+  const legacyScorer = {name: 'Bruno Henrique', team: 'home', goals: 2};
+  const scorer = {playerId: 'bruno-henrique', name: 'Bruno Henrique', team: 'home', goals: 1};
+  const completed = {...career, round: 2, results: [
+    [{home: CAREER_TEAM, away, homeGoals: 2, awayGoals: 1, scorers: [legacyScorer]}],
+    [{home: CAREER_TEAM, away, homeGoals: 1, awayGoals: 0, scorers: [scorer]},
+      {home: away, away: other, homeGoals: 1, awayGoals: 0, scorers: [scorer]}],
+  ]};
+  assert.deepEqual(careerTopScorers(completed), {incomplete: true, players: [
+    {name: 'Bruno Henrique', goals: 3, clubId: CAREER_TEAM},
+    {name: 'Bruno Henrique', goals: 1, clubId: away},
+  ]});
+  assert.match(renderCareer(completed, 'standings', ui), /Ranking parcial/);
 });
 
 test('career plays in the lineup panel with speed and finish controls grouped under the score', () => {

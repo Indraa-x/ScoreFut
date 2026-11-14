@@ -1083,6 +1083,33 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-standings-highlights small { display: block; color: var(--muted); font-size: 11px; }
 .career-standings-highlights strong { font-size: 13px; overflow-wrap: anywhere; }
 .career-standings-highlights :is(.career-season-crest, .career-crest, .club-badge, .career-section-icon) { width: 30px; height: 30px; }
+.career-standings { container-type: inline-size; }
+.career-standings-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 16px; margin-top: 16px; }
+@container (min-width: 830px) {
+  .career-standings-grid { grid-template-columns: minmax(0, 1fr) minmax(265px, .48fr); }
+  .career-standings-grid .career-table th[scope="row"] { width: auto; }
+}
+.career-standings-grid .career-table-wrap { margin-top: 0; }
+.career-scoring-leaders { overflow: hidden; border: 1px solid var(--border); border-radius: 12px; }
+.career-scoring-leaders header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: linear-gradient(110deg, var(--accent-soft), transparent), var(--surface-alt);
+}
+.career-scoring-leaders .career-section-icon { width: 32px; height: 32px; }
+.career-scoring-leaders table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.career-scoring-leaders :is(th, td) { padding: 8px; border-top: 1px solid var(--border); text-align: center; }
+.career-scoring-leaders thead { color: var(--muted); font-size: 11px; }
+.career-scoring-leaders th:nth-child(2) { text-align: left; }
+.career-scoring-leaders td:last-child { color: var(--green); }
+.career-scoring-leaders tr.is-leader { background: var(--accent-soft); }
+.career-scoring-leaders tr.is-leader .career-table-rank { color: var(--green); font-weight: 800; }
+.career-scoring-player { display: flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
+.career-scoring-player :is(.career-season-crest, .career-crest, .club-badge) { width: 22px; height: 22px; flex: none; }
+.career-scoring-player small { display: block; color: var(--muted); font-size: 11px; font-weight: 500; }
+.career-scoring-leaders > p { margin: 0; padding: 10px 12px; border-top: 1px solid var(--border); font-size: 12px; }
 .career-table-wrap { overflow-x: auto; margin-top: 16px; border: 1px solid var(--border); border-radius: 12px; }
 .career-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; }
 .career-table :is(th, td) { padding: 9px 10px; border-bottom: 1px solid var(--border); }
@@ -1282,7 +1309,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   .career-columns:has(.career-match-status.is-live) .career-live-scoreboard,
   .career-content[data-career-tab="overview"] .career-live-field .live-pitch { animation: career-dashboard-in .27s ease-out both; }
   .career-match-status.is-live::before { animation: career-live-pulse 1.8s ease-out infinite; }
-  .career-standings .career-table-wrap,
+  .career-standings :is(.career-table-wrap, .career-scoring-leaders),
   .career-content :is(.career-facility-grid, .career-club-facts) { animation: career-dashboard-in .23s ease-out both; }
 }
 @keyframes career-dashboard-in {

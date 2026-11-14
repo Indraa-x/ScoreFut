@@ -13,7 +13,7 @@ import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
   CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, FACILITIES, LAST_SAFE_POSITION, MAX_FACILITY_LEVEL, careerClub, careerStyle,
-  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRosterLimit, careerScorers, careerTable, facilityPrice, nextCareerMatch,
+  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRosterLimit, careerScorers, careerTable, careerTopScorers, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -156,6 +156,27 @@ function pitch(career, ui) {
   </div>`;
 }
 
+function scoringLeaders(career, ui) {
+  const {players, incomplete} = careerTopScorers(career);
+  let rank = 0;
+  return `<section class="career-scoring-leaders" aria-labelledby="career-scoring-title">
+    <header><span class="career-section-icon">${goalBallIcon}</span><h3 id="career-scoring-title">Artilheiros do campeonato</h3></header>
+    ${players.length ? `<table aria-labelledby="career-scoring-title">
+      <thead><tr><th scope="col">Pos.</th><th scope="col">Jogador</th><th scope="col">Gols</th></tr></thead>
+      <tbody>${players.slice(0, 10).map(({name, clubId, goals}, index) => {
+        if (goals !== players[index - 1]?.goals) rank = index + 1;
+        const club = clubId === CAREER_TEAM ? career.name : careerClub(career, clubId).nome;
+        return `<tr${rank === 1 ? ' class="is-leader"' : ''}>
+          <td><span class="career-table-rank">${rank}</span></td>
+          <th scope="row"><span class="career-scoring-player">${clubBadge(career, clubId, ui)}<span><strong>${esc(name)}</strong><small>${esc(club)}</small></span></span></th>
+          <td><strong>${goals}</strong></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>` : `<p class="muted">${incomplete ? 'Ainda não há artilheiros registrados para esta temporada.' : 'Os artilheiros aparecem após os primeiros gols da temporada.'}</p>`}
+    ${incomplete ? '<p class="muted">Ranking parcial. Algumas partidas antigas foram salvas sem os autores dos gols.</p>' : ''}
+  </section>`;
+}
+
 function standings(career, ui, rows) {
   const totalRounds = careerFixtures(career).length;
   const seasonFinished = career.round >= totalRounds;
@@ -175,6 +196,8 @@ function standings(career, ui, rows) {
         ${career.round ? `<div>${clubBadge(career, leader.id, ui)}<div><small>Líder · ${leader.points} pts</small><strong>${esc(careerClub(career, leader.id).nome)}</strong></div></div>` : ''}
       </div>
     </header>
+    <div class="career-standings-grid">
+    <div>
     <div class="career-table-wrap">
       <table class="career-table" aria-labelledby="career-standings-title">
         <thead><tr>
@@ -199,6 +222,9 @@ function standings(career, ui, rows) {
       </table>
     </div>
     ${hasRelegationZone ? `<p class="career-relegation-legend">${relegationLabel} · ${LAST_SAFE_POSITION + 1}º ao ${rows.length}º lugar</p>` : ''}
+    </div>
+    ${scoringLeaders(career, ui)}
+    </div>
   </section>`;
 }
 
