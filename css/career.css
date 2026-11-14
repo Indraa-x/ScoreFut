@@ -371,6 +371,44 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   background: var(--accent-soft);
   color: var(--green);
 }
+@media (min-width: 1024px) {
+  #app[data-screen="career"]:has(> .career-page) {
+    max-width: none;
+    padding-inline: clamp(12px, 1vw, 20px);
+  }
+  .career-page {
+    display: grid;
+    grid-template-columns: 164px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(16px, 2vw, 28px);
+  }
+  .career-dashboard-header { grid-area: 1 / 2; }
+  .career-content { grid-area: 2 / 2; align-content: start; }
+  .career-tabs {
+    grid-area: 1 / 1 / 3 / 2;
+    grid-template-columns: minmax(0, 1fr);
+    align-self: start;
+    position: sticky;
+    top: 16px;
+    width: 100%;
+    gap: 4px;
+    padding: 7px;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+  }
+  .career-tabs button {
+    justify-content: flex-start;
+    gap: 9px;
+    min-height: 42px;
+    padding-inline: 11px;
+  }
+  .career-tabs button[aria-current="page"] { box-shadow: inset 2px 0 var(--green); }
+}
+@media (min-width: 1536px) {
+  .career-page {
+    grid-template-columns: minmax(164px, 1fr) minmax(0, 1176px) minmax(164px, 1fr);
+  }
+  .career-tabs { width: 164px; }
+}
 @media (max-width: 620px) {
   .career-tabs {
     grid-template-columns: repeat(3, minmax(0, 1fr));
