@@ -766,7 +766,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   border-color: transparent;
   background: #18382a;
 }
-:is(.career-market-token, .career-squad-token) > .career-token-photo.is-loaded + strong {
+.career-squad-token > .career-token-photo.is-loaded + strong {
   background: #101b16e6;
   color: #fff;
 }
@@ -995,8 +995,19 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   color: #123628;
   box-shadow: 0 3px 9px #091e1836;
 }
-.career-market-token .club-badge { width: 32px; height: 32px; font-size: 10px; }
-:is(.career-market-token, .career-squad-token) > strong {
+.career-market-token { width: 68px; height: 68px; padding-top: 0; align-content: center; }
+.career-market-token .career-token-photo { padding: 2% 5% 4%; }
+.career-market-rating {
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--green);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.career-squad-token > strong {
   position: absolute;
   bottom: 1px;
   padding: 0 4px;

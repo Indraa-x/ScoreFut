@@ -55,8 +55,8 @@ test('hiring debits the verified market value in reais and requires a listed pri
 test('market cards show the club crest below the name, OVR, price in reais and purchase action', () => {
   const career = {...createCareer(42), budget: 2_000_000};
   const html = renderCareer(career, 'market', ui, null, {search: 'mbappe madrid'});
-  assert.match(html, /career-market-token[^>]+aria-label="\d+ OVR"[\s\S]*?league-laliga\.webp/);
-  assert.match(html, /<h3>Kylian Mbappé<\/h3>\s*<div class="career-market-club">\s*<span role="img" aria-label="Real Madrid"[^>]*><span class="career-season-crest"/);
+  assert.match(html, /class="career-market-token" aria-hidden="true"><span class="career-season-crest"[^>]+league-laliga\.webp[^>]+><\/span><img[^>]+width="68" height="68"[^>]*><\/span>/);
+  assert.match(html, /<h3>Kylian Mbappé<\/h3>\s*<div class="career-market-club">\s*<strong class="career-market-rating" aria-label="\d+ OVR">\d+<\/strong>\s*<span role="img" aria-label="Real Madrid"/);
   assert.doesNotMatch(html, /career-market-watermark/);
   assert.match(html, /<small>Valor de mercado<\/small>\s*<strong>R\$ 1,23 Bi<\/strong>/);
   assert.doesNotMatch(html, /€|<time\b/);

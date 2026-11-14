@@ -429,10 +429,11 @@ export function renderCareerMarketResults(career, ui, filters) {
       const clubName = esc(squad.nome);
       return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}">
         <div class="career-market-player-head">
-          ${playerToken(player, crest, 'career-market-token', playerPortrait(player, 'career-token-photo', 58))}
+          <span class="career-market-token" aria-hidden="true">${crest}${playerPortrait(player, 'career-token-photo', 68)}</span>
           <div>
             <h3>${esc(player.nome)}</h3>
             <div class="career-market-club">
+              <strong class="career-market-rating" aria-label="${player.ovr} OVR">${player.ovr}</strong>
               <span role="img" aria-label="${clubName}" title="${clubName}">${crest}</span>
               ${player.ratingKind === 'career-estimate' ? '<small>OVR estimado</small>' : ''}
             </div>
