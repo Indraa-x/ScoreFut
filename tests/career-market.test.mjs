@@ -56,7 +56,8 @@ test('market cards show the season, crest, OVR, price in reais and purchase acti
   const career = {...createCareer(42), budget: 2_000_000};
   const html = renderCareer(career, 'market', ui, null, {search: 'mbappe madrid'});
   assert.match(html, /career-market-token[^>]+aria-label="\d+ OVR"[\s\S]*?league-laliga\.webp/);
-  assert.match(html, /<h3>Kylian Mbappé<\/h3>[\s\S]*?Real Madrid[\s\S]*?2026\/27/);
+  assert.match(html, /career-market-watermark[^>]+aria-label="Real Madrid"[^>]*><span class="career-season-crest"/);
+  assert.match(html, /<h3>Kylian Mbappé<\/h3>\s*<\/div>/);
   assert.match(html, /<small>Valor de mercado<\/small>\s*<strong>R\$ 1,23 Bi<\/strong>/);
   assert.doesNotMatch(html, /€|<time\b/);
   assert.match(html, /data-action="career-sign" data-value="career26-laliga-243\/kylian-mbappe">Contratar/);

@@ -426,11 +426,12 @@ export function renderCareerMarketResults(career, ui, filters) {
       const affordable = price !== null && career.budget >= price;
       const label = signed ? 'No elenco' : price === null ? 'Sem cotação' : full ? 'Sem vaga' : affordable ? 'Contratar' : 'Sem saldo';
       return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}">
+        <span class="career-market-watermark" role="img" aria-label="${esc(squad.nome)}" title="${esc(squad.nome)}">${seasonCrest(league, squad.crestIndex)}</span>
         <div class="career-market-player-head">
           ${playerToken(player, seasonCrest(league, squad.crestIndex), 'career-market-token', playerPortrait(player, 'career-token-photo', 58))}
           <div>
             <h3>${esc(player.nome)}</h3>
-            <p>${esc(squad.nome)} <span aria-hidden="true">·</span> ${esc(league.season)}${player.ratingKind === 'career-estimate' ? ' · OVR estimado' : ''}</p>
+            ${player.ratingKind === 'career-estimate' ? '<p>OVR estimado</p>' : ''}
           </div>
         </div>
         <div class="career-market-positions" aria-label="Posições">${player.tags.map(tag => `<span>${esc(tag)}</span>`).join('')}</div>

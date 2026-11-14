@@ -965,6 +965,9 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-market .career-market-note { margin: 14px 0; color: var(--muted); }
 .career-market-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .career-market-player {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   grid-template-rows: 1fr auto auto;
   gap: 12px;
@@ -974,6 +977,15 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   border-radius: 12px;
   background: var(--surface-alt);
 }
+.career-market-watermark {
+  position: absolute;
+  inset: 50% 0 auto auto;
+  z-index: -1;
+  transform: translateY(-50%);
+  opacity: .16;
+  pointer-events: none;
+}
+.career-market-watermark .career-season-crest { display: block; width: 148px; height: 148px; }
 .career-market-player:hover, .career-market-player:focus-visible { border-color: var(--green); }
 .career-market-player-head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
 .career-market-player h3 { margin: 0; font-size: 16px; line-height: 1.2; overflow-wrap: anywhere; }
