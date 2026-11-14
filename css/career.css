@@ -670,21 +670,27 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   height: auto;
   aspect-ratio: 1;
   padding-top: 1px;
-  overflow: hidden;
 }
 .career-squad-token .career-crest { width: 75%; height: auto; }
 .career-token-photo {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  padding-bottom: 20%;
-  object-fit: contain;
-  border-radius: inherit;
-  background: #f0f5ed;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  object-fit: cover;
+  object-position: center 40%;
+  background: radial-gradient(ellipse at 50% 30%, #467357, #18382a 80%);
   visibility: hidden;
 }
 .career-token-photo.is-loaded { visibility: visible; }
+:is(.career-market-token, .career-squad-token):has(.career-token-photo.is-loaded) {
+  border-color: transparent;
+  background: #18382a;
+}
+:is(.career-market-token, .career-squad-token) > .career-token-photo.is-loaded + strong {
+  background: #101b16e6;
+  color: #fff;
+}
 .career-squad-slot .career-squad-token > strong { font-size: clamp(11px, 3.8cqw, 17px); }
 .career-squad-slot:is(:hover:not(:disabled), .is-origin) .career-squad-token { box-shadow: 0 0 0 3px #fff8; }
 .career-squad-slot.is-target .career-squad-token { border-color: #78efb4; box-shadow: 0 0 0 4px #52db97a6; }
@@ -903,6 +909,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   padding-top: 5px;
   border: 2px solid #fff;
   border-radius: 50%;
+  overflow: hidden;
   background: #f0f5ed;
   color: #123628;
   box-shadow: 0 3px 9px #091e1836;
