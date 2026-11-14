@@ -170,8 +170,20 @@ export function createCareer(seed, clubId) {
   };
 }
 
+function updateEstimatedBrazilRatings(career) {
+  let changed = false;
+  const roster = career.roster.map(player => {
+    if (player.ratingKind !== 'career-estimate') return player;
+    const offer = careerPlayerValuation(player);
+    if (offer?.league.id !== 'brasileirao' || offer.player.ratingKind !== 'career-estimate' || offer.player.ovr === player.ovr) return player;
+    changed = true;
+    return {...player, ovr: offer.player.ovr};
+  });
+  return changed ? {...career, roster} : career;
+}
+
 export function migrateCareerRoster(career) {
-  if (career.version >= CAREER_VERSION) return career;
+  if (career.version >= CAREER_VERSION) return updateEstimatedBrazilRatings(career);
   const used = new Set(career.roster.filter(player => !isLegacyPlayer(player)).map(player => player.id));
   const lineup = {...career.lineup};
   const slots = new Map(FORMATIONS[career.formation].slots.map(slot => [lineup[slot.id], slot]));
@@ -189,7 +201,7 @@ export function migrateCareerRoster(career) {
     if (slot) lineup[slot.id] = replacement.id;
     return replacement;
   });
-  return {...career, version: CAREER_VERSION, roster, lineup};
+  return updateEstimatedBrazilRatings({...career, version: CAREER_VERSION, roster, lineup});
 }
 
 export function careerPicks(career) {

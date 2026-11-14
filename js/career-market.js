@@ -43,7 +43,7 @@ export function careerPlayerValuation(player) {
   const matches = offersByPlayer.get(player.id) ?? [];
   if (matches.length === 1) return matches[0];
   const identified = matches.filter(({player: candidate}) =>
-    candidate.nome === player.nome && candidate.camisa === player.camisa && candidate.ovr === player.ovr);
+    candidate.nome === player.nome && candidate.camisa === player.camisa);
   return identified.length === 1 ? identified[0] : null;
 }
 
