@@ -379,7 +379,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
     padding-inline: clamp(12px, 1vw, 20px);
   }
   .career-page {
-    --career-sidebar-width: clamp(184px, 15vw, 192px);
+    --career-sidebar-width: clamp(212px, 21vw, 264px);
     grid-template-columns: var(--career-sidebar-width) minmax(0, 1fr);
     grid-template-rows: auto 1fr;
     column-gap: clamp(16px, 2vw, 28px);
@@ -390,22 +390,25 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
     grid-area: 1 / 1 / 3 / 2;
     grid-template-columns: minmax(0, 1fr);
     align-self: start;
+    align-content: start;
     position: sticky;
     top: 16px;
     width: 100%;
-    gap: 5px;
-    padding: 9px;
+    height: min(564px, calc(100dvh - 32px));
+    overflow-y: auto;
+    gap: 6px;
+    padding: 11px;
     border-radius: 16px;
     background: linear-gradient(155deg, var(--accent-soft), transparent 52%), var(--surface);
     box-shadow: 0 10px 26px #0002;
   }
   .career-tabs button {
     justify-content: flex-start;
-    gap: 10px;
-    min-height: 49px;
-    padding-inline: 11px;
+    gap: 12px;
+    min-height: 54px;
+    padding-inline: 13px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 15px;
   }
   .career-tabs button svg {
     width: 28px;
@@ -422,7 +425,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 @media (min-width: 1536px) {
   .career-page {
-    grid-template-columns: minmax(var(--career-sidebar-width), 1fr) minmax(0, 1176px) minmax(var(--career-sidebar-width), 1fr);
+    grid-template-columns: minmax(var(--career-sidebar-width), 1fr) minmax(0, 1176px) minmax(0, 1fr);
   }
   .career-tabs { width: var(--career-sidebar-width); }
 }
