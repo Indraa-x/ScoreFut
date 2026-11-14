@@ -8,7 +8,9 @@ A folha de escudos do Brasileirão reúne os PNGs transparentes já usados no Sc
 
 ## Retratos dos jogadores
 
-Os retratos da Carreira vêm do CDN usado pelas [páginas oficiais de jogadores do EA SPORTS FC 27](https://www.ea.com/games/ea-sports-fc/ratings). O catálogo vincula cada foto pelo ID oficial do jogador, incluindo quem tem um identificador legado no ScoreFut. Quando o jogador não tem retrato oficial associado ou a imagem não carrega, o Elenco exibe um ícone na lista e o escudo no campinho. Os cards do Mercado também exibem o escudo.
+Os retratos do Brasileirão usam os arquivos publicados nos [plantéis e perfis do Transfermarkt](https://www.transfermarkt.com.br/campeonato-brasileiro-serie-a/startseite/wettbewerb/BRA1), consultados em 14/11/2026, com apoio do [recorte público dos dados](https://github.com/dcaribou/transfermarkt-datasets). O catálogo usa o ID do perfil, cruzado com a identidade do atleta e, para homônimos, com o número da camisa no elenco cadastrado. [Exemplo: perfil de Neymar](https://www.transfermarkt.com.br/neymar/profil/spieler/68290). As imagens são carregadas do CDN do Transfermarkt.
+
+As demais ligas usam os retratos das [páginas oficiais de jogadores do EA SPORTS FC 27](https://www.ea.com/games/ea-sports-fc/ratings). No Brasileirão, retratos da EA já cadastrados podem aparecer quando não há correspondência com foto do Transfermarkt. Sem foto disponível, a lista do Elenco exibe um ícone e o campinho e o Mercado mostram o escudo.
 
 ## Valores de mercado
 

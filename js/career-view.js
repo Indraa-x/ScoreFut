@@ -299,7 +299,7 @@ function playerToken(player, crest, className, portrait = '') {
 }
 
 function playerPortrait(player, className, size) {
-  const portrait = careerPortraitUrl(player.id);
+  const portrait = careerPortraitUrl(player);
   return portrait ? `<img class="${className}" data-career-portrait src="${portrait}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
 }
 
