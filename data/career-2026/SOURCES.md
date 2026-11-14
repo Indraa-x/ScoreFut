@@ -14,6 +14,8 @@ As demais ligas usam os retratos das [páginas oficiais de jogadores do EA SPORT
 
 ## Valores de mercado
 
+Em 14/11/2026, os 2.847 jogadores do catálogo foram cruzados com as páginas de elenco dos 98 clubes no Transfermarkt. A revisão também consultou perfis individuais para buscar preços de atletas fora desses elencos. O catálogo usa o último valor confirmado para a identidade do jogador, com a avaliação anterior quando a consulta atual não pôde ser confirmada. Onde nenhuma avaliação pôde ser vinculada com segurança, a oferta continua sem preço.
+
 Os valores em euros vêm da última avaliação disponível no recorte público de dados do Transfermarkt. Para jogadores com dados ausentes ou desatualizados nesse recorte, o catálogo também usa tabelas verificadas diretamente nas páginas de clubes e competições do Transfermarkt. A base registra o valor em euros, a fonte e a data da avaliação quando disponível. Os cartões mostram o preço em reais. Os vínculos com os clubes seguem os elencos do ScoreFut. [Transfermarkt](https://www.transfermarkt.com.br/) · [Recorte público dos dados](https://github.com/dcaribou/transfermarkt-datasets)
 
 Neymar está no Santos na edição 2026. Seu OVR é uma estimativa do ScoreFut. [Anúncio do Santos](https://www.santosfc.com.br/santos-fc-e-neymar-jr-renovam-contrato-ate-o-fim-de-2026/) · [Perfil no Transfermarkt](https://www.transfermarkt.com.br/neymar/profil/spieler/68290)
