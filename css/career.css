@@ -677,8 +677,10 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   inset: -2px;
   width: calc(100% + 4px);
   height: calc(100% + 4px);
-  object-fit: cover;
-  object-position: center 40%;
+  box-sizing: border-box;
+  padding: 4% 6% 16%;
+  object-fit: contain;
+  object-position: center top;
   background: radial-gradient(ellipse at 50% 30%, #467357, #18382a 80%);
   visibility: hidden;
 }
