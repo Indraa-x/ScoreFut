@@ -1065,6 +1065,19 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-standings-scorers > p { margin: 12px 4px 0; font-size: 12px; }
 .career-scoring-club { display: block; color: var(--muted); font-size: 11px; font-weight: 500; }
 .career-table-wrap { overflow-x: auto; }
+.career-table-wrap > .career-table {
+  width: min(100%, 880px);
+  min-width: 325px;
+  table-layout: fixed;
+  font-size: clamp(13px, 1.5vw, 15px);
+}
+.career-table-wrap > .career-table thead th:first-child { width: 8%; }
+.career-table-wrap > .career-table thead th:nth-child(n + 3) { width: 8%; }
+.career-table-wrap > .career-table th[scope="row"] { width: auto; }
+.career-table-wrap .career-table-team :is(.career-season-crest, .career-crest, .club-badge) {
+  width: clamp(32px, 4.5vw, 46px);
+  height: clamp(32px, 4.5vw, 46px);
+}
 .career-standings-results { border-bottom: 1px solid var(--border); }
 .career-standings-results summary { padding: 10px; color: var(--muted); }
 .career-standings-results summary:hover, .career-standings-results[open] summary { color: var(--text); }
