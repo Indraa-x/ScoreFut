@@ -394,10 +394,10 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
     position: sticky;
     top: 16px;
     width: 100%;
-    height: min(564px, calc(100dvh - 32px));
+    max-height: calc(100dvh - 32px);
     overflow-y: auto;
     gap: 6px;
-    padding: 11px;
+    padding: 12px;
     border-radius: 16px;
     background: linear-gradient(155deg, var(--accent-soft), transparent 52%), var(--surface);
     box-shadow: 0 10px 26px #0002;
@@ -405,23 +405,25 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   .career-tabs button {
     justify-content: flex-start;
     gap: 12px;
-    min-height: 54px;
-    padding-inline: 13px;
+    min-height: 60px;
+    padding-inline: 12px;
     border-radius: 10px;
     font-size: 15px;
   }
   .career-tabs button svg {
-    width: 28px;
-    height: 28px;
-    padding: 5px;
-    border-radius: 7px;
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    border-radius: 8px;
     background: var(--surface-alt);
   }
   .career-tabs button[aria-current="page"] {
-    background: linear-gradient(100deg, var(--accent-soft), transparent 170%), var(--surface);
+    background: linear-gradient(100deg, var(--accent-soft), var(--surface-alt));
     box-shadow: inset 3px 0 var(--green);
   }
-  .career-tabs button[aria-current="page"] svg { background: var(--accent-soft); }
+  .career-tabs button[aria-current="page"] svg {
+    background: color-mix(in srgb, var(--green) 15%, var(--surface));
+  }
 }
 @media (min-width: 1536px) {
   .career-page {
