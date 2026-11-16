@@ -344,32 +344,26 @@ export function renderCareerSale({player, valuation, changesLineup}, ui) {
   </section>`;
 }
 
-function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
+function squad(career, ui, {selectedId = null} = {}) {
   const style = careerStyle(career);
   const picks = careerPicks(career);
-  const starters = new Map(picks.map(({slot, player}) => [player.id, slot.label]));
+  const starters = new Set(picks.map(({player}) => player.id));
   const reserves = career.roster.filter(player => !starters.has(player.id)).sort((a, b) => b.ovr - a.ovr);
-  const showingReserves = group === 'reserves';
-  const players = showingReserves ? reserves : picks.map(({player}) => player);
   const selected = career.roster.find(player => player.id === selectedId);
   const targets = new Set(careerDestinations(career, selectedId).map(slot => slot.id));
   const crest = clubBadge(career, CAREER_TEAM, ui);
   return `<div class="career-squad-layout">
     <section class="career-card panel career-roster" aria-labelledby="career-roster-title">
       <div class="career-card-heading">
-        <h2 id="career-roster-title">Jogadores</h2><span class="career-pill">${career.roster.length} / ${careerRosterLimit(career)}</span>
+        <h2 id="career-roster-title" tabindex="-1">Reservas</h2><span class="career-pill">${reserves.length}</span>
       </div>
-      <div class="career-roster-switch" role="group" aria-label="Grupo de jogadores">
-        <button type="button" data-action="career-squad-group" data-value="reserves" aria-pressed="${showingReserves}">Reservas <span>${reserves.length}</span></button>
-        <button type="button" data-action="career-squad-group" data-value="starters" aria-pressed="${!showingReserves}">Titulares <span>${picks.length}</span></button>
-      </div>
-      <ul class="career-roster-list" aria-label="${showingReserves ? 'Reservas' : 'Titulares'}">
-        ${players.map(player => `<li class="career-roster-row">
+      <ul class="career-roster-list" aria-labelledby="career-roster-title">
+        ${reserves.map(player => `<li class="career-roster-row">
           <button type="button" class="career-roster-player" data-action="career-select-player" data-value="${esc(player.id)}" aria-pressed="${selectedId === player.id}">
             ${rosterPortrait(player, ui)}
             <span class="career-roster-name">
               <strong>${esc(player.nome)}</strong>
-              <small class="career-roster-position">${esc(starters.get(player.id) ?? player.tags[0])}</small>
+              <small class="career-roster-position">${esc(player.tags[0])}</small>
             </span>
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
@@ -380,9 +374,12 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
     <section class="career-card panel career-squad-field" aria-labelledby="career-squad-title">
       <div class="career-card-heading">
         <div><span class="eyebrow accent">11 titulares</span><h2 id="career-squad-title">Escalação titular</h2></div>
-        <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
+        <div class="career-squad-header-actions">
+          ${selected && starters.has(selected.id) ? `<button type="button" class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${esc(selected.id)}" aria-label="Vender ${esc(selected.nome)}">$</button>` : ''}
+          <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
+        </div>
       </div>
-      <div class="career-pitch career-edit-pitch" role="group" aria-label="${selected ? esc(`Escolha uma posição destacada para ${selected.nome}`) : 'Posições no campo'}">
+      <div class="career-pitch career-edit-pitch" role="group" aria-label="${selected && targets.size ? esc(`Escolha uma posição destacada para ${selected.nome}`) : 'Posições no campo'}">
         ${ui.pitchLines()}
         ${picks.map(({slot, player}) => {
           const origin = player.id === selectedId;

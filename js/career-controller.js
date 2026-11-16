@@ -19,7 +19,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let tab = 'intro';
   let initial;
   let filters = {...marketDefaults};
-  const squad = {group: 'reserves', selectedId: null};
+  const squad = {selectedId: null};
   const selection = {leagueId: null, clubId: null};
   const activeSlot = () => careerSlot(careerSeasonTeam(storage.read(activeCareerKey))?.id);
   const savedCareer = () => storage.read(activeSlot());
@@ -138,7 +138,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       squad.selectedId = null;
       modal.close();
       refreshSquad();
-      app.querySelector('.career-roster-switch [aria-pressed="true"]')?.focus({preventScroll: true});
+      app.querySelector('#career-roster-title')?.focus({preventScroll: true});
       toast('Jogador vendido. O valor entrou no orçamento.');
     } catch (error) {
       modal.close();
@@ -154,7 +154,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       cancelPick();
       return;
     }
-    if (!careerDestinations(read(), id).length) {
+    if (fromRoster && !careerDestinations(read(), id).length) {
       toast('Este jogador não tem outra posição compatível nesta formação.');
       return;
     }
@@ -297,12 +297,6 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       'career-create': () => openCampaign(selection.clubId, true),
       'career-load': id => openCampaign(id),
       'career-tab': value => { setTab(value); navigate('career'); },
-      'career-squad-group': value => {
-        if (!['reserves', 'starters'].includes(value) || squad.group === value) return;
-        squad.group = value;
-        squad.selectedId = null;
-        render();
-      },
       'career-select-player': id => selectSquadPlayer(id, true),
       'career-pick-slot': pickSlot,
       'career-play': startMatch,

@@ -34,10 +34,15 @@ test('a starter swaps with another only when both players fit their new slots', 
 
 test('the roster renders the selected reserve and highlights only its compatible destination', () => {
   const career = createCareer(42);
-  const html = renderCareer(career, 'squad', ui, null, undefined, {group: 'reserves', selectedId: 'carlos-germano'});
+  const html = renderCareer(career, 'squad', ui, null, undefined, {selectedId: 'carlos-germano'});
+  const listed = [...html.matchAll(/data-action="career-select-player" data-value="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(listed.length, career.roster.length - 11);
+  assert.ok(listed.every(id => !Object.values(career.lineup).includes(id)));
   assert.match(html, /data-action="career-select-player" data-value="carlos-germano" aria-pressed="true"/);
   const targets = [...html.matchAll(/class="career-squad-slot is-target"[^>]*data-value="([^"]+)"/g)];
   assert.deepEqual(targets.map(match => match[1]), ['gol']);
   assert.equal(html.match(/data-action="career-pick-slot"[^>]* disabled/g).length, 10);
   assert.equal(html.match(/class="career-squad-token"/g).length, 11);
+  const starter = renderCareer(career, 'squad', ui, null, undefined, {selectedId: career.lineup.gol});
+  assert.ok(starter.includes(`class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${career.lineup.gol}"`));
 });

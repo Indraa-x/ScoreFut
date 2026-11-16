@@ -598,10 +598,6 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 .career-roster { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
 .career-roster .career-card-heading { padding: 18px 16px 12px; }
-.career-roster-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0 14px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg); }
-.career-roster-switch button { min-height: 36px; border-radius: 6px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 750; }
-.career-roster-switch button[aria-pressed="true"] { background: var(--accent-soft); color: var(--green); }
-.career-roster-switch span { margin-left: 3px; font-variant-numeric: tabular-nums; }
 .career-roster-list {
   flex: 1;
   min-height: 0;
@@ -630,7 +626,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 .career-roster-player:hover { background: var(--surface-alt); }
 .career-roster-player[aria-pressed="true"] { border-left-color: var(--green); background: var(--accent-soft); }
-.career-roster-player:focus-visible, .career-roster-switch button:focus-visible { outline-offset: -3px; }
+.career-roster-player:focus-visible { outline-offset: -3px; }
 .career-roster-avatar {
   position: relative;
   display: grid;
@@ -1321,9 +1317,8 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   border-radius: 10px;
   background: var(--accent-soft);
 }
-.career-content .career-roster-switch {
-  background: var(--surface-alt);
-}
+.career-squad-header-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px; }
+.career-starter-sell { min-width: 34px; min-height: 34px; border: 1px solid var(--border); border-radius: 8px; }
 .career-content .career-crest-choice {
   background: var(--surface-alt);
 }
