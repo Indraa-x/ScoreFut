@@ -1042,7 +1042,6 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-crest-choice .career-crest { width: 42px; height: 42px; }
 .career-customize .btn { justify-self: start; }
 .career-card summary { cursor: pointer; font-weight: 750; }
-.career-standings { width: min(100%, 936px); }
 .career-standings-header { padding-bottom: 14px; border-bottom: 1px solid var(--border); }
 .career-standings-header p { margin-top: 5px; font-size: 13px; }
 .career-standings-switch {
