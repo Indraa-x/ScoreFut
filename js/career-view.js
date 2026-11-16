@@ -166,7 +166,7 @@ function scoringLeaders(career, ui) {
   const {players, incomplete} = careerTopScorers(career);
   let rank = 0;
   return `<section class="career-standings-scorers" aria-label="Artilheiros do campeonato">
-    ${players.length ? `<table class="career-table" aria-label="Artilheiros do campeonato">
+    ${players.length ? `<div class="career-table-wrap"><table class="career-table" aria-label="Artilheiros do campeonato">
       <thead><tr><th scope="col">Pos.</th><th scope="col">Jogador</th><th scope="col">Gols</th></tr></thead>
       <tbody>${players.slice(0, 10).map(({name, clubId, goals}, index) => {
         if (goals !== players[index - 1]?.goals) rank = index + 1;
@@ -174,10 +174,10 @@ function scoringLeaders(career, ui) {
         return `<tr>
           <td>${rank}</td>
           <th scope="row"><span class="career-table-team">${clubBadge(career, clubId, ui)}<span>${esc(name)}<small class="career-scoring-club">${esc(club)}</small></span></span></th>
-          <td><strong>${goals}</strong></td>
+          <td class="career-standings-primary"><strong>${goals}</strong></td>
         </tr>`;
       }).join('')}</tbody>
-    </table>` : `<p class="muted">${incomplete ? 'Ainda não há artilheiros registrados para esta temporada.' : 'Os artilheiros aparecem após os primeiros gols da temporada.'}</p>`}
+    </table></div>` : `<p class="muted">${incomplete ? 'Ainda não há artilheiros registrados para esta temporada.' : 'Os artilheiros aparecem após os primeiros gols da temporada.'}</p>`}
     ${incomplete ? '<p class="muted">Ranking parcial. Faltam os autores dos gols de partidas antigas.</p>' : ''}
   </section>`;
 }
@@ -226,7 +226,7 @@ function standings(career, ui, rows) {
           return `<tr${rowClass ? ` class="${rowClass}"` : ''}>
             <td>${index + 1}</td>
             <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<span class="career-table-status">Seu clube</span>' : ''}${inRelegationZone ? `<span class="career-table-status">${seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento'}</span>` : ''}</span></th>
-            <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
+            <td class="career-standings-primary"><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
             <td>${difference > 0 ? '+' : ''}${difference}</td>
           </tr>`;
         }).join('')}</tbody>

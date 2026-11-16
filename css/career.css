@@ -1042,45 +1042,67 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-crest-choice .career-crest { width: 42px; height: 42px; }
 .career-customize .btn { justify-self: start; }
 .career-card summary { cursor: pointer; font-weight: 750; }
-.career-standings-header p { margin-top: 4px; font-size: 13px; }
+.career-standings { width: min(100%, 936px); }
+.career-standings-header { padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.career-standings-header p { margin-top: 5px; font-size: 13px; }
 .career-standings-switch {
-  display: flex;
-  gap: 20px;
-  margin-top: 14px;
-  border-bottom: 1px solid var(--border);
+  display: inline-flex;
+  gap: 4px;
+  margin: 14px 0;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
 }
 .career-standings-switch label { position: relative; cursor: pointer; }
 .career-standings-switch input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
 .career-standings-switch span {
   display: block;
-  padding: 10px 4px 9px;
-  border-bottom: 2px solid transparent;
+  padding: 7px 13px;
+  border-radius: 6px;
   color: var(--muted);
-  font-weight: 650;
+  font-size: 13px;
+  font-weight: 700;
 }
-.career-standings-switch input:checked + span { border-color: var(--green); color: var(--text); }
+.career-standings-switch label:hover span { color: var(--text); }
+.career-standings-switch input:checked + span { background: var(--accent-soft); color: var(--green); }
 .career-standings-switch input:focus-visible + span { outline: 2px solid var(--green); outline-offset: -2px; }
 .career-standings:not(:has(input[value="scorers"]:checked)) #career-standings-scorers,
 .career-standings:has(input[value="scorers"]:checked) .career-standings-clubs { display: none; }
 .career-standings-scorers > p { margin: 12px 4px 0; font-size: 12px; }
-.career-scoring-club { display: block; color: var(--muted); font-size: 11px; font-weight: 500; }
-.career-table-wrap { overflow-x: auto; }
+.career-scoring-club { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 500; }
+.career-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
 .career-table-wrap > .career-table {
-  width: min(100%, 880px);
   min-width: 325px;
   table-layout: fixed;
   font-size: clamp(13px, 1.5vw, 15px);
 }
-.career-table-wrap > .career-table thead th:first-child { width: 8%; }
-.career-table-wrap > .career-table thead th:nth-child(n + 3) { width: 8%; }
+.career-table-wrap > .career-table thead { background: var(--surface-alt); }
+.career-table-wrap > .career-table thead th:first-child { width: clamp(36px, 7.5vw, 64px); }
 .career-table-wrap > .career-table th[scope="row"] { width: auto; }
+.career-standings-clubs .career-table-wrap thead th:nth-child(n + 3) { width: 8%; }
+.career-standings-scorers .career-table thead th:last-child { width: 76px; }
 .career-table-wrap .career-table-team :is(.career-season-crest, .career-crest, .club-badge) {
   width: clamp(32px, 4.5vw, 46px);
   height: clamp(32px, 4.5vw, 46px);
 }
-.career-standings-results { border-bottom: 1px solid var(--border); }
-.career-standings-results summary { padding: 10px; color: var(--muted); }
+.career-table-wrap tr.career-own-row:not(.career-relegation-row) > :first-child { box-shadow: inset 3px 0 var(--green); }
+.career-standings-primary strong {
+  display: inline-block;
+  min-width: 2ch;
+  padding: 3px clamp(0px, 1vw, 7px);
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--green);
+}
+.career-standings-results { margin-bottom: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-alt); }
+.career-standings-results summary { padding: 10px 12px; color: var(--muted); }
 .career-standings-results summary:hover, .career-standings-results[open] summary { color: var(--text); }
+.career-standings-results[open] summary { border-bottom: 1px solid var(--border); }
 .career-standings-results .career-table :nth-child(2) { text-align: center; white-space: nowrap; }
 .career-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; }
 .career-table :is(th, td) { padding: 9px 10px; border-bottom: 1px solid var(--border); }
