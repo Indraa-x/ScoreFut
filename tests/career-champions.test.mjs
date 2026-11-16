@@ -7,6 +7,7 @@ import {
   prepareCareerChampionsMatch, prepareCareerRound,
 } from '../js/career.js';
 import {initCareer} from '../js/career-controller.js';
+import {playNextRound} from '../js/engine.js';
 import {renderCareer} from '../js/career-view.js';
 import {renderCareerSetup} from '../js/career-setup-view.js';
 import * as ui from '../js/ui.js';
@@ -156,7 +157,22 @@ test('the same overview alternates between domestic and European fixtures', () =
   assert.match(renderCareer(career, 'overview', ui), /Rodada 5 de 34[\s\S]*data-action="career-play"/);
 });
 
-test('the Career knockout begins at the quarters and waits for the deciding shootout', () => {
+test('older career saves get round of 16 ties before the knockout starts', () => {
+  const original = createCareer(42, bayern.id);
+  const {tournament} = original.champions;
+  let legacy = {...tournament, careerGroupSeeds: false, cupStages: tournament.cupStages.slice(1)};
+  for (let round = 0; round < 3; round++) legacy = playNextRound(legacy);
+  const saved = {...original, champions: {tournament: legacy, replay: null}};
+  const upgraded = migrateCareerChampions(saved).champions.tournament;
+  assert.deepEqual(upgraded.matches.filter(match => match.stage === 'group'), legacy.matches.filter(match => match.stage === 'group'));
+  assert.equal(upgraded.bracket[0].stage, 'round16');
+  assert.equal(upgraded.bracket[0].ties.length, 8);
+  assert.equal(new Set(upgraded.bracket[0].ties.flatMap(tie => tie.teamIds)).size, 16);
+  const knockoutStarted = {...saved, champions: {...saved.champions, tournament: playNextRound(legacy)}};
+  assert.equal(migrateCareerChampions(knockoutStarted), knockoutStarted);
+});
+
+test('the Career knockout begins at the round of 16 and waits for the deciding shootout', () => {
   let career = seasonTwo;
   assert.throws(() => advanceCareerSeason({...career, round: careerFixtures(career).length}), /Conclua a Champions League/);
   const played = [];
@@ -164,7 +180,7 @@ test('the Career knockout begins at the quarters and waits for the deciding shoo
     const replay = prepareCareerChampionsMatch(career);
     played.push(replay.match);
     career = {...career, champions: {...career.champions, replay: {...replay, minute: replay.match.result.duration}}};
-    if (replay.match.stage === 'quarter' && replay.match.leg === 2) {
+    if (replay.match.stage === 'round16' && replay.match.leg === 2) {
       const {result} = replay.match;
       const match = {...replay.match, result: {...result, penalties: [1, 0], events: [
         {type: 'penalty', shootout: true, team: 'home', converted: true, minute: result.duration},
@@ -176,13 +192,13 @@ test('the Career knockout begins at the quarters and waits for the deciding shoo
     }
     career = commitCareerChampionsMatch(career);
   }
-  assert.deepEqual(played.slice(0, 5).map(match => match.stage), ['group', 'group', 'group', 'quarter', 'quarter']);
+  assert.deepEqual(played.slice(0, 5).map(match => match.stage), ['group', 'group', 'group', 'round16', 'round16']);
   const tournament = career.champions.tournament;
   assert.ok(tournament.complete);
-  assert.deepEqual(tournament.bracket.map(stage => stage.ties.length), [4, 2, 1]);
+  assert.deepEqual(tournament.bracket.map(stage => stage.ties.length), [8, 4, 2, 1]);
   assert.equal(tournament.bracket.at(-1).matches.length, 1);
   assert.ok(tournament.bracket.at(-1).matches[0].neutral);
   const html = renderCareer(career, 'standings', ui, null, undefined, undefined, undefined, {championsView: 'knockout'});
   assert.match(html, /career-champions-tie/);
-  assert.doesNotMatch(html, /Oitavas de final/);
+  assert.match(html, /Oitavas de final/);
 });

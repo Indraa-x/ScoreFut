@@ -644,7 +644,7 @@ export function createCareerChampionsTournament(teams, groupIds, userTeamId, see
   const tournament = {
     mode: 'champions', seed: hashSeed(seed), rngState: mulberry32(seed).getState(), settings: {...SIMULATION_SETTINGS},
     userTeamId, teams, groups, matches: groupFixtures(groups, true), bracket: [], progressRound: 0, userMatches: [],
-    championId: null, complete: false, knockoutFormat: 'two-legged', cupStages: KNOCKOUT_STAGES.slice(1), independentFixtures: true,
+    championId: null, complete: false, knockoutFormat: 'two-legged', cupStages: [...KNOCKOUT_STAGES], careerGroupSeeds: true, independentFixtures: true,
   };
   tournament.groups = standingsFor(tournament);
   tournament.campaign = campaignFor(tournament);
@@ -909,7 +909,7 @@ function standingsFor(tournament) {
     // breaks a perfect tie. Club spelling and editorial strength give no edge.
     if(tournament.mode==='world-cup')rows.splice(0,rows.length,...worldCupGroupOrder(rows,tournament.matches.filter(match=>match.groupId===group.id),id=>hashSeed(`${tournament.seed}:${id}`)));
     else rows.sort((a, b) => b.points - a.points || (tournament.mode==='brasileirao'?b.wins-a.wins:0) || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor || hashSeed(`${tournament.seed}:${a.teamId}`) - hashSeed(`${tournament.seed}:${b.teamId}`));
-    if (tournament.mode!=='brasileirao' && rows.every(row => row.played === group.teamIds.length-1)) rows.forEach((row, index) => { row.qualified = index < 2; });
+    if (tournament.mode!=='brasileirao' && rows.every(row => row.played === group.teamIds.length-1)) rows.forEach((row, index) => { row.qualified = index < (tournament.careerGroupSeeds ? 4 : 2); });
     return { ...group, standings: rows };
   });
   return groups;
@@ -951,6 +951,27 @@ function campaignFor(tournament) {
   return campaign;
 }
 
+function appendCareerRound16(tournament) {
+  const rng = mulberry32(tournament.rngState);
+  const pairs = [0, 1, 2, 3].flatMap(rank => [0, 2].map(index => {
+    const first = tournament.groups[index].standings[rank].teamId;
+    const second = tournament.groups[index + 1].standings[3 - rank].teamId;
+    return rank < 2 ? [second, first] : [first, second];
+  }));
+  appendCupStage(tournament, 'round16', [], rng, 0, pairs);
+  tournament.rngState = rng.getState();
+}
+
+export function upgradeCareerChampionsBracket(tournament) {
+  if (!tournament || tournament.cupStages?.[0] !== 'quarter' || tournament.matches.some(match => match.stage !== 'group' && match.result)) return tournament;
+  const next = {...tournament, careerGroupSeeds: true, cupStages: [...KNOCKOUT_STAGES],
+    matches: tournament.matches.filter(match => match.stage === 'group'), bracket: []};
+  next.groups = standingsFor(next);
+  if (next.progressRound === 3) appendCareerRound16(next);
+  next.campaign = campaignFor(next);
+  return next;
+}
+
 /** Play one group round or one knockout stage; input remains untouched. */
 export function playNextRound(tournament) {
   if (tournament.complete) return tournament;
@@ -978,6 +999,8 @@ export function playNextRound(tournament) {
   next.groups = standingsFor(next);
   if (league) {
     if(next.progressRound===next.totalRounds){next.championId=next.groups[0].standings[0].teamId;next.complete=true;}
+  } else if (groupRound && next.progressRound === groupRounds && next.careerGroupSeeds) {
+    appendCareerRound16(next);
   } else if (groupRound && next.progressRound === groupRounds) {
     const fixtures = [];
     const openingStage = next.cupStages?.[0] || knockoutStages[0];

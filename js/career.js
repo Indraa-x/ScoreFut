@@ -5,7 +5,7 @@ import {FIRST_CHAMPIONS_FIELD, startsInChampions} from '../data/career-2026/cham
 import {MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
 import {
   FORMATIONS, calculateTeam, createCareerChampionsTournament, hashSeed, mulberry32, playNextRound,
-  positionFit, simulateMatch, simulateTournament, squadTeam, teamForNextMatch,
+  positionFit, simulateMatch, simulateTournament, squadTeam, teamForNextMatch, upgradeCareerChampionsBracket,
 } from './engine.js';
 import {goalsAt} from './match-goals.js';
 import {matchExpulsions} from './match-discipline.js';
@@ -574,7 +574,18 @@ function createChampionsEdition(career, field, seed) {
 }
 
 export function migrateCareerChampions(career) {
-  if (career.season !== 1 || career.champions || !startsInChampions(career.clubId)) return career;
+  if (career.champions) {
+    const {tournament, replay} = career.champions;
+    if (replay && replay.match.stage !== 'group') return career;
+    const upgraded = upgradeCareerChampionsBracket(tournament);
+    if (upgraded === tournament) return career;
+    // Results simulated past an unfinished group replay have never been shown.
+    const pendingGroups = replay?.pending.complete ? {...replay.pending, complete: false, championId: null,
+      progressRound: replay.match.round, matches: replay.pending.matches.filter(match => match.stage === 'group')} : replay?.pending;
+    const pending = upgradeCareerChampionsBracket(pendingGroups);
+    return {...career, champions: {tournament: upgraded, replay: replay ? {...replay, pending} : null}};
+  }
+  if (career.season !== 1 || !startsInChampions(career.clubId)) return career;
   const seed = hashSeed(`${career.seed}:2026-27:champions`);
   return {...career, champions: createChampionsEdition(career, FIRST_CHAMPIONS_FIELD, seed)};
 }
@@ -591,7 +602,7 @@ export function careerChampionsFixture(career) {
     && [match.homeId, match.awayId].includes(CAREER_TEAM));
 }
 
-const championsMatchdays = [4, 8, 12, 16, 19, 23, 26, 30];
+const championsMatchdays = [4, 8, 12, 14, 16, 19, 21, 24, 26, 30];
 
 export function careerNextCompetition(career) {
   const league = nextCareerMatch(career);
