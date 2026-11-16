@@ -145,8 +145,9 @@ test('career plays in the lineup panel with speed and finish controls grouped un
   const state = {mode: 'career', tournament: replay.tournament, userMatchIndex: 0, matchMinute: 0, matchSpeed: 4};
   const {result} = replay.tournament.userMatches[0];
   const before = renderCareer(career, 'overview', ui);
-  assert.match(before, /career-pitch-marker/);
-  assert.match(before, /Último resultado · Rodada 1/);
+  assert.equal(before.match(/class="career-pitch-player"/g)?.length, 11);
+  assert.match(before, /Escalação titular/);
+  assert.doesNotMatch(before, /Último resultado/);
   assert.doesNotMatch(before, /data-live-pitch/);
   const kickoff = renderCareer({...career, replay}, 'overview', ui, state);
   assert.match(kickoff, /data-value="overview" aria-current="page">.*<span>Visão geral<\/span><\/button>/);
@@ -154,7 +155,7 @@ test('career plays in the lineup panel with speed and finish controls grouped un
   assert.match(kickoff, /class="score-clock">00:00<\/span>/);
   assert.match(kickoff, /class="career-card panel career-match"[\s\S]*?<div class="live-controls">[\s\S]*?aria-label="Velocidade da partida"[\s\S]*?data-action="career-match-finish"[^>]*>Simular até o fim<\/button><\/div>\s*<\/section>/);
   assert.match(kickoff, /career-live-field[\s\S]*?data-live-pitch/);
-  assert.doesNotMatch(kickoff, /Último resultado|career-pitch-marker|data-action="career-match-return"/);
+  assert.doesNotMatch(kickoff, /Último resultado|career-pitch-player|data-action="career-match-return"/);
   assert.equal(kickoff.match(/data-match-player/g).length, 22);
   assert.match(kickoff, /data-action="career-match-speed" data-value="4"[^>]*aria-pressed="true"/);
   assert.match(kickoff, /data-action="career-match-speed" data-value="8"/);
@@ -188,7 +189,7 @@ test('simulating to the end uses the prepared result and credits only one round'
   assert.equal(saved, final);
 });
 
-test('the last result puts names and minutes in home and away columns, including old replays', () => {
+test('older replays recover scorer details and reconcile the saved result', () => {
   const career = createCareer(42);
   const away = career.opponentIds[0];
   const result = {duration: 94, homeGoals: 2, awayGoals: 1, events: [
@@ -198,23 +199,15 @@ test('the last result puts names and minutes in home and away columns, including
   ]};
   const scorers = careerScorers(result);
   const last = {home: CAREER_TEAM, away, homeGoals: 2, awayGoals: 1, scorers};
-  const completed = {...career, round: 1, results: [[last]]};
-  const html = renderCareer(completed, 'overview', ui);
-  const homeColumn = html.match(/career-last-scorers home[^>]*>([\s\S]*?)<\/ul>/)[1];
-  const awayColumn = html.match(/career-last-scorers away[^>]*>([\s\S]*?)<\/ul>/)[1];
-  assert.match(homeColumn, /Pedro Leal[\s\S]*?19′, 90\+2′/);
-  assert.doesNotMatch(homeColumn, /Jogador Visitante/);
-  assert.match(awayColumn, /Jogador Visitante[\s\S]*?54′/);
-  assert.doesNotMatch(awayColumn, /Pedro Leal/);
+  assert.deepEqual(scorers.find(scorer => scorer.team === 'home').minutes, ['19′', '90+2′']);
+  assert.deepEqual(scorers.find(scorer => scorer.team === 'away').minutes, ['54′']);
 
   const oldLast = {...last, scorers: scorers.map(({name, team, goals}) => ({name, team, goals}))};
   const replay = {season: career.season, round: 0, minute: 94, income: 400, results: [oldLast],
     tournament: {userMatches: [{homeId: CAREER_TEAM, awayId: away, result}]}};
-  assert.match(renderCareer({...completed, results: [[oldLast]], replay}, 'overview', ui), /19′, 90\+2′/);
   assert.deepEqual(commitCareerRound({...career, replay}).results[0][0].scorers, scorers);
   const stale = {...replay, results: [{...oldLast, homeGoals: 0, awayGoals: 0}]};
   const reconciled = commitCareerRound({...career, replay: stale});
   assert.deepEqual(reconciled.results[0][0], last);
   assert.equal(careerTable(reconciled).find(row => row.id === CAREER_TEAM).points, 3);
-  assert.match(renderCareer({...completed, results: [[oldLast]]}, 'overview', ui), /Pedro Leal/);
 });
