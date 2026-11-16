@@ -300,11 +300,15 @@ export function prepareFixtureTeams(tournament, match, extraMatches = []) {
 }
 
 const choose = (items, rng) => items[Math.floor(rng() * items.length)];
-const weightedPlayer = (team, rng) => {
+const weightedPlayer = (team, rng, repeatScorer, repeatChance = 0) => {
   const lineup = team.lineup.filter(entry => entry.slot.position !== 'GOL');
   if (!lineup.length) return team.lineup[0]?.player || { id: team.id, nome: team.name };
   const weights = lineup.map(entry => Math.max(1, attribute(entry.player, 'finalizacao') - 25) * (entry.slot.position === 'ATA' ? 1.8 : entry.slot.position === 'MEI' ? 1 : 0.55));
-  let draw = rng() * weights.reduce((sum, value) => sum + value, 0);
+  const roll = rng();
+  const preferred = repeatChance && lineup.find(entry => entry.player.id === repeatScorer?.id);
+  if (preferred && roll < repeatChance) return preferred.player;
+  const scaled = preferred ? (roll - repeatChance) / (1 - repeatChance) : roll;
+  let draw = scaled * weights.reduce((sum, value) => sum + value, 0);
   const index = weights.findIndex(weight => (draw -= weight) <= 0);
   return lineup[index === -1 ? lineup.length - 1 : index].player;
 };
@@ -518,9 +522,17 @@ function simulateStatefulMatch(home,away,rng,{knockout=false,extraTimeAllowed=tr
   const pool=side=>teams[side].lineup.filter(e=>e.slot.position!=='GOL'&&!reds[side].has(e.player.id));
   const activeTeam=side=>({...teams[side],lineup:teams[side].lineup.filter(e=>!reds[side].has(e.player.id))});
   const coordinates=side=>({x:rounded(.12+rng()*.76),y:side===0?.15+rng()*.6:.25+rng()*.6});
+  // Concentrate some open-play goals on the first scorer without changing scoring rates or consuming extra draws.
+  const firstScorers = [null, null];
+  const repeatChances = baseline.map((rate, side) => clamp(
+    (settings.repeatScorerChance ?? .208) + (settings.repeatScorerLead ?? .127)
+      * Math.max(0, (rate - baseline[1-side]) / (rate + baseline[1-side])),
+    0, .95));
   const addGoal=(side,minute,player,extra={})=>{
     score[side]++;
-    events.push({minute,type:'goal',team:sides[side],player:player || weightedPlayer(activeTeam(side),rng),...coordinates(side),...extra});
+    const scorer = player || weightedPlayer(activeTeam(side), rng, firstScorers[side], repeatChances[side]);
+    firstScorers[side] ??= scorer;
+    events.push({minute,type:'goal',team:sides[side],player:scorer,...coordinates(side),...extra});
   };
   const plan=(start,end,extra)=>{
     const items=[];
