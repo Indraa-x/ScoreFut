@@ -304,7 +304,11 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   padding: clamp(16px, 3vw, 32px);
   border: 1px solid var(--border);
   border-radius: 18px;
-  background: radial-gradient(ellipse at 0 100%, var(--accent-soft), transparent 65%), var(--surface);
+  background: var(--surface);
+  background-image: linear-gradient(120deg,
+    color-mix(in srgb, var(--career-club-primary) 40%, var(--surface)),
+    var(--surface) 54%,
+    color-mix(in srgb, var(--career-club-secondary) 34%, var(--surface)));
   box-shadow: var(--shadow);
 }
 .career-dashboard-backdrop {

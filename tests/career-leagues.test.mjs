@@ -10,6 +10,8 @@ test('all modern clubs have eleven compatible starters and a full double round r
     const teams = new Set(league.teams.map(team => team.id));
     for (const team of league.teams) {
       const career = createCareer(17, team.id);
+      assert.equal(team.cores.length, 2);
+      assert.ok(team.cores.every(color => /^#[\da-f]{6}$/i.test(color)));
       assert.equal(career.opponentIds.length, teams.size - 1);
       assert.ok(career.opponentIds.every(id => id !== team.id && teams.has(id)));
       assert.equal(new Set(team.jogadores.map(player => player.id)).size, team.jogadores.length);

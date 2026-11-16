@@ -3,6 +3,7 @@ import premier from './career-2026/premier.js';
 import laliga from './career-2026/laliga.js';
 import brasileirao from './career-2026/brasileirao.js';
 import seriea from './career-2026/seriea.js';
+import {CAREER_CLUB_COLORS} from './career-2026/club-colors.js';
 
 export const CAREER_LEAGUES = [bundesliga, premier, laliga, brasileirao, seriea].map(league => ({
   ...league,
@@ -10,6 +11,7 @@ export const CAREER_LEAGUES = [bundesliga, premier, laliga, brasileirao, seriea]
     const id = `career26-${league.id}-${code}`;
     return {
       id, clubId: id, nome, ano: 2026, leagueId: league.id, crestIndex: index + 1,
+      cores: CAREER_CLUB_COLORS[league.id][code],
       jogadores: roster.map(([id, nome, ovr, positions, source, camisa]) => ({
         id, nome, ovr, tags: positions.split('/'), camisa,
         ratingKind: source === 'estimate' ? 'career-estimate' : 'career-fc27',

@@ -570,12 +570,14 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const league = careerLeague(career.leagueId);
+  const [primary, secondary] = careerClub(career, CAREER_TEAM).cores
+    ?? badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(career.crest))];
   const pages = {overview, standings, facilities, club};
   const activeTab = Object.hasOwn(CAREER_TABS, tab) ? tab : 'overview';
   const entering = previousTab === undefined;
   const switching = !entering && previousTab !== activeTab;
   return `<div class="career-page">
-    <header class="career-dashboard-header">
+    <header class="career-dashboard-header" style="--career-club-primary:${esc(primary)};--career-club-secondary:${esc(secondary)}">
       <div class="career-dashboard-backdrop" aria-hidden="true">${ui.pitchLines(false)}</div>
       <div class="career-title">
         <span class="career-club-emblem">${clubBadge(career, CAREER_TEAM, ui)}</span>
