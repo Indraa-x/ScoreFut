@@ -1,15 +1,22 @@
 import {allSquads} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
-import {careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
+import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
-import {FORMATIONS, calculateTeam, mulberry32, positionFit, simulateMatch, squadTeam} from './engine.js';
+import {
+  FORMATIONS, calculateTeam, createCareerChampionsTournament, hashSeed, mulberry32, playNextRound,
+  positionFit, simulateMatch, simulateTournament, squadTeam,
+} from './engine.js';
 import {goalsAt} from './match-goals.js';
 import {formatMatchEventMinute} from './match-motion.js';
+import {matchHasEnded} from './match-penalties.js';
 import {careerMarketCatalog, careerPlayerValuation} from './career-market.js';
 import {movableSlots} from './draft.js';
 
 export const CAREER_KEY = 'coach-career';
 export const CAREER_TEAM = 'career-user';
+export const CHAMPIONS_PLACES = 4;
+const championsLeagues = CAREER_LEAGUES.filter(league => league.id !== 'brasileirao');
+export const careerHasChampions = career => championsLeagues.some(league => league.id === career.leagueId);
 export const CAREER_STYLES = {
   balanced: {name: 'Equilibrado', description: 'Equilíbrio entre atacar e defender.'},
   attacking: {
@@ -92,7 +99,11 @@ function shuffled(items, rng) {
 }
 
 export function careerFixtures(career) {
-  const teams = [CAREER_TEAM, ...shuffled(career.opponentIds, mulberry32(career.seed + career.season))];
+  return leagueFixtures(CAREER_TEAM, career.opponentIds, career.seed + career.season);
+}
+
+function leagueFixtures(firstTeam, opponents, seed) {
+  const teams = [firstTeam, ...shuffled(opponents, mulberry32(seed))];
   const firstLeg = [];
   for (let round = 0; round < teams.length - 1; round++) {
     const fixtures = [];
@@ -341,10 +352,14 @@ export function upgradeCareerFacility(career, key) {
 }
 
 export function careerTable(career) {
-  const rows = new Map([CAREER_TEAM, ...career.opponentIds].map(id => [id, {
+  return leagueTable(career, [CAREER_TEAM, ...career.opponentIds], career.results);
+}
+
+function leagueTable(career, teamIds, results) {
+  const rows = new Map(teamIds.map(id => [id, {
     id, played: 0, points: 0, wins: 0, goalsFor: 0, goalsAgainst: 0,
   }]));
-  for (const round of career.results) for (const match of round) {
+  for (const round of results) for (const match of round) {
     const home = rows.get(match.home), away = rows.get(match.away);
     for (const [row, scored, conceded] of [[home, match.homeGoals, match.awayGoals], [away, match.awayGoals, match.homeGoals]]) {
       row.played++;
@@ -439,6 +454,17 @@ export function careerScorers(match) {
   return [...scorers.values()];
 }
 
+function simulateCareerLeagueMatch(home, away, seed) {
+  return simulateMatch(home, away, mulberry32(seed), {neutral: false, stoppageTimeAllowed: true});
+}
+
+function careerMatchIncome(career, isHome, result) {
+  const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 11;
+  const homeIncome = 42 + (career.facilities.stadium - 1) * 20 + (careerFacilityLevel(career, 'hospitality') - 1) * 16;
+  return (isHome ? homeIncome : 16) + shopIncome
+    + (result.winnerId === CAREER_TEAM ? 26 : result.homeGoals === result.awayGoals ? 13 : 0);
+}
+
 export function prepareCareerRound(career) {
   const fixtures = careerFixtures(career)[career.round];
   if (!fixtures) throw Error('A temporada já terminou.');
@@ -450,16 +476,12 @@ export function prepareCareerRound(career) {
     const teams = [matchTeam(career, home), matchTeam(career, away)];
     const userMatch = home === CAREER_TEAM || away === CAREER_TEAM;
     // A change to one team's lineup or tactics must not reroll the other fixtures.
-    const rng = mulberry32(seed + index * 0x9e3779b9);
-    const match = simulateMatch(...teams, rng, {neutral: false, stoppageTimeAllowed: true});
+    const match = simulateCareerLeagueMatch(...teams, seed + index * 0x9e3779b9);
     const scorers = userMatch ? careerScorers(match)
       : match.scorers.map(({playerId, name, team, goals}) => ({playerId, name, team, goals}));
     const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers};
     if (userMatch) {
-      const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 11;
-      const homeIncome = 42 + (career.facilities.stadium - 1) * 20 + (careerFacilityLevel(career, 'hospitality') - 1) * 16;
-      income = (home === CAREER_TEAM ? homeIncome : 16) + shopIncome
-        + (match.winnerId === CAREER_TEAM ? 26 : match.homeGoals === match.awayGoals ? 13 : 0);
+      income = careerMatchIncome(career, home === CAREER_TEAM, match);
       result.income = income;
       replay = {
         seed, mode: 'career', teams, userTeamId: CAREER_TEAM,
@@ -490,6 +512,70 @@ export function commitCareerRound(career) {
   };
 }
 
+function simulatedLeagueQualifiers(career, league) {
+  const ids = league.teams.map(team => team.id);
+  const seed = hashSeed(`${career.seed}:${career.season}:${league.id}`);
+  const fixtures = leagueFixtures(ids[0], ids.slice(1), seed);
+  const results = fixtures.map((games, round) => games.map(([home, away], index) => {
+    const {homeGoals, awayGoals} = simulateCareerLeagueMatch(matchTeam(career, home), matchTeam(career, away), seed + round * 71 + index * 0x9e3779b9);
+    return {home, away, homeGoals, awayGoals};
+  }));
+  return leagueTable(career, ids, results).slice(0, CHAMPIONS_PLACES).map(row => row.id);
+}
+
+function compactChampionsTournament(tournament) {
+  // The current replay keeps its event log. Completed games need only their scores and scorers.
+  const matches = tournament.matches.map(match => {
+    if (!match.result) return match;
+    const {homeGoals, awayGoals, winnerId, penalties, scorers} = match.result;
+    return {...match, result: {homeGoals, awayGoals, winnerId, ...(penalties && {penalties}), scorers}};
+  });
+  const byId = new Map(matches.map(match => [match.id, match]));
+  return {...tournament, matches, userMatches: tournament.userMatches.map(match => byId.get(match.id)),
+    bracket: tournament.bracket.map(stage => ({...stage, matches: stage.matches.map(match => byId.get(match.id))}))};
+}
+
+function nextCareerChampions(career, domesticTable) {
+  const seed = hashSeed(`${career.seed}:${career.season}:champions`);
+  const rng = mulberry32(seed);
+  const qualifiers = championsLeagues.map(league => shuffled(league.id === career.leagueId
+    ? domesticTable.slice(0, CHAMPIONS_PLACES).map(row => row.id) : simulatedLeagueQualifiers(career, league), rng));
+  const groups = qualifiers[0].map((_, index) => shuffled(qualifiers.map(ids => ids[index]), rng));
+  const teams = groups.flat().map(id => {
+    const team = matchTeam(career, id);
+    return {...team, monograma: team.name.replaceAll(' ', '').slice(0, 3).toUpperCase()};
+  });
+  const tournament = createCareerChampionsTournament(teams, groups, CAREER_TEAM, seed);
+  return {tournament: teams.some(team => team.id === CAREER_TEAM) ? tournament
+    : compactChampionsTournament(simulateTournament(tournament)), replay: null};
+}
+
+export function careerChampionsFixture(career) {
+  const tournament = career.champions?.tournament;
+  return tournament?.matches.find(match => !match.result && match.round === tournament.progressRound + 1
+    && [match.homeId, match.awayId].includes(CAREER_TEAM));
+}
+
+export function prepareCareerChampionsMatch(career) {
+  const fixture = careerChampionsFixture(career);
+  if (!fixture) throw Error('Não há partida da Champions League disponível.');
+  const {tournament} = career.champions;
+  const teams = tournament.teams.map(team => team.id === CAREER_TEAM ? {...team, ...matchTeam(career, team.id)} : team);
+  const next = playNextRound({...tournament, teams});
+  const match = next.userMatches.at(-1);
+  const pending = compactChampionsTournament(next.campaign.eliminated && !next.complete ? simulateTournament(next) : next);
+  return {id: fixture.id, season: career.season, match, pending, minute: 0, penaltyReplay: null};
+}
+
+export function commitCareerChampionsMatch(career) {
+  const champions = career.champions;
+  const replay = champions?.replay;
+  if (!replay || replay.season !== career.season || replay.id !== careerChampionsFixture(career)?.id
+    || !matchHasEnded({tournament: replay.pending, matchMinute: replay.minute, penaltyReplay: replay.penaltyReplay}, replay.match)) return career;
+  const income = careerMatchIncome(career, !replay.match.neutral && replay.match.homeId === CAREER_TEAM, replay.match.result);
+  return {...career, budget: career.budget + income, champions: {tournament: replay.pending, replay: null}};
+}
+
 const relegationStarts = {bundesliga: 17, premier: 18, laliga: 18, brasileirao: 17, seriea: 18};
 
 export function careerRelegation(career) {
@@ -499,12 +585,16 @@ export function careerRelegation(career) {
 
 export function advanceCareerSeason(career) {
   if (career.round < careerFixtures(career).length) throw Error('Termine a temporada antes de avançar.');
+  const champions = career.champions?.tournament;
+  if (champions && !champions.complete) throw Error('Conclua a Champions League antes de iniciar a próxima temporada.');
   const table = careerTable(career);
   const position = table.findIndex(row => row.id === CAREER_TEAM) + 1;
   const prize = 407 + (table.length - position) * 33;
   const {firstRelegation} = careerRelegation(career);
   const relegated = table.slice(firstRelegation - 1).map(row => row.id);
   const season = {number: career.season, position, points: table[position - 1].points, prize, relegated};
+  if (champions?.championId) season.championsWinner = champions.championId;
   const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
+  if (careerHasChampions(career)) next.champions = nextCareerChampions(career, table);
   return career.facilities.academy > 1 ? addAcademyPlayer(next) : next;
 }

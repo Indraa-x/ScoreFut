@@ -46,6 +46,17 @@ export function renderMatchClock(result, minute, hidePhase = false) {
   </div>`;
 }
 
+export function renderMatchScoreDetails(state, match, names, esc) {
+  const {result} = match;
+  const scores = scoreAt(result, state.matchMinute);
+  const penaltyScore = result.penalties ? `<div class="match-penalty-marks" data-penalty-marks data-home-name="${esc(names.home)}" data-away-name="${esc(names.away)}" aria-label="Cobranças de pênaltis" ${state.matchMinute>=result.duration?'':'hidden'}>${renderPenaltyMarks(state,match,{home:names.home,away:names.away},esc)}</div>` : '';
+  const firstLeg = match.tieId && match.leg === 2 ? state.tournament.matches.find(fixture => fixture.tieId === match.tieId && fixture.leg === 1) : null;
+  const previousGoals = firstLeg ? [firstLeg.result.awayGoals, firstLeg.result.homeGoals] : [0,0];
+  const aggregateScore = match.tieId && match.leg === 2
+    ? `<span class="match-aggregate">Ida + volta <b data-match-aggregate data-home="${previousGoals[0]}" data-away="${previousGoals[1]}">${previousGoals[0]+scores[0]} – ${previousGoals[1]+scores[1]}</b></span>` : '';
+  return aggregateScore + penaltyScore;
+}
+
 export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   const t = s.tournament, match = currentMatch(s);
   if (!match) return '';
@@ -78,17 +89,12 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
     ? nextFixture?.stage === match.stage ? 'Próxima partida' : 'Próxima etapa' : 'Ver resultado';
   const trophy = {'world-cup':'assets/competitions/world-cup-trophy.png',champions:'assets/competitions/champions-trophy.png','copa-do-brasil':'assets/competitions/brazil-cup-trophy.png'}[s.mode];
   const logo = trophy || competitionLogo(s.mode), speed = normalizeMatchSpeed(s.matchSpeed);
-  const penaltyScore = result.penalties ? `<div class="match-penalty-marks" data-penalty-marks data-home-name="${esc(displayName(home))}" data-away-name="${esc(displayName(away))}" aria-label="Cobranças de pênaltis" ${s.matchMinute>=result.duration?'':'hidden'}>${renderPenaltyMarks(s,match,{home:displayName(home),away:displayName(away)},esc)}</div>` : '';
-  const firstLeg = twoLegged && match.leg === 2 ? t.matches.find(fixture => fixture.tieId === match.tieId && fixture.leg === 1) : null;
-  const previousGoals = firstLeg ? [firstLeg.result.awayGoals, firstLeg.result.homeGoals] : [0,0];
-  const aggregateScore = twoLegged && match.leg === 2
-    ? `<span class="match-aggregate">Ida + volta <b data-match-aggregate data-home="${previousGoals[0]}" data-away="${previousGoals[1]}">${previousGoals[0]+scores[0]} – ${previousGoals[1]+scores[1]}</b></span>` : '';
   const tie = ended && twoLegged && (match.leg === 2 || match.stage === 'final'&&!friendMode) ? (s.pendingRound || t).bracket.flatMap(stage => stage.ties || []).find(tie => tie.id === match.tieId) : null;
   const winnerId=tie?.winnerId || result.winnerId || (result.penalties ? result.penalties[0]>result.penalties[1] ? home.id : away.id : result.homeGoals>result.awayGoals ? home.id : result.awayGoals>result.homeGoals ? away.id : null);
   const outcome=ended ? winnerId===t.userTeamId?'victory':winnerId?'defeat':'draw' : 'playing';
   const statusLabel=deciding?'Em jogo':ended ? tie&&match.stage!=='final' ? outcome==='victory'?'Classificado':'Eliminado' : outcome==='victory'?'Vitória':outcome==='defeat'?'Derrota':'Empate' : 'Em jogo';
   return `<div class="screen-title match-page-title"><div>${logo ? `<img class="competition-logo${trophy?' competition-trophy':''}" src="${logo}" width="256" height="256" alt="">` : icon('trophy')}<div><h1>${s.mode==='world-cup'?`<button class="match-competition-link" data-action="champions-view" data-value="groups" aria-label="Ver competição da Copa do Mundo">${esc(competitionName(s.mode))}${icon('arrow')}</button>`:esc(competitionName(s.mode))}</h1><span>${esc(match.stageLabel)}</span></div></div>${btn(nextLabel+' '+icon('arrow'),'next-match',true,`class="match-next" ${ended?'':'disabled title="Disponível quando a partida terminar"'}`)}</div>
-<div class="match-layout"><section class="match-card panel match-scoreboard-style" aria-label="Placar e campo"><div class="live-scoreboard">${teamInfo(home, 'home', homeKit)}<div class="score-center"><span class="match-status ${outcome}"><i></i>${statusLabel}</span>${renderMatchScore(scores)}${renderMatchClock(result, s.matchMinute, deciding || ended)}<div class="match-score-details">${aggregateScore}${penaltyScore}</div></div>${teamInfo(away, 'away', awayKit)}<div class="match-score-goals" data-match-goals data-home-name="${esc(displayName(home))}" data-away-name="${esc(displayName(away))}" aria-live="polite" aria-atomic="true" aria-label="Autores dos gols">${renderMatchGoals(result,s.matchMinute,{home:displayName(home),away:displayName(away)})}</div></div>
+<div class="match-layout"><section class="match-card panel match-scoreboard-style" aria-label="Placar e campo"><div class="live-scoreboard">${teamInfo(home, 'home', homeKit)}<div class="score-center"><span class="match-status ${outcome}"><i></i>${statusLabel}</span>${renderMatchScore(scores)}${renderMatchClock(result, s.matchMinute, deciding || ended)}<div class="match-score-details">${renderMatchScoreDetails(s, match, {home: displayName(home), away: displayName(away)}, esc)}</div></div>${teamInfo(away, 'away', awayKit)}<div class="match-score-goals" data-match-goals data-home-name="${esc(displayName(home))}" data-away-name="${esc(displayName(away))}" aria-live="polite" aria-atomic="true" aria-label="Autores dos gols">${renderMatchGoals(result,s.matchMinute,{home:displayName(home),away:displayName(away)})}</div></div>
 ${renderLivePitch(s, {esc, icon, pitchLines})}
 ${renderMatchSpeed(speed, icon)}</section>
 <aside class="match-calendar">${championsPanel}${['champions','world-cup'].includes(t.mode)?'':nextGamePanel}

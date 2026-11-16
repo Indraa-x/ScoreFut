@@ -1,15 +1,15 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
   careerReserveReplacements, careerSale, commitCareerRound, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
-  sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
+  careerChampionsFixture, commitCareerChampionsMatch, prepareCareerChampionsMatch, sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
-import {CAREER_TABS, renderCareer, renderCareerIntro, renderCareerMarketResults, renderCareerSale} from './career-view.js';
+import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale} from './career-view.js';
 import {renderCareerSetup} from './career-setup-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
 import {currentMatch} from './match-session.js';
-import {matchHasEnded} from './match-penalties.js';
+import {beginPenaltyReplay, matchHasEnded} from './match-penalties.js';
 
 const marketDefaults = {search: '', position: '', leagueId: '', order: 'overall', affordable: false, page: 1};
 const activeCareerKey = 'coach-career-active';
@@ -19,6 +19,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let tab = 'intro';
   let initial;
   let filters = {...marketDefaults};
+  let championsView = {};
   const squad = {selectedId: null};
   let squadPress = null;
   let squadDrag = null;
@@ -46,25 +47,47 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function save(next) {
     if (!storage.write(activeSlot(), next)) throw Error('O navegador não conseguiu salvar a carreira.');
   }
-  function loadMatch(career = read()) {
-    const replay = career.replay;
+  function loadMatch(career = read(), matchTab = 'overview') {
+    const champions = matchTab === 'champions';
+    const replay = champions ? career.champions?.replay : career.replay;
     if (!replay) return false;
-    setTab('overview');
-    live.tournament = replay.tournament;
+    setTab(matchTab);
+    live.tournament = champions ? {
+      ...career.champions.tournament, teams: replay.pending.teams, userMatches: [replay.match],
+    } : replay.tournament;
     live.matchMinute = replay.minute;
     live.matchSpeed = normalizeMatchSpeed(career.matchSpeed);
+    live.penaltyReplay = replay.penaltyReplay ? {...replay.penaltyReplay} : null;
+    if (champions) beginPenaltyReplay(live, replay.match);
     return true;
+  }
+  function saveChampionsReplay(career, match) {
+    const {champions} = career;
+    const replay = champions?.replay;
+    if (replay?.id !== match.id || replay.pending.seed !== live.tournament.seed) return;
+    const minute = Math.max(live.matchMinute, replay.minute);
+    const penaltyReplay = live.penaltyReplay;
+    if (career.matchSpeed === live.matchSpeed && replay.minute === minute &&
+        replay.penaltyReplay?.revealed === penaltyReplay?.revealed && !matchHasEnded(live, match)) return;
+    save(commitCareerChampionsMatch({
+      ...career, matchSpeed: live.matchSpeed,
+      champions: {...champions, replay: {...replay, minute, penaltyReplay}},
+    }));
   }
   function saveReplay(showError = false) {
     const match = currentMatch(live);
     const career = read();
-    if (!match || career.replay?.id !== match.id) return true;
-    const minute = Math.max(live.matchMinute, career.replay.minute);
-    const update = {...career, matchSpeed: live.matchSpeed, replay: {...career.replay, minute}};
-    const next = commitCareerRound(update);
-    if (next === update && career.matchSpeed === live.matchSpeed && career.replay.minute === minute) return true;
+    if (!match) return true;
     try {
-      save(next);
+      if (live.tournament.mode === 'champions') {
+        saveChampionsReplay(career, match);
+        return true;
+      }
+      if (career.replay?.id !== match.id) return true;
+      const minute = Math.max(live.matchMinute, career.replay.minute);
+      const update = {...career, matchSpeed: live.matchSpeed, replay: {...career.replay, minute}};
+      const next = commitCareerRound(update);
+      if (next !== update || career.matchSpeed !== live.matchSpeed || career.replay.minute !== minute) save(next);
       return true;
     } catch (error) {
       if (showError) toast(error.message);
@@ -81,9 +104,11 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     pauseMatch();
     live.screen = null;
     live.tournament = null;
+    live.penaltyReplay = null;
   }
   function attachMatch(active) {
-    active = active && tab === 'overview' && Boolean(live.tournament);
+    const matchTab = live.tournament?.mode === 'champions' ? 'champions' : 'overview';
+    active = active && tab === matchTab && Boolean(live.tournament);
     live.screen = active ? 'match' : null;
     playback.attach();
     if (active && live.matchPlaying) playback.start();
@@ -101,6 +126,36 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     } catch (error) {
       toast(error.message);
     }
+  }
+  function startChampionsMatch(value) {
+    if (tab !== 'champions') return;
+    try {
+      let career = read();
+      const fixture = careerChampionsFixture(career);
+      if (!fixture || `${career.season}:${fixture.id}` !== value) return;
+      if (career.champions.replay?.id !== fixture.id) {
+        career = {...career, champions: {...career.champions, replay: prepareCareerChampionsMatch(career)}};
+        save(career);
+      }
+      loadMatch(career, 'champions');
+      render();
+    } catch (error) {
+      toast(error.message);
+    }
+  }
+  function updateChampionsView(key, value) {
+    if (tab !== 'champions' || live.tournament) return;
+    championsView[key] = value;
+    render();
+  }
+  function openChampionsTie(id) {
+    if (tab !== 'champions' || !modal || modal.open) return;
+    const career = read();
+    if (!career.champions) return;
+    const html = renderCareerChampionsTie(career, id, ui);
+    if (!html) return;
+    modal.querySelector('#modal-content').innerHTML = html;
+    modal.showModal();
   }
   function change(update, message) {
     try {
@@ -301,7 +356,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     const career = read();
     if (career === initial) storage.write(activeSlot(), career);
     const previousTab = app.querySelector('.career-content')?.dataset.careerTab;
-    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab);
+    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab, championsView);
   }
   async function startCampaign(button) {
     if (tab !== 'intro' || button?.disabled) return;
@@ -328,6 +383,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         if (!storage.write(slot, campaign)) throw Error('O navegador não conseguiu salvar a carreira.');
       }
       if (!storage.write(activeCareerKey, clubId || null)) throw Error('O navegador não conseguiu abrir a carreira.');
+      championsView = {};
       setTab('overview');
       navigate('career');
     } catch (error) {
@@ -423,6 +479,12 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       'career-select-player': id => selectSquadPlayer(id, true),
       'career-pick-slot': pickSlot,
       'career-play': startMatch,
+      'career-champions-play': startChampionsMatch,
+      'career-champions-view': value => updateChampionsView('championsView', value),
+      'career-champions-group': value => updateChampionsView('championsGroupId', value),
+      'career-champions-round': value => updateChampionsView('championsRound', value),
+      'career-champions-table-detail': () => updateChampionsView('championsTableDetailed', !championsView.championsTableDetailed),
+      'career-champions-tie': openChampionsTie,
       'career-match-speed': value => {
         const speed = Number(value);
         if (live.screen !== 'match' || !MATCH_SPEEDS.includes(speed)) return;
@@ -436,6 +498,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         playback.stop();
         live.matchPlaying = false;
         live.matchMinute = match.result.duration;
+        live.penaltyReplay = null;
         finishMatch();
         app.querySelector('[data-action="career-match-return"]')?.focus({preventScroll: true});
       },
@@ -445,7 +508,12 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         leaveMatch();
         render();
       },
-      'career-next-season': value => change(career => career.season === Number(value) ? advanceCareerSeason(career) : career, 'Nova temporada iniciada.'),
+      'career-next-season': value => change(career => {
+        if (career.season !== Number(value)) return career;
+        const next = advanceCareerSeason(career);
+        championsView = {};
+        return next;
+      }, 'Nova temporada iniciada.'),
       'career-market-page': value => {
         filters.page = Number(value);
         updateMarketResults();

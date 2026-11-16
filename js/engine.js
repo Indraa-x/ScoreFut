@@ -569,6 +569,29 @@ const shuffle = (items, rng) => {
 const STAGE_LABELS = { league: 'Pontos corridos', group: 'Fase de grupos', round16: 'Oitavas de final', quarter: 'Quartas de final', semi: 'Semifinal', final: 'Final' };
 const stageFixture = (stage, homeId, awayId, index, round) => ({ id: `${stage}-${index + 1}`, stage, stageLabel: STAGE_LABELS[stage], homeId, awayId, round, result: null });
 
+function groupFixtures(groups, balancedHome = false) {
+  const schedule = [[[0, 1], [2, 3]], [balancedHome ? [2, 0] : [0, 2], [3, 1]], [[0, 3], [1, 2]]];
+  return schedule.flatMap((pairs, index) => groups.flatMap(group => pairs.map(([home, away], pair) => ({
+    id: `group-${group.id}-${index + 1}-${pair + 1}`, stage: 'group', stageLabel: `${group.name} · rodada ${index + 1}`,
+    groupId: group.id, round: index + 1, homeId: group.teamIds[home], awayId: group.teamIds[away], result: null,
+  }))));
+}
+
+export function createCareerChampionsTournament(teams, groupIds, userTeamId, seed) {
+  const groups = groupIds.map((teamIds, index) => {
+    const id = String.fromCharCode(65 + index);
+    return {id, name: `Grupo ${id}`, teamIds, standings: []};
+  });
+  const tournament = {
+    mode: 'champions', seed: hashSeed(seed), rngState: mulberry32(seed).getState(), settings: {...SIMULATION_SETTINGS},
+    userTeamId, teams, groups, matches: groupFixtures(groups, true), bracket: [], progressRound: 0, userMatches: [],
+    championId: null, complete: false, knockoutFormat: 'two-legged', cupStages: KNOCKOUT_STAGES.slice(1), independentFixtures: true,
+  };
+  tournament.groups = standingsFor(tournament);
+  tournament.campaign = campaignFor(tournament);
+  return tournament;
+}
+
 export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, excludeSquadIds = [], settings = SIMULATION_SETTINGS, candidateTeams = null } = {}) {
   allSquads = squadsForMode(allSquads, mode);
   const isQuick = ['quick', 'knockout', 'rapido', 'mata-mata'].includes(mode);
@@ -610,12 +633,7 @@ export function createTournament(userTeam, allSquads, { mode = 'cup', seed = 1, 
       }
       groups.push({ id: String.fromCharCode(65 + index), name: `Grupo ${String.fromCharCode(65 + index)}`, teamIds, standings: [] });
     }
-    const schedule = [[[0, 1], [2, 3]], [[0, 2], [3, 1]], [[0, 3], [1, 2]]];
-    for (let round = 0; round < 3; round += 1) {
-      groups.forEach(group => schedule[round].forEach(([home, away], index) => {
-        matches.push({ id: `group-${group.id}-${round + 1}-${index + 1}`, stage: 'group', stageLabel: `Grupo ${group.id} · rodada ${round + 1}`, groupId: group.id, round: round + 1, homeId: group.teamIds[home], awayId: group.teamIds[away], result: null });
-      }));
-    }
+    matches.push(...groupFixtures(groups));
   }
   const tournament = { mode: isQuick ? 'quick' : mode, seed: hashSeed(seed), rngState: rng.getState(), settings: { ...settings }, userTeamId: user.id, teams, groups, matches, bracket, progressRound: 0, userMatches: [], championId: null, complete: false };
   if (mode === 'champions') Object.assign(tournament, {knockoutFormat:'two-legged', cupStages:[...KNOCKOUT_STAGES]});
@@ -756,14 +774,15 @@ function playCupRound(tournament) {
     const aggregateDrawNeedsExtraTime = first
       ? scores => first.result.awayGoals + scores[0] === first.result.homeGoals + scores[1]
       : null;
-    match.result = simulateMatch(home, away, rng, {knockout:match.stage === 'final',
+    const matchRng = next.independentFixtures ? mulberry32(hashSeed(`${next.seed}:${match.id}`)) : rng;
+    match.result = simulateMatch(home, away, matchRng, {knockout:match.stage === 'final',
       extraTimeAllowed:match.stage === 'final' || match.leg === 2,
       stoppageTimeAllowed:true, extraTimeTrigger:aggregateDrawNeedsExtraTime, neutral:!!match.neutral,mode:next.mode,settings:next.settings});
     if (match.stage === 'final') {
       tie.winnerId = match.result.winnerId;
       tie.aggregate = [match.result.homeGoals, match.result.awayGoals];
     } else if (match.leg === 2) {
-      const resolved = resolveKnockoutTie(first, match, home, away, rng, next.settings);
+      const resolved = resolveKnockoutTie(first, match, home, away, matchRng, next.settings);
       match.result = resolved.result;
       tie.winnerId = resolved.winnerId;
       tie.aggregate = [...resolved.aggregate].reverse(); // tie.teamIds follow the first leg
@@ -893,7 +912,8 @@ export function playNextRound(tournament) {
   selected.forEach(match => {
     const home = next.teams.find(team => team.id === match.homeId);
     const away = next.teams.find(team => team.id === match.awayId);
-    match.result = simulateMatch(home, away, rng, { knockout: !league && !groupRound,
+    const matchRng = next.independentFixtures ? mulberry32(hashSeed(`${next.seed}:${match.id}`)) : rng;
+    match.result = simulateMatch(home, away, matchRng, { knockout: !league && !groupRound,
       stoppageTimeAllowed:['champions','world-cup'].includes(next.mode),neutral:!!match.neutral || next.mode==='world-cup',mode:next.mode,settings: next.settings });
   });
   next.progressRound += 1;
@@ -903,6 +923,7 @@ export function playNextRound(tournament) {
     if(next.progressRound===next.totalRounds){next.championId=next.groups[0].standings[0].teamId;next.complete=true;}
   } else if (groupRound && next.progressRound === groupRounds) {
     const fixtures = [];
+    const openingStage = next.cupStages?.[0] || knockoutStages[0];
     // Group winner and runner-up enter opposite bracket halves; a group
     // rematch can only happen in the final.
     if(next.mode==='world-cup')fixtures.push(...worldCupRound16Pairings(next)
@@ -911,12 +932,12 @@ export function playNextRound(tournament) {
       for (let index = 0; index < next.groups.length; index += 2) {
         const first = next.groups[index].standings;
         const second = next.groups[index + 1].standings;
-        fixtures.push(stageFixture(knockoutStages[0], (half ? second : first)[0].teamId, (half ? first : second)[1].teamId, fixtures.length, groupRounds+1));
+        fixtures.push(stageFixture(openingStage, (half ? second : first)[0].teamId, (half ? first : second)[1].teamId, fixtures.length, groupRounds+1));
       }
     }
     if (next.knockoutFormat === 'two-legged') {
       // Group winners host the return; the existing opposite-half pairing stays fixed.
-      appendCupStage(next, knockoutStages[0], [], rng, 0, fixtures.map(match => [match.awayId,match.homeId]));
+      appendCupStage(next, openingStage, [], rng, 0, fixtures.map(match => [match.awayId,match.homeId]));
       next.rngState = rng.getState();
     } else {
       next.matches.push(...fixtures);

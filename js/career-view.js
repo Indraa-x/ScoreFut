@@ -1,24 +1,26 @@
 import {escapeHtml as esc} from './html.js';
 import {assetUrl} from './asset-url.js';
 import {competitionLogo} from '../data/competitions.js';
+import {renderChampionsStages, renderChampionsTieDetails} from './champions-view.js';
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
 import {seasonCrest} from './career-setup-view.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
 import {careerMarketCatalog, careerMarketPage} from './career-market.js';
 import {careerPortraitUrl} from '../data/career-2026/player-portraits.js';
-import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchSpeed} from './match-view.js';
+import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchScoreDetails, renderMatchSpeed} from './match-view.js';
 import {scoreAt} from './match-motion.js';
 import {renderMatchGoals} from './match-goals.js';
 import {currentMatch} from './match-session.js';
-import {matchHasEnded} from './match-penalties.js';
+import {matchHasEnded, penaltyProgress} from './match-penalties.js';
 import {
-  CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, FACILITIES, MAX_FACILITY_LEVEL, careerClub, careerStyle,
+  CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, CHAMPIONS_PLACES, careerChampionsFixture, careerHasChampions, FACILITIES, MAX_FACILITY_LEVEL, careerClub, careerStyle,
   careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRelegation, careerRosterLimit, careerTable, careerTopScorers, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
   overview: {label: 'Visão geral', icon: 'chart'},
   standings: {label: 'Classificação', icon: 'trophy'},
+  champions: {label: 'Champions League', icon: 'bracket'},
   squad: {label: 'Elenco', icon: 'users'},
   market: {label: 'Mercado', icon: 'subs'},
   facilities: {label: 'Instalações', icon: 'bolt'},
@@ -140,6 +142,12 @@ const roundLabel = (career, round, total) => {
   </span>`;
 };
 
+const championsLogo = () => `<img src="${assetUrl(competitionLogo('champions'))}" width="32" height="32" alt="">`;
+const championsRoundLabel = stageLabel => `<span class="career-competition-round">
+  <span class="career-competition-brand" data-league="champions">${championsLogo()}<span class="career-competition-name">Champions League</span></span>
+  <span>· ${esc(stageLabel)}</span>
+</span>`;
+
 function clubBadge(career, id, ui) {
   const club = careerClub(career, id);
   if (club.leagueId) return seasonCrest(careerLeague(club.leagueId), club.crestIndex);
@@ -201,6 +209,7 @@ function standings(career, ui, rows) {
   const seasonFinished = career.round >= totalRounds;
   const {firstRelegation, playoffPosition} = careerRelegation(career);
   const relegationLabel = seasonFinished ? 'Rebaixados' : 'Zona de rebaixamento';
+  const hasChampions = careerHasChampions(career);
   return `<section class="career-card panel career-standings" aria-labelledby="career-standings-title">
     <header class="career-standings-header">
       <h2 id="career-standings-title">Classificação</h2>
@@ -222,6 +231,7 @@ function standings(career, ui, rows) {
         </tr>`).join('')}</tbody>
       </table>
     </details>` : ''}
+    ${hasChampions ? `<p class="career-qualification-hint">${championsLogo()} <span><strong>Champions League</strong> · 1º ao ${CHAMPIONS_PLACES}º lugar</span></p>` : ''}
     <div class="career-table-wrap">
       <table class="career-table" aria-labelledby="career-standings-title">
         <thead><tr>
@@ -234,7 +244,8 @@ function standings(career, ui, rows) {
           const position = index + 1;
           const inRelegationZone = position >= firstRelegation;
           const inPlayoff = position === playoffPosition;
-          const rowClass = [isOwn && 'career-own-row', inRelegationZone && 'career-relegation-row', inPlayoff && 'career-relegation-playoff'].filter(Boolean).join(' ');
+          const inChampionsZone = hasChampions && position <= CHAMPIONS_PLACES;
+          const rowClass = [isOwn && 'career-own-row', inRelegationZone && 'career-relegation-row', inPlayoff && 'career-relegation-playoff', inChampionsZone && 'career-champions-zone'].filter(Boolean).join(' ');
           const status = inRelegationZone ? (seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento') : (inPlayoff ? 'Na posição de repescagem' : '');
           const zone = inPlayoff ? {label: 'Repescagem', range: `${position}º lugar`, style: 'career-relegation-playoff', icon: 'subs'}
             : position === firstRelegation ? {label: relegationLabel, range: `${position}º ao ${rows.length}º lugar`, style: 'career-relegation-row', icon: 'arrow'} : null;
@@ -245,7 +256,7 @@ function standings(career, ui, rows) {
             <div class="career-relegation-heading"><strong>${ui.icon(zone.icon)}${zone.label}</strong><span>${zone.range}</span></div>
           </td></tr>` : ''}
           <tr${rowClass ? ` class="${rowClass}"` : ''}>
-            <td><span class="career-table-position">${position}</span></td>
+            <td><span class="career-table-position">${position}</span>${inChampionsZone ? `<span class="career-table-status">${seasonFinished ? 'Classificado para a Champions League' : 'Zona de classificação para a Champions League'}</span>` : ''}</td>
             <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<span class="career-table-status">Seu clube</span>' : ''}${status ? `<span class="career-table-status">${status}</span>` : ''}</span></th>
             <td class="career-standings-primary"><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
             <td>${difference > 0 ? '+' : ''}${difference}</td>
@@ -260,7 +271,8 @@ function standings(career, ui, rows) {
   </section>`;
 }
 
-function matchVenue(isHome) {
+function matchVenue(isHome, neutral = false) {
+  if (neutral) return '<small class="career-match-venue">Campo neutro</small>';
   const outline = isHome
     ? 'm3 11 9-8 9 8M5 10v10h14V10M10 20v-6h4v6'
     : 'M8 7V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M8 8v12m8-12v12M5 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z';
@@ -273,20 +285,82 @@ function matchScoreboard(career, ui, live, match) {
   const ended = matchHasEnded(live, match);
   const homeName = careerClub(career, homeId).nome;
   const awayName = careerClub(career, awayId).nome;
-  const side = (id, name, isHome) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong>${matchVenue(isHome)}</div>`;
-  return `${title(ended ? 'Fim de jogo' : 'Partida em andamento', roundLabel(career, match.round))}
+  const deciding = penaltyProgress(live, match).playing;
+  const side = (id, name, isHome) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong>${matchVenue(isHome, match.neutral)}</div>`;
+  const round = live.tournament.mode === 'champions' ? championsRoundLabel(match.stageLabel) : roundLabel(career, match.round);
+  const details = renderMatchScoreDetails(live, match, {home: homeName, away: awayName}, esc);
+  return `${title(ended ? 'Fim de jogo' : deciding ? 'Disputa por pênaltis' : 'Partida em andamento', round)}
     <div class="career-matchup career-live-scoreboard match-scoreboard-style">
       ${side(homeId, homeName, true)}
       <div class="score-center">
         ${renderMatchScore(score)}
-        ${renderMatchClock(result, live.matchMinute, ended)}
+        ${renderMatchClock(result, live.matchMinute, ended || deciding)}
       </div>
       ${side(awayId, awayName, false)}
     </div>
+    ${details ? `<div class="match-score-details career-match-details">${details}</div>` : ''}
     <div class="match-score-goals career-live-goals" data-match-goals data-home-name="${esc(homeName)}" data-away-name="${esc(awayName)}"
       aria-label="Autores dos gols" aria-live="polite">${renderMatchGoals(result, live.matchMinute, {home: homeName, away: awayName})}</div>
     ${ended ? button('Avançar', 'career-match-return', '', true) : renderMatchSpeed(live.matchSpeed, ui.icon, 'career-match-speed',
       button('Simular até o fim', 'career-match-finish', '', true))}`;
+}
+
+function careerLiveField(career, ui, live, match) {
+  return `<section class="career-card panel career-live-field" aria-label="Simulação da partida">
+      <div class="career-card-heading">
+        <h2>Campinho</h2>
+        <span class="career-match-status${matchHasEnded(live, match) ? '' : ' is-live'}">${matchHasEnded(live, match) ? 'Encerrada' : 'Em jogo'}</span>
+      </div>
+      ${renderLivePitch(live, {esc, icon: ui.icon, pitchLines: ui.pitchLines})}
+      <div class="career-pitch-legend">
+        ${[match.homeId, match.awayId].map(id => `<span><i class="${id === live.tournament.userTeamId ? 'is-own' : ''}" aria-hidden="true"></i>${esc(careerClub(career, id).nome)}</span>`).join('')}
+      </div>
+    </section>`;
+}
+
+const careerChampionsHelpers = (career, ui) => ({
+  esc, icon: ui.icon, badge: team => clubBadge(career, team.id, ui), actionPrefix: 'career-champions-',
+});
+
+export function renderCareerChampionsTie(career, id, ui) {
+  return renderChampionsTieDetails(career.champions.tournament, id, careerChampionsHelpers(career, ui));
+}
+
+function champions(career, ui, live, view) {
+  const tournament = career.champions?.tournament;
+  if (!tournament) return `<section class="career-card panel career-champions-header">
+    ${championsLogo()}
+    <div><h2>Champions League</h2><p class="muted">Termine entre os quatro primeiros da sua liga para disputar a próxima edição.</p></div>
+    ${button('Ver classificação', 'career-tab', 'standings')}
+  </section>`;
+  const liveMatch = live ? currentMatch(live) : null;
+  if (liveMatch) return `<div class="career-columns">
+    <section class="career-card panel career-match">${matchScoreboard(career, ui, live, liveMatch)}</section>
+    ${careerLiveField(career, ui, live, liveMatch)}
+  </div>`;
+
+  const fixture = careerChampionsFixture(career);
+  const qualified = tournament.teams.some(team => team.id === CAREER_TEAM);
+  const description = tournament.campaign.champion ? 'Seu clube conquistou a Champions League!'
+    : tournament.campaign.eliminated ? `Seu clube encerrou a campanha · ${tournament.campaign.stageLabel}`
+    : !qualified ? 'Seu clube ficou fora dos quatro primeiros na temporada passada.' : '16 clubes · Quatro grupos · Final em jogo único';
+  const winner = tournament.championId;
+  const resume = career.champions.replay?.id === fixture?.id;
+  return `<div class="champions-competition career-champions">
+    <section class="career-card panel career-champions-header">
+      ${championsLogo()}
+      <div><h2>Champions League</h2><p class="muted">${esc(description)}</p></div>
+      ${winner ? `<div class="career-champions-winner">${clubBadge(career, winner, ui)}<span><small>Campeão</small><strong>${esc(careerClub(career, winner).nome)}</strong></span></div>` : ''}
+    </section>
+    ${fixture ? `<section class="career-card panel career-match career-champions-fixture">
+      ${title('Próxima partida', championsRoundLabel(fixture.stageLabel))}
+      <div class="career-matchup career-fixture">${[fixture.homeId, fixture.awayId].map((id, index) => `${index ? '<span class="career-fixture-separator" aria-hidden="true">×</span>' : ''}
+        <div${id === CAREER_TEAM ? ' class="is-managed-club"' : ''}><span class="career-fixture-crest">${clubBadge(career, id, ui)}</span>
+          <strong>${esc(careerClub(career, id).nome)}</strong>${matchVenue(index === 0, fixture.neutral)}</div>`).join('')}</div>
+      ${button(resume ? 'Continuar partida' : 'Simular partida', 'career-champions-play', `${career.season}:${fixture.id}`, true)}
+    </section>` : ''}
+    ${renderChampionsStages({...view, tournament}, careerChampionsHelpers(career, ui))}
+  </div>`;
 }
 
 function overview(career, ui, rows, live) {
@@ -300,27 +374,22 @@ function overview(career, ui, rows, live) {
     : position >= firstRelegation ? `Seu clube foi rebaixado em ${position}º lugar.`
     : position === playoffPosition ? `Seu clube terminou em ${position}º lugar, na posição de repescagem.`
     : `Seu clube terminou em ${position}º lugar.`;
+  const championsFixture = careerChampionsFixture(career);
+  const earnedChampions = careerHasChampions(career) && position <= CHAMPIONS_PLACES;
   const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
     ? `<header class="career-fixture-heading">${title('Próxima partida', roundLabel(career, career.round + 1, total))}</header>
       <div class="career-matchup career-fixture">${fixture.map((id, index) => `${index ? '<span class="career-fixture-separator" aria-hidden="true">×</span>' : ''}
         <div${id === CAREER_TEAM ? ' class="is-managed-club"' : ''}><span class="career-fixture-crest">${clubBadge(career, id, ui)}</span><strong>${esc(careerClub(career, id).nome)}</strong>${matchVenue(index === 0)}</div>`).join('')}</div>
       ${button(career.replay?.round === career.round ? 'Continuar partida' : 'Simular partida', 'career-play', `${career.season}:${career.round}`, true)}`
     : `${title('Temporada encerrada', seasonFinish)}
-      <p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
-      ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
+      ${earnedChampions ? '<p>Seu clube garantiu vaga na próxima Champions League.</p>' : ''}
+      ${championsFixture ? `<p>Conclua a Champions League desta temporada para avançar.</p>
+        ${button('Ir para a Champions League', 'career-tab', 'champions', true)}` : `<p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
+        ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`}`;
   return `<div class="career-columns">
     <section class="career-card panel career-match${!liveMatch && fixture ? ' career-match-preview' : ''}">${match}
     </section>
-    ${liveMatch ? `<section class="career-card panel career-live-field" aria-label="Simulação da partida">
-      <div class="career-card-heading">
-        <h2>Campinho</h2>
-        <span class="career-match-status${matchHasEnded(live, liveMatch) ? '' : ' is-live'}">${matchHasEnded(live, liveMatch) ? 'Encerrada' : 'Em jogo'}</span>
-      </div>
-      ${renderLivePitch(live, {esc, icon: ui.icon, pitchLines: ui.pitchLines})}
-      <div class="career-pitch-legend">
-        ${[liveMatch.homeId, liveMatch.awayId].map(id => `<span><i class="${id === live.tournament.userTeamId ? 'is-own' : ''}" aria-hidden="true"></i>${esc(careerClub(career, id).nome)}</span>`).join('')}
-      </div>
-    </section>` : `<section class="career-card panel career-lineup-preview">
+    ${liveMatch ? careerLiveField(career, ui, live, liveMatch) : `<section class="career-card panel career-lineup-preview">
       <div class="career-card-heading">
         <div><h2>Escalação titular</h2><span class="career-pill">${FORMATIONS[career.formation].name}</span></div>
         <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
@@ -329,8 +398,13 @@ function overview(career, ui, rows, live) {
       ${button('Editar escalação', 'career-tab', 'squad')}
     </section>`}
   </div>
+  ${!liveMatch && fixture && championsFixture ? `<section class="career-card panel career-champions-header">
+    ${championsLogo()}<div><h2>Champions League</h2><p class="muted">${esc(championsFixture.stageLabel)}</p></div>
+    ${button('Ver próxima partida', 'career-tab', 'champions')}
+  </section>` : ''}
   ${career.seasons.length ? `<details class="career-card panel"><summary>Temporadas anteriores</summary><ul class="career-history">${[...career.seasons].reverse().map(season =>
     `<li>Temporada ${season.number} · ${season.position === 1 ? 'Campeão' : `${season.position}º lugar`} · ${season.points} pts · ${money(season.prize)} em premiação
+      ${season.championsWinner ? `<small>Campeão da Champions League: ${esc(careerClub(career, season.championsWinner).nome)}</small>` : ''}
       ${season.relegated?.length ? `<small>Rebaixados: ${season.relegated.map(id => esc(careerClub(career, id).nome)).join(', ')}</small>` : ''}
     </li>`).join('')}</ul></details>` : ''}`;
 }
@@ -578,14 +652,16 @@ function club(career, ui) {
   </section>`;
 }
 
-export function renderCareer(career, tab, ui, live = null, marketFilters, squadState, previousTab) {
+export function renderCareer(career, tab, ui, live = null, marketFilters, squadState, previousTab, championsView) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const league = careerLeague(career.leagueId);
   const [primary, secondary] = careerClub(career, CAREER_TEAM).cores
     ?? badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(career.crest))];
   const pages = {overview, standings, facilities, club};
-  const activeTab = Object.hasOwn(CAREER_TABS, tab) ? tab : 'overview';
+  const hasChampions = careerHasChampions(career);
+  const tabs = Object.entries(CAREER_TABS).filter(([id]) => id !== 'champions' || hasChampions);
+  const activeTab = tabs.some(([id]) => id === tab) ? tab : 'overview';
   const entering = previousTab === undefined;
   const switching = !entering && previousTab !== activeTab;
   return `<div class="career-page">
@@ -605,11 +681,14 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
         <div><dt>${ui.icon('card')} Orçamento</dt><dd>${money(career.budget)}</dd></div>
       </dl>
     </header>
-    <nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}" aria-label="Seções da carreira">
-      ${Object.entries(CAREER_TABS).map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === activeTab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
+    <nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}${hasChampions ? ' has-champions' : ''}" aria-label="Seções da carreira">
+      ${tabs.map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === activeTab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
     </nav>
     <div class="career-content" data-career-tab="${activeTab}">
-      ${activeTab === 'market' ? market(career, ui, marketFilters) : activeTab === 'squad' ? squad(career, ui, squadState) : pages[activeTab](career, ui, rows, live)}
+      ${activeTab === 'market' ? market(career, ui, marketFilters)
+        : activeTab === 'squad' ? squad(career, ui, squadState)
+        : activeTab === 'champions' ? champions(career, ui, live, championsView)
+        : pages[activeTab](career, ui, rows, live)}
     </div>
   </div>`;
 }
