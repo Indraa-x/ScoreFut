@@ -2,12 +2,38 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
 import {
-  advanceCareerSeason, careerFixtures, careerPicks, changeCareerFormation, createCareer,
-  migrateCareerRoster, prepareCareerRound, upgradeCareerFacility,
+  advanceCareerSeason, careerFixtures, careerPicks, changeCareerFormation, commitCareerRound, createCareer,
+  migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, upgradeCareerFacility,
 } from '../js/career.js';
 import {FORMATIONS, positionFit} from '../js/engine.js';
 
 const catalogPlayers = new Set(allSquads.flatMap(squad => squad.jogadores));
+
+test('old balances and pending match income convert to euros exactly once', () => {
+  const initial = createCareer(42);
+  const replay = prepareCareerRound(initial);
+  const old = {
+    ...initial,
+    currency: undefined,
+    budget: 8_500,
+    results: [[{income: 260}]],
+    seasons: [{prize: 2_500}],
+    replay: {...replay, income: 420, results: replay.results.map(match =>
+      match.income === undefined ? match : {...match, income: 420})},
+  };
+  const migrated = migrateCareerCurrency(old);
+  assert.equal(migrated.currency, 'EUR');
+  assert.equal(migrated.budget, initial.budget);
+  assert.equal(migrated.results[0][0].income, 42);
+  assert.equal(migrated.seasons[0].prize, 407);
+  assert.equal(migrated.replay.income, 68);
+  assert.equal(migrated.replay.results.find(match => match.income !== undefined).income, 68);
+  assert.equal(migrated.replay.tournament, replay.tournament);
+  assert.equal(migrateCareerCurrency(migrated), migrated);
+  const fullTime = replay.tournament.userMatches[0].result.duration;
+  const completed = commitCareerRound({...migrated, replay: {...migrated.replay, minute: fullTime}});
+  assert.equal(completed.budget, initial.budget + 68);
+});
 
 test('the starting roster uses real catalog players and can fill every formation', () => {
   const career = createCareer(42);

@@ -122,9 +122,9 @@ function careerCrest(id) {
   return `<svg class="career-crest" viewBox="0 0 48 48" aria-hidden="true" focusable="false" style="color:${color}"><path d="M24 3 42 9v11c0 11-7 19-18 24C13 39 6 31 6 20V9Z" fill="${fill}" stroke="currentColor" stroke-width="2"/><g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${art}</g></svg>`;
 }
 const money = amount => {
-  if (amount < 1000) return `R$ ${amount.toLocaleString('pt-BR')} mil`;
+  if (amount < 1000) return `€ ${amount.toLocaleString('pt-BR')} mil`;
   const [divisor, unit] = amount >= 1_000_000 ? [1_000_000, 'Bi'] : [1000, 'mi'];
-  return `R$ ${(amount / divisor).toLocaleString('pt-BR', {maximumFractionDigits: 2})} ${unit}`;
+  return `€ ${(amount / divisor).toLocaleString('pt-BR', {maximumFractionDigits: 2})} ${unit}`;
 };
 const button = (label, action, value = '', primary = false, disabled = false) =>
   `<button type="button" class="btn ${primary ? 'btn-primary' : 'btn-outline'}" data-action="${action}" data-value="${esc(value)}"${disabled ? ' disabled' : ''}>${label}</button>`;
@@ -339,14 +339,14 @@ function rosterPortrait(player, ui) {
   </span>`;
 }
 
-export function renderCareerSale({player, valuation, changesLineup}, ui) {
+export function renderCareerSale({player, valuation, price, changesLineup}, ui) {
   return `<section class="career-sale-dialog">
     <div class="modal-head">
       <h2 id="modal-title">Vender ${esc(player.nome)}?</h2>
       <button type="button" class="icon-button" data-action="close-modal" aria-label="Fechar">${ui.icon('close')}</button>
     </div>
     <div class="career-sale-value">
-      <span>Receita da venda</span><strong>${money(valuation.price)}</strong>
+      <span>Receita da venda</span><strong>${money(price)}</strong>
       ${valuation.sourceUrl ? `<a href="${esc(valuation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Valor de mercado no Transfermarkt</a>` : '<small>Valor de mercado do Transfermarkt</small>'}
     </div>
     <p class="muted">O jogador sai do elenco e o valor entra no orçamento.${changesLineup ? ' A escalação será ajustada automaticamente.' : ''}</p>
@@ -380,7 +380,7 @@ function squad(career, ui, {selectedId = null} = {}) {
             </span>
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
-          <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Vender ${esc(player.nome)}">$</button>
+          <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Vender ${esc(player.nome)}">€</button>
         </li>`).join('') || '<li class="career-roster-empty">Sem jogadores na reserva.</li>'}
       </ul>
     </section>
@@ -388,7 +388,7 @@ function squad(career, ui, {selectedId = null} = {}) {
       <div class="career-card-heading">
         <div><span class="eyebrow accent">11 titulares</span><h2 id="career-squad-title">Escalação titular</h2></div>
         <div class="career-squad-header-actions">
-          ${selected && starters.has(selected.id) ? `<button type="button" class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${esc(selected.id)}" aria-label="Vender ${esc(selected.nome)}">$</button>` : ''}
+          ${selected && starters.has(selected.id) ? `<button type="button" class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${esc(selected.id)}" aria-label="Vender ${esc(selected.nome)}">€</button>` : ''}
           <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
         </div>
       </div>
@@ -447,7 +447,7 @@ export function renderCareerMarketResults(career, ui, filters) {
         <div class="career-market-positions" aria-label="Posições">${player.tags.map(tag => `<span>${esc(tag)}</span>`).join('')}</div>
         <div class="career-market-deal">
           <div>
-            <small>Valor de mercado</small>
+            <small>Preço de compra</small>
             <strong>${price === null ? 'Indisponível' : money(price)}</strong>
           </div>
           ${button(label, 'career-sign', id, affordable && !full && !signed, full || signed || !affordable)}
@@ -470,7 +470,7 @@ function market(career, ui, filters = {}) {
       <div>
         <span class="eyebrow accent">${ui.icon('subs')} Central de transferências</span>
         <h2 id="career-market-title">Mercado de jogadores</h2>
-        <p>Elencos europeus 2026/27 e Brasileirão 2026. Valores de mercado publicados pelo Transfermarkt, convertidos para reais.</p>
+        <p>Elencos europeus 2026/27 e Brasileirão 2026. Preços de compra em euros, calculados a partir das avaliações do Transfermarkt.</p>
       </div>
       <dl class="career-market-stats">
         <div><dt>Jogadores no catálogo</dt><dd>${catalog.offers.length.toLocaleString('pt-BR')}</dd></div>

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {CAREER_LEAGUES} from '../data/career-leagues.js';
-import {createCareer, MAX_CAREER_ROSTER, signCareerPlayer} from '../js/career.js';
+import {careerSale, createCareer, MAX_CAREER_ROSTER, sellCareerPlayer, signCareerPlayer} from '../js/career.js';
 import {careerMarketCatalog, careerMarketPage} from '../js/career-market.js';
 import {renderCareer} from '../js/career-view.js';
 import * as ui from '../js/ui.js';
@@ -28,18 +28,21 @@ test('the market uses only the current career leagues and pages filtered results
   }
 });
 
-test('hiring debits the verified market value in reais and requires a listed price', () => {
+test('buying uses the euro price curve and selling credits the market value', () => {
   const career = {...createCareer(42), budget: 2_000_000};
   const unknown = offers.find(offer => offer.price === null);
   assert.equal(mbappe.euros, 200_000_000);
-  assert.equal(mbappe.price, 1_228_980);
+  assert.equal(mbappe.price, 472_727);
+  assert.equal(Math.max(...offers.map(offer => offer.price ?? 0)), 550_000);
   const vini = byId.get('career26-laliga-243/vinicius-junior');
   assert.equal(vini.euros, 130_000_000);
-  assert.equal(vini.price, 798_837);
+  assert.equal(vini.price, 245_227);
   assert.equal(byId.get('career26-brasileirao-20008/neymar').euros, 8_000_000);
   const signed = signCareerPlayer(career, mbappe.id);
   assert.deepEqual(signed.roster.at(-1), mbappe.player);
   assert.equal(signed.budget, career.budget - mbappe.price);
+  assert.equal(careerSale(signed, mbappe.player.id).price, 200_000);
+  assert.equal(sellCareerPlayer(signed, mbappe.player.id).budget, signed.budget + 200_000);
   assert.deepEqual(signed.lineup, career.lineup);
   assert.throws(() => signCareerPlayer(JSON.parse(JSON.stringify(signed)), mbappe.id), /já está no elenco/);
   assert.throws(() => signCareerPlayer({...career, budget: mbappe.price - 1}, mbappe.id), /Saldo insuficiente/);
@@ -52,13 +55,13 @@ test('hiring debits the verified market value in reais and requires a listed pri
   ));
 });
 
-test('market cards show the club crest below the name, OVR, price in reais and purchase action', () => {
+test('market cards show the club crest below the name, OVR, price in euros and purchase action', () => {
   const career = {...createCareer(42), budget: 2_000_000};
   const html = renderCareer(career, 'market', ui, null, {search: 'mbappe madrid'});
   assert.match(html, /class="career-market-token" aria-hidden="true"><span class="career-season-crest"[^>]+league-laliga\.webp[^>]+><\/span><img[^>]+width="68" height="68"[^>]*><\/span>/);
   assert.match(html, /<h3>Kylian Mbappé<\/h3>\s*<div class="career-market-club">\s*<strong class="career-market-rating" aria-label="\d+ OVR">\d+<\/strong>\s*<span role="img" aria-label="Real Madrid"/);
   assert.doesNotMatch(html, /career-market-watermark/);
-  assert.match(html, /<small>Valor de mercado<\/small>\s*<strong>R\$ 1,23 Bi<\/strong>/);
-  assert.doesNotMatch(html, /€|<time\b/);
+  assert.match(html, /<small>Preço de compra<\/small>\s*<strong>€ 472,73 mi<\/strong>/);
+  assert.doesNotMatch(html, /R\$|<time\b/);
   assert.match(html, /data-action="career-sign" data-value="career26-laliga-243\/kylian-mbappe">Contratar/);
 });

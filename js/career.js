@@ -1,6 +1,7 @@
 import {allSquads} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
 import {careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
+import {MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
 import {FORMATIONS, calculateTeam, mulberry32, positionFit, simulateMatch, squadTeam} from './engine.js';
 import {goalsAt} from './match-goals.js';
 import {formatMatchEventMinute} from './match-motion.js';
@@ -33,14 +34,14 @@ export function changeCareerStyle(career, style) {
 
 export const CAREER_CRESTS = ['bola', 'leao', 'aguia', 'montanha', 'estrela', 'listras', 'raio', 'torre'];
 export const FACILITIES = {
-  training: {name: 'Centro de treinamento', effect: 'Cada melhoria dá +1 de OVR efetivo aos titulares durante as partidas.', cost: 1400},
-  academy: {name: 'Academia de base', effect: 'Traz um jogador real do catálogo ao melhorar. A partir do nível 2, traz outro a cada nova temporada.', cost: 1000},
-  stadium: {name: 'Estádio', effect: 'Cada melhoria aumenta em R$ 120 mil a receita por jogo em casa.', cost: 1800},
-  gym: {name: 'Academia de preparação física', effect: 'Cada melhoria aumenta em 2% a força defensiva usada na simulação.', cost: 1250},
-  shop: {name: 'Loja oficial', effect: 'Cada melhoria rende R$ 65 mil extras por partida com a venda de produtos.', cost: 1100},
-  recovery: {name: 'Centro de recuperação', effect: 'Cada melhoria aumenta em 2% a força do meio-campo na simulação.', cost: 1350},
-  analysis: {name: 'Análise de desempenho', effect: 'Cada melhoria aumenta em 2% a força ofensiva na simulação.', cost: 1450},
-  hospitality: {name: 'Camarotes', effect: 'Cada melhoria rende R$ 100 mil extras por partida em casa.', cost: 1600},
+  training: {name: 'Centro de treinamento', effect: 'Cada melhoria dá +1 de OVR efetivo aos titulares durante as partidas.', cost: 228},
+  academy: {name: 'Academia de base', effect: 'Traz um jogador real do catálogo ao melhorar. A partir do nível 2, traz outro a cada nova temporada.', cost: 163},
+  stadium: {name: 'Estádio', effect: 'Cada melhoria aumenta em € 20 mil a receita por jogo em casa.', cost: 293},
+  gym: {name: 'Academia de preparação física', effect: 'Cada melhoria aumenta em 2% a força defensiva usada na simulação.', cost: 203},
+  shop: {name: 'Loja oficial', effect: 'Cada melhoria rende € 11 mil extras por partida com a venda de produtos.', cost: 179},
+  recovery: {name: 'Centro de recuperação', effect: 'Cada melhoria aumenta em 2% a força do meio-campo na simulação.', cost: 220},
+  analysis: {name: 'Análise de desempenho', effect: 'Cada melhoria aumenta em 2% a força ofensiva na simulação.', cost: 236},
+  hospitality: {name: 'Camarotes', effect: 'Cada melhoria rende € 16 mil extras por partida em casa.', cost: 260},
 };
 export const MAX_FACILITY_LEVEL = 5;
 const initialFacilityLevels = Object.fromEntries(Object.keys(FACILITIES).map(key => [key, 1]));
@@ -49,6 +50,7 @@ export const careerFacilityLevel = (career, key) => career.facilities[key] ?? 1;
 export const MAX_CAREER_ROSTER = 32;
 export const careerRosterLimit = career => Math.max(MAX_CAREER_ROSTER, (careerSeasonTeam(career.clubId)?.jogadores.length ?? 0) + 3);
 const CAREER_VERSION = 2;
+const STARTING_BUDGET = 1_383;
 const brazilianSquads = squadsForMode(allSquads, 'copa-do-brasil');
 const clubs = new Map();
 for (const squad of brazilianSquads) {
@@ -158,7 +160,7 @@ export function createCareer(seed, clubId) {
     const roster = [...club.jogadores];
     return {
       version: CAREER_VERSION, seed, clubId, leagueId: league.id, name: club.nome,
-      season: 1, round: 0, budget: 8500, facilities: {...initialFacilityLevels},
+      season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET, facilities: {...initialFacilityLevels},
       roster, opponentIds: league.teams.filter(team => team.id !== clubId).map(team => team.id),
       ...startingLineup(roster), results: [], seasons: [],
     };
@@ -168,8 +170,24 @@ export function createCareer(seed, clubId) {
   if (opponentIds.length % 2 === 0) opponentIds.pop();
   return {
     version: CAREER_VERSION, seed, name: 'Meu time', crest: CAREER_CRESTS[0],
-    season: 1, round: 0, budget: 8500, facilities: {...initialFacilityLevels},
+    season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET, facilities: {...initialFacilityLevels},
     roster, opponentIds, formation: '4-3-3', lineup: bestLineup(roster, '4-3-3'), results: [], seasons: [],
+  };
+}
+
+export function migrateCareerCurrency(career) {
+  if (career.currency === 'EUR') return career;
+  const fromReais = amount => Math.round(amount / MARKET_EUR_TO_BRL);
+  const convertResults = round => round.map(match => match.income === undefined
+    ? match : {...match, income: fromReais(match.income)});
+  const {replay} = career;
+  return {
+    ...career,
+    currency: 'EUR',
+    budget: fromReais(career.budget),
+    results: career.results.map(convertResults),
+    seasons: career.seasons.map(season => ({...season, prize: fromReais(season.prize)})),
+    replay: replay ? {...replay, income: fromReais(replay.income), results: convertResults(replay.results)} : replay,
   };
 }
 
@@ -253,7 +271,8 @@ export function careerSale(career, id) {
   const player = career.roster.find(candidate => candidate.id === id);
   if (!player) throw Error('Jogador não encontrado no elenco.');
   const valuation = careerPlayerValuation(player);
-  if (valuation?.price == null || valuation.price <= 0) throw Error('Jogador sem valor de mercado confirmado no Transfermarkt.');
+  if (!valuation?.euros) throw Error('Jogador sem valor de mercado confirmado no Transfermarkt.');
+  const price = Math.round(valuation.euros / 1_000);
 
   const roster = career.roster.filter(candidate => candidate.id !== id);
   const slot = FORMATIONS[career.formation].slots.find(slot => career.lineup[slot.id] === id);
@@ -265,12 +284,12 @@ export function careerSale(career, id) {
     lineup = replacement ? {...lineup, [slot.id]: replacement.id} : bestLineup(roster, career.formation);
     if (!lineup) throw Error('A venda deixaria o time sem onze titulares compatíveis com a formação atual.');
   }
-  return {player, valuation, roster, lineup, changesLineup: Boolean(slot)};
+  return {player, valuation, price, roster, lineup, changesLineup: Boolean(slot)};
 }
 
 export function sellCareerPlayer(career, id) {
-  const {valuation, roster, lineup} = careerSale(career, id);
-  return {...career, budget: career.budget + valuation.price, roster, lineup};
+  const {price, roster, lineup} = careerSale(career, id);
+  return {...career, budget: career.budget + price, roster, lineup};
 }
 
 export function releaseCareerPlayer(career, id) {
@@ -431,10 +450,10 @@ export function prepareCareerRound(career) {
       : match.scorers.map(({playerId, name, team, goals}) => ({playerId, name, team, goals}));
     const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers};
     if (userMatch) {
-      const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 65;
-      const homeIncome = 260 + (career.facilities.stadium - 1) * 120 + (careerFacilityLevel(career, 'hospitality') - 1) * 100;
-      income = (home === CAREER_TEAM ? homeIncome : 100) + shopIncome
-        + (match.winnerId === CAREER_TEAM ? 160 : match.homeGoals === match.awayGoals ? 80 : 0);
+      const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 11;
+      const homeIncome = 42 + (career.facilities.stadium - 1) * 20 + (careerFacilityLevel(career, 'hospitality') - 1) * 16;
+      income = (home === CAREER_TEAM ? homeIncome : 16) + shopIncome
+        + (match.winnerId === CAREER_TEAM ? 26 : match.homeGoals === match.awayGoals ? 13 : 0);
       result.income = income;
       replay = {
         seed, mode: 'career', teams, userTeamId: CAREER_TEAM,
@@ -471,7 +490,7 @@ export function advanceCareerSeason(career) {
   if (career.round < careerFixtures(career).length) throw Error('Termine a temporada antes de avançar.');
   const table = careerTable(career);
   const position = table.findIndex(row => row.id === CAREER_TEAM) + 1;
-  const prize = 2500 + (table.length - position) * 200;
+  const prize = 407 + (table.length - position) * 33;
   const relegated = table.slice(LAST_SAFE_POSITION).map(row => row.id);
   const season = {number: career.season, position, points: table[position - 1].points, prize, relegated};
   const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};

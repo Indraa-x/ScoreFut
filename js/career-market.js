@@ -1,7 +1,18 @@
 import {CAREER_LEAGUES} from '../data/career-leagues.js';
-import {MARKET_VALUES, MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
+import {MARKET_VALUES} from '../data/career-2026/market-values.js';
 
 const PAGE_SIZE = 12;
+const MAX_PURCHASE_EUROS = 550_000_000;
+const highestMarketValue = Math.max(...Object.values(MARKET_VALUES).flatMap(squad =>
+  Object.values(squad).map(([euros]) => euros)));
+
+function purchasePrice(euros) {
+  if (!euros) return null;
+  const share = euros / highestMarketValue;
+  const premium = (MAX_PURCHASE_EUROS - highestMarketValue) * share ** 2;
+  // Career balances are stored in thousands of euros.
+  return Math.round((euros + premium) / 1_000);
+}
 const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
 const byPrice = (a, b, direction) => {
   if (a.price === null) return b.price === null ? 0 : 1;
@@ -23,8 +34,7 @@ const offers = CAREER_LEAGUES.flatMap(league => league.teams.flatMap(squad => sq
   return {
     id: `${squad.id}/${player.id}`,
     player, squad, league, euros, sourceUrl, valuedOn,
-    // Career balances are stored in thousands of reais.
-    price: euros === undefined ? null : Math.round(euros * MARKET_EUR_TO_BRL / 1000),
+    price: purchasePrice(euros),
     search: normalize(`${player.nome} ${squad.nome} ${league.name} ${league.season}`),
   };
 })));

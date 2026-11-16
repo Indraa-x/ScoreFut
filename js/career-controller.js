@@ -1,6 +1,6 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
-  careerSale, commitCareerRound, migrateCareerRoster, prepareCareerRound, renameCareerClub,
+  careerSale, commitCareerRound, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
   sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
@@ -26,7 +26,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function read() {
     const saved = savedCareer();
     if (!saved) return initial ??= createCareer(crypto.getRandomValues(new Uint32Array(1))[0]);
-    const career = migrateCareerRoster(saved);
+    const career = migrateCareerCurrency(migrateCareerRoster(saved));
     if (career !== saved) storage.write(activeSlot(), career);
     return career;
   }
@@ -191,7 +191,10 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     updateMarketResults();
   }
   function open() {
-    if (tab === 'intro') return renderCareerIntro(savedCareer() ?? initial, ui);
+    if (tab === 'intro') {
+      const saved = savedCareer();
+      return renderCareerIntro(saved ? migrateCareerCurrency(saved) : initial, ui);
+    }
     if (tab === 'setup') {
       const ids = [null, ...CAREER_LEAGUES.flatMap(league => league.teams.map(team => team.id))];
       const saves = ids.map(id => storage.read(careerSlot(id))).filter(Boolean);
