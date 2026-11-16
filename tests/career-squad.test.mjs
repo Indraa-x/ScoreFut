@@ -45,7 +45,8 @@ test('the roster renders the selected reserve and highlights only its compatible
   assert.deepEqual(targets.map(match => match[1]), ['gol']);
   assert.equal(html.match(/data-action="career-pick-slot"[^>]* disabled/g).length, 10);
   assert.equal(html.match(/class="career-squad-token"/g).length, 11);
-  assert.equal(html.match(/draggable="true" data-career-drag-player=/g).length, career.roster.length);
+  assert.equal(html.match(/data-career-drag-player=/g).length, career.roster.length);
+  assert.doesNotMatch(html, /draggable="true"/);
   const starter = renderCareer(career, 'squad', ui, null, undefined, {selectedId: career.lineup.gol});
   assert.ok(starter.includes(`class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${career.lineup.gol}"`));
 });

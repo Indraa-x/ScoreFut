@@ -743,7 +743,9 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-squad-slot .career-squad-token > strong { font-size: clamp(11px, 3.8cqw, 17px); }
 .career-squad-slot:is(:hover:not(:disabled), .is-origin) .career-squad-token { box-shadow: 0 0 0 3px #fff8; }
 .career-squad-slot.is-target .career-squad-token { border-color: #78efb4; box-shadow: 0 0 0 4px #52db97a6; }
-[data-career-drag-player]:not(:disabled) { cursor: grab; }
+[data-career-drag-player]:not(:disabled) { cursor: grab; user-select: none; }
+body:has(> .career-drag-avatar),
+body:has(> .career-drag-avatar) * { cursor: grabbing !important; }
 .career-squad-layout.is-dragging-player .is-drag-origin :is(.career-roster-avatar, .career-squad-token) { opacity: .45; }
 body > .career-drag-avatar {
   position: fixed;
@@ -751,7 +753,8 @@ body > .career-drag-avatar {
   overflow: hidden;
   border-radius: 50%;
   pointer-events: none;
-  box-shadow: none;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 16px #0007;
 }
 .career-drag-avatar .career-roster-photo { border-radius: inherit; }
 .career-squad-layout.is-dragging-player .career-squad-slot.is-drop-ready .career-squad-token {

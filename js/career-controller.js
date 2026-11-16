@@ -20,7 +20,9 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let initial;
   let filters = {...marketDefaults};
   const squad = {selectedId: null};
+  let squadPress = null;
   let squadDrag = null;
+  let ignoreSquadClick = false;
   const selection = {leagueId: null, clubId: null};
   const activeSlot = () => careerSlot(careerSeasonTeam(storage.read(activeCareerKey))?.id);
   const savedCareer = () => storage.read(activeSlot());
@@ -181,21 +183,32 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     refreshSquad(() => change(current => changeCareerStarter(current, slotId, id), 'Escalação atualizada.'));
   }
   function clearSquadDrag() {
+    const pointerId = squadPress?.pointerId;
+    squadPress = null;
+    if (pointerId != null && app.hasPointerCapture(pointerId)) app.releasePointerCapture(pointerId);
     if (!squadDrag) return;
-    const {layout, source, targets, disabledSlots, bench} = squadDrag;
+    const {layout, source, targets, disabledSlots, bench, preview} = squadDrag;
     squadDrag = null;
+    preview.remove();
     layout.classList.remove('is-dragging-player');
     source.classList.remove('is-drag-origin');
     bench.classList.remove('is-drop-hover');
     for (const target of targets) target.classList.remove('is-drop-ready', 'is-drop-hover');
     for (const slot of disabledSlots) slot.disabled = true;
   }
-  function startSquadDrag(event) {
-    if (tab !== 'squad' || !event.dataTransfer) return;
+  function pressSquadPlayer(event) {
+    if (!event.isPrimary || event.button !== 0 || squadPress) return;
+    ignoreSquadClick = false;
+    if (event.pointerType === 'touch' || app.dataset.screen !== 'career' || tab !== 'squad') return;
     const source = event.target.closest('[data-career-drag-player]');
-    const layout = source?.closest('.career-squad-layout');
-    if (!layout || source.disabled) return;
-    clearSquadDrag();
+    if (!source || source.disabled) return;
+    squadPress = {source, pointerId: event.pointerId, x: event.clientX, y: event.clientY};
+  }
+  function startSquadDrag(event) {
+    const {source} = squadPress;
+    const layout = source.closest('.career-squad-layout');
+    const avatar = source.querySelector('.career-roster-avatar, .career-squad-token');
+    if (!layout || !avatar || !app.contains(source)) return;
     const career = read();
     const id = source.dataset.careerDragPlayer;
     const origin = source.dataset.action === 'career-pick-slot' ? source.dataset.value : null;
@@ -207,25 +220,18 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         : replacements.has(player.dataset.careerDragPlayer));
     const disabledSlots = targets.filter(target => target.disabled);
     for (const slot of disabledSlots) slot.disabled = false;
-    squadDrag = {layout, source, id, origin, bench, targets, disabledSlots, replacements};
-    source.classList.add('is-drag-origin');
-    layout.classList.add('is-dragging-player');
-    for (const target of targets) target.classList.add('is-drop-ready');
-    event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setData('text/plain', id);
-
-    const avatar = source.querySelector('.career-roster-avatar, .career-squad-token');
-    if (!avatar) return;
-    const {left, top, width, height} = avatar.getBoundingClientRect();
+    const size = Math.max(68, Math.ceil(avatar.getBoundingClientRect().width * 1.3));
     const preview = avatar.cloneNode(true);
     preview.classList.add('career-drag-avatar');
     preview.setAttribute('aria-hidden', 'true');
-    Object.assign(preview.style, {
-      left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`,
-    });
+    preview.style.width = preview.style.height = `${size}px`;
     document.body.append(preview);
-    event.dataTransfer.setDragImage(preview, Math.round(width / 2), Math.round(height / 2));
-    requestAnimationFrame(() => preview.remove());
+    squadDrag = {layout, source, id, origin, bench, targets, disabledSlots, replacements, preview};
+    source.classList.add('is-drag-origin');
+    layout.classList.add('is-dragging-player');
+    for (const target of targets) target.classList.add('is-drop-ready');
+    ignoreSquadClick = true;
+    app.setPointerCapture(event.pointerId);
   }
   function squadDropTarget(element) {
     if (!squadDrag?.layout.contains(element)) return null;
@@ -237,22 +243,29 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     if (reserve && !replacements.has(reserve.dataset.careerDragPlayer)) return null;
     return {element: reserve ?? bench, slotId: origin, toBench: true, replacementId: reserve?.dataset.careerDragPlayer};
   }
-  function hoverSquadDrop(event) {
+  function moveSquadPlayer(event) {
+    if (squadPress?.pointerId !== event.pointerId) return;
+    if (event.buttons === 0) {
+      clearSquadDrag();
+      return;
+    }
+    const {clientX, clientY} = event;
+    if (!squadDrag && Math.hypot(clientX - squadPress.x, clientY - squadPress.y) >= 5) startSquadDrag(event);
     if (!squadDrag) return;
-    const target = squadDropTarget(event.target);
+    squadDrag.preview.style.left = `${clientX}px`;
+    squadDrag.preview.style.top = `${clientY}px`;
+    const target = squadDropTarget(document.elementFromPoint(clientX, clientY));
     for (const item of [...squadDrag.targets, squadDrag.bench]) {
       item.classList.toggle('is-drop-hover', item === target?.element);
     }
-    if (!target) return;
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
   }
   function dropSquadPlayer(event) {
-    const target = squadDropTarget(event.target);
-    if (!target) return;
-    event.preventDefault();
-    const {id, origin} = squadDrag;
+    if (squadPress?.pointerId !== event.pointerId) return;
+    const drag = squadDrag;
+    const target = drag && squadDropTarget(document.elementFromPoint(event.clientX, event.clientY));
     clearSquadDrag();
+    if (!target) return;
+    const {id, origin} = drag;
     squad.selectedId = null;
     refreshSquad(() => change(career => {
       if (!target.toBench) return changeCareerStarter(career, target.slotId, id);
@@ -321,10 +334,23 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       toast(error.message);
     }
   }
-  app.addEventListener('dragstart', startSquadDrag);
-  app.addEventListener('dragover', hoverSquadDrop);
-  app.addEventListener('drop', dropSquadPlayer);
-  app.addEventListener('dragend', clearSquadDrag);
+  app.addEventListener('pointerdown', pressSquadPlayer);
+  app.addEventListener('pointermove', moveSquadPlayer);
+  app.addEventListener('pointerup', dropSquadPlayer);
+  app.addEventListener('pointerleave', () => {
+    if (!squadDrag) clearSquadDrag();
+  });
+  for (const type of ['pointercancel', 'lostpointercapture']) {
+    app.addEventListener(type, event => {
+      if (squadPress?.pointerId === event.pointerId) clearSquadDrag();
+    });
+  }
+  app.addEventListener('click', event => {
+    if (!ignoreSquadClick || event.detail === 0) return;
+    ignoreSquadClick = false;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
   app.addEventListener('load', event => {
     if (event.target.hasAttribute?.('data-career-portrait')) {
       event.target.classList.add('is-loaded');
@@ -344,6 +370,11 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     }
   });
   app.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && squadDrag) {
+      event.preventDefault();
+      clearSquadDrag();
+      return;
+    }
     if (event.key === 'Escape' && app.dataset.screen === 'career' && tab === 'squad' && squad.selectedId) {
       event.preventDefault();
       cancelPick();

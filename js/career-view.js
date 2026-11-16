@@ -373,7 +373,7 @@ function squad(career, ui, {selectedId = null} = {}) {
       <ul class="career-roster-list" aria-labelledby="career-roster-title">
         ${reserves.map(player => `<li class="career-roster-row">
           <button type="button" class="career-roster-player" data-action="career-select-player" data-value="${esc(player.id)}" aria-pressed="${selectedId === player.id}"
-            draggable="true" data-career-drag-player="${esc(player.id)}">
+            data-career-drag-player="${esc(player.id)}">
             ${rosterPortrait(player, ui)}
             <span class="career-roster-name">
               <strong>${esc(player.nome)}</strong>
@@ -401,7 +401,7 @@ function squad(career, ui, {selectedId = null} = {}) {
           const label = target ? `Colocar ${selected.nome} como ${slot.label} no lugar de ${player.nome}` : `${slot.label} · ${player.nome} · ${player.ovr} OVR`;
           return `<button type="button" class="career-squad-slot${target ? ' is-target' : ''}${origin ? ' is-origin' : ''}"
             style="left:${slot.x}%;top:${slot.y}%" data-action="career-pick-slot" data-value="${slot.id}"
-            draggable="true" data-career-drag-player="${esc(player.id)}"
+            data-career-drag-player="${esc(player.id)}"
             aria-label="${esc(label)}" title="${esc(label)}" aria-pressed="${origin}"${selected && !origin && !target ? ' disabled' : ''}>
             ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-token-photo', 56))}
             <span class="career-squad-role">${slot.label}</span>
