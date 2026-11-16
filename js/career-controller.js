@@ -213,6 +213,19 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     for (const target of targets) target.classList.add('is-drop-ready');
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setData('text/plain', id);
+
+    const avatar = source.querySelector('.career-roster-avatar, .career-squad-token');
+    if (!avatar) return;
+    const {left, top, width, height} = avatar.getBoundingClientRect();
+    const preview = avatar.cloneNode(true);
+    preview.classList.add('career-drag-avatar');
+    preview.setAttribute('aria-hidden', 'true');
+    Object.assign(preview.style, {
+      left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`,
+    });
+    document.body.append(preview);
+    event.dataTransfer.setDragImage(preview, Math.round(width / 2), Math.round(height / 2));
+    requestAnimationFrame(() => preview.remove());
   }
   function squadDropTarget(element) {
     if (!squadDrag?.layout.contains(element)) return null;
