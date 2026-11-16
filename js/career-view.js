@@ -380,7 +380,7 @@ function squad(career, ui, {selectedId = null} = {}) {
             </span>
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
-          <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Vender ${esc(player.nome)}">€</button>
+          <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Vender ${esc(player.nome)}">$</button>
         </li>`).join('') || '<li class="career-roster-empty">Sem jogadores na reserva.</li>'}
       </ul>
     </section>
@@ -388,7 +388,7 @@ function squad(career, ui, {selectedId = null} = {}) {
       <div class="career-card-heading">
         <div><span class="eyebrow accent">11 titulares</span><h2 id="career-squad-title">Escalação titular</h2></div>
         <div class="career-squad-header-actions">
-          ${selected && starters.has(selected.id) ? `<button type="button" class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${esc(selected.id)}" aria-label="Vender ${esc(selected.nome)}">€</button>` : ''}
+          ${selected && starters.has(selected.id) ? `<button type="button" class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${esc(selected.id)}" aria-label="Vender ${esc(selected.nome)}">$</button>` : ''}
           <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
         </div>
       </div>
