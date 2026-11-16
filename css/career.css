@@ -659,7 +659,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 .career-roster-player:hover { background: var(--surface-alt); }
 .career-roster-player[aria-pressed="true"] { border-left-color: var(--green); background: var(--accent-soft); }
-.career-roster-player:focus-visible, .career-roster-release:focus-visible, .career-roster-switch button:focus-visible { outline-offset: -3px; }
+.career-roster-player:focus-visible, .career-roster-switch button:focus-visible { outline-offset: -3px; }
 .career-roster-avatar {
   position: relative;
   display: grid;
@@ -696,16 +696,13 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 }
 .career-roster-rating { text-align: center; font-size: 22px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
 .career-roster-rating small { display: block; margin-top: 3px; color: var(--muted); font-size: 8px; }
-.career-roster-release { flex: 0 0 40px; border-left: 1px solid var(--border); background: transparent; color: var(--muted); }
-.career-roster-release:hover { background: var(--surface-alt); color: var(--red); }
-.career-roster-release svg { width: 16px; height: 16px; }
 .career-roster-sell {
-  flex: none;
-  padding: 0 7px;
+  flex: 0 0 40px;
+  padding: 0;
   border-left: 1px solid var(--border);
   background: transparent;
   color: var(--green);
-  font-size: 11px;
+  font-size: 17px;
   font-weight: 750;
 }
 .career-roster-sell:hover { background: var(--accent-soft); }

@@ -241,7 +241,7 @@ export function signCareerPlayer(career, id) {
   const offer = careerMarketCatalog().byId.get(id);
   if (!offer) throw Error('Jogador não encontrado no mercado.');
   if (career.roster.some(player => player.id === offer.player.id)) throw Error('Esse jogador já está no elenco.');
-  if (career.roster.length >= careerRosterLimit(career)) throw Error('O elenco está cheio. Libere um reserva no Elenco.');
+  if (career.roster.length >= careerRosterLimit(career)) throw Error('O elenco está cheio. Venda um jogador no Elenco para abrir vaga.');
   if (offer.price === null) throw Error('Jogador sem valor de mercado confirmado.');
   if (career.budget < offer.price) throw Error('Saldo insuficiente para a contratação.');
   const player = careerPlayerValuation(offer.player)?.id === offer.id

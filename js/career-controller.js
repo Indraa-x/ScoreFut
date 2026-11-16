@@ -1,6 +1,6 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
-  careerSale, commitCareerRound, migrateCareerRoster, prepareCareerRound, releaseCareerPlayer, renameCareerClub,
+  careerSale, commitCareerRound, migrateCareerRoster, prepareCareerRound, renameCareerClub,
   sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
@@ -342,10 +342,6 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       'career-upgrade': value => change(career => upgradeCareerFacility(career, value), 'Instalação melhorada.'),
       'career-sell': openSale,
       'career-sell-confirm': confirmSale,
-      'career-release': value => {
-        if (squad.selectedId === value) squad.selectedId = null;
-        refreshSquad(() => change(career => releaseCareerPlayer(career, value), 'Jogador liberado.'));
-      },
     },
   };
 }

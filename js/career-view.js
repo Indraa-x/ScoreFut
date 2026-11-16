@@ -390,7 +390,6 @@ function squad(career, ui, {group = 'reserves', selectedId = null} = {}) {
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
           <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Vender ${esc(player.nome)}">$</button>
-          ${showingReserves ? `<button type="button" class="career-roster-release" data-action="career-release" data-value="${esc(player.id)}" aria-label="Liberar ${esc(player.nome)}" title="Liberar ${esc(player.nome)}">${ui.icon('close')}</button>` : ''}
         </li>`).join('') || '<li class="career-roster-empty">Sem jogadores na reserva.</li>'}
       </ul>
     </section>
@@ -432,7 +431,7 @@ export function renderCareerMarketResults(career, ui, filters) {
   const {entries, total, owned, page, pages} = careerMarketPage(career, filters);
   const full = career.roster.length >= careerRosterLimit(career);
   return `<p class="career-market-count" id="career-market-count" tabindex="-1">${total.toLocaleString('pt-BR')} ${total === 1 ? 'jogador encontrado' : 'jogadores encontrados'}</p>
-    ${full ? '<p class="career-market-note">Elenco cheio. Libere um reserva para contratar.</p>' : ''}
+    ${full ? '<p class="career-market-note">Elenco cheio. Venda um jogador para abrir vaga.</p>' : ''}
     ${entries.length ? `<div class="career-market-grid">${entries.map(({id, player, squad, league, price}) => {
       const signed = owned.has(player.id);
       const affordable = price !== null && career.budget >= price;
