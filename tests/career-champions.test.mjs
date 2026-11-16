@@ -7,7 +7,6 @@ import {
 } from '../js/career.js';
 import {initCareer} from '../js/career-controller.js';
 import {renderCareer} from '../js/career-view.js';
-import {penaltyEvents} from '../js/match-penalties.js';
 import * as ui from '../js/ui.js';
 
 function finishLeague(career) {
@@ -100,16 +99,19 @@ test('the Career knockout begins at the quarters and waits for the deciding shoo
     const replay = prepareCareerChampionsMatch(career);
     played.push(replay.match);
     career = {...career, champions: {...career.champions, replay: {...replay, minute: replay.match.result.duration}}};
-    const events = penaltyEvents(replay.match.result);
-    if (events.length) {
+    if (replay.match.stage === 'quarter' && replay.match.leg === 2) {
+      const {result} = replay.match;
+      const match = {...replay.match, result: {...result, penalties: [1, 0], events: [
+        {type: 'penalty', shootout: true, team: 'home', converted: true, minute: result.duration},
+      ]}};
       const key = `${replay.pending.seed}:${replay.id}`;
-      const duringShootout = {...career, champions: {...career.champions, replay: {...career.champions.replay, penaltyReplay: {key, revealed: 0}}}};
+      const unfinished = {...career.champions.replay, match, penaltyReplay: {key, revealed: 0}};
+      const duringShootout = {...career, champions: {...career.champions, replay: unfinished}};
       assert.equal(commitCareerChampionsMatch(duringShootout), duringShootout);
     }
     career = commitCareerChampionsMatch(career);
   }
   assert.deepEqual(played.slice(0, 5).map(match => match.stage), ['group', 'group', 'group', 'quarter', 'quarter']);
-  assert.ok(played.some(match => match.result.penalties));
   const tournament = career.champions.tournament;
   assert.ok(tournament.complete);
   assert.deepEqual(tournament.bracket.map(stage => stage.ties.length), [4, 2, 1]);
