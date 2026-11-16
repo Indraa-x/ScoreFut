@@ -490,14 +490,20 @@ export function commitCareerRound(career) {
   };
 }
 
-export const LAST_SAFE_POSITION = 16;
+const relegationStarts = {bundesliga: 17, premier: 18, laliga: 18, brasileirao: 17, seriea: 18};
+
+export function careerRelegation(career) {
+  const firstRelegation = relegationStarts[career.leagueId] ?? relegationStarts.brasileirao;
+  return {firstRelegation, playoffPosition: career.leagueId === 'bundesliga' ? firstRelegation - 1 : null};
+}
 
 export function advanceCareerSeason(career) {
   if (career.round < careerFixtures(career).length) throw Error('Termine a temporada antes de avançar.');
   const table = careerTable(career);
   const position = table.findIndex(row => row.id === CAREER_TEAM) + 1;
   const prize = 407 + (table.length - position) * 33;
-  const relegated = table.slice(LAST_SAFE_POSITION).map(row => row.id);
+  const {firstRelegation} = careerRelegation(career);
+  const relegated = table.slice(firstRelegation - 1).map(row => row.id);
   const season = {number: career.season, position, points: table[position - 1].points, prize, relegated};
   const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
   return career.facilities.academy > 1 ? addAcademyPlayer(next) : next;

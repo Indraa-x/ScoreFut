@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {CAREER_TEAM, careerFixtures, careerScorers, careerTable, careerTopScorers, changeCareerStyle, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
+import {CAREER_TEAM, advanceCareerSeason, careerFixtures, careerScorers, careerTable, careerTopScorers, changeCareerStyle, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
 import {expectedGoals} from '../js/engine.js';
 import * as ui from '../js/ui.js';
 import {renderCareer} from '../js/career-view.js';
@@ -57,6 +57,24 @@ test('Brasileirão standings follow the committed scores through all 38 rounds',
   const resultRows = html.match(/aria-label="Resultados da rodada 38">[\s\S]*?<tbody>([\s\S]*?)<\/tbody>/)[1];
   assert.deepEqual([...resultRows.matchAll(/<strong>(\d+) × (\d+)<\/strong>/g)].map(([, home, away]) => [+home, +away]),
     career.results.at(-1).map(result => [result.homeGoals, result.awayGoals]));
+});
+
+test('career marks the relegation places for each league and records the same clubs at season end', () => {
+  for (const [id, first, last] of [
+    ['bundesliga', 17, 18], ['premier', 18, 20], ['laliga', 18, 20], ['brasileirao', 17, 20], ['seriea', 18, 20],
+  ]) {
+    const career = createCareer(42, careerLeague(id).teams[0].id);
+    const html = renderCareer(career, 'standings', ui);
+    assert.match(html, new RegExp(`Zona de rebaixamento</strong><span>${first}º ao ${last}º lugar`));
+    const markedPlaces = [...html.matchAll(/<tr class="(?:career-own-row )?career-relegation-row">\s*<td><span class="career-table-position">(\d+)/g)]
+      .map(([, position]) => Number(position));
+    assert.deepEqual(markedPlaces, Array.from({length: last - first + 1}, (_, index) => first + index));
+    assert.equal(html.includes('Repescagem</strong><span>16º lugar'), id === 'bundesliga');
+
+    const final = {...career, round: careerFixtures(career).length};
+    assert.match(renderCareer(final, 'standings', ui), /Rebaixados<\/strong>/);
+    assert.deepEqual(advanceCareerSeason(final).seasons[0].relegated, careerTable(final).slice(first - 1).map(row => row.id));
+  }
 });
 
 test('career styles persist, change match expectations and leave the balanced default intact', () => {

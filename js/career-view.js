@@ -12,8 +12,8 @@ import {renderMatchGoals} from './match-goals.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded} from './match-penalties.js';
 import {
-  CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, FACILITIES, LAST_SAFE_POSITION, MAX_FACILITY_LEVEL, careerClub, careerStyle,
-  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRosterLimit, careerTable, careerTopScorers, facilityPrice, nextCareerMatch,
+  CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, FACILITIES, MAX_FACILITY_LEVEL, careerClub, careerStyle,
+  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRelegation, careerRosterLimit, careerTable, careerTopScorers, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -199,7 +199,7 @@ function standings(career, ui, rows) {
   const totalRounds = careerFixtures(career).length;
   const lastRound = career.results.at(-1);
   const seasonFinished = career.round >= totalRounds;
-  const hasRelegationZone = rows.length > LAST_SAFE_POSITION;
+  const {firstRelegation, playoffPosition} = careerRelegation(career);
   const relegationLabel = seasonFinished ? 'Rebaixados' : 'Zona de rebaixamento';
   return `<section class="career-card panel career-standings" aria-labelledby="career-standings-title">
     <header class="career-standings-header">
@@ -231,21 +231,28 @@ function standings(career, ui, rows) {
         </tr></thead>
         <tbody>${rows.map((row, index) => {
           const isOwn = row.id === CAREER_TEAM;
-          const inRelegationZone = index >= LAST_SAFE_POSITION;
-          const rowClass = [isOwn && 'career-own-row', inRelegationZone && 'career-relegation-row'].filter(Boolean).join(' ');
+          const position = index + 1;
+          const inRelegationZone = position >= firstRelegation;
+          const inPlayoff = position === playoffPosition;
+          const rowClass = [isOwn && 'career-own-row', inRelegationZone && 'career-relegation-row', inPlayoff && 'career-relegation-playoff'].filter(Boolean).join(' ');
+          const status = inRelegationZone ? (seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento') : (inPlayoff ? 'Na posição de repescagem' : '');
+          const zone = inPlayoff ? {label: 'Repescagem', range: `${position}º lugar`, style: 'career-relegation-playoff', icon: 'subs'}
+            : position === firstRelegation ? {label: relegationLabel, range: `${position}º ao ${rows.length}º lugar`, style: 'career-relegation-row', icon: 'arrow'} : null;
           const draws = row.points - row.wins * 3;
           const losses = row.played - row.wins - draws;
           const difference = row.goalsFor - row.goalsAgainst;
-          return `<tr${rowClass ? ` class="${rowClass}"` : ''}>
-            <td>${index + 1}</td>
-            <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<span class="career-table-status">Seu clube</span>' : ''}${inRelegationZone ? `<span class="career-table-status">${seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento'}</span>` : ''}</span></th>
+          return `${zone ? `<tr class="career-relegation-divider ${zone.style}"><td colspan="8">
+            <div class="career-relegation-heading"><strong>${ui.icon(zone.icon)}${zone.label}</strong><span>${zone.range}</span></div>
+          </td></tr>` : ''}
+          <tr${rowClass ? ` class="${rowClass}"` : ''}>
+            <td><span class="career-table-position">${position}</span></td>
+            <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<span class="career-table-status">Seu clube</span>' : ''}${status ? `<span class="career-table-status">${status}</span>` : ''}</span></th>
             <td class="career-standings-primary"><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
             <td>${difference > 0 ? '+' : ''}${difference}</td>
           </tr>`;
         }).join('')}</tbody>
       </table>
     </div>
-    ${hasRelegationZone ? `<p class="career-relegation-legend">${relegationLabel} · ${LAST_SAFE_POSITION + 1}º ao ${rows.length}º lugar</p>` : ''}
     </div>
     <div id="career-standings-scorers">
       ${scoringLeaders(career, ui)}
@@ -288,12 +295,17 @@ function overview(career, ui, rows, live) {
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const total = careerFixtures(career).length;
   const picks = liveMatch ? null : careerPicks(career);
+  const {firstRelegation, playoffPosition} = careerRelegation(career);
+  const seasonFinish = position === 1 ? 'Seu clube conquistou o título!'
+    : position >= firstRelegation ? `Seu clube foi rebaixado em ${position}º lugar.`
+    : position === playoffPosition ? `Seu clube terminou em ${position}º lugar, na posição de repescagem.`
+    : `Seu clube terminou em ${position}º lugar.`;
   const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
     ? `<header class="career-fixture-heading">${title('Próxima partida', roundLabel(career, career.round + 1, total))}</header>
       <div class="career-matchup career-fixture">${fixture.map((id, index) => `${index ? '<span class="career-fixture-separator" aria-hidden="true">×</span>' : ''}
         <div${id === CAREER_TEAM ? ' class="is-managed-club"' : ''}><span class="career-fixture-crest">${clubBadge(career, id, ui)}</span><strong>${esc(careerClub(career, id).nome)}</strong>${matchVenue(index === 0)}</div>`).join('')}</div>
       ${button(career.replay?.round === career.round ? 'Continuar partida' : 'Simular partida', 'career-play', `${career.season}:${career.round}`, true)}`
-    : `${title('Temporada encerrada', position === 1 ? 'Seu clube conquistou o título!' : position > LAST_SAFE_POSITION ? `Seu clube foi rebaixado em ${position}º lugar.` : `Seu clube terminou em ${position}º lugar.`)}
+    : `${title('Temporada encerrada', seasonFinish)}
       <p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
       ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
   return `<div class="career-columns">

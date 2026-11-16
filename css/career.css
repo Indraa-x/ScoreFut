@@ -1143,7 +1143,45 @@ body > .career-drag-avatar {
 .career-table :is(.career-crest, .club-badge) { width: 24px; height: 24px; flex: none; }
 .career-own-row { background: var(--accent-soft); }
 .career-own-row strong { color: var(--green); }
-.career-relegation-row > :first-child { border-inline-start: 2px solid var(--red); }
+.career-relegation-row { --zone-color: light-dark(#a23942, #f49396); }
+.career-relegation-playoff { --zone-color: light-dark(#805b12, #eac475); }
+.career-standings-clubs .career-table tbody :is(.career-relegation-row, .career-relegation-playoff) {
+  background: color-mix(in srgb, var(--zone-color) 6%, var(--surface));
+}
+.career-table tbody :is(.career-relegation-row, .career-relegation-playoff) > :first-child {
+  box-shadow: inset 3px 0 var(--zone-color);
+}
+.career-standings-clubs .career-table tbody tr.career-own-row:is(.career-relegation-row, .career-relegation-playoff) {
+  background: var(--accent-soft);
+}
+.career-standings-clubs .career-table tbody .career-relegation-divider {
+  background: color-mix(in srgb, var(--zone-color) 16%, var(--surface));
+}
+.career-table .career-relegation-divider td {
+  padding: 8px clamp(10px, 2vw, 20px);
+  border-top: 1px solid color-mix(in srgb, var(--zone-color) 35%, var(--border));
+}
+.career-relegation-heading,
+.career-relegation-heading strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.career-relegation-heading { justify-content: space-between; flex-wrap: wrap; font-size: 12px; }
+.career-relegation-heading strong { color: var(--zone-color); }
+.career-relegation-heading svg { width: 15px; height: 15px; flex: none; }
+.career-relegation-row .career-relegation-heading svg { transform: rotate(90deg); }
+.career-relegation-heading > span { color: var(--muted); }
+:is(.career-relegation-row, .career-relegation-playoff) .career-table-position {
+  display: inline-grid;
+  place-items: center;
+  min-width: 25px;
+  min-height: 25px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--zone-color) 14%, transparent);
+  color: var(--zone-color);
+  font-weight: 750;
+}
 .career-table-status {
   position: absolute;
   width: 1px;
@@ -1152,25 +1190,12 @@ body > .career-drag-avatar {
   clip-path: inset(50%);
   white-space: nowrap;
 }
-.career-standings .career-relegation-legend {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin: 12px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-.career-relegation-legend::before {
-  content: '';
-  width: 3px;
-  height: 13px;
-  flex: none;
-  border-radius: 2px;
-  background: var(--red);
-}
 .career-history small { display: block; margin-bottom: 8px; color: var(--muted); }
 @media (hover: hover) {
-  .career-table tbody tr:not(.career-own-row):hover { background: var(--surface-alt); }
+  .career-table tbody tr:not(.career-own-row, .career-relegation-divider):hover { background: var(--surface-alt); }
+  .career-standings-clubs .career-table tbody tr:not(.career-own-row, .career-relegation-divider):is(.career-relegation-row, .career-relegation-playoff):hover {
+    background: color-mix(in srgb, var(--zone-color) 10%, var(--surface-alt));
+  }
 }
 @media (max-width: 620px) {
   .career-table :is(th, td) { padding: 7px 5px; }
