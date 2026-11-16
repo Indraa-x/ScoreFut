@@ -465,10 +465,15 @@ function simulateCareerLeagueMatch(home, away, seed) {
   return simulateMatch(home, away, mulberry32(seed), {neutral: false, stoppageTimeAllowed: true});
 }
 
-function careerMatchIncome(career, isHome, result) {
+// Career budgets and receipts are in thousands of euros.
+const matchBaseIncome = {league: 5_200, group: 7_500, round16: 12_000, quarter: 12_000, semi: 12_000, final: 85_000};
+
+function careerMatchIncome(career, isHome, result, stage = 'league') {
+  const base = matchBaseIncome[stage];
+  if (stage === 'final') return base;
   const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 11;
   const homeIncome = 42 + (career.facilities.stadium - 1) * 20 + (careerFacilityLevel(career, 'hospitality') - 1) * 16;
-  return (isHome ? homeIncome : 16) + shopIncome
+  return base + (isHome ? homeIncome : 16) + shopIncome
     + (result.winnerId === CAREER_TEAM ? 26 : result.homeGoals === result.awayGoals ? 13 : 0);
 }
 
@@ -632,7 +637,7 @@ export function commitCareerChampionsMatch(career) {
   const replay = champions?.replay;
   if (!replay || replay.season !== career.season || replay.id !== careerChampionsFixture(career)?.id
     || !matchHasEnded({tournament: replay.pending, matchMinute: replay.minute, penaltyReplay: replay.penaltyReplay}, replay.match)) return career;
-  const income = careerMatchIncome(career, !replay.match.neutral && replay.match.homeId === CAREER_TEAM, replay.match.result);
+  const income = careerMatchIncome(career, !replay.match.neutral && replay.match.homeId === CAREER_TEAM, replay.match.result, replay.match.stage);
   const {pending, match} = replay;
   const recorded = pending.matches.find(fixture => fixture.id === match.id)?.result;
   const tournament = matchExpulsions(match.result) && !recorded?.expulsions
