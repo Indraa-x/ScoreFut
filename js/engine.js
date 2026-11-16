@@ -1,4 +1,4 @@
-import {assignMatchDiscipline} from './match-discipline.js';
+import {assignMatchDiscipline, matchExpulsions} from './match-discipline.js';
 /**
  * ScoreFut: pure, seeded eleven-player match and tournament simulation.
  * Ratings are editorial estimates, not a prediction about real football.
@@ -235,7 +235,9 @@ export function squadTeam(squad, requestedFormation = null) {
   const source = { squadId: squad.id, clubId: squad.clubId, clubName: squad.nome, ano: squad.ano };
   const lineup = [{ player: goalkeeper, slot: FORMATIONS[best.key].slots[0], ...source }, ...best.picks.map(pick => ({ ...pick, ...source }))];
   const strength = calculateTeam(lineup);
-  return { id: squad.id, name: `${squad.nome} ${squad.ano}`, nome: squad.nome, clubId: squad.clubId, ano: squad.ano, cores: squad.cores, monograma: squad.monograma, lineup, strength, formation: best.key, isUser: false };
+  const starters = new Set(lineup.map(entry => entry.player.id));
+  const reserves = candidates.filter(player => !starters.has(player.id)).map(player => ({...source, player}));
+  return { id: squad.id, name: `${squad.nome} ${squad.ano}`, nome: squad.nome, clubId: squad.clubId, ano: squad.ano, cores: squad.cores, monograma: squad.monograma, lineup, reserves, strength, formation: best.key, isUser: false };
 }
 
 export function poisson(lambda, rng) {
@@ -244,6 +246,57 @@ export function poisson(lambda, rng) {
   let count = 0;
   do { count += 1; product *= rng(); } while (product > threshold);
   return count - 1;
+}
+
+export function teamForNextMatch(team, previous) {
+  if (!previous) return team;
+  const side = (previous.homeId ?? previous.home) === team.id ? 'home' : 'away';
+  const ids = new Set(matchExpulsions(previous.result ?? previous)?.[side]);
+  const missing = team.lineup.filter(entry => ids.has(entry.player.id));
+  if (!missing.length) return team;
+
+  const available = (team.reserves ?? []).filter(entry => !ids.has(entry.player.id));
+  const assignments = new Map();
+  function replace(entry, tried) {
+    const candidates = available.filter(reserve => positionFit(reserve.player, entry.slot) !== null)
+      .sort((a, b) => positionFit(a.player, entry.slot) - positionFit(b.player, entry.slot) || b.player.ovr - a.player.ovr);
+    for (const reserve of candidates) {
+      if (tried.has(reserve.player.id)) continue;
+      tried.add(reserve.player.id);
+      const assigned = assignments.get(reserve.player.id);
+      if (!assigned || replace(assigned.entry, tried)) {
+        assignments.set(reserve.player.id, {entry, reserve});
+        return true;
+      }
+    }
+    return false;
+  }
+  for (const entry of missing) replace(entry, new Set());
+  const bySlot = new Map([...assignments.values()].map(({entry, reserve}) => [entry.slot.id, {...reserve, slot: entry.slot}]));
+  const lineup = team.lineup.map(entry => ids.has(entry.player.id) ? bySlot.get(entry.slot.id) : entry).filter(Boolean);
+  const banned = missing.map(({player: {id, nome}}) => ({id, nome}));
+  return {...team, lineup, strength: calculateTeam(lineup), banned, suspensionVacancies: team.lineup.length - lineup.length};
+}
+
+export function matchTeams(tournament, match) {
+  return [match.homeId, match.awayId].map((id, index) => {
+    const team = tournament.teams.find(candidate => candidate.id === id);
+    const change = match.suspensions?.[index === 0 ? 'home' : 'away'];
+    return change ? {...team, ...change} : team;
+  });
+}
+
+export function prepareFixtureTeams(tournament, match, extraMatches = []) {
+  return matchTeams(tournament, match).map((team, index) => {
+    const involved = game => game.result && [game.homeId, game.awayId].includes(team.id);
+    const previous = extraMatches.findLast(involved) ?? tournament.matches.findLast(involved);
+    const available = teamForNextMatch(team, previous);
+    if (available !== team) {
+      const {lineup, strength, banned, suspensionVacancies} = available;
+      (match.suspensions ??= {})[index === 0 ? 'home' : 'away'] = {lineup, strength, banned, suspensionVacancies};
+    }
+    return available;
+  });
 }
 
 const choose = (items, rng) => items[Math.floor(rng() * items.length)];
@@ -358,7 +411,7 @@ function shootout(home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
 
 /** No RNG or team mutation. All events needed for the live replay are returned. */
 function simulateLegacyMatch(home, away, rng, { knockout = false, extraTimeAllowed = true, stoppageTimeAllowed = false, extraTimeTrigger = null, settings = SIMULATION_SETTINGS } = {}) {
-  const xG = [expectedGoals(home, away, settings), expectedGoals(away, home, settings)];
+  const xG = [kickoffGoals(home, away, settings), kickoffGoals(away, home, settings)];
   const regulationGoals = [poisson(xG[0], rng), poisson(xG[1], rng)];
   const extraGoals = [0, 0];
   const regulationDrawNeedsExtraTime = typeof extraTimeTrigger === 'function'
@@ -444,11 +497,17 @@ function withoutDismissed(team,side,events){
 /** Five-minute blocks, split at causal incidents. No final score is drawn up front.
  * A substitution represents a small freshness recovery: this dataset has no bench.
  * Stoppage time adds exposure; extra time adds exposure with reduced freshness. */
+function kickoffGoals(team, opponent, settings) {
+  return expectedGoals(team, opponent, settings)
+    * (settings.redAttackFactor ?? .65) ** (team.suspensionVacancies ?? 0)
+    * (settings.redDefenseExposure ?? 1.08) ** (opponent.suspensionVacancies ?? 0);
+}
+
 function simulateStatefulMatch(home,away,rng,{knockout=false,extraTimeAllowed=true,stoppageTimeAllowed=false,extraTimeTrigger=null,neutral=true,mode=null,settings}){
   home={...home,[SIMULATION_METRICS]:effectiveMetrics(home,settings)};
   away={...away,[SIMULATION_METRICS]:effectiveMetrics(away,settings)};
   const teams=[home,away],sides=['home','away'];
-  const baseline=[expectedGoals(home,away,settings),expectedGoals(away,home,settings)];
+  const baseline=[kickoffGoals(home,away,settings),kickoffGoals(away,home,settings)];
   const venue=!neutral && mode!=='world-cup'?1+(settings.homeAdvantage??.06):1;
   baseline[0]*=venue;
   const spread=settings.overdispersion??.18,tempo=1+(rng()*2-1)*spread;
@@ -767,8 +826,7 @@ function playCupRound(tournament) {
   const selected = next.matches.filter(match => !match.result && match.round === next.progressRound + 1);
   if (!selected.length) throw new Error('A rodada do mata-mata não possui partidas.');
   for (const match of selected) {
-    const home = next.teams.find(team => team.id === match.homeId);
-    const away = next.teams.find(team => team.id === match.awayId);
+    const [home, away] = prepareFixtureTeams(next, match);
     const tie = stage.ties.find(tie => tie.id === match.tieId);
     const first = match.leg === 2 ? next.matches.find(fixture => fixture.id === tie?.matchIds[0]) : null;
     const aggregateDrawNeedsExtraTime = first
@@ -910,8 +968,7 @@ export function playNextRound(tournament) {
   const selected = next.matches.filter(match => !match.result && (league ? match.round === next.progressRound+1 : groupRound ? match.stage === 'group' && match.round === next.progressRound + 1 : match.stage === stage));
   if (!selected.length) throw new Error(`A rodada ${next.progressRound + 1} não possui partidas.`);
   selected.forEach(match => {
-    const home = next.teams.find(team => team.id === match.homeId);
-    const away = next.teams.find(team => team.id === match.awayId);
+    const [home, away] = prepareFixtureTeams(next, match);
     const matchRng = next.independentFixtures ? mulberry32(hashSeed(`${next.seed}:${match.id}`)) : rng;
     match.result = simulateMatch(home, away, matchRng, { knockout: !league && !groupRound,
       stoppageTimeAllowed:['champions','world-cup'].includes(next.mode),neutral:!!match.neutral || next.mode==='world-cup',mode:next.mode,settings: next.settings });

@@ -1,4 +1,5 @@
 import {escapeHtml as escapeHtml} from './html.js';
+import {matchTeams} from './engine.js';
 import {matchIncidentsAt,playerSentOff} from './match-discipline.js';
 import {goalOriginLabel} from './match-goal-origins.js';
 import { currentMatch } from './match-session.js';
@@ -86,7 +87,7 @@ export function initMatchPlayback({ app, state, onFinish, onSave }) {
     const match = currentMatch(state), pitch = app.querySelector('[data-live-pitch]');
     if (!match || !pitch) return;
     state.matchPlaying=!document.hidden && !matchHasEnded(state,match);
-    const home = state.tournament.teams.find(team => team.id === match.homeId), away = state.tournament.teams.find(team => team.id === match.awayId);
+    const [home, away] = matchTeams(state.tournament, match);
     const key = `${state.tournament.seed}:${match.id}:${home.id}:${away.id}`;
     if (key !== motionKey) { motion = createMatchMotion(home, away, match, {seed:state.tournament.seed}); motionKey = key; }
     nodes = {

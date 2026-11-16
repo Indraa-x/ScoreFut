@@ -32,6 +32,9 @@ body:has(#app[data-screen="match"])>footer{display:none}
 .match-penalties{display:block;font-size:10px;color:var(--muted);margin-top:5px}
 .match-penalties b{color:var(--text);margin-left:4px}
 .live-field-wrap{display:flex;flex:1;min-height:300px;padding:18px 24px 8px;background:#f0f2f4}
+.match-suspension-notice{padding:8px 10px;margin-top:8px;border-left:2px solid var(--red);color:var(--muted);font-size:12px}
+.match-suspension-notice>strong{color:var(--red)}
+.match-suspension-notice ul{margin:4px 0 0;padding-left:16px}
 .live-pitch-area{display:grid;place-items:center;flex:1;width:100%;min-height:0;container-type:size}
 .live-pitch{position:relative;width:min(100cqw,calc(100cqh * 1.85),720px);aspect-ratio:1.85;height:auto;border-radius:7px;overflow:hidden;background:repeating-linear-gradient(90deg,#205f3d 0%,#205f3d 10%,#256b44 10%,#256b44 20%);box-shadow:0 3px 12px #1b402a28;border:1px solid #315a40;isolation:isolate}
 .live-pitch>.pitch-lines{position:absolute;inset:0;width:100%;height:100%;stroke-opacity:.5;pointer-events:none}

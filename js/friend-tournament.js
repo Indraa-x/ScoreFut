@@ -1,4 +1,4 @@
-import {hashSeed,mulberry32,resolveKnockoutTie,simulateMatch,SIMULATION_SETTINGS} from './engine.js';
+import {hashSeed,mulberry32,prepareFixtureTeams,resolveKnockoutTie,simulateMatch,SIMULATION_SETTINGS} from './engine.js';
 
 const labels={semi:'Semifinal',final:'Final'};
 
@@ -19,12 +19,12 @@ function playStage(tournament,stage,pairings,firstRound){
     fixtures.push(...matches);
     if(leg===1){
       for(const match of matches){
-        const home=tournament.teams.find(team=>team.id===match.homeId),away=tournament.teams.find(team=>team.id===match.awayId);
+        const [home,away]=prepareFixtureTeams(tournament,match);
         match.result=simulateMatch(home,away,rng,{knockout:false,extraTimeAllowed:false,stoppageTimeAllowed:true,mode:'friends',settings:tournament.settings});
       }
     }else{
       for(const match of matches){
-        const home=tournament.teams.find(team=>team.id===match.homeId),away=tournament.teams.find(team=>team.id===match.awayId);
+        const [home,away]=prepareFixtureTeams(tournament,match,fixtures);
         const first=fixtures.find(previous=>previous.id===match.id.replace(/-2$/,'-1'));
         const aggregateDraw=scores=>first.result.awayGoals+scores[0]===first.result.homeGoals+scores[1];
         match.result=simulateMatch(home,away,rng,{knockout:false,extraTimeAllowed:true,extraTimeTrigger:aggregateDraw,stoppageTimeAllowed:true,mode:'friends',settings:tournament.settings});

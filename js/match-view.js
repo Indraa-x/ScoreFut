@@ -1,4 +1,5 @@
 import {playerSentOff} from './match-discipline.js';
+import {matchTeams} from './engine.js';
 import {renderMatchGoals} from './match-goals.js';
 import {matchHasEnded,renderPenaltyMarks,penaltyProgress} from './match-penalties.js';
 import {championsGroup,renderChampionsSidebar} from './champions-view.js';
@@ -14,8 +15,7 @@ const rgb = color => {
 
 export function renderLivePitch(s, {esc, icon, pitchLines}) {
   const t = s.tournament, match = currentMatch(s), result = match.result;
-  const home = t.teams.find(team => team.id === match.homeId);
-  const away = t.teams.find(team => team.id === match.awayId);
+  const [home, away] = matchTeams(t, match);
   const anchors = lineupAnchors(home, away);
   const homeKit = home.id === t.userTeamId ? '#13754b' : '#3169b8';
   const awayKit = away.id === t.userTeamId ? '#13754b' : '#3169b8';
@@ -25,7 +25,9 @@ export function renderLivePitch(s, {esc, icon, pitchLines}) {
     const [r,g,b]=rgb(kit), numberColor=r*.299+g*.587+b*.114>160?'#17232b':'#fff';
     return `<span class="match-player ${side}${playerSentOff(result,side,entry.player.id,s.matchMinute)?' sent-off':''}" data-match-player style="left:${anchor.x}%;top:${anchor.y}%;--kit:${esc(kit)};--number-color:${numberColor}" title="Nº ${esc(entry.player.camisa || index + 1)} · ${esc(displayName(team))}"><b>${esc(entry.player.camisa || index + 1)}</b></span>`;
   };
-  return `<div class="live-field-wrap"><div class="live-pitch-area"><div class="live-pitch" data-live-pitch aria-label="Simulação das duas escalações em campo">${pitchLines(false)}${(home.lineup || []).map((entry, index) => player(entry, index, home, 'home')).join('')}${(away.lineup || []).map((entry, index) => player(entry, index, away, 'away')).join('')}<span class="match-ball" data-match-ball>${icon('ball')}</span><div class="set-piece-notice" data-set-piece-notice role="status" aria-live="polite" hidden><strong data-set-piece-title></strong><span data-set-piece-team></span></div><div class="goal-notice" data-goal-notice>${icon('ball')}<strong>Gol!</strong><span data-goal-name></span></div></div></div></div>`;
+  const suspensions = [home, away].filter(team => team.banned?.length).map(team =>
+    `<li><strong>${esc(displayName(team))}</strong> · ${team.banned.map(player => esc(player.nome)).join(', ')}</li>`).join('');
+  return `<div class="live-field-wrap"><div class="live-pitch-area"><div class="live-pitch" data-live-pitch aria-label="Simulação das duas escalações em campo">${pitchLines(false)}${(home.lineup || []).map((entry, index) => player(entry, index, home, 'home')).join('')}${(away.lineup || []).map((entry, index) => player(entry, index, away, 'away')).join('')}<span class="match-ball" data-match-ball>${icon('ball')}</span><div class="set-piece-notice" data-set-piece-notice role="status" aria-live="polite" hidden><strong data-set-piece-title></strong><span data-set-piece-team></span></div><div class="goal-notice" data-goal-notice>${icon('ball')}<strong>Gol!</strong><span data-goal-name></span></div></div></div></div>${suspensions ? `<div class="match-suspension-notice"><strong>Suspensos nesta partida</strong><ul>${suspensions}</ul></div>` : ''}`;
 }
 
 export function renderMatchSpeed(speed, icon, action = 'match-speed', extraControl = '') {
@@ -62,7 +64,7 @@ export function renderMatchView(s, { esc, icon, badge, pitchLines, btn }) {
   if (!match) return '';
   const result=match.result,ended=matchHasEnded(s,match),deciding=penaltyProgress(s,match).playing,friendMode=t.mode==='friends';
   const twoLegged = !!match.tieId;
-  const home = t.teams.find(team => team.id === match.homeId), away = t.teams.find(team => team.id === match.awayId);
+  const [home, away] = matchTeams(t, match);
   const scores = scoreAt(result, s.matchMinute);
   const homeKit=home.id===t.userTeamId?'#13754b':'#3169b8';
   const awayKit=away.id===t.userTeamId?'#13754b':'#3169b8';

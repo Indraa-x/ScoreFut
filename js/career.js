@@ -5,9 +5,10 @@ import {FIRST_CHAMPIONS_FIELD, startsInChampions} from '../data/career-2026/cham
 import {MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
 import {
   FORMATIONS, calculateTeam, createCareerChampionsTournament, hashSeed, mulberry32, playNextRound,
-  positionFit, simulateMatch, simulateTournament, squadTeam,
+  positionFit, simulateMatch, simulateTournament, squadTeam, teamForNextMatch,
 } from './engine.js';
 import {goalsAt} from './match-goals.js';
+import {matchExpulsions} from './match-discipline.js';
 import {formatMatchEventMinute} from './match-motion.js';
 import {matchHasEnded} from './match-penalties.js';
 import {careerMarketCatalog, careerPlayerValuation} from './career-market.js';
@@ -420,16 +421,21 @@ function matchTeam(career, id) {
         const lineup = FORMATIONS[formation].slots.map(slot => ({
           slot, player: club.jogadores.find(player => player.id === assignments[slot.id]), clubId: id, ano: club.ano,
         }));
-        opponentTeams.set(id, {id, name: club.nome, clubId: id, lineup, strength: calculateTeam(lineup), formation});
+        const starters = new Set(Object.values(assignments));
+        const reserves = club.jogadores.filter(player => !starters.has(player.id)).map(player => ({player, clubId: id, ano: club.ano}));
+        opponentTeams.set(id, {id, name: club.nome, clubId: id, lineup, reserves, strength: calculateTeam(lineup), formation});
       } else opponentTeams.set(id, squadTeam(opponents.get(id)));
     }
     return opponentTeams.get(id);
   }
   const bonus = career.facilities.training - 1;
+  const entryFor = player => ({player: {...player, ovr: Math.min(99, player.ovr + bonus)}, clubId: CAREER_TEAM, ano: career.season});
   const lineup = careerPicks(career).map(pick => {
     if (!pick.player || positionFit(pick.player, pick.slot) === null) throw Error('Complete a escalação antes de jogar.');
-    return {...pick, player: {...pick.player, ovr: Math.min(99, pick.player.ovr + bonus)}, clubId: CAREER_TEAM, ano: career.season};
+    return {...pick, ...entryFor(pick.player)};
   });
+  const starters = new Set(Object.values(career.lineup));
+  const reserves = career.roster.filter(player => !starters.has(player.id)).map(entryFor);
   const style = CAREER_STYLES[careerStyle(career)].profile;
   const defenseBonus = (careerFacilityLevel(career, 'gym') - 1) * 0.02;
   const midfieldBonus = (careerFacilityLevel(career, 'recovery') - 1) * 0.02;
@@ -440,7 +446,7 @@ function matchTeam(career, id) {
     defense: (style?.defense ?? 1) * (1 + defenseBonus),
     tempo: style?.tempo ?? 0,
   } : style;
-  return {id, name: career.name, crest: career.crest, isUser: true, lineup, strength: calculateTeam(lineup), formation: career.formation, ...(tacticalProfile && {tacticalProfile})};
+  return {id, name: career.name, crest: career.crest, isUser: true, lineup, reserves, strength: calculateTeam(lineup), formation: career.formation, ...(tacticalProfile && {tacticalProfile})};
 }
 
 export function careerScorers(match) {
@@ -466,6 +472,10 @@ function careerMatchIncome(career, isHome, result) {
     + (result.winnerId === CAREER_TEAM ? 26 : result.homeGoals === result.awayGoals ? 13 : 0);
 }
 
+function previousLeagueMatch(results, id) {
+  return results?.find(match => [match.home, match.away].includes(id));
+}
+
 export function prepareCareerRound(career) {
   const fixtures = careerFixtures(career)[career.round];
   if (!fixtures) throw Error('A temporada já terminou.');
@@ -473,14 +483,19 @@ export function prepareCareerRound(career) {
   const id = `${career.season}:${career.round}`;
   let replay;
   let income = 0;
+  const lastRound = career.results.at(-1) ?? career.leagueCarryover;
+  const oldReplay = career.replay?.round === career.round - 1 && career.replay.season === career.season
+    ? career.replay.tournament.userMatches[0] : null;
   const round = fixtures.map(([home, away], index) => {
-    const teams = [matchTeam(career, home), matchTeam(career, away)];
+    const teams = [home, away].map(id => teamForNextMatch(matchTeam(career, id),
+      id === CAREER_TEAM && oldReplay ? oldReplay : previousLeagueMatch(lastRound, id)));
     const userMatch = home === CAREER_TEAM || away === CAREER_TEAM;
     // A change to one team's lineup or tactics must not reroll the other fixtures.
     const match = simulateCareerLeagueMatch(...teams, seed + index * 0x9e3779b9);
     const scorers = userMatch ? careerScorers(match)
       : match.scorers.map(({playerId, name, team, goals}) => ({playerId, name, team, goals}));
-    const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers};
+    const expulsions = matchExpulsions(match);
+    const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers, ...(expulsions && {expulsions})};
     if (userMatch) {
       income = careerMatchIncome(career, home === CAREER_TEAM, match);
       result.income = income;
@@ -502,9 +517,10 @@ export function commitCareerRound(career) {
   if (!replay || career.round !== replay.round || career.season !== replay.season ||
       replay.minute < replay.tournament.userMatches[0].result.duration) return career;
   const match = replay.tournament.userMatches[0];
+  const expulsions = matchExpulsions(match.result);
   const results = replay.results.map(result =>
     result.home === match.homeId && result.away === match.awayId
-      ? {...result, homeGoals: match.result.homeGoals, awayGoals: match.result.awayGoals, scorers: careerScorers(match.result)}
+      ? {...result, homeGoals: match.result.homeGoals, awayGoals: match.result.awayGoals, scorers: careerScorers(match.result), ...(expulsions && {expulsions})}
       : result
   );
   return {
@@ -517,19 +533,27 @@ function simulatedLeagueQualifiers(career, league) {
   const ids = league.teams.map(team => team.id);
   const seed = hashSeed(`${career.seed}:${career.season}:${league.id}`);
   const fixtures = leagueFixtures(ids[0], ids.slice(1), seed);
-  const results = fixtures.map((games, round) => games.map(([home, away], index) => {
-    const {homeGoals, awayGoals} = simulateCareerLeagueMatch(matchTeam(career, home), matchTeam(career, away), seed + round * 71 + index * 0x9e3779b9);
-    return {home, away, homeGoals, awayGoals};
-  }));
+  const results = [];
+  for (const [round, games] of fixtures.entries()) {
+    const lastRound = results.at(-1);
+    results.push(games.map(([home, away], index) => {
+      const teams = [home, away].map(id => teamForNextMatch(matchTeam(career, id), previousLeagueMatch(lastRound, id)));
+      const match = simulateCareerLeagueMatch(...teams, seed + round * 71 + index * 0x9e3779b9);
+      return {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, expulsions: matchExpulsions(match)};
+    }));
+  }
   return leagueTable(career, ids, results).slice(0, CHAMPIONS_PLACES).map(row => row.id);
 }
 
-function compactChampionsTournament(tournament) {
+function compactChampionsTournament(tournament, replayMatch) {
   // The current replay keeps its event log. Completed games need only their scores and scorers.
-  const matches = tournament.matches.map(match => {
+  const matches = tournament.matches.map(stored => {
+    const match = stored.id === replayMatch?.id ? replayMatch : stored;
     if (!match.result) return match;
+    const {suspensions, ...fixture} = match;
     const {homeGoals, awayGoals, winnerId, penalties, scorers} = match.result;
-    return {...match, result: {homeGoals, awayGoals, winnerId, ...(penalties && {penalties}), scorers}};
+    const expulsions = matchExpulsions(match.result);
+    return {...fixture, result: {homeGoals, awayGoals, winnerId, ...(penalties && {penalties}), scorers, ...(expulsions && {expulsions})}};
   });
   const byId = new Map(matches.map(match => [match.id, match]));
   return {...tournament, matches, userMatches: tournament.userMatches.map(match => byId.get(match.id)),
@@ -571,7 +595,10 @@ export function prepareCareerChampionsMatch(career) {
   const fixture = careerChampionsFixture(career);
   if (!fixture) throw Error('Não há partida da Champions League disponível.');
   const {tournament} = career.champions;
-  const teams = tournament.teams.map(team => team.id === CAREER_TEAM ? {...team, ...matchTeam(career, team.id)} : team);
+  const teams = tournament.teams.map(team => {
+    if (team.id === CAREER_TEAM) return {...team, ...matchTeam(career, team.id)};
+    return team.reserves ? team : {...team, reserves: matchTeam(career, team.id).reserves};
+  });
   const next = playNextRound({...tournament, teams});
   const match = next.userMatches.at(-1);
   const pending = compactChampionsTournament(next.campaign.eliminated && !next.complete ? simulateTournament(next) : next);
@@ -584,7 +611,11 @@ export function commitCareerChampionsMatch(career) {
   if (!replay || replay.season !== career.season || replay.id !== careerChampionsFixture(career)?.id
     || !matchHasEnded({tournament: replay.pending, matchMinute: replay.minute, penaltyReplay: replay.penaltyReplay}, replay.match)) return career;
   const income = careerMatchIncome(career, !replay.match.neutral && replay.match.homeId === CAREER_TEAM, replay.match.result);
-  return {...career, budget: career.budget + income, champions: {tournament: replay.pending, replay: null}};
+  const {pending, match} = replay;
+  const recorded = pending.matches.find(fixture => fixture.id === match.id)?.result;
+  const tournament = matchExpulsions(match.result) && !recorded?.expulsions
+    ? compactChampionsTournament(pending, match) : pending;
+  return {...career, budget: career.budget + income, champions: {tournament, replay: null}};
 }
 
 const relegationStarts = {bundesliga: 17, premier: 18, laliga: 18, brasileirao: 17, seriea: 18};
@@ -606,6 +637,10 @@ export function advanceCareerSeason(career) {
   const season = {number: career.season, position, points: table[position - 1].points, prize, relegated};
   if (champions?.championId) season.championsWinner = champions.championId;
   const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
+  const carryover = career.results.at(-1)?.filter(match => match.expulsions)
+    .map(({home, away, expulsions}) => ({home, away, expulsions}));
+  if (carryover?.length) next.leagueCarryover = carryover;
+  else delete next.leagueCarryover;
   if (careerHasChampions(career)) next.champions = nextCareerChampions(career, table);
   return career.facilities.academy > 1 ? addAcademyPlayer(next) : next;
 }

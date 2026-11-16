@@ -28,5 +28,16 @@ export function assignMatchDiscipline(events,home,away,duration,rng){
  }
 }
 
+export function matchExpulsions(result) {
+  if (result?.expulsions) return result.expulsions;
+  const expulsions = {};
+  for (const card of result?.events ?? []) {
+    if (card.type !== 'red' || !card.player?.id) continue;
+    const ids = expulsions[card.team] ??= [];
+    if (!ids.includes(card.player.id)) ids.push(card.player.id);
+  }
+  return Object.keys(expulsions).length ? expulsions : undefined;
+}
+
 export const matchIncidentsAt=(result,minute)=>result.events.filter(e=>!e.shootout&&['goal','red'].includes(e.type)&&e.minute<=minute);
 export const playerSentOff=(result,side,id,minute)=>result.events.some(e=>e.type==='red'&&e.team===side&&e.player.id===id&&e.minute<=minute);
