@@ -162,18 +162,31 @@ function pitch(career, ui, picks) {
   </div>`;
 }
 
+function scorerPlayer(career, {name, clubId, playerId}) {
+  const matches = player => player.nome === name && (!playerId || player.id === playerId);
+  const roster = careerClub(career, clubId).jogadores ?? [];
+  const ownPlayer = clubId === CAREER_TEAM ? career.roster.find(matches) : null;
+  const clubPlayer = ownPlayer ?? roster.find(matches);
+  if (clubPlayer || !playerId) return clubPlayer;
+
+  // A transferred player may have left the squad where the goals were scored.
+  const candidates = careerMarketCatalog().offers.filter(({player}) => matches(player));
+  return candidates.length === 1 ? candidates[0].player : {id: playerId};
+}
+
 function scoringLeaders(career, ui) {
   const {players, incomplete} = careerTopScorers(career);
   let rank = 0;
   return `<section class="career-standings-scorers" aria-label="Artilheiros do campeonato">
     ${players.length ? `<div class="career-table-wrap"><table class="career-table" aria-label="Artilheiros do campeonato">
       <thead><tr><th scope="col">Pos.</th><th scope="col">Jogador</th><th scope="col">Gols</th></tr></thead>
-      <tbody>${players.slice(0, 10).map(({name, clubId, goals}, index) => {
+      <tbody>${players.slice(0, 10).map((scorer, index) => {
+        const {name, clubId, goals} = scorer;
         if (goals !== players[index - 1]?.goals) rank = index + 1;
         const club = clubId === CAREER_TEAM ? career.name : careerClub(career, clubId).nome;
         return `<tr>
           <td>${rank}</td>
-          <th scope="row"><span class="career-table-team">${clubBadge(career, clubId, ui)}<span>${esc(name)}<small class="career-scoring-club">${esc(club)}</small></span></span></th>
+          <th scope="row"><span class="career-table-team">${rosterPortrait(scorerPlayer(career, scorer), ui)}<span>${esc(name)}<small class="career-scoring-club">${esc(club)}</small></span></span></th>
           <td class="career-standings-primary"><strong>${goals}</strong></td>
         </tr>`;
       }).join('')}</tbody>
@@ -322,7 +335,7 @@ function playerPortrait(player, className, size) {
 function rosterPortrait(player, ui) {
   return `<span class="career-roster-avatar" aria-hidden="true">
     ${ui.icon('users')}
-    ${playerPortrait(player, 'career-roster-photo', 44)}
+    ${player ? playerPortrait(player, 'career-roster-photo', 44) : ''}
   </span>`;
 }
 

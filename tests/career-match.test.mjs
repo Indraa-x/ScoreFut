@@ -131,8 +131,8 @@ test('older saves keep known goals and report missing scorers without merging na
       {home: away, away: other, homeGoals: 1, awayGoals: 0, scorers: [scorer]}],
   ]};
   assert.deepEqual(careerTopScorers(completed), {incomplete: true, players: [
-    {name: 'Bruno Henrique', goals: 3, clubId: CAREER_TEAM},
-    {name: 'Bruno Henrique', goals: 1, clubId: away},
+    {name: 'Bruno Henrique', goals: 3, clubId: CAREER_TEAM, playerId: 'bruno-henrique'},
+    {name: 'Bruno Henrique', goals: 1, clubId: away, playerId: 'bruno-henrique'},
   ]});
   assert.match(renderCareer(completed, 'standings', ui), /Ranking parcial/);
 });

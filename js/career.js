@@ -360,7 +360,7 @@ export function careerTopScorers(career) {
     const knownIds = identities.get(legacyKey);
     const id = playerId || (knownIds?.size === 1 ? knownIds.values().next().value : null);
     const key = JSON.stringify([clubId, id, id ? null : name]);
-    if (!players.has(key)) players.set(key, {name, goals: 0, clubId});
+    if (!players.has(key)) players.set(key, {name, goals: 0, clubId, playerId: id});
     const player = players.get(key);
     player.goals += count;
   }
