@@ -1220,11 +1220,10 @@ body > .career-drag-avatar {
   align-items: center;
   gap: 8px;
 }
-.career-relegation-heading { justify-content: space-between; flex-wrap: wrap; font-size: 12px; }
+.career-relegation-heading { font-size: 12px; }
 .career-relegation-heading strong { color: var(--zone-color); }
 .career-relegation-heading svg { width: 15px; height: 15px; flex: none; }
 .career-relegation-row .career-relegation-heading svg { transform: rotate(90deg); }
-.career-relegation-heading > span { color: var(--muted); }
 :is(.career-relegation-row, .career-relegation-playoff, .career-champions-zone) .career-table-position {
   display: inline-grid;
   place-items: center;

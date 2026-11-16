@@ -65,11 +65,11 @@ test('career marks the relegation places for each league and records the same cl
   ]) {
     const career = createCareer(42, careerLeague(id).teams[0].id);
     const html = renderCareer(career, 'standings', ui);
-    assert.match(html, new RegExp(`Zona de rebaixamento</strong><span>${first}º ao ${last}º lugar`));
+    assert.match(html, /Zona de rebaixamento<\/strong><\/div>/);
     const markedPlaces = [...html.matchAll(/<tr class="(?:career-own-row )?career-relegation-row">\s*<td><span class="career-table-position">(\d+)/g)]
       .map(([, position]) => Number(position));
     assert.deepEqual(markedPlaces, Array.from({length: last - first + 1}, (_, index) => first + index));
-    assert.equal(html.includes('Repescagem</strong><span>16º lugar'), id === 'bundesliga');
+    assert.equal(html.includes('Repescagem</strong></div>'), id === 'bundesliga');
 
     const final = {...career, round: careerFixtures(career).length};
     assert.match(renderCareer(final, 'standings', ui), /Rebaixados<\/strong>/);
