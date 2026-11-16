@@ -3,15 +3,19 @@ import {MARKET_VALUES} from '../data/career-2026/market-values.js';
 
 const PAGE_SIZE = 12;
 const MAX_PURCHASE_EUROS = 550_000_000;
+const OVERALL_PREMIUM_THRESHOLD = 78;
+const OVERALL_PREMIUM_EUROS = 360_000;
 const highestMarketValue = Math.max(...Object.values(MARKET_VALUES).flatMap(squad =>
   Object.values(squad).map(([euros]) => euros)));
 
-function purchasePrice(euros) {
+function purchasePrice(euros, overall) {
   if (!euros) return null;
   const share = euros / highestMarketValue;
-  const premium = (MAX_PURCHASE_EUROS - highestMarketValue) * share ** 2;
+  const marketPremium = Math.max(0, MAX_PURCHASE_EUROS - highestMarketValue) * share ** 2;
+  const ratingAboveThreshold = Math.max(0, overall - OVERALL_PREMIUM_THRESHOLD);
+  const sportingPremium = OVERALL_PREMIUM_EUROS * ratingAboveThreshold ** 2 * (1 - share);
   // Career balances are stored in thousands of euros.
-  return Math.round((euros + premium) / 1_000);
+  return Math.round(Math.min(MAX_PURCHASE_EUROS, euros + marketPremium + sportingPremium) / 1_000);
 }
 const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
 const byPrice = (a, b, direction) => {
@@ -34,7 +38,7 @@ const offers = CAREER_LEAGUES.flatMap(league => league.teams.flatMap(squad => sq
   return {
     id: `${squad.id}/${player.id}`,
     player, squad, league, euros, sourceUrl, valuedOn,
-    price: purchasePrice(euros),
+    price: purchasePrice(euros, player.ovr),
     search: normalize(`${player.nome} ${squad.nome} ${league.name} ${league.season}`),
   };
 })));

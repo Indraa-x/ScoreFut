@@ -32,11 +32,15 @@ test('buying uses the euro price curve and selling credits the market value', ()
   const career = {...createCareer(42), budget: 2_000_000};
   const unknown = offers.find(offer => offer.price === null);
   assert.equal(mbappe.euros, 200_000_000);
-  assert.equal(mbappe.price, 472_727);
+  assert.equal(mbappe.price, 478_258);
   assert.equal(Math.max(...offers.map(offer => offer.price ?? 0)), 550_000);
   const vini = byId.get('career26-laliga-243/vinicius-junior');
   assert.equal(vini.euros, 130_000_000);
-  assert.equal(vini.price, 245_227);
+  assert.equal(vini.price, 263_047);
+  const courtois = offers.find(offer => offer.player.nome === 'Thibaut Courtois');
+  assert.equal(courtois.euros, 15_000_000);
+  assert.equal(courtois.price, 64_840);
+  assert.ok(courtois.price < offers.find(offer => offer.player.nome === 'Gianluigi Donnarumma').price);
   assert.equal(byId.get('career26-brasileirao-20008/neymar').euros, 8_000_000);
   const signed = signCareerPlayer(career, mbappe.id);
   assert.deepEqual(signed.roster.at(-1), mbappe.player);
@@ -61,7 +65,7 @@ test('market cards show the club crest below the name, OVR, price in euros and p
   assert.match(html, /class="career-market-token" aria-hidden="true"><span class="career-season-crest"[^>]+league-laliga\.webp[^>]+><\/span><img[^>]+width="68" height="68"[^>]*><\/span>/);
   assert.match(html, /<h3>Kylian Mbappé<\/h3>\s*<div class="career-market-club">\s*<strong class="career-market-rating" aria-label="\d+ OVR">\d+<\/strong>\s*<span role="img" aria-label="Real Madrid"/);
   assert.doesNotMatch(html, /career-market-watermark/);
-  assert.match(html, /<small>Preço de compra<\/small>\s*<strong>€ 472,73 mi<\/strong>/);
+  assert.match(html, /<small>Preço de compra<\/small>\s*<strong>€ 478,26 mi<\/strong>/);
   assert.doesNotMatch(html, /R\$|<time\b/);
   assert.match(html, /data-action="career-sign" data-value="career26-laliga-243\/kylian-mbappe">Contratar/);
 });

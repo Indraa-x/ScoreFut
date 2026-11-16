@@ -470,7 +470,7 @@ function market(career, ui, filters = {}) {
       <div>
         <span class="eyebrow accent">${ui.icon('subs')} Central de transferências</span>
         <h2 id="career-market-title">Mercado de jogadores</h2>
-        <p>Elencos europeus 2026/27 e Brasileirão 2026. Preços de compra em euros, calculados a partir das avaliações do Transfermarkt.</p>
+        <p>Elencos europeus 2026/27 e Brasileirão 2026. Os preços de compra consideram o valor de mercado e o OVR de cada jogador.</p>
       </div>
       <dl class="career-market-stats">
         <div><dt>Jogadores no catálogo</dt><dd>${catalog.offers.length.toLocaleString('pt-BR')}</dd></div>
