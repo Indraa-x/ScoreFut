@@ -1,6 +1,6 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
-  careerSale, commitCareerRound, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
+  careerReserveReplacements, careerSale, commitCareerRound, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
   sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
@@ -20,6 +20,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let initial;
   let filters = {...marketDefaults};
   const squad = {selectedId: null};
+  let squadDrag = null;
   const selection = {leagueId: null, clubId: null};
   const activeSlot = () => careerSlot(careerSeasonTeam(storage.read(activeCareerKey))?.id);
   const savedCareer = () => storage.read(activeSlot());
@@ -112,6 +113,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     render();
   }
   function setTab(value) {
+    clearSquadDrag();
     tab = value === 'setup' || Object.hasOwn(CAREER_TABS, value) ? value : 'intro';
     squad.selectedId = null;
   }
@@ -178,6 +180,76 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     squad.selectedId = null;
     refreshSquad(() => change(current => changeCareerStarter(current, slotId, id), 'Escalação atualizada.'));
   }
+  function clearSquadDrag() {
+    if (!squadDrag) return;
+    const {layout, source, targets, disabledSlots, bench} = squadDrag;
+    squadDrag = null;
+    layout.classList.remove('is-dragging-player');
+    source.classList.remove('is-drag-origin');
+    bench.classList.remove('is-drop-hover');
+    for (const target of targets) target.classList.remove('is-drop-ready', 'is-drop-hover');
+    for (const slot of disabledSlots) slot.disabled = true;
+  }
+  function startSquadDrag(event) {
+    if (tab !== 'squad' || !event.dataTransfer) return;
+    const source = event.target.closest('[data-career-drag-player]');
+    const layout = source?.closest('.career-squad-layout');
+    if (!layout || source.disabled) return;
+    clearSquadDrag();
+    const career = read();
+    const id = source.dataset.careerDragPlayer;
+    const origin = source.dataset.action === 'career-pick-slot' ? source.dataset.value : null;
+    const destinations = new Set(careerDestinations(career, id).map(slot => slot.id));
+    const replacements = new Set(careerReserveReplacements(career, origin).map(player => player.id));
+    const bench = layout.querySelector('.career-roster');
+    const targets = [...layout.querySelectorAll('[data-career-drag-player]')].filter(player =>
+      player.dataset.action === 'career-pick-slot' ? destinations.has(player.dataset.value)
+        : replacements.has(player.dataset.careerDragPlayer));
+    const disabledSlots = targets.filter(target => target.disabled);
+    for (const slot of disabledSlots) slot.disabled = false;
+    squadDrag = {layout, source, id, origin, bench, targets, disabledSlots, replacements};
+    source.classList.add('is-drag-origin');
+    layout.classList.add('is-dragging-player');
+    for (const target of targets) target.classList.add('is-drop-ready');
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', id);
+  }
+  function squadDropTarget(element) {
+    if (!squadDrag?.layout.contains(element)) return null;
+    const slot = element.closest('.career-squad-slot');
+    if (slot && squadDrag.targets.includes(slot)) return {element: slot, slotId: slot.dataset.value};
+    const {bench, origin, replacements} = squadDrag;
+    if (!origin || !replacements.size || !bench.contains(element)) return null;
+    const reserve = element.closest('.career-roster-row')?.querySelector('[data-career-drag-player]');
+    if (reserve && !replacements.has(reserve.dataset.careerDragPlayer)) return null;
+    return {element: reserve ?? bench, slotId: origin, toBench: true, replacementId: reserve?.dataset.careerDragPlayer};
+  }
+  function hoverSquadDrop(event) {
+    if (!squadDrag) return;
+    const target = squadDropTarget(event.target);
+    for (const item of [...squadDrag.targets, squadDrag.bench]) {
+      item.classList.toggle('is-drop-hover', item === target?.element);
+    }
+    if (!target) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }
+  function dropSquadPlayer(event) {
+    const target = squadDropTarget(event.target);
+    if (!target) return;
+    event.preventDefault();
+    const {id, origin} = squadDrag;
+    clearSquadDrag();
+    squad.selectedId = null;
+    refreshSquad(() => change(career => {
+      if (!target.toBench) return changeCareerStarter(career, target.slotId, id);
+      if (career.lineup[origin] !== id) return career;
+      const reserves = careerReserveReplacements(career, origin);
+      const replacement = target.replacementId ? reserves.find(player => player.id === target.replacementId) : reserves[0];
+      if (!replacement) throw Error('Escolha um reserva compatível para a troca.');
+      return changeCareerStarter(career, origin, replacement.id);
+    }, 'Escalação atualizada.'));
+  }
   function updateMarketResults() {
     const results = app.querySelector('[data-career-market-results]');
     if (results) results.innerHTML = renderCareerMarketResults(read(), ui, filters);
@@ -236,6 +308,10 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       toast(error.message);
     }
   }
+  app.addEventListener('dragstart', startSquadDrag);
+  app.addEventListener('dragover', hoverSquadDrop);
+  app.addEventListener('drop', dropSquadPlayer);
+  app.addEventListener('dragend', clearSquadDrag);
   app.addEventListener('load', event => {
     if (event.target.hasAttribute?.('data-career-portrait')) {
       event.target.classList.add('is-loaded');

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {careerDestinations, careerPicks, changeCareerStarter, createCareer} from '../js/career.js';
+import {careerDestinations, careerPicks, careerReserveReplacements, changeCareerStarter, createCareer} from '../js/career.js';
 import {renderCareer} from '../js/career-view.js';
 import {positionFit} from '../js/engine.js';
 import * as ui from '../js/ui.js';
@@ -9,6 +9,7 @@ test('a reserve replaces a starter only in a compatible slot and sends the start
   const career = createCareer(42);
   const keeper = career.lineup.gol;
   const reserve = career.roster.find(player => player.tags.includes('GOL') && player.id !== keeper);
+  assert.deepEqual(careerReserveReplacements(career, 'gol').map(player => player.id), [reserve.id]);
   assert.deepEqual(careerDestinations(career, reserve.id).map(slot => slot.id), ['gol']);
   assert.throws(() => changeCareerStarter(career, 'ca', reserve.id), /posição compatível/);
   const next = changeCareerStarter(career, 'gol', reserve.id);
@@ -16,6 +17,7 @@ test('a reserve replaces a starter only in a compatible slot and sends the start
   assert.ok(!Object.values(next.lineup).includes(keeper));
   assert.equal(next.roster, career.roster);
   assert.equal(career.lineup.gol, keeper);
+  assert.deepEqual(careerReserveReplacements(next, 'gol').map(player => player.id), [keeper]);
 });
 
 test('a starter swaps with another only when both players fit their new slots', () => {
@@ -43,6 +45,7 @@ test('the roster renders the selected reserve and highlights only its compatible
   assert.deepEqual(targets.map(match => match[1]), ['gol']);
   assert.equal(html.match(/data-action="career-pick-slot"[^>]* disabled/g).length, 10);
   assert.equal(html.match(/class="career-squad-token"/g).length, 11);
+  assert.equal(html.match(/draggable="true" data-career-drag-player=/g).length, career.roster.length);
   const starter = renderCareer(career, 'squad', ui, null, undefined, {selectedId: career.lineup.gol});
   assert.ok(starter.includes(`class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${career.lineup.gol}"`));
 });

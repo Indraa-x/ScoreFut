@@ -739,6 +739,16 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-squad-slot .career-squad-token > strong { font-size: clamp(11px, 3.8cqw, 17px); }
 .career-squad-slot:is(:hover:not(:disabled), .is-origin) .career-squad-token { box-shadow: 0 0 0 3px #fff8; }
 .career-squad-slot.is-target .career-squad-token { border-color: #78efb4; box-shadow: 0 0 0 4px #52db97a6; }
+[data-career-drag-player]:not(:disabled) { cursor: grab; }
+.career-squad-layout.is-dragging-player .is-drag-origin { opacity: .45; }
+.career-squad-layout.is-dragging-player .career-squad-slot.is-drop-ready .career-squad-token {
+  box-shadow: 0 0 0 3px #78efb4;
+}
+.career-squad-layout.is-dragging-player .career-squad-slot.is-drop-hover .career-squad-token {
+  box-shadow: 0 0 0 5px #78efb4;
+}
+.career-roster-player.is-drop-ready { box-shadow: inset 3px 0 var(--green); }
+.career-roster.is-drop-hover, .career-roster-player.is-drop-hover { background: var(--accent-soft); }
 .career-squad-role {
   position: absolute;
   top: 0;

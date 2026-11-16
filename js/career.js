@@ -267,6 +267,14 @@ export function signCareerPlayer(career, id) {
   return {...career, budget: career.budget - offer.price, roster: [...career.roster, player]};
 }
 
+export function careerReserveReplacements(career, slotId) {
+  const slot = FORMATIONS[career.formation].slots.find(candidate => candidate.id === slotId);
+  if (!slot) return [];
+  const starters = new Set(Object.values(career.lineup));
+  return career.roster.filter(player => !starters.has(player.id) && positionFit(player, slot) !== null)
+    .sort((a, b) => positionFit(a, slot) - positionFit(b, slot) || b.ovr - a.ovr);
+}
+
 export function careerSale(career, id) {
   const player = career.roster.find(candidate => candidate.id === id);
   if (!player) throw Error('Jogador não encontrado no elenco.');
@@ -278,9 +286,7 @@ export function careerSale(career, id) {
   const slot = FORMATIONS[career.formation].slots.find(slot => career.lineup[slot.id] === id);
   let lineup = career.lineup;
   if (slot) {
-    const starters = new Set(Object.values(lineup));
-    const replacement = roster.filter(candidate => !starters.has(candidate.id) && positionFit(candidate, slot) !== null)
-      .sort((a, b) => positionFit(a, slot) - positionFit(b, slot) || b.ovr - a.ovr)[0];
+    const [replacement] = careerReserveReplacements(career, slot.id);
     lineup = replacement ? {...lineup, [slot.id]: replacement.id} : bestLineup(roster, career.formation);
     if (!lineup) throw Error('A venda deixaria o time sem onze titulares compatíveis com a formação atual.');
   }
