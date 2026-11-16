@@ -1,6 +1,7 @@
 import {allSquads} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
+import {FIRST_CHAMPIONS_FIELD, startsInChampions} from '../data/career-2026/champions-qualifiers.js';
 import {MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
 import {
   FORMATIONS, calculateTeam, createCareerChampionsTournament, hashSeed, mulberry32, playNextRound,
@@ -169,12 +170,12 @@ export function createCareer(seed, clubId) {
     if (!club) throw Error('Escolha um clube válido.');
     const league = careerLeague(club.leagueId);
     const roster = [...club.jogadores];
-    return {
+    return migrateCareerChampions({
       version: CAREER_VERSION, seed, clubId, leagueId: league.id, name: club.nome,
       season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET, facilities: {...initialFacilityLevels},
       roster, opponentIds: league.teams.filter(team => team.id !== clubId).map(team => team.id),
       ...startingLineup(roster), results: [], seasons: [],
-    };
+    });
   }
   const roster = [...startingRoster];
   const opponentIds = [...clubs.values()].slice(0, 15).map(squad => squad.id);
@@ -535,11 +536,9 @@ function compactChampionsTournament(tournament) {
     bracket: tournament.bracket.map(stage => ({...stage, matches: stage.matches.map(match => byId.get(match.id))}))};
 }
 
-function nextCareerChampions(career, domesticTable) {
-  const seed = hashSeed(`${career.seed}:${career.season}:champions`);
+function createChampionsEdition(career, field, seed) {
   const rng = mulberry32(seed);
-  const qualifiers = championsLeagues.map(league => shuffled(league.id === career.leagueId
-    ? domesticTable.slice(0, CHAMPIONS_PLACES).map(row => row.id) : simulatedLeagueQualifiers(career, league), rng));
+  const qualifiers = field.map(ids => shuffled(ids.map(id => id === career.clubId ? CAREER_TEAM : id), rng));
   const groups = qualifiers[0].map((_, index) => shuffled(qualifiers.map(ids => ids[index]), rng));
   const teams = groups.flat().map(id => {
     const team = matchTeam(career, id);
@@ -548,6 +547,18 @@ function nextCareerChampions(career, domesticTable) {
   const tournament = createCareerChampionsTournament(teams, groups, CAREER_TEAM, seed);
   return {tournament: teams.some(team => team.id === CAREER_TEAM) ? tournament
     : compactChampionsTournament(simulateTournament(tournament)), replay: null};
+}
+
+export function migrateCareerChampions(career) {
+  if (career.season !== 1 || career.champions || !startsInChampions(career.clubId)) return career;
+  const seed = hashSeed(`${career.seed}:2026-27:champions`);
+  return {...career, champions: createChampionsEdition(career, FIRST_CHAMPIONS_FIELD, seed)};
+}
+
+function nextCareerChampions(career, domesticTable) {
+  const field = championsLeagues.map(league => league.id === career.leagueId
+    ? domesticTable.slice(0, CHAMPIONS_PLACES).map(row => row.id) : simulatedLeagueQualifiers(career, league));
+  return createChampionsEdition(career, field, hashSeed(`${career.seed}:${career.season}:champions`));
 }
 
 export function careerChampionsFixture(career) {

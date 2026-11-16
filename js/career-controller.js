@@ -1,6 +1,6 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
-  careerReserveReplacements, careerSale, commitCareerRound, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
+  careerReserveReplacements, careerSale, commitCareerRound, migrateCareerChampions, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
   careerChampionsFixture, commitCareerChampionsMatch, prepareCareerChampionsMatch, sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
@@ -30,7 +30,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function read() {
     const saved = savedCareer();
     if (!saved) return initial ??= createCareer(crypto.getRandomValues(new Uint32Array(1))[0]);
-    const career = migrateCareerCurrency(migrateCareerRoster(saved));
+    const career = migrateCareerChampions(migrateCareerCurrency(migrateCareerRoster(saved)));
     if (career !== saved) storage.write(activeSlot(), career);
     return career;
   }

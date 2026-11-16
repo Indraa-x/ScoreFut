@@ -3,10 +3,12 @@ import assert from 'node:assert/strict';
 import {careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {
   CAREER_TEAM, advanceCareerSeason, careerChampionsFixture, careerFixtures, careerTable, changeCareerStyle,
-  commitCareerChampionsMatch, commitCareerRound, createCareer, prepareCareerChampionsMatch, prepareCareerRound,
+  commitCareerChampionsMatch, commitCareerRound, createCareer, migrateCareerChampions, nextCareerMatch,
+  prepareCareerChampionsMatch, prepareCareerRound,
 } from '../js/career.js';
 import {initCareer} from '../js/career-controller.js';
 import {renderCareer} from '../js/career-view.js';
+import {renderCareerSetup} from '../js/career-setup-view.js';
 import * as ui from '../js/ui.js';
 
 function finishLeague(career) {
@@ -17,9 +19,54 @@ function finishLeague(career) {
   return career;
 }
 
+function finishChampions(career) {
+  while (careerChampionsFixture(career)) {
+    const replay = prepareCareerChampionsMatch(career);
+    career = commitCareerChampionsMatch({...career, champions: {...career.champions,
+      replay: {...replay, minute: replay.match.result.duration}}});
+  }
+  return career;
+}
+
 const bayern = careerLeague('bundesliga').teams.find(team => team.nome === 'Bayern Munich');
-const seasonOne = finishLeague(createCareer(42, bayern.id));
+const seasonOne = finishChampions(finishLeague(createCareer(42, bayern.id)));
 const seasonTwo = advanceCareerSeason(seasonOne);
+
+test('the 2026/27 European top four start with domestic and Champions fixtures', () => {
+  const expected = {
+    bundesliga: ['Bayern Munich', 'Borussia Dortmund', 'RB Leipzig', 'VfB Stuttgart'],
+    premier: ['Arsenal', 'Manchester City', 'Manchester United', 'Aston Villa'],
+    laliga: ['Barcelona', 'Real Madrid', 'Villarreal', 'Atlético Madrid'],
+    seriea: ['Internazionale', 'Napoli', 'AS Roma', 'Como'],
+    brasileirao: [],
+  };
+  const field = Object.values(expected).flat().sort();
+  for (const [leagueId, qualifiers] of Object.entries(expected)) {
+    const league = careerLeague(leagueId);
+    const setup = renderCareerSetup(leagueId, null, [], ui);
+    assert.equal((setup.match(/career-club-champions/g) ?? []).length, qualifiers.length);
+    for (const club of league.teams) {
+      const career = createCareer(42, club.id);
+      assert.ok(nextCareerMatch(career));
+      assert.equal(Boolean(careerChampionsFixture(career)), qualifiers.includes(club.nome), club.nome);
+      if (career.champions) {
+        assert.deepEqual(career.champions.tournament.teams.map(team => team.name).sort(), field);
+        assert.equal(career.champions.tournament.progressRound, 0);
+      }
+    }
+  }
+});
+
+test('opening a previously saved first season adds Champions without resetting domestic progress', () => {
+  const {champions, ...newSave} = createCareer(42, bayern.id);
+  const replay = prepareCareerRound(newSave);
+  const played = commitCareerRound({...newSave, replay: {...replay, minute: replay.tournament.userMatches[0].result.duration}});
+  const continued = migrateCareerChampions(played);
+  assert.deepEqual(continued, {...played, champions});
+  assert.equal(migrateCareerChampions(continued), continued);
+  const laterSave = {...played, season: 2};
+  assert.equal(migrateCareerChampions(laterSave), laterSave);
+});
 
 test('the next Champions takes the actual domestic top four and four from each other European league', () => {
   const {tournament} = seasonTwo.champions;

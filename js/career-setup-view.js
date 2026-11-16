@@ -1,6 +1,7 @@
 import {assetUrl} from './asset-url.js';
 import {escapeHtml as esc} from './html.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
+import {startsInChampions} from '../data/career-2026/champions-qualifiers.js';
 
 export function seasonCrest(league, index = 0) {
   const x = index % 6 * 20;
@@ -28,7 +29,9 @@ function clubPicker(league, selected, hasSave, ui) {
     </div>
     <div class="career-setup-clubs">${league.teams.map(team => `<button class="career-club-choice" type="button" data-action="career-select-club" data-value="${team.id}" aria-pressed="${team === selected}">
       ${seasonCrest(league, team.crestIndex)}
-      <span><strong>${esc(team.nome)}</strong><small>${team.jogadores.length} jogadores</small></span>
+      <span><strong>${esc(team.nome)}</strong><small>${team.jogadores.length} jogadores</small>
+        ${startsInChampions(team.id) ? '<small class="career-club-champions">Champions na 1ª temporada</small>' : ''}
+      </span>
       ${team === selected ? ui.icon('check', 'class="career-club-selected"') : ''}
     </button>`).join('')}</div>
     ${selected ? `<div class="career-setup-confirm">

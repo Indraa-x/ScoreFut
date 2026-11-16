@@ -212,6 +212,11 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   padding: 9px 11px;
 }
 .career-club-choice .career-season-crest { width: 36px; height: 36px; }
+.career-setup .career-club-choice .career-club-champions {
+  margin-top: 4px;
+  color: light-dark(#244da8, #a8bdff);
+  font-weight: 700;
+}
 .career-setup .career-club-choice[aria-pressed="true"] { border-color: var(--green); background: var(--accent-soft); }
 .career-club-selected, .career-save-arrow { margin-left: auto; color: var(--green); }
 .career-save-mark { width: 39px; height: 39px; color: #196b49; }
