@@ -591,6 +591,17 @@ export function careerChampionsFixture(career) {
     && [match.homeId, match.awayId].includes(CAREER_TEAM));
 }
 
+const championsMatchdays = [4, 8, 12, 16, 19, 23, 26, 30];
+
+export function careerNextCompetition(career) {
+  const league = nextCareerMatch(career);
+  if (league && career.replay?.round === career.round && career.replay.season === career.season) return 'league';
+  const champions = careerChampionsFixture(career);
+  if (champions && (career.champions.replay?.id === champions.id ||
+    !league || career.round >= championsMatchdays[champions.round - 1])) return 'champions';
+  return league ? 'league' : null;
+}
+
 export function prepareCareerChampionsMatch(career) {
   const fixture = careerChampionsFixture(career);
   if (!fixture) throw Error('Não há partida da Champions League disponível.');

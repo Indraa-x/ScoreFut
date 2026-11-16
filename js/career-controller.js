@@ -1,7 +1,7 @@
 import {
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
   careerReserveReplacements, careerSale, commitCareerRound, migrateCareerChampions, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
-  careerChampionsFixture, commitCareerChampionsMatch, prepareCareerChampionsMatch, sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
+  careerChampionsFixture, careerNextCompetition, commitCareerChampionsMatch, prepareCareerChampionsMatch, sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale} from './career-view.js';
@@ -47,11 +47,11 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function save(next) {
     if (!storage.write(activeSlot(), next)) throw Error('O navegador não conseguiu salvar a carreira.');
   }
-  function loadMatch(career = read(), matchTab = 'overview') {
-    const champions = matchTab === 'champions';
+  function loadMatch(career = read(), competition = careerNextCompetition(career)) {
+    const champions = competition === 'champions';
     const replay = champions ? career.champions?.replay : career.replay;
     if (!replay) return false;
-    setTab(matchTab);
+    setTab('overview');
     live.tournament = champions ? {
       ...career.champions.tournament, teams: replay.pending.teams, userMatches: [replay.match],
     } : replay.tournament;
@@ -107,8 +107,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     live.penaltyReplay = null;
   }
   function attachMatch(active) {
-    const matchTab = live.tournament?.mode === 'champions' ? 'champions' : 'overview';
-    active = active && tab === matchTab && Boolean(live.tournament);
+    active = active && tab === 'overview' && Boolean(live.tournament);
     live.screen = active ? 'match' : null;
     playback.attach();
     if (active && live.matchPlaying) playback.start();
@@ -116,23 +115,23 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function startMatch(value) {
     try {
       let career = read();
-      if (`${career.season}:${career.round}` !== value) return;
+      if (tab !== 'overview' || careerNextCompetition(career) !== 'league' || `${career.season}:${career.round}` !== value) return;
       if (career.replay?.id !== value) {
         career = {...career, replay: prepareCareerRound(career)};
         save(career);
       }
-      loadMatch(career);
+      loadMatch(career, 'league');
       render();
     } catch (error) {
       toast(error.message);
     }
   }
   function startChampionsMatch(value) {
-    if (tab !== 'champions') return;
+    if (tab !== 'overview') return;
     try {
       let career = read();
       const fixture = careerChampionsFixture(career);
-      if (!fixture || `${career.season}:${fixture.id}` !== value) return;
+      if (careerNextCompetition(career) !== 'champions' || !fixture || `${career.season}:${fixture.id}` !== value) return;
       if (career.champions.replay?.id !== fixture.id) {
         career = {...career, champions: {...career.champions, replay: prepareCareerChampionsMatch(career)}};
         save(career);
@@ -144,12 +143,12 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     }
   }
   function updateChampionsView(key, value) {
-    if (tab !== 'champions' || live.tournament) return;
-    championsView[key] = value;
+    if (tab !== 'standings' || live.tournament) return;
+    championsView = {...championsView, [key]: value, championsDetailsOpen: true};
     render();
   }
   function openChampionsTie(id) {
-    if (tab !== 'champions' || !modal || modal.open) return;
+    if (tab !== 'standings' || !modal || modal.open) return;
     const career = read();
     if (!career.champions) return;
     const html = renderCareerChampionsTie(career, id, ui);
@@ -171,7 +170,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   }
   function setTab(value) {
     clearSquadDrag();
-    tab = value === 'setup' || Object.hasOwn(CAREER_TABS, value) ? value : 'intro';
+    tab = value === 'champions' ? 'overview' : value === 'setup' || Object.hasOwn(CAREER_TABS, value) ? value : 'intro';
     squad.selectedId = null;
   }
   function refreshSquad(update = render) {

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {
-  CAREER_TEAM, advanceCareerSeason, careerChampionsFixture, careerFixtures, careerTable, changeCareerStyle,
+  CAREER_TEAM, advanceCareerSeason, careerChampionsFixture, careerFixtures, careerNextCompetition, careerTable, changeCareerStyle,
   commitCareerChampionsMatch, commitCareerRound, createCareer, migrateCareerChampions, nextCareerMatch,
   prepareCareerChampionsMatch, prepareCareerRound,
 } from '../js/career.js';
@@ -103,7 +103,7 @@ test('Champions excludes Brazil and runs in the background when the European clu
   assert.ok(next.champions.tournament.championId);
   assert.equal(careerChampionsFixture(next), undefined);
   assert.equal(next.champions.tournament.bracket.at(-1).matches.length, 1);
-  assert.match(renderCareer(next, 'champions', ui), /ficou fora dos quatro primeiros/);
+  assert.match(renderCareer(next, 'standings', ui), /ficou fora dos quatro primeiros/);
 });
 
 test('Champions results stay private until full time and advance independently of the league', () => {
@@ -119,9 +119,9 @@ test('Champions results stay private until full time and advance independently o
     ui, render() {}, toast: message => assert.fail(message),
   });
   assert.equal(commitCareerChampionsMatch(saved), saved);
-  assert.doesNotMatch(renderCareer(saved, 'champions', ui), /data-action="career-champions-tie"/);
+  assert.doesNotMatch(renderCareer(saved, 'standings', ui), /data-action="career-champions-tie"/);
   const controller = restore();
-  controller.setTab('champions');
+  controller.setTab('overview');
   assert.match(controller.open(), /Continuar partida/);
   controller.actions['career-champions-play'](`${saved.season}:${replay.id}`);
   assert.match(controller.open(), /data-live-pitch/);
@@ -136,6 +136,24 @@ test('Champions results stay private until full time and advance independently o
   const written = saved;
   controller.actions['career-match-finish']();
   assert.equal(saved, written);
+});
+
+test('the same overview alternates between domestic and European fixtures', () => {
+  let career = createCareer(42, bayern.id);
+  assert.equal(careerNextCompetition(career), 'league');
+  for (let round = 0; round < 4; round++) {
+    const replay = prepareCareerRound(career);
+    career = commitCareerRound({...career, replay: {...replay, minute: replay.tournament.userMatches[0].result.duration}});
+  }
+  assert.equal(careerNextCompetition(career), 'champions');
+  const html = renderCareer(career, 'overview', ui);
+  assert.match(html, /Próxima partida[\s\S]*Champions League[\s\S]*data-action="career-champions-play"/);
+  assert.doesNotMatch(html, /data-value="champions"|data-action="career-play"/);
+  const replay = prepareCareerChampionsMatch(career);
+  career = commitCareerChampionsMatch({...career, champions: {...career.champions, replay: {...replay, minute: replay.match.result.duration}}});
+  assert.equal(career.round, 4);
+  assert.equal(careerNextCompetition(career), 'league');
+  assert.match(renderCareer(career, 'overview', ui), /Rodada 5 de 34[\s\S]*data-action="career-play"/);
 });
 
 test('the Career knockout begins at the quarters and waits for the deciding shootout', () => {
@@ -164,7 +182,7 @@ test('the Career knockout begins at the quarters and waits for the deciding shoo
   assert.deepEqual(tournament.bracket.map(stage => stage.ties.length), [4, 2, 1]);
   assert.equal(tournament.bracket.at(-1).matches.length, 1);
   assert.ok(tournament.bracket.at(-1).matches[0].neutral);
-  const html = renderCareer(career, 'champions', ui, null, undefined, undefined, undefined, {championsView: 'knockout'});
+  const html = renderCareer(career, 'standings', ui, null, undefined, undefined, undefined, {championsView: 'knockout'});
   assert.match(html, /career-champions-tie/);
   assert.doesNotMatch(html, /Oitavas de final/);
 });
