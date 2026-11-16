@@ -678,7 +678,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
       <dl class="career-summary">
         <div><dt>${ui.icon('calendar')} Temporada</dt><dd>${career.season}</dd></div>
         <div><dt>${ui.icon('chart')} Posição</dt><dd>${career.round ? `${position}º lugar` : '—'}</dd></div>
-        <div><dt>${ui.icon('card')} Orçamento</dt><dd>${money(career.budget)}</dd></div>
+        <div><dt>${ui.icon('wallet')} Orçamento</dt><dd>${money(career.budget)}</dd></div>
       </dl>
     </header>
     <nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}${hasChampions ? ' has-champions' : ''}" aria-label="Seções da carreira">
