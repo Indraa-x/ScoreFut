@@ -178,6 +178,7 @@ function scoringLeaders(career, ui) {
 
 function standings(career, ui, rows) {
   const totalRounds = careerFixtures(career).length;
+  const lastRound = career.results.at(-1);
   const seasonFinished = career.round >= totalRounds;
   const hasRelegationZone = rows.length > LAST_SAFE_POSITION;
   const relegationLabel = seasonFinished ? 'Rebaixados' : 'Zona de rebaixamento';
@@ -191,12 +192,23 @@ function standings(career, ui, rows) {
       <label><input type="radio" name="career-standings-view" value="scorers" aria-controls="career-standings-scorers"><span>Artilheiros</span></label>
     </div>
     <div class="career-standings-clubs" id="career-standings-clubs">
+    ${lastRound ? `<details class="career-standings-results">
+      <summary>Resultados da rodada ${career.round}</summary>
+      <table class="career-table" aria-label="Resultados da rodada ${career.round}">
+        <thead><tr><th scope="col">Mandante</th><th scope="col">Placar</th><th scope="col">Visitante</th></tr></thead>
+        <tbody>${lastRound.map(({home, away, homeGoals, awayGoals}) => `<tr${[home, away].includes(CAREER_TEAM) ? ' class="career-own-row"' : ''}>
+          <td>${esc(careerClub(career, home).nome)}</td>
+          <td><strong>${homeGoals} × ${awayGoals}</strong></td>
+          <td>${esc(careerClub(career, away).nome)}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </details>` : ''}
     <div class="career-table-wrap">
       <table class="career-table" aria-labelledby="career-standings-title">
         <thead><tr>
           <th scope="col" title="Posição">Pos.</th><th scope="col">Clube</th>
           <th scope="col" title="Pontos">Pts</th><th scope="col" title="Jogos">J</th>
-          <th scope="col" title="Vitórias">V</th><th scope="col" title="Derrotas">D</th><th scope="col" title="Saldo de gols">SG</th>
+          <th scope="col" title="Vitórias">V</th><th scope="col" title="Empates">E</th><th scope="col" title="Derrotas">D</th><th scope="col" title="Saldo de gols">SG</th>
         </tr></thead>
         <tbody>${rows.map((row, index) => {
           const isOwn = row.id === CAREER_TEAM;
@@ -208,7 +220,7 @@ function standings(career, ui, rows) {
           return `<tr${rowClass ? ` class="${rowClass}"` : ''}>
             <td>${index + 1}</td>
             <th scope="row"><span class="career-table-team">${clubBadge(career, row.id, ui)}<span>${esc(careerClub(career, row.id).nome)}</span>${isOwn ? '<span class="career-table-status">Seu clube</span>' : ''}${inRelegationZone ? `<span class="career-table-status">${seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento'}</span>` : ''}</span></th>
-            <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${losses}</td>
+            <td><strong>${row.points}</strong></td><td>${row.played}</td><td>${row.wins}</td><td>${draws}</td><td>${losses}</td>
             <td>${difference > 0 ? '+' : ''}${difference}</td>
           </tr>`;
         }).join('')}</tbody>

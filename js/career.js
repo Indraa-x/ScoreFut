@@ -418,14 +418,15 @@ export function prepareCareerRound(career) {
   const fixtures = careerFixtures(career)[career.round];
   if (!fixtures) throw Error('A temporada já terminou.');
   const seed = career.seed + career.season * 1009 + career.round * 71;
-  const rng = mulberry32(seed);
   const id = `${career.season}:${career.round}`;
   let replay;
   let income = 0;
-  const round = fixtures.map(([home, away]) => {
+  const round = fixtures.map(([home, away], index) => {
     const teams = [matchTeam(career, home), matchTeam(career, away)];
     const userMatch = home === CAREER_TEAM || away === CAREER_TEAM;
-    const match = simulateMatch(...teams, rng, {neutral: false, stoppageTimeAllowed: userMatch});
+    // A change to one team's lineup or tactics must not reroll the other fixtures.
+    const rng = mulberry32(seed + index * 0x9e3779b9);
+    const match = simulateMatch(...teams, rng, {neutral: false, stoppageTimeAllowed: true});
     const scorers = userMatch ? careerScorers(match)
       : match.scorers.map(({playerId, name, team, goals}) => ({playerId, name, team, goals}));
     const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers};
@@ -454,9 +455,8 @@ export function commitCareerRound(career) {
       replay.minute < replay.tournament.userMatches[0].result.duration) return career;
   const match = replay.tournament.userMatches[0];
   const results = replay.results.map(result =>
-    result.home === match.homeId && result.away === match.awayId &&
-      (!result.scorers || result.scorers.some(scorer => !scorer.minutes || !scorer.playerId))
-      ? {...result, scorers: careerScorers(match.result)}
+    result.home === match.homeId && result.away === match.awayId
+      ? {...result, homeGoals: match.result.homeGoals, awayGoals: match.result.awayGoals, scorers: careerScorers(match.result)}
       : result
   );
   return {

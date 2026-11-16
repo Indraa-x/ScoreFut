@@ -1,11 +1,63 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {CAREER_TEAM, careerScorers, careerTopScorers, changeCareerStyle, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
+import {CAREER_TEAM, careerFixtures, careerScorers, careerTable, careerTopScorers, changeCareerStyle, commitCareerRound, createCareer, prepareCareerRound} from '../js/career.js';
 import {expectedGoals} from '../js/engine.js';
 import * as ui from '../js/ui.js';
 import {renderCareer} from '../js/career-view.js';
 import {initCareer} from '../js/career-controller.js';
 import {scoreAt} from '../js/match-motion.js';
+import {careerLeague} from '../data/career-leagues.js';
+
+test('changing tactics in the Brasileirão does not change the other matches in the round', () => {
+  const palmeiras = careerLeague('brasileirao').teams.find(team => team.nome === 'Palmeiras');
+  const career = {...createCareer(42, palmeiras.id), round: 10};
+  const otherMatches = team => prepareCareerRound(team).results.filter(match =>
+    match.home !== CAREER_TEAM && match.away !== CAREER_TEAM);
+  assert.deepEqual(otherMatches(career), otherMatches(changeCareerStyle(career, 'attacking')));
+});
+
+test('Brasileirão standings follow the committed scores through all 38 rounds', () => {
+  const palmeiras = careerLeague('brasileirao').teams.find(team => team.nome === 'Palmeiras');
+  let career = createCareer(42, palmeiras.id);
+  const fixtures = careerFixtures(career);
+  const played = [];
+  for (const round of fixtures) {
+    const replay = prepareCareerRound(career);
+    const match = replay.tournament.userMatches[0];
+    const fullTime = match.result.duration;
+    assert.deepEqual(replay.results.map(game => [game.home, game.away]), round);
+    assert.equal(commitCareerRound({...career, replay}).round, career.round);
+    assert.deepEqual(scoreAt(match.result, fullTime), [
+      match.result.events.filter(event => event.type === 'goal' && event.team === 'home').length,
+      match.result.events.filter(event => event.type === 'goal' && event.team === 'away').length,
+    ]);
+    played.push(...replay.results);
+    career = commitCareerRound({...career, replay: {...replay, minute: fullTime}});
+    assert.deepEqual(career.results.at(-1), replay.results);
+    assert.equal(commitCareerRound(career), career);
+
+    const table = careerTable(career);
+    assert.equal(table.length, 20);
+    assert.deepEqual(table.map(row => row.points), table.map(row => row.points).sort((a, b) => b - a));
+    for (const row of table) {
+      const games = played.flatMap(game => game.home === row.id ? [[game.homeGoals, game.awayGoals]]
+        : game.away === row.id ? [[game.awayGoals, game.homeGoals]] : []);
+      const wins = games.filter(([scored, conceded]) => scored > conceded).length;
+      const draws = games.filter(([scored, conceded]) => scored === conceded).length;
+      assert.equal(row.played, career.round);
+      assert.equal(row.wins, wins);
+      assert.equal(row.points, wins * 3 + draws);
+      assert.equal(row.goalsFor - row.goalsAgainst, games.reduce((saldo, [scored, conceded]) => saldo + scored - conceded, 0));
+    }
+  }
+  assert.equal(played.length, 380);
+  const html = renderCareer(career, 'standings', ui);
+  assert.match(html, /Resultados da rodada 38/);
+  assert.match(html, /title="Empates">E/);
+  const resultRows = html.match(/aria-label="Resultados da rodada 38">[\s\S]*?<tbody>([\s\S]*?)<\/tbody>/)[1];
+  assert.deepEqual([...resultRows.matchAll(/<strong>(\d+) × (\d+)<\/strong>/g)].map(([, home, away]) => [+home, +away]),
+    career.results.at(-1).map(result => [result.homeGoals, result.awayGoals]));
+});
 
 test('career styles persist, change match expectations and leave the balanced default intact', () => {
   const career = createCareer(42);
@@ -139,7 +191,7 @@ test('simulating to the end uses the prepared result and credits only one round'
 test('the last result puts names and minutes in home and away columns, including old replays', () => {
   const career = createCareer(42);
   const away = career.opponentIds[0];
-  const result = {duration: 94, events: [
+  const result = {duration: 94, homeGoals: 2, awayGoals: 1, events: [
     {type: 'goal', minute: 19, team: 'home', player: {id: 'a', nome: 'Pedro Leal'}},
     {type: 'goal', minute: 54, team: 'away', player: {id: 'b', nome: 'Jogador Visitante'}},
     {type: 'goal', minute: 92, team: 'home', player: {id: 'a', nome: 'Pedro Leal'}},
@@ -160,5 +212,9 @@ test('the last result puts names and minutes in home and away columns, including
     tournament: {userMatches: [{homeId: CAREER_TEAM, awayId: away, result}]}};
   assert.match(renderCareer({...completed, results: [[oldLast]], replay}, 'overview', ui), /19′, 90\+2′/);
   assert.deepEqual(commitCareerRound({...career, replay}).results[0][0].scorers, scorers);
+  const stale = {...replay, results: [{...oldLast, homeGoals: 0, awayGoals: 0}]};
+  const reconciled = commitCareerRound({...career, replay: stale});
+  assert.deepEqual(reconciled.results[0][0], last);
+  assert.equal(careerTable(reconciled).find(row => row.id === CAREER_TEAM).points, 3);
   assert.match(renderCareer({...completed, results: [[oldLast]]}, 'overview', ui), /Pedro Leal/);
 });
