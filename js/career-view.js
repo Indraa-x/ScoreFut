@@ -230,7 +230,6 @@ function standings(career, ui, rows) {
         </tr>`).join('')}</tbody>
       </table>
     </details>` : ''}
-    ${hasChampions ? `<p class="career-qualification-hint">${championsLogo()} <span><strong>Champions League</strong> · 1º ao ${CHAMPIONS_PLACES}º lugar</span></p>` : ''}
     <div class="career-table-wrap">
       <table class="career-table" aria-labelledby="career-standings-title">
         <thead><tr>
@@ -246,7 +245,9 @@ function standings(career, ui, rows) {
           const inChampionsZone = hasChampions && position <= CHAMPIONS_PLACES;
           const rowClass = [isOwn && 'career-own-row', inRelegationZone && 'career-relegation-row', inPlayoff && 'career-relegation-playoff', inChampionsZone && 'career-champions-zone'].filter(Boolean).join(' ');
           const status = inRelegationZone ? (seasonFinished ? 'Rebaixado' : 'Na zona de rebaixamento') : (inPlayoff ? 'Na posição de repescagem' : '');
-          const zone = inPlayoff ? {label: 'Repescagem', range: `${position}º lugar`, style: 'career-relegation-playoff', icon: 'subs'}
+          const zone = inChampionsZone && position === 1
+            ? {label: 'Champions League', range: `1º ao ${CHAMPIONS_PLACES}º lugar`, style: 'career-champions-divider', icon: 'trophy'}
+            : inPlayoff ? {label: 'Repescagem', range: `${position}º lugar`, style: 'career-relegation-playoff', icon: 'subs'}
             : position === firstRelegation ? {label: relegationLabel, range: `${position}º ao ${rows.length}º lugar`, style: 'career-relegation-row', icon: 'arrow'} : null;
           const draws = row.points - row.wins * 3;
           const losses = row.played - row.wins - draws;

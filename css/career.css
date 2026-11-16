@@ -1103,19 +1103,6 @@ body > .career-drag-avatar {
 .champions-tie-dialog .career-season-crest { width: 30px; height: 30px; flex: none; }
 .career-champions .knockout-champion-cup .career-season-crest { width: 36px; height: 36px; margin-inline: auto; }
 .career-match-details { margin: 8px auto 0; }
-.career-qualification-hint {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin: 0 0 10px;
-  color: var(--muted);
-  font-size: 12px;
-}
-.career-qualification-hint img { width: 20px; height: 20px; border-radius: 3px; }
-.career-qualification-hint strong { color: var(--text); }
-.career-standings .career-champions-zone > :first-child {
-  box-shadow: inset 3px 0 light-dark(#385ab9, #8eaaff);
-}
 @media (max-width: 1023px) {
   .career-tabs.has-champions { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
@@ -1201,20 +1188,24 @@ body > .career-drag-avatar {
   --zone-color: light-dark(#b3213e, #ff7684);
   --zone-glow: #ff3758;
 }
+.career-champions-zone, .career-champions-divider {
+  --zone-color: light-dark(#234eb0, #9bb7ff);
+  --zone-glow: #4f7bff;
+}
 .career-relegation-playoff { --zone-color: light-dark(#805b12, #eac475); }
-.career-standings-clubs .career-table tbody :is(.career-relegation-row, .career-relegation-playoff) {
+.career-standings-clubs .career-table tbody :is(.career-relegation-row, .career-relegation-playoff, .career-champions-zone) {
   background: color-mix(in srgb, var(--zone-color) 6%, var(--surface));
 }
-.career-table tbody :is(.career-relegation-row, .career-relegation-playoff) > :first-child {
+.career-table tbody :is(.career-relegation-row, .career-relegation-playoff, .career-champions-zone) > :first-child {
   box-shadow: inset 3px 0 var(--zone-color);
 }
-.career-standings-clubs .career-table tbody tr.career-own-row:is(.career-relegation-row, .career-relegation-playoff) {
+.career-standings-clubs .career-table tbody tr.career-own-row:is(.career-relegation-row, .career-relegation-playoff, .career-champions-zone) {
   background: var(--accent-soft);
 }
 .career-standings-clubs .career-table tbody .career-relegation-divider {
   background: color-mix(in srgb, var(--zone-color) 16%, var(--surface));
 }
-.career-standings-clubs .career-table tbody .career-relegation-divider.career-relegation-row {
+.career-standings-clubs .career-table tbody .career-relegation-divider:is(.career-relegation-row, .career-champions-divider) {
   background: linear-gradient(105deg,
     color-mix(in srgb, var(--zone-glow) 28%, var(--surface)),
     color-mix(in srgb, var(--zone-glow) 6%, var(--surface)) 75%);
@@ -1234,7 +1225,7 @@ body > .career-drag-avatar {
 .career-relegation-heading svg { width: 15px; height: 15px; flex: none; }
 .career-relegation-row .career-relegation-heading svg { transform: rotate(90deg); }
 .career-relegation-heading > span { color: var(--muted); }
-:is(.career-relegation-row, .career-relegation-playoff) .career-table-position {
+:is(.career-relegation-row, .career-relegation-playoff, .career-champions-zone) .career-table-position {
   display: inline-grid;
   place-items: center;
   min-width: 25px;
@@ -1244,7 +1235,7 @@ body > .career-drag-avatar {
   color: var(--zone-color);
   font-weight: 750;
 }
-.career-relegation-row .career-table-position {
+:is(.career-relegation-row, .career-champions-zone) .career-table-position {
   background: color-mix(in srgb, var(--zone-glow) 17%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zone-glow) 22%, transparent),
     0 0 9px color-mix(in srgb, var(--zone-glow) 12%, transparent);
@@ -1260,7 +1251,7 @@ body > .career-drag-avatar {
 .career-history small { display: block; margin-bottom: 8px; color: var(--muted); }
 @media (hover: hover) {
   .career-table tbody tr:not(.career-own-row, .career-relegation-divider):hover { background: var(--surface-alt); }
-  .career-standings-clubs .career-table tbody tr:not(.career-own-row, .career-relegation-divider):is(.career-relegation-row, .career-relegation-playoff):hover {
+  .career-standings-clubs .career-table tbody tr:not(.career-own-row, .career-relegation-divider):is(.career-relegation-row, .career-relegation-playoff, .career-champions-zone):hover {
     background: color-mix(in srgb, var(--zone-color) 10%, var(--surface-alt));
   }
 }
