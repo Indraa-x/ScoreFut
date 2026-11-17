@@ -411,6 +411,26 @@ export function careerTopScorers(career) {
   };
 }
 
+// Season awards combine committed domestic and European games, never a pending replay.
+export function careerSeasonScorers(career) {
+  const european = (career.champions?.tournament?.matches ?? [])
+    .filter(match => match.result)
+    .map(({homeId, awayId, result}) => ({
+      home: homeId, away: awayId, homeGoals: result.homeGoals, awayGoals: result.awayGoals,
+      scorers: result.scorers,
+    }));
+  const results = [...career.results, european].map(round => round
+    .filter(match => match.home === CAREER_TEAM || match.away === CAREER_TEAM)
+    .map(match => {
+      const side = match.home === CAREER_TEAM ? 'home' : 'away';
+      return {home: CAREER_TEAM, away: null, homeGoals: match[`${side}Goals`], awayGoals: 0,
+        scorers: (match.scorers ?? []).filter(scorer => scorer.team === side)
+          .map(scorer => ({...scorer, team: 'home'}))};
+    }));
+  const ranking = careerTopScorers({...career, results});
+  return {...ranking, players: ranking.players.filter(player => player.clubId === CAREER_TEAM)};
+}
+
 function matchTeam(career, id) {
   if (id !== CAREER_TEAM) {
     if (!opponentTeams.has(id)) {

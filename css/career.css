@@ -4,24 +4,16 @@
 .career-hero .hero-play-label { font-size: clamp(20px, 2vw, 27px); }
 #app .career-hero .hero-play-cta { max-width: 100%; min-width: 0; padding-inline: clamp(14px, 2.2vw, 32px); }
 #app .career-hero .hero-play-cta:disabled { cursor: default; opacity: 1; }
-#app .career-hero .hero-play-cta.is-development { position: relative; overflow: hidden; isolation: isolate; }
-#app .career-hero .hero-play-cta.is-development::before {
+#app .career-hero .hero-play-cta.is-development { position: relative; overflow: hidden; padding-bottom: 13px; }
+#app .career-hero .hero-play-cta.is-development::after {
   position: absolute;
-  z-index: 0;
-  inset: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 8px;
   background: repeating-linear-gradient(135deg, #f7cf43 0 10px, #172019 10px 20px);
   content: "";
 }
-#app .career-hero .hero-play-cta.is-development .hero-play-content {
-  position: relative;
-  z-index: 1;
-  padding: 7px 12px;
-  border-radius: 8px;
-  background: rgba(23, 32, 25, .96);
-  box-shadow: 0 2px 8px #0008;
-  color: #f4f7f3;
-}
-#app .career-hero .hero-play-cta.is-development .career-tactic-icon { color: #f7cf43; }
 .career-hero .hero-actions .career-tactic-icon { width: 36px; height: 36px; flex: none; }
 #app .career-hero .hero-play-cta.is-career-launching:disabled { opacity: 1; cursor: progress; }
 @media (prefers-reduced-motion: no-preference) {
@@ -1099,6 +1091,7 @@ body > .career-drag-avatar {
 .champions-tie-dialog .career-season-crest { width: 30px; height: 30px; flex: none; }
 .career-champions .knockout-champion-cup .career-season-crest { width: 36px; height: 36px; margin-inline: auto; }
 .career-match-details { margin: 8px auto 0; }
+
 @media (max-width: 1023px) {
   .career-tabs.has-champions { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
@@ -1220,6 +1213,7 @@ body > .career-drag-avatar {
 .career-relegation-heading strong { color: var(--zone-color); }
 .career-relegation-heading svg { width: 15px; height: 15px; flex: none; }
 .career-relegation-row .career-relegation-heading svg { transform: rotate(90deg); }
+
 :is(.career-relegation-row, .career-relegation-playoff, .career-champions-zone) .career-table-position {
   display: inline-grid;
   place-items: center;
@@ -1437,7 +1431,6 @@ body > .career-drag-avatar {
 .career-pitch-legend i { background: #639aed; }
 .career-pitch-legend i.is-own { background: #52cf99; }
 .career-lineup-preview .career-pitch, .career-squad-field .career-pitch { box-shadow: 0 7px 16px #0003; }
-
 .career-content .career-market-player {
   background-image: linear-gradient(160deg, var(--accent-soft), transparent 58%);
 }
@@ -1482,4 +1475,34 @@ body > .career-drag-avatar {
 @media (prefers-reduced-motion: reduce) {
   .career-page :is(.career-tabs button, .career-market-player, .career-roster-player, .career-squad-token) { transition: none; }
 }
-
+/* End-of-season awards use the same celebration as the simulator. */
+.career-season-end.result-hero {
+  position: relative; isolation: isolate; overflow: hidden; display: flex;
+  flex-direction: column; align-items: center; min-height: 610px;
+  padding: 36px 28px 28px; text-align: center;
+  background: radial-gradient(ellipse at 50% 38%, #43c39112, transparent 60%), var(--surface);
+}
+.career-season-heading .eyebrow { color: var(--muted); font-size: 11px; letter-spacing: .08em; }
+.career-season-heading h2 { margin: 10px 0 6px; font-size: clamp(30px, 4vw, 44px); line-height: 1.1; }
+.career-season-heading p { color: var(--muted); margin: 0; }
+.career-season-award { display: grid; place-items: center; margin: 18px 0; }
+.career-season-end.result-hero .career-season-trophy { width: 240px; height: 260px; margin: 0; filter: drop-shadow(0 10px 20px #0005); animation: career-award-in .7s ease-out both; }
+.career-season-club .club-badge { width: 130px; height: 130px; }
+.career-season-scorers { display: grid; gap: 12px; width: 100%; }
+.career-season-label { color: var(--muted); font-size: 12px; font-weight: 700; }
+.career-season-leaders { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
+.career-season-scorer { display: flex; align-items: center; gap: 12px; text-align: left; }
+.career-season-scorer .career-roster-avatar { width: 64px; height: 64px; flex: 0 0 64px; border-radius: 50%; overflow: hidden; }
+.career-season-scorer .career-roster-photo { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+.career-season-scorer strong { display: block; font-size: 17px; }
+.career-season-scorer span:not(.career-roster-avatar) { display: block; color: var(--muted); margin-top: 4px; font-size: 12px; }
+.career-season-note, .career-season-empty { color: var(--muted); margin-top: 14px; font-size: 12px; }
+.career-season-footer { width: 100%; margin-top: auto; padding-top: 28px; }
+.career-season-footer p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+.career-season-footer .btn { min-width: 240px; }
+@keyframes career-award-in { from { opacity: 0; transform: translateY(18px) scale(.93); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (max-width: 600px) {
+  .career-season-end.result-hero { min-height: 590px; padding: 28px 18px 22px; }
+  .career-season-end.result-hero .career-season-trophy { width: 210px; height: 235px; }
+}
+@media (prefers-reduced-motion: reduce) { .career-season-end.result-hero .career-season-trophy { animation: none; } }

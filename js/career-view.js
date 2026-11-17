@@ -1,5 +1,6 @@
 import {escapeHtml as esc} from './html.js';
 import {assetUrl} from './asset-url.js';
+import {championConfetti} from './celebration.js';
 import {competitionLogo} from '../data/competitions.js';
 import {renderChampionsStages, renderChampionsTieDetails} from './champions-view.js';
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
@@ -14,12 +15,13 @@ import {currentMatch} from './match-session.js';
 import {matchHasEnded, penaltyProgress} from './match-penalties.js';
 import {
   CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, CHAMPIONS_PLACES, careerChampionsFixture, careerNextCompetition, careerHasChampions, FACILITIES, MAX_FACILITY_LEVEL, careerClub, careerStyle,
-  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRelegation, careerRosterLimit, careerTable, careerTopScorers, facilityPrice, nextCareerMatch,
+  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRelegation, careerRosterLimit, careerTable, careerTopScorers, careerSeasonScorers, facilityPrice, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
   overview: {label: 'Visão geral', icon: 'chart'},
   standings: {label: 'Classificação', icon: 'trophy'},
+
   squad: {label: 'Elenco', icon: 'users'},
   market: {label: 'Mercado', icon: 'subs'},
   facilities: {label: 'Instalações', icon: 'bolt'},
@@ -230,6 +232,7 @@ function standings(career, ui, rows) {
         </tr>`).join('')}</tbody>
       </table>
     </details>` : ''}
+
     <div class="career-table-wrap">
       <table class="career-table" aria-labelledby="career-standings-title">
         <thead><tr>
@@ -349,6 +352,44 @@ function championsStandings(career, ui, view) {
   </details>`;
 }
 
+const SEASON_TROPHIES = {
+  bundesliga: 'assets/trophies/bundesliga.png',
+  premier: 'assets/trophies/premier.png',
+  laliga: 'assets/trophies/laliga.png',
+  brasileirao: 'assets/trophies/brasileirao.png',
+  seriea: 'assets/trophies/seriea.png',
+};
+
+function seasonEnd(career, ui, position, message, earnedChampions) {
+  const champion = position === 1;
+  const {players, incomplete} = careerSeasonScorers(career);
+  const leaders = players.filter(player => player.goals > 0 && player.goals === players[0]?.goals);
+  const trophy = SEASON_TROPHIES[career.leagueId];
+  return `<section class="career-card panel career-season-end result-hero${champion ? ' is-champion' : ''}">
+    ${champion ? championConfetti() : ''}
+    <header class="career-season-heading">
+      <span class="eyebrow">Temporada ${career.season} · ${esc(careerCompetitionName(career))}</span>
+      <h2>${champion ? 'É campeão!' : 'Temporada encerrada'}</h2>
+      <p>${esc(career.name)}${champion ? ' conquistou o título.' : ` · ${position}º lugar`}</p>
+    </header>
+    <div class="career-season-award">
+      ${champion && trophy ? `<img class="champion-trophy career-season-trophy" src="${assetUrl(trophy)}" alt="Taça da ${esc(careerCompetitionName(career))}" width="240" height="260">` : `<div class="career-season-club">${clubBadge(career, CAREER_TEAM, ui)}</div><p>${esc(message)}</p>`}
+    </div>
+    ${leaders.length ? `<div class="career-season-scorers">
+      <span class="career-season-label">${leaders.length > 1 ? 'Artilheiros do time' : 'Artilheiro do time'}</span>
+      <div class="career-season-leaders">${leaders.map(leader => `<div class="career-season-scorer">
+        ${rosterPortrait(scorerPlayer(career, leader), ui)}
+        <div><strong>${esc(leader.name)}</strong><span>${leader.goals} gols${career.champions ? ' · Liga + Champions' : ''}</span></div>
+      </div>`).join('')}</div>
+    </div>` : '<p class="career-season-empty">Nenhum gol registrado nesta temporada.</p>'}
+    ${incomplete ? '<small class="career-season-note">Algumas partidas antigas não têm os autores dos gols registrados.</small>' : ''}
+    <footer class="career-season-footer">
+      ${earnedChampions ? '<p>Seu clube garantiu vaga na próxima Champions League.</p>' : ''}
+      ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}
+    </footer>
+  </section>`;
+}
+
 function overview(career, ui, rows, live) {
   const liveMatch = live ? currentMatch(live) : null;
   const european = careerNextCompetition(career) === 'champions';
@@ -367,15 +408,13 @@ function overview(career, ui, rows, live) {
   const action = european ? 'career-champions-play' : 'career-play';
   const id = `${career.season}:${european ? championsFixture.id : career.round}`;
   const earnedChampions = careerHasChampions(career) && position <= CHAMPIONS_PLACES;
+  if (!liveMatch && !fixture) return seasonEnd(career, ui, position, seasonFinish, earnedChampions);
   const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
     ? `<header class="career-fixture-heading">${title('Próxima partida', round)}</header>
       <div class="career-matchup career-fixture">${fixture.map((id, index) => `${index ? '<span class="career-fixture-separator" aria-hidden="true">×</span>' : ''}
         <div ${matchClubStyle(career, id)}><span class="career-fixture-crest">${clubBadge(career, id, ui)}</span><strong>${esc(careerClub(career, id).nome)}</strong>${matchVenue(index === 0, championsFixture?.neutral)}</div>`).join('')}</div>
       ${button(resume ? 'Continuar partida' : 'Simular partida', action, id, true)}`
-    : `${title('Temporada encerrada', seasonFinish)}
-      ${earnedChampions ? '<p>Seu clube garantiu vaga na próxima Champions League.</p>' : ''}
-      <p>Receba a premiação e inicie um novo campeonato com seu elenco e suas instalações.</p>
-      ${button('Iniciar próxima temporada', 'career-next-season', String(career.season), true)}`;
+    : '';
   return `<div class="career-columns">
     <section class="career-card panel career-match${!liveMatch && fixture ? ' career-match-preview' : ''}">${match}
     </section>
@@ -388,6 +427,7 @@ function overview(career, ui, rows, live) {
       ${button('Editar escalação', 'career-tab', 'squad')}
     </section>`}
   </div>
+
   ${career.seasons.length ? `<details class="career-card panel"><summary>Temporadas anteriores</summary><ul class="career-history">${[...career.seasons].reverse().map(season =>
     `<li>Temporada ${season.number} · ${season.position === 1 ? 'Campeão' : `${season.position}º lugar`} · ${season.points} pts · ${money(season.prize)} em premiação
       ${season.championsWinner ? `<small>Campeão da Champions League: ${esc(careerClub(career, season.championsWinner).nome)}</small>` : ''}
