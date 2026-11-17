@@ -362,15 +362,19 @@ const SEASON_TROPHIES = {
 
 function seasonEnd(career, ui, position, message, earnedChampions) {
   const champion = position === 1;
+  const year = 2026 + Math.max(0, career.season - 1);
+  const edition = career.leagueId === 'brasileirao' ? String(year) : `${String(year).slice(-2)}/${String(year + 1).slice(-2)}`;
   const {players, incomplete} = careerSeasonScorers(career);
   const leaders = players.filter(player => player.goals > 0 && player.goals === players[0]?.goals);
   const trophy = SEASON_TROPHIES[career.leagueId];
   return `<section class="career-card panel career-season-end result-hero${champion ? ' is-champion' : ''}">
     ${champion ? championConfetti() : ''}
     <header class="career-season-heading">
-      <span class="eyebrow">Temporada ${career.season} · ${esc(careerCompetitionName(career))}</span>
+      <span class="eyebrow">${esc(careerCompetitionName(career))}</span>
       <h2>${champion ? 'É campeão!' : 'Temporada encerrada'}</h2>
-      <p>${esc(career.name)}${champion ? ' conquistou o título.' : ` · ${position}º lugar`}</p>
+      <strong class="career-season-team">${esc(career.name)}</strong>
+      <span class="career-season-year">${edition}</span>
+      ${champion ? '<p>Uma temporada para entrar na história.</p>' : `<p>${position}º lugar</p>`}
     </header>
     <div class="career-season-award">
       ${champion && trophy ? `<img class="champion-trophy career-season-trophy" src="${assetUrl(trophy)}" alt="Taça da ${esc(careerCompetitionName(career))}" width="240" height="260">` : `<div class="career-season-club">${clubBadge(career, CAREER_TEAM, ui)}</div><p>${esc(message)}</p>`}
@@ -683,7 +687,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
   const activeTab = tabs.some(([id]) => id === tab) ? tab : 'overview';
   const entering = previousTab === undefined;
   const switching = !entering && previousTab !== activeTab;
-  return `<div class="career-page">
+  return `<div class="career-page" style="--career-club-primary:${esc(primary)};--career-club-secondary:${esc(secondary)}">
     <header class="career-dashboard-header" style="--career-club-primary:${esc(primary)};--career-club-secondary:${esc(secondary)}">
       <div class="career-dashboard-backdrop" aria-hidden="true">${ui.pitchLines(false)}</div>
       <div class="career-title">
@@ -691,7 +695,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
         <div>
           <span class="eyebrow accent">Carreira de treinador</span>
           <h1>${esc(career.name)}</h1>
-          <p>${esc(careerCompetitionName(career))}${league ? ` · ${esc(league.season)}` : ''}</p>
+          <p>${esc(careerCompetitionName(career))}${league ? ` · ${career.leagueId === 'brasileirao' ? 2025 + career.season : `${String(2025 + career.season).slice(-2)}/${String(2026 + career.season).slice(-2)}`}` : ''}</p>
         </div>
       </div>
       <dl class="career-summary">
