@@ -902,6 +902,9 @@ body > .career-drag-avatar {
   margin-block: 18px 0;
 }
 .career-club-profile > .btn { margin-inline: 0; }
+.career-content > .career-market {
+  background-image: radial-gradient(ellipse 90% 180px at 0 0, var(--accent-soft), transparent);
+}
 .career-market-head {
   display: flex;
   align-items: center;

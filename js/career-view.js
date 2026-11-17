@@ -319,9 +319,6 @@ function careerLiveField(career, ui, live, match) {
         <span class="career-match-status${matchHasEnded(live, match) ? '' : ' is-live'}">${matchHasEnded(live, match) ? 'Encerrada' : 'Em jogo'}</span>
       </div>
       ${renderLivePitch(live, {esc, icon: ui.icon, pitchLines: ui.pitchLines})}
-      <div class="career-pitch-legend">
-        ${[match.homeId, match.awayId].map(id => `<span><i class="${id === live.tournament.userTeamId ? 'is-own' : ''}" aria-hidden="true"></i>${esc(careerClub(career, id).nome)}</span>`).join('')}
-      </div>
     </section>`;
 }
 
