@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/repository-cover.svg" alt="ScoreFut — Seu clube. Sua era. Modo Manager com cinco ligas, oito formações e Champions League durante a temporada." width="100%">
+  <img src="docs/assets/repository-cover.svg?v=manager-20261117" alt="ScoreFut — Seu clube. Sua era. Modo Manager com cinco ligas, oito formações e Champions League durante a temporada." width="100%">
 </p>
 
 <p align="center">
