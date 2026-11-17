@@ -1343,6 +1343,40 @@ body > .career-drag-avatar {
   gap: 9px;
   padding: clamp(8px, 1.8vw, 16px) 4px;
 }
+@property --club-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.career-matchup > .career-match-club {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(8px, 1.8vw, 16px) 6px;
+  border-radius: 12px;
+}
+.career-match-club::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--club-border-angle),
+    var(--match-club-primary), var(--match-club-secondary),
+    var(--match-club-primary), var(--match-club-secondary),
+    var(--match-club-primary));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .career-match-club::before { animation: career-club-border 6s linear infinite; }
+}
+@keyframes career-club-border {
+  to { --club-border-angle: 360deg; }
+}
 .career-fixture-crest { display: grid; place-items: center; width: clamp(56px, 8vw, 90px); aspect-ratio: 1; }
 .career-fixture-crest :is(.career-season-crest, .career-crest, .club-badge) { width: 100%; height: 100%; }
 .career-fixture > .career-fixture-separator {

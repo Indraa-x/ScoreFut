@@ -279,6 +279,13 @@ function matchVenue(isHome, neutral = false) {
   return `<small class="career-match-venue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${outline}"/></svg>${isHome ? 'Mandante' : 'Visitante'}</small>`;
 }
 
+function matchClubStyle(career, id) {
+  const club = careerClub(career, id);
+  const [primary, secondary] = club.cores
+    ?? badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(career.crest))];
+  return `class="career-match-club" style="--match-club-primary:${esc(primary)};--match-club-secondary:${esc(secondary)}"`;
+}
+
 function matchScoreboard(career, ui, live, match) {
   const {result, homeId, awayId} = match;
   const score = scoreAt(result, live.matchMinute);
@@ -286,7 +293,7 @@ function matchScoreboard(career, ui, live, match) {
   const homeName = careerClub(career, homeId).nome;
   const awayName = careerClub(career, awayId).nome;
   const deciding = penaltyProgress(live, match).playing;
-  const side = (id, name, isHome) => `<div>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong>${matchVenue(isHome, match.neutral)}</div>`;
+  const side = (id, name, isHome) => `<div ${matchClubStyle(career, id)}>${clubBadge(career, id, ui)}<strong>${esc(name)}</strong>${matchVenue(isHome, match.neutral)}</div>`;
   const round = live.tournament.mode === 'champions' ? championsRoundLabel(match.stageLabel) : roundLabel(career, match.round);
   const details = renderMatchScoreDetails(live, match, {home: homeName, away: awayName}, esc);
   return `${title(ended ? 'Fim de jogo' : deciding ? 'Disputa por pênaltis' : 'Partida em andamento', round)}
@@ -366,7 +373,7 @@ function overview(career, ui, rows, live) {
   const match = liveMatch ? matchScoreboard(career, ui, live, liveMatch) : fixture
     ? `<header class="career-fixture-heading">${title('Próxima partida', round)}</header>
       <div class="career-matchup career-fixture">${fixture.map((id, index) => `${index ? '<span class="career-fixture-separator" aria-hidden="true">×</span>' : ''}
-        <div${id === CAREER_TEAM ? ' class="is-managed-club"' : ''}><span class="career-fixture-crest">${clubBadge(career, id, ui)}</span><strong>${esc(careerClub(career, id).nome)}</strong>${matchVenue(index === 0, championsFixture?.neutral)}</div>`).join('')}</div>
+        <div ${matchClubStyle(career, id)}><span class="career-fixture-crest">${clubBadge(career, id, ui)}</span><strong>${esc(careerClub(career, id).nome)}</strong>${matchVenue(index === 0, championsFixture?.neutral)}</div>`).join('')}</div>
       ${button(resume ? 'Continuar partida' : 'Simular partida', action, id, true)}`
     : `${title('Temporada encerrada', seasonFinish)}
       ${earnedChampions ? '<p>Seu clube garantiu vaga na próxima Champions League.</p>' : ''}
