@@ -369,6 +369,7 @@ function seasonEnd(career, ui, position, message, earnedChampions) {
   const trophy = SEASON_TROPHIES[career.leagueId];
   return `<section class="career-card panel career-season-end result-hero${champion ? ' is-champion' : ''}">
     ${champion ? championConfetti() : ''}
+    ${champion ? `<div class="career-season-backdrop" aria-hidden="true"><span class="career-season-watermark">${clubBadge(career, CAREER_TEAM, ui)}</span><span class="career-season-field">${ui.pitchLines(false)}</span></div>` : ''}
     <header class="career-season-heading">
       <span class="eyebrow">${esc(careerCompetitionName(career))}</span>
       <h2>${champion ? 'É campeão!' : 'Temporada encerrada'}</h2>

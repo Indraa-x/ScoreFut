@@ -1489,7 +1489,22 @@ body > .career-drag-avatar {
 .career-season-heading h2 { font-family: var(--body); font-weight: 800; text-transform: none; letter-spacing: -2px; font-size: clamp(44px, 5vw, 66px); line-height: 1.15; }
 .career-season-team { display: block; margin: 10px 0 4px; font-size: clamp(27px, 4vw, 42px); line-height: 1.15; }
 .career-season-year { display: block; font-size: 24px; font-weight: 800; letter-spacing: .08em; margin-bottom: 12px; color: var(--muted); }
-.career-season-end.is-champion { background: radial-gradient(ellipse at 15% 0%, color-mix(in srgb, var(--career-club-primary, #19734b) 32%, transparent), transparent 65%), radial-gradient(ellipse at 90% 25%, color-mix(in srgb, var(--career-club-secondary, #fff) 15%, transparent), transparent 65%), var(--surface); }
+.career-page .career-season-end.is-champion {
+  background: radial-gradient(ellipse at 50% 55%, color-mix(in srgb, var(--career-club-primary, #19734b) 28%, transparent), transparent 50%),
+    conic-gradient(from 205deg at 50% 110%, transparent 0deg 100deg, #ffffff06 110deg, transparent 120deg 145deg, #ffffff05 155deg, transparent 170deg),
+    radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--career-club-primary, #19734b) 38%, transparent), transparent 65%),
+    radial-gradient(ellipse at 100% 85%, color-mix(in srgb, var(--career-club-secondary, #fff) 14%, transparent), transparent 60%), var(--surface);
+}
+.career-season-end.result-hero > .career-season-backdrop { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.career-season-watermark { position: absolute; left: -7%; top: 22%; width: 42%; aspect-ratio: 1; opacity: .085; transform: rotate(-15deg); }
+.career-season-watermark .club-badge { width: 100%; height: 100%; }
+.career-season-watermark :is(img, svg) { width: 100%; height: 100%; object-fit: contain; }
+.career-season-field { position: absolute; right: -13%; top: 12%; width: 48%; height: 85%; opacity: .09; transform: rotate(18deg); color: var(--text); }
+.career-season-field .pitch-lines { width: 100%; height: 100%; }
+@media (max-width: 600px) {
+  .career-season-watermark { width: 65%; left: -30%; top: 33%; opacity: .06; }
+  .career-season-field { width: 65%; right: -40%; opacity: .06; }
+}
 .career-season-team { font-family: var(--body); font-weight: 800; letter-spacing: -1px; background: linear-gradient(110deg, var(--career-club-primary, #19d879), var(--career-club-secondary, #fff)); background-clip: text; -webkit-background-clip: text; color: transparent; filter: saturate(1.65) brightness(1.3); }
 .career-season-award { display: grid; place-items: center; margin: 18px 0; }
 .career-season-end.result-hero .career-season-trophy { width: 240px; height: 260px; margin: 0; filter: drop-shadow(0 10px 20px #0005); animation: career-award-in .7s ease-out both; }
