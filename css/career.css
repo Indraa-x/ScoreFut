@@ -1527,3 +1527,23 @@ body > .career-drag-avatar {
   .career-season-end.result-hero .career-season-trophy { width: 210px; height: 235px; }
 }
 @media (prefers-reduced-motion: reduce) { .career-season-end.result-hero .career-season-trophy { animation: none; } }
+.career-club-record-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.career-club-record-heading span { color: var(--muted); font-weight: 700; }
+.career-club-record-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 24px 0 32px; gap: 16px; }
+.career-club-record-stats > div { padding: 22px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-alt); }
+.career-club-record-stats dt { color: var(--muted); font-size: 13px; }
+.career-club-record-stats dd { margin: 12px 0 0; font-size: 40px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.career-club-record-stats > div:last-child dd { color: var(--green); }
+.career-club-honours h3 { font: 800 20px var(--body); margin-bottom: 20px; }
+.career-club-honours ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.career-club-honours li { display: flex; align-items: center; gap: 18px; padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: linear-gradient(125deg, var(--accent-soft), transparent); }
+.career-club-honours img { object-fit: contain; flex: 0 0 64px; }
+.career-club-honours strong { display: block; font-size: 15px; }
+.career-club-honours span { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
+@media(max-width: 600px) {
+  .career-club-record-stats { gap: 8px; }
+  .career-club-record-stats > div { padding: 14px 10px; }
+  .career-club-record-stats dt { font-size: 11px; min-height: 30px; }
+  .career-club-record-stats dd { font-size: 30px; }
+  .career-club-honours ul { grid-template-columns: 1fr; }
+}

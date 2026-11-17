@@ -431,6 +431,26 @@ export function careerSeasonScorers(career) {
   return {...ranking, players: ranking.players.filter(player => player.clubId === CAREER_TEAM)};
 }
 
+export function careerClubStats(career) {
+  const european = (career.champions?.tournament?.matches ?? []).filter(match => match.result)
+    .map(({homeId, awayId, result}) => ({home: homeId, away: awayId, ...result}));
+  const matches = [...career.results.flat(), ...european]
+    .filter(match => match.home === CAREER_TEAM || match.away === CAREER_TEAM);
+  const goals = matches.reduce((sum, match) => sum + (match.home === CAREER_TEAM ? match.homeGoals : match.awayGoals), 0);
+  const titles = [];
+  for (const season of career.seasons) {
+    if (season.position === 1) titles.push({season: season.number, competition: 'league'});
+    if (season.championsWinner === CAREER_TEAM) titles.push({season: season.number, competition: 'champions'});
+  }
+  if (!career.seasons.some(season => season.number === career.season)) {
+    if (career.round >= careerFixtures(career).length && careerTable(career)[0]?.id === CAREER_TEAM)
+      titles.push({season: career.season, competition: 'league'});
+    if (career.champions?.tournament?.complete && career.champions.tournament.championId === CAREER_TEAM)
+      titles.push({season: career.season, competition: 'champions'});
+  }
+  return {played: matches.length, goals, titles};
+}
+
 function matchTeam(career, id) {
   if (id !== CAREER_TEAM) {
     if (!opponentTeams.has(id)) {

@@ -1,6 +1,7 @@
 import {escapeHtml as esc} from './html.js';
 import {assetUrl} from './asset-url.js';
 import {championConfetti} from './celebration.js';
+import {careerClubStats} from './career.js';
 import {competitionLogo} from '../data/competitions.js';
 import {renderChampionsStages, renderChampionsTieDetails} from './champions-view.js';
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
@@ -645,35 +646,27 @@ function facilities(career, ui) {
   </section>`;
 }
 
-function club(career, ui) {
-  const league = careerLeague(career.leagueId);
-  if (league) {
-    const overall = Math.round(calculateTeam(careerPicks(career)).overall);
-    return `<section class="career-card panel career-club-profile">
-      <div class="career-identity"><span class="career-club-emblem">${clubBadge(career, CAREER_TEAM, ui)}</span>
-        <div><h2>${esc(career.name)}</h2><p class="muted">${esc(league.name)} · ${esc(league.season)}</p></div>
-      </div>
-      <dl class="career-club-facts">
-        <div><dt>Jogadores no elenco</dt><dd>${career.roster.length} / ${careerRosterLimit(career)}</dd></div>
-        <div><dt>Força dos titulares</dt><dd>${overall} OVR</dd></div>
-        <div><dt>Formação</dt><dd>${FORMATIONS[career.formation].name}</dd></div>
-      </dl>
-      ${button('Ver elenco', 'career-tab', 'squad')}
-    </section>`;
-  }
-  return `<section class="career-card panel career-customize">
-    ${title('Personalizar clube', 'Escolha o nome e o escudo que vão acompanhar sua carreira.')}
-    <form id="career-club-form">
-      <label for="career-club-name">Nome do clube</label>
-      <input id="career-club-name" name="name" maxlength="32" required value="${esc(career.name)}">
-      <fieldset><legend>Escolha seu escudo</legend><div class="career-crest-options">
-        ${CAREER_CRESTS.map(id => `<label class="career-crest-choice">
-          <input type="radio" name="crest" value="${id}" aria-label="Escudo ${id}"${career.crest === id ? ' checked' : ''}>
-          ${careerCrest(id)}
-        </label>`).join('')}
-      </div></fieldset>
-      <button class="btn btn-primary" type="submit">Salvar clube</button>
-    </form>
+function club(career) {
+  const {played, goals, titles} = careerClubStats(career);
+  const edition = season => {
+    const year = 2025 + season;
+    return career.leagueId === 'brasileirao' ? String(year) : `${String(year).slice(-2)}/${String(year + 1).slice(-2)}`;
+  };
+  return `<section class="career-card panel career-club-record">
+    <header class="career-club-record-heading"><h2>Meu clube</h2><span>${edition(career.season)}</span></header>
+    <dl class="career-club-record-stats">
+      <div><dt>Jogos na temporada</dt><dd>${played}</dd></div>
+      <div><dt>Gols na temporada</dt><dd>${goals}</dd></div>
+      <div><dt>Títulos na carreira</dt><dd>${titles.length}</dd></div>
+    </dl>
+    <div class="career-club-honours"><h3>Galeria de títulos</h3>
+      ${titles.length ? `<ul>${[...titles].reverse().map(title => {
+        const european = title.competition === 'champions';
+        const trophy = european ? 'assets/competitions/champions-trophy.png' : SEASON_TROPHIES[career.leagueId];
+        return `<li>${trophy ? `<img src="${assetUrl(trophy)}" alt="" width="64" height="80" loading="lazy">` : ''}
+          <div><strong>${esc(european ? 'Champions League' : careerCompetitionName(career))}</strong><span>Campeão · ${edition(title.season)}</span></div></li>`;
+      }).join('')}</ul>` : '<p class="muted">Sua história de títulos começa aqui.</p>'}
+    </div>
   </section>`;
 }
 
