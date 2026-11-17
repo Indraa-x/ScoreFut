@@ -1438,10 +1438,6 @@ body > .career-drag-avatar {
 .career-pitch-legend i.is-own { background: #52cf99; }
 .career-lineup-preview .career-pitch, .career-squad-field .career-pitch { box-shadow: 0 7px 16px #0003; }
 
-.career-content .career-market-head {
-  border-radius: 13px;
-  background-image: radial-gradient(ellipse at 5% 0, var(--accent-soft), transparent 65%);
-}
 .career-content .career-market-player {
   background-image: linear-gradient(160deg, var(--accent-soft), transparent 58%);
 }
