@@ -1503,7 +1503,7 @@ body > .career-drag-avatar {
 .career-season-scorer strong { display: block; font-size: 17px; }
 .career-season-scorer span:not(.career-roster-avatar) { display: block; color: var(--text); margin-top: 5px; font-size: 16px; font-weight: 700; line-height: 1.25; }
 .career-season-note, .career-season-empty { color: var(--muted); margin-top: 14px; font-size: 12px; }
-.career-season-footer { width: 100%; margin-top: auto; padding-top: 28px; }
+.career-season-footer { width: 100%; margin-top: auto; padding-top: 32px; border: 0; }
 .career-season-footer p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
 .career-season-footer .btn { min-width: 240px; }
 @keyframes career-award-in { from { opacity: 0; transform: translateY(18px) scale(.93); } to { opacity: 1; transform: translateY(0) scale(1); } }
