@@ -589,7 +589,7 @@ function facilities(career, ui) {
       const level = careerFacilityLevel(career, key);
       const maxed = level >= MAX_FACILITY_LEVEL;
       const price = facilityPrice(career, key);
-      const canUpgrade = career.budget >= price && (key !== 'academy' || career.roster.length < careerRosterLimit(career));
+      const canUpgrade = career.budget >= price;
       return `<article class="career-facility" data-facility="${key}">
         <img class="career-facility-photo" src="${assetUrl(photo)}" alt="" loading="lazy" decoding="async">
         <div class="career-card-heading"><span class="career-section-icon">${ui.icon(icon)}</span><span class="career-pill">Nível ${level} de ${MAX_FACILITY_LEVEL}</span></div>

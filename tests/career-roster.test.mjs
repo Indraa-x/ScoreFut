@@ -2,12 +2,29 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
 import {
-  advanceCareerSeason, careerFixtures, careerPicks, changeCareerFormation, commitCareerRound, createCareer,
+  advanceCareerSeason, careerFixtures, careerPicks, careerRosterLimit, changeCareerFormation, commitCareerRound, createCareer,
   migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, upgradeCareerFacility,
 } from '../js/career.js';
 import {FORMATIONS, positionFit} from '../js/engine.js';
 
 const catalogPlayers = new Set(allSquads.flatMap(squad => squad.jogadores));
+
+test('a full roster still lets a funded academy reach level five', () => {
+  const initial = createCareer(42, 'career26-laliga-448');
+  const vacancies = careerRosterLimit(initial) - initial.roster.length;
+  const newPlayers = [...catalogPlayers].filter(player =>
+    !initial.roster.some(existing => existing.id === player.id));
+  const career = {
+    ...initial,
+    facilities: {...initial.facilities, academy: 4},
+    roster: [...initial.roster, ...newPlayers.slice(0, vacancies)],
+    budget: 652,
+  };
+  const updated = upgradeCareerFacility(career, 'academy');
+  assert.equal(updated.facilities.academy, 5);
+  assert.equal(updated.budget, 0);
+  assert.deepEqual(updated.roster, career.roster);
+});
 
 test('old balances and pending match income convert to euros exactly once', () => {
   const initial = createCareer(42);

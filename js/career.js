@@ -44,7 +44,7 @@ export function changeCareerStyle(career, style) {
 export const CAREER_CRESTS = ['bola', 'leao', 'aguia', 'montanha', 'estrela', 'listras', 'raio', 'torre'];
 export const FACILITIES = {
   training: {name: 'Centro de treinamento', effect: 'Cada melhoria dá +1 de OVR efetivo aos titulares durante as partidas.', cost: 228},
-  academy: {name: 'Academia de base', effect: 'Traz um jogador real do catálogo ao melhorar. A partir do nível 2, traz outro a cada nova temporada.', cost: 163},
+  academy: {name: 'Academia de base', effect: 'Revela um jogador ao melhorar e outro a cada nova temporada a partir do nível 2, quando houver vaga no elenco.', cost: 163},
   stadium: {name: 'Estádio', effect: 'Cada melhoria aumenta em € 20 mil a receita por jogo em casa.', cost: 293},
   gym: {name: 'Academia de preparação física', effect: 'Cada melhoria aumenta em 2% a força defensiva usada na simulação.', cost: 203},
   shop: {name: 'Loja oficial', effect: 'Cada melhoria rende € 11 mil extras por partida com a venda de produtos.', cost: 179},
@@ -346,7 +346,6 @@ function addAcademyPlayer(career) {
 export function upgradeCareerFacility(career, key) {
   const level = careerFacilityLevel(career, key);
   if (!Object.hasOwn(FACILITIES, key) || level >= MAX_FACILITY_LEVEL) throw Error('Essa melhoria não está disponível.');
-  if (key === 'academy' && career.roster.length >= careerRosterLimit(career)) throw Error('Libere uma vaga no elenco para receber o jogador da base.');
   const price = facilityPrice(career, key);
   if (career.budget < price) throw Error('Saldo insuficiente para a melhoria.');
   const updated = {...career, budget: career.budget - price, facilities: {...career.facilities, [key]: level + 1}};
