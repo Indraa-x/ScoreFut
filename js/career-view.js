@@ -501,8 +501,7 @@ function squad(career, ui, {selectedId = null} = {}) {
 export function renderCareerMarketResults(career, ui, filters) {
   const {entries, total, owned, page, pages} = careerMarketPage(career, filters);
   const full = career.roster.length >= careerRosterLimit(career);
-  return `<p class="career-market-count" id="career-market-count" tabindex="-1">${total.toLocaleString('pt-BR')} ${total === 1 ? 'jogador encontrado' : 'jogadores encontrados'}</p>
-    ${full ? '<p class="career-market-note">Elenco cheio. Venda um jogador para abrir vaga.</p>' : ''}
+  return `<p class="career-market-count" id="career-market-count" tabindex="-1" role="status">${total.toLocaleString('pt-BR')} ${total === 1 ? 'jogador' : 'jogadores'}</p>
     ${entries.length ? `<div class="career-market-grid">${entries.map(({id, player, squad, league, price}) => {
       const signed = owned.has(player.id);
       const affordable = price !== null && career.budget >= price;
@@ -539,20 +538,15 @@ export function renderCareerMarketResults(career, ui, filters) {
 }
 
 function market(career, ui, filters = {}) {
-  const catalog = careerMarketCatalog();
   const option = (value, text, selected) =>
     `<option value="${value}"${String(value) === selected ? ' selected' : ''}>${text}</option>`;
   return `<section class="career-card panel career-market" aria-labelledby="career-market-title">
     <header class="career-market-head">
-      <div>
-        <span class="eyebrow accent">${ui.icon('subs')} Central de transferências</span>
-        <h2 id="career-market-title">Mercado de jogadores</h2>
-        <p>Elencos europeus 2026/27 e Brasileirão 2026. Os preços de compra consideram o valor de mercado e o OVR de cada jogador.</p>
-      </div>
-      <dl class="career-market-stats">
-        <div><dt>Jogadores no catálogo</dt><dd>${catalog.offers.length.toLocaleString('pt-BR')}</dd></div>
-        <div><dt>Vagas no elenco</dt><dd>${careerRosterLimit(career) - career.roster.length}</dd></div>
-      </dl>
+      <h2 id="career-market-title">Mercado</h2>
+      <button type="button" class="career-market-capacity" data-action="career-tab" data-value="squad">
+        ${career.roster.length >= careerRosterLimit(career) ? 'Elenco cheio' : `${careerRosterLimit(career) - career.roster.length} vagas no elenco`}
+        ${ui.icon('arrow')}
+      </button>
     </header>
     <form id="career-market-filters" role="search" aria-label="Filtrar jogadores">
       <label class="career-market-search">Buscar jogador

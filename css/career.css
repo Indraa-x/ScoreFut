@@ -906,31 +906,25 @@ body > .career-drag-avatar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding: clamp(16px, 3vw, 30px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: linear-gradient(115deg, var(--accent-soft), transparent 75%), var(--surface-alt);
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.career-market-head .eyebrow { display: flex; align-items: center; gap: 7px; }
-.career-market-head .eyebrow svg, .career-market-search svg { width: 17px; height: 17px; flex: none; }
-.career-market-head h2 { margin-top: 8px; font-size: clamp(23px, 3.5vw, 36px); line-height: 1.12; }
-.career-market-head p { color: var(--muted); max-width: 48ch; }
-.career-market-stats {
-  display: flex;
-  gap: clamp(12px, 2.5vw, 24px);
-  margin: 0;
+.career-market-head h2 { margin: 0; font-size: clamp(22px, 3vw, 28px); line-height: 1.2; }
+.career-market-capacity {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
 }
-.career-market-stats > div { padding-left: 12px; border-left: 1px solid var(--border); }
-.career-market-stats dt { color: var(--muted); font-size: 12px; white-space: nowrap; }
-.career-market-stats dd {
-  margin: 4px 0 0;
-  color: var(--green);
-  font-size: clamp(22px, 3vw, 30px);
-  font-weight: 800;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
+.career-market-capacity:hover { color: var(--green); }
+.career-market-capacity svg, .career-market-search svg { width: 16px; height: 16px; flex: none; }
+.career-market-capacity:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 4px; }
 #career-market-filters {
   display: grid;
   grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
@@ -962,7 +956,6 @@ body > .career-drag-avatar {
 }
 .career-market-filter-foot .btn { min-height: 34px; padding: 5px 10px; }
 .career-market .career-market-count { margin: 16px 0 10px; color: var(--muted); font-size: 13px; }
-.career-market .career-market-note { margin: 14px 0; color: var(--muted); }
 .career-market-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .career-market-player {
   display: grid;
@@ -1050,9 +1043,9 @@ body > .career-drag-avatar {
   #career-market-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
-  .career-market-head { align-items: flex-start; flex-direction: column; gap: 14px; }
   .career-market-grid { grid-template-columns: minmax(0, 1fr); }
   .career-market-search { grid-column: 1 / -1; }
+  #career-market-filters label[for="career-market-order"] { grid-column: 1 / -1; }
 }
 .career-card :is(input:not([type="radio"]), select) {
   width: 100%;
