@@ -1342,13 +1342,6 @@ body > .career-drag-avatar {
   align-self: stretch;
   gap: 9px;
   padding: clamp(8px, 1.8vw, 16px) 4px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-}
-.career-fixture > .is-managed-club {
-  border-color: color-mix(in srgb, var(--green) 38%, var(--border));
-  background: linear-gradient(145deg, var(--accent-soft), transparent 78%), var(--surface);
 }
 .career-fixture-crest { display: grid; place-items: center; width: clamp(56px, 8vw, 90px); aspect-ratio: 1; }
 .career-fixture-crest :is(.career-season-crest, .career-crest, .club-badge) { width: 100%; height: 100%; }
