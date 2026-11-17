@@ -20,6 +20,23 @@ test('a reserve replaces a starter only in a compatible slot and sends the start
   assert.deepEqual(careerReserveReplacements(next, 'gol').map(player => player.id), [keeper]);
 });
 
+test('Raphinha and Gordon can swap between left wing and centre forward in saved careers', () => {
+  let career = JSON.parse(JSON.stringify(createCareer(42, 'career26-laliga-241')));
+  const raphinha = career.roster.find(player => player.nome === 'Raphinha');
+  const gordon = career.roster.find(player => player.nome === 'Anthony Gordon');
+  const origin = Object.keys(career.lineup).find(slot => career.lineup[slot] === raphinha.id);
+  career = {...career, lineup: {...career.lineup, [origin]: career.lineup.pe, pe: raphinha.id, ca: gordon.id}};
+  assert.ok(careerDestinations(career, raphinha.id).some(slot => slot.id === 'ca'));
+  const swapped = changeCareerStarter(career, 'ca', raphinha.id);
+  assert.equal(swapped.lineup.ca, raphinha.id);
+  assert.equal(swapped.lineup.pe, gordon.id);
+  assert.equal(positionFit(raphinha, 'CA'), 1);
+  assert.equal(positionFit(gordon, 'PE'), 0);
+  assert.equal(positionFit({tags: ['CA']}, 'PE'), null);
+  assert.equal(positionFit({tags: ['GOL']}, 'CA'), null);
+  assert.ok(careerDestinations(swapped, gordon.id).some(slot => slot.id === 'ca'));
+});
+
 test('a starter swaps with another only when both players fit their new slots', () => {
   const career = createCareer(42);
   const first = career.lineup['zag-1'];

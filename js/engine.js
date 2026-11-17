@@ -30,8 +30,8 @@ export const ROLE_COMPATIBILITY = Object.freeze({
   MEI: Object.freeze({ MEI: 0, MC: 1, MD: 1, ME: 1, SA: 1, PE: 1, PD: 1 }),
   MD: Object.freeze({ MD: 0, ME: 1, MC: 1, PD: 1 }),
   ME: Object.freeze({ ME: 0, MD: 1, MC: 1, PE: 1 }),
-  PE: Object.freeze({ PE: 0, PD: 1, ME: 1, SA: 1 }),
-  PD: Object.freeze({ PD: 0, PE: 1, MD: 1, SA: 1 }),
+  PE: Object.freeze({ PE: 0, PD: 1, ME: 1, SA: 1, CA: 1 }),
+  PD: Object.freeze({ PD: 0, PE: 1, MD: 1, SA: 1, CA: 1 }),
   SA: Object.freeze({ SA: 0, CA: 1, MEI: 1, PE: 1, PD: 1 }),
   CA: Object.freeze({ CA: 0 }),
 });
