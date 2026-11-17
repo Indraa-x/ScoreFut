@@ -341,11 +341,8 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   flex: none;
   width: clamp(52px, 7vw, 84px);
   aspect-ratio: 1;
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  background: var(--surface);
 }
-.career-club-emblem :is(.career-crest, .career-season-crest, .club-badge) { width: 72%; height: auto; aspect-ratio: 1; }
+.career-club-emblem :is(.career-crest, .career-season-crest, .club-badge) { width: 100%; height: auto; aspect-ratio: 1; }
 .career-tabs {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
