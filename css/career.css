@@ -349,12 +349,12 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-tabs {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 5px;
+  gap: 6px;
   margin: 0;
-  padding: 5px;
+  padding: 6px;
   border: 1px solid var(--border);
   border-radius: 13px;
-  background: var(--surface);
+  background: color-mix(in srgb, var(--bg) 74%, var(--surface));
 }
 .career-tabs button {
   display: flex;
@@ -363,10 +363,10 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   gap: 7px;
   min-height: 42px;
   padding: 8px 13px;
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: transparent;
-  color: var(--muted);
+  background: var(--surface-alt);
+  color: color-mix(in srgb, var(--text) 76%, var(--muted));
   font-weight: 750;
   font-size: 13px;
   line-height: 1.15;
@@ -374,11 +374,15 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   transition: background-color .18s ease, color .18s ease, border-color .18s ease;
 }
 .career-tabs button svg { width: 16px; height: 16px; flex: none; }
-.career-tabs button:hover { background: var(--surface-alt); color: var(--text); }
+.career-tabs button:hover {
+  border-color: color-mix(in srgb, var(--text) 30%, var(--border));
+  background: color-mix(in srgb, var(--surface-alt) 88%, var(--text));
+  color: var(--text);
+}
 .career-tabs button[aria-current="page"] {
   border-color: var(--green);
-  border-color: color-mix(in srgb, var(--green) 40%, var(--border));
-  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--green) 65%, var(--border));
+  background: color-mix(in srgb, var(--green) 15%, var(--accent-soft));
   color: var(--green);
 }
 .career-tabs button:focus-visible { outline-offset: -3px; }
@@ -408,7 +412,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
     gap: 6px;
     padding: 12px;
     border-radius: 16px;
-    background: linear-gradient(155deg, var(--accent-soft), transparent 52%), var(--surface);
+    background: color-mix(in srgb, var(--bg) 74%, var(--surface));
     box-shadow: 0 10px 26px #0002;
   }
   .career-tabs button {
@@ -427,7 +431,6 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
     background: var(--surface-alt);
   }
   .career-tabs button[aria-current="page"] {
-    background: linear-gradient(100deg, var(--accent-soft), var(--surface-alt));
     box-shadow: inset 3px 0 var(--green);
   }
   .career-tabs button[aria-current="page"] svg {
@@ -444,7 +447,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   .career-tabs {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
-    gap: 3px;
+    gap: 6px;
   }
   .career-tabs button {
     flex-direction: column;
