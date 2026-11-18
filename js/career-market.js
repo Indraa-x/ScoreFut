@@ -65,12 +65,23 @@ export function careerMarketCatalog() {
   return catalog;
 }
 
+function campaignOffers(career) {
+  const deals = new Map((career.transferDeals ?? []).map(deal => [deal.player.id, deal]));
+  return offers.map(offer => {
+    const deal = deals.get(offer.player.id);
+    if (!deal) return offer;
+    const league = CAREER_LEAGUES.find(league => league.teams.some(team => team.id === deal.clubId));
+    const squad = league?.teams.find(team => team.id === deal.clubId);
+    return squad ? {...offer, squad, league, search: normalize(`${offer.player.nome} ${squad.nome} ${league.name} ${league.season}`)} : offer;
+  });
+}
+
 export function careerMarketPage(career, {
   search = '', position = '', leagueId = '', order = 'overall', affordable = false, page = 1,
 } = {}) {
   const owned = new Set(career.roster.map(player => player.id));
   const words = normalize(search.trim()).split(/\s+/).filter(Boolean);
-  const matches = offers.filter(offer =>
+  const matches = campaignOffers(career).filter(offer =>
     (!position || offer.player.tags.includes(position)) &&
     (!leagueId || offer.league.id === leagueId) &&
     (!affordable || offer.price !== null && offer.price <= career.budget && !owned.has(offer.player.id)) &&

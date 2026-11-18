@@ -1,7 +1,8 @@
 import {
+  listCareerPlayer, cancelCareerListing, updateCareerTransferOffers, acceptCareerOffer, rejectCareerOffer,
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
   careerReserveReplacements, careerSale, commitCareerRound, migrateCareerChampions, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
-  careerChampionsFixture, careerNextCompetition, commitCareerChampionsMatch, prepareCareerChampionsMatch, sellCareerPlayer, signCareerPlayer, upgradeCareerFacility,
+  careerChampionsFixture, careerNextCompetition, commitCareerChampionsMatch, prepareCareerChampionsMatch, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale} from './career-view.js';
@@ -45,7 +46,10 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     render();
   }
   function save(next) {
+    const previousOffers = savedCareer()?.transferOffers?.length ?? 0;
+    next = updateCareerTransferOffers(next);
     if (!storage.write(activeSlot(), next)) throw Error('O navegador não conseguiu salvar a carreira.');
+    if ((next.transferOffers?.length ?? 0) > previousOffers) toast('Novas propostas recebidas em Negociações.');
   }
   function loadMatch(career = read(), competition = careerNextCompetition(career)) {
     const champions = competition === 'champions';
@@ -182,26 +186,38 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function openSale(id) {
     if (tab !== 'squad' || !modal || modal.open) return;
     try {
-      const sale = careerSale(read(), id);
-      modal.querySelector('#modal-content').innerHTML = renderCareerSale(sale, ui);
-      modal.showModal();
+      save(listCareerPlayer(read(), id));
+      setTab('transfers');
+      render();
+      toast('Jogador à venda. As propostas chegam após as próximas partidas.');
     } catch (error) {
       toast(error.message);
     }
   }
   function confirmSale(id) {
-    if (tab !== 'squad' || !modal?.open || modal.querySelector('[data-action="career-sell-confirm"]')?.dataset.value !== id) return;
+    if (tab !== 'transfers' || !modal?.open || modal.querySelector('[data-action="career-transfer-confirm"]')?.dataset.value !== id) return;
     try {
-      save(sellCareerPlayer(read(), id));
+      save(acceptCareerOffer(read(), id));
       squad.selectedId = null;
       modal.close();
       refreshSquad();
-      app.querySelector('#career-roster-title')?.focus({preventScroll: true});
+      app.querySelector('.career-transfers h2')?.focus({preventScroll: true});
       toast('Jogador vendido. O valor entrou no orçamento.');
     } catch (error) {
       modal.close();
       toast(error.message);
     }
+  }
+  function openTransferOffer(id) {
+    if (tab !== 'transfers' || !modal || modal.open) return;
+    try {
+      const career = read(), offer = career.transferOffers?.find(offer => offer.id === id);
+      if (!offer) throw Error('Proposta indisponível.');
+      const sale = careerSale(career, offer.playerId);
+      modal.querySelector('#modal-content').innerHTML = renderCareerSale({...sale, price: offer.price,
+        proposalId: id, buyer: careerSeasonTeam(offer.clubId).nome}, ui);
+      modal.showModal();
+    } catch (error) { toast(error.message); }
   }
   function cancelPick() {
     squad.selectedId = null;
@@ -525,7 +541,10 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       },
       'career-upgrade': value => change(career => upgradeCareerFacility(career, value), 'Instalação melhorada.'),
       'career-sell': openSale,
-      'career-sell-confirm': confirmSale,
+      'career-transfer-open': openTransferOffer,
+      'career-transfer-confirm': confirmSale,
+      'career-transfer-cancel': value => change(career => cancelCareerListing(career, value), 'Jogador retirado da lista de venda.'),
+      'career-transfer-reject': value => change(career => rejectCareerOffer(career, value), 'Proposta recusada. Outros clubes podem fazer ofertas.'),
     },
   };
 }

@@ -124,8 +124,14 @@ export function nextCareerMatch(career) {
 }
 
 export function careerClub(career, id) {
-  if (id === CAREER_TEAM) return careerSeasonTeam(career.clubId) ?? {nome: career.name, crest: career.crest};
-  return careerSeasonTeam(id) ?? opponents.get(id);
+  if (id === CAREER_TEAM) return {...(careerSeasonTeam(career.clubId) ?? {nome: career.name, crest: career.crest}), jogadores: career.roster};
+  const club = careerSeasonTeam(id) ?? opponents.get(id);
+  if (!club || !careerSeasonTeam(id)) return club;
+  const deals = new Map((career.transferDeals ?? []).map(deal => [deal.player.id, deal]));
+  const owned = new Set(career.roster.map(player => player.id));
+  const jogadores = club.jogadores.filter(player => !owned.has(player.id) && !deals.has(player.id));
+  for (const deal of deals.values()) if (deal.clubId === id && !owned.has(deal.player.id)) jogadores.push(deal.player);
+  return {...club, jogadores};
 }
 
 export const careerCompetitionName = career => careerLeague(career.leagueId)?.name ?? 'Campeonato Brasileiro';
@@ -272,7 +278,7 @@ export function signCareerPlayer(career, id) {
   const offer = careerMarketCatalog().byId.get(id);
   if (!offer) throw Error('Jogador não encontrado no mercado.');
   if (career.roster.some(player => player.id === offer.player.id)) throw Error('Esse jogador já está no elenco.');
-  if (career.roster.length >= careerRosterLimit(career)) throw Error('O elenco está cheio. Venda um jogador no Elenco para abrir vaga.');
+  if (career.roster.length >= careerRosterLimit(career)) throw Error('O elenco está cheio. Conclua uma venda em Negociações para abrir vaga.');
   if (offer.price === null) throw Error('Jogador sem valor de mercado confirmado.');
   if (career.budget < offer.price) throw Error('Saldo insuficiente para a contratação.');
   const player = careerPlayerValuation(offer.player)?.id === offer.id
@@ -309,6 +315,60 @@ export function careerSale(career, id) {
 export function sellCareerPlayer(career, id) {
   const {price, roster, lineup} = careerSale(career, id);
   return {...career, budget: career.budget + price, roster, lineup};
+}
+
+const transferClock = career => career.season * 10000 + career.round +
+  (career.champions?.tournament?.matches ?? []).filter(match => match.result && [match.homeId, match.awayId].includes(CAREER_TEAM)).length;
+
+export function listCareerPlayer(career, id) {
+  if ((career.transferListings ?? []).some(entry => entry.playerId === id)) throw Error('Jogador já está à venda.');
+  const {price} = careerSale(career, id);
+  return {...career, transferListings: [...(career.transferListings ?? []),
+    {playerId: id, price, due: transferClock(career) + 1 + hashSeed(id) % 3, wave: 0}]};
+}
+
+export function cancelCareerListing(career, id) {
+  return {...career, transferListings: (career.transferListings ?? []).filter(entry => entry.playerId !== id),
+    transferOffers: (career.transferOffers ?? []).filter(offer => offer.playerId !== id)};
+}
+
+export function updateCareerTransferOffers(career) {
+  const now = transferClock(career), offers = [...(career.transferOffers ?? [])];
+  let changed = false;
+  const listings = (career.transferListings ?? []).filter(entry => career.roster.some(player => player.id === entry.playerId)).map(entry => {
+    if (now < entry.due || offers.some(offer => offer.playerId === entry.playerId)) return entry;
+    const player = career.roster.find(player => player.id === entry.playerId);
+    const candidates = CAREER_LEAGUES.flatMap(league => league.teams)
+      .filter(club => club.id !== career.clubId && !careerClub(career, club.id).jogadores.some(candidate => candidate.id === player.id)
+        && Math.max(...club.jogadores.map(candidate => candidate.ovr)) >= player.ovr - 7)
+      .sort((a, b) => hashSeed(`${career.seed}:${entry.playerId}:${entry.wave}:${a.id}`) - hashSeed(`${career.seed}:${entry.playerId}:${entry.wave}:${b.id}`));
+    for (const club of candidates.slice(0, 2)) {
+      const id = `${career.season}:${entry.playerId}:${entry.wave}:${club.id}`;
+      const factor = .9 + (hashSeed(id) % 26) / 100;
+      offers.push({id, playerId: player.id, clubId: club.id, price: Math.max(1, Math.round(entry.price * factor)), season: career.season});
+    }
+    changed = true;
+    return {...entry, wave: entry.wave + 1, due: now + 3};
+  });
+  return changed || listings.length !== (career.transferListings ?? []).length
+    ? {...career, transferListings: listings, transferOffers: offers} : career;
+}
+
+export function rejectCareerOffer(career, id) {
+  if (!(career.transferOffers ?? []).some(offer => offer.id === id)) throw Error('Proposta não encontrada.');
+  return {...career, transferOffers: career.transferOffers.filter(offer => offer.id !== id),
+    transferListings: (career.transferListings ?? []).map(entry => ({...entry, due: Math.max(entry.due, transferClock(career) + 2)}))};
+}
+
+export function acceptCareerOffer(career, id) {
+  if (career.replay?.round === career.round && career.replay?.season === career.season || career.champions?.replay)
+    throw Error('Conclua a partida em andamento antes de negociar.');
+  const offer = (career.transferOffers ?? []).find(candidate => candidate.id === id);
+  if (!offer || !(career.transferListings ?? []).some(entry => entry.playerId === offer.playerId)) throw Error('Proposta indisponível.');
+  const {player, roster, lineup} = careerSale(career, offer.playerId);
+  const next = cancelCareerListing(career, player.id);
+  return {...next, roster, lineup, budget: career.budget + offer.price,
+    transferDeals: [...(career.transferDeals ?? []), {...offer, player}]};
 }
 
 export function releaseCareerPlayer(career, id) {
@@ -453,8 +513,9 @@ export function careerClubStats(career) {
 
 function matchTeam(career, id) {
   if (id !== CAREER_TEAM) {
-    if (!opponentTeams.has(id)) {
-      const club = careerSeasonTeam(id);
+    const cacheKey = `${id}:${career.roster.map(player => player.id).join(',')}:${(career.transferDeals ?? []).map(deal => deal.id).join(',')}`;
+    if (!opponentTeams.has(cacheKey)) {
+      const club = careerSeasonTeam(id) ? careerClub(career, id) : null;
       if (club) {
         const {formation, lineup: assignments} = startingLineup(club.jogadores);
         const lineup = FORMATIONS[formation].slots.map(slot => ({
@@ -462,10 +523,10 @@ function matchTeam(career, id) {
         }));
         const starters = new Set(Object.values(assignments));
         const reserves = club.jogadores.filter(player => !starters.has(player.id)).map(player => ({player, clubId: id, ano: club.ano}));
-        opponentTeams.set(id, {id, name: club.nome, clubId: id, lineup, reserves, strength: calculateTeam(lineup), formation});
-      } else opponentTeams.set(id, squadTeam(opponents.get(id)));
+        opponentTeams.set(cacheKey, {id, name: club.nome, clubId: id, lineup, reserves, strength: calculateTeam(lineup), formation});
+      } else opponentTeams.set(cacheKey, squadTeam(opponents.get(id)));
     }
-    return opponentTeams.get(id);
+    return opponentTeams.get(cacheKey);
   }
   const bonus = career.facilities.training - 1;
   const entryFor = player => ({player: {...player, ovr: Math.min(99, player.ovr + bonus)}, clubId: CAREER_TEAM, ano: career.season});
@@ -663,7 +724,7 @@ export function prepareCareerChampionsMatch(career) {
   const {tournament} = career.champions;
   const teams = tournament.teams.map(team => {
     if (team.id === CAREER_TEAM) return {...team, ...matchTeam(career, team.id)};
-    return team.reserves ? team : {...team, reserves: matchTeam(career, team.id).reserves};
+    return {...team, ...matchTeam(career, team.id)};
   });
   const next = playNextRound({...tournament, teams});
   const match = next.userMatches.at(-1);

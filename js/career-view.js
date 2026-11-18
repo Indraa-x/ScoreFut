@@ -25,6 +25,7 @@ export const CAREER_TABS = {
 
   squad: {label: 'Elenco', icon: 'users'},
   market: {label: 'Mercado', icon: 'subs'},
+  transfers: {label: 'Negociações', icon: 'wallet'},
   facilities: {label: 'Instalações', icon: 'bolt'},
   club: {label: 'Meu clube', icon: 'shield'},
 };
@@ -457,7 +458,7 @@ function rosterPortrait(player, ui) {
   </span>`;
 }
 
-export function renderCareerSale({player, valuation, price, changesLineup}, ui) {
+export function renderCareerSale({player, valuation, price, changesLineup, proposalId, buyer}, ui) {
   return `<section class="career-sale-dialog">
     <div class="modal-head">
       <h2 id="modal-title">Vender ${esc(player.nome)}?</h2>
@@ -467,10 +468,10 @@ export function renderCareerSale({player, valuation, price, changesLineup}, ui) 
       <span>Receita da venda</span><strong>${money(price)}</strong>
       ${valuation.sourceUrl ? `<a href="${esc(valuation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Valor de mercado no Transfermarkt</a>` : '<small>Valor de mercado do Transfermarkt</small>'}
     </div>
-    <p class="muted">O jogador sai do elenco e o valor entra no orçamento.${changesLineup ? ' A escalação será ajustada automaticamente.' : ''}</p>
+    <p class="muted">${buyer ? `${esc(buyer)} receberá o jogador. ` : ''}O jogador sai do elenco e o valor entra no orçamento.${changesLineup ? ' A escalação será ajustada automaticamente.' : ''}</p>
     <div class="dialog-actions">
       <button type="button" class="btn btn-outline" data-action="close-modal" autofocus>Cancelar</button>
-      ${button('Confirmar venda', 'career-sell-confirm', player.id, true)}
+      ${button('Confirmar venda', proposalId ? 'career-transfer-confirm' : 'career-sell-confirm', proposalId ?? player.id, true)}
     </div>
   </section>`;
 }
@@ -499,7 +500,7 @@ function squad(career, ui, {selectedId = null} = {}) {
             </span>
             <span class="career-roster-rating">${player.ovr}<small${player.ratingKind === 'career-estimate' ? ' title="OVR estimado pelo ScoreFut"' : ''}>${player.ratingKind === 'career-estimate' ? 'OVR est.' : 'OVR'}</small></span>
           </button>
-          <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Vender ${esc(player.nome)}">$</button>
+          <button type="button" class="career-roster-sell" data-action="career-sell" data-value="${esc(player.id)}" aria-label="Colocar ${esc(player.nome)} à venda" title="Colocar à venda">$</button>
         </li>`).join('') || '<li class="career-roster-empty">Sem jogadores na reserva.</li>'}
       </ul>
     </section>
@@ -507,7 +508,7 @@ function squad(career, ui, {selectedId = null} = {}) {
       <div class="career-card-heading">
         <div><span class="eyebrow accent">11 titulares</span><h2 id="career-squad-title">Escalação titular</h2></div>
         <div class="career-squad-header-actions">
-          ${selected && starters.has(selected.id) ? `<button type="button" class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${esc(selected.id)}" aria-label="Vender ${esc(selected.nome)}">$</button>` : ''}
+          ${selected && starters.has(selected.id) ? `<button type="button" class="career-roster-sell career-starter-sell" data-action="career-sell" data-value="${esc(selected.id)}" aria-label="Colocar ${esc(selected.nome)} à venda" title="Colocar à venda">$</button>` : ''}
           <span class="career-squad-overall">${Math.round(calculateTeam(picks).overall)} <small>OVR</small></span>
         </div>
       </div>
@@ -646,6 +647,33 @@ function facilities(career, ui) {
   </section>`;
 }
 
+function transfers(career, ui) {
+  const offers = career.transferOffers ?? [], listings = career.transferListings ?? [], deals = career.transferDeals ?? [];
+  return `<section class="career-card panel career-transfers">
+    <header class="career-transfers-head"><div><h2>Negociações</h2><p class="muted">Propostas e saídas do seu clube</p></div>
+      <span class="career-pill">${offers.length} ${offers.length === 1 ? 'proposta' : 'propostas'}</span></header>
+    <h3>Propostas recebidas</h3>
+    ${offers.length ? `<div class="career-transfer-grid">${offers.map(offer => {
+      const player = career.roster.find(player => player.id === offer.playerId);
+      if (!player) return '';
+      return `<article class="career-transfer-offer">
+        <div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>${player.ovr} OVR</small></div></div>
+        <div class="career-transfer-buyer">${clubBadge(career, offer.clubId, ui)}<span>${esc(careerClub(career, offer.clubId).nome)}</span></div>
+        <strong class="career-transfer-price">${money(offer.price)}</strong>
+        <div class="career-transfer-actions">${button('Recusar', 'career-transfer-reject', offer.id)}${button('Analisar proposta', 'career-transfer-open', offer.id, true)}</div>
+      </article>`;
+    }).join('')}</div>` : '<p class="career-transfer-empty">Nenhuma proposta por enquanto. Os clubes avaliam os jogadores à venda conforme as partidas avançam.</p>'}
+    <div class="career-transfers-head"><h3>À venda <span class="career-pill">${listings.length}</span></h3>${button('Ver elenco', 'career-tab', 'squad')}</div>
+    ${listings.length ? `<ul class="career-transfer-list">${listings.map(entry => {
+      const player = career.roster.find(player => player.id === entry.playerId);
+      return player ? `<li><div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>Valor de referência · ${money(entry.price)}</small></div></div>
+        ${button('Retirar da venda', 'career-transfer-cancel', player.id)}</li>` : '';
+    }).join('')}</ul>` : '<p class="career-transfer-empty">Use o $ no elenco para colocar um jogador à venda.</p>'}
+    ${deals.length ? `<h3>Vendas concluídas</h3><ul class="career-transfer-list">${[...deals].reverse().slice(0, 12).map(deal =>
+      `<li><div><strong>${esc(deal.player.nome)}</strong><small>${esc(careerClub(career, deal.clubId).nome)} · Temporada ${deal.season}</small></div><strong class="career-transfer-price">${money(deal.price)}</strong></li>`).join('')}</ul>` : ''}
+  </section>`;
+}
+
 function club(career) {
   const {played, goals, titles} = careerClubStats(career);
   const edition = season => {
@@ -676,7 +704,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
   const league = careerLeague(career.leagueId);
   const [primary, secondary] = careerClub(career, CAREER_TEAM).cores
     ?? badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(career.crest))];
-  const pages = {overview, standings, facilities, club};
+  const pages = {overview, standings, facilities, club, transfers};
   const tabs = Object.entries(CAREER_TABS);
   const activeTab = tabs.some(([id]) => id === tab) ? tab : 'overview';
   const entering = previousTab === undefined;
