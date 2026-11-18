@@ -3,28 +3,11 @@ import assert from 'node:assert/strict';
 import {allSquads} from '../data/game-squads.js';
 import {
   advanceCareerSeason, careerFixtures, careerPicks, careerRosterLimit, changeCareerFormation, commitCareerRound, createCareer,
-  migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, upgradeCareerFacility,
+  migrateCareerCurrency, migrateCareerRoster, prepareCareerRound,
 } from '../js/career.js';
 import {FORMATIONS, positionFit} from '../js/engine.js';
 
 const catalogPlayers = new Set(allSquads.flatMap(squad => squad.jogadores));
-
-test('a full roster still lets a funded academy reach level five', () => {
-  const initial = createCareer(42, 'career26-laliga-448');
-  const vacancies = careerRosterLimit(initial) - initial.roster.length;
-  const newPlayers = [...catalogPlayers].filter(player =>
-    !initial.roster.some(existing => existing.id === player.id));
-  const career = {
-    ...initial,
-    facilities: {...initial.facilities, academy: 4},
-    roster: [...initial.roster, ...newPlayers.slice(0, vacancies)],
-    budget: 652,
-  };
-  const updated = upgradeCareerFacility(career, 'academy');
-  assert.equal(updated.facilities.academy, 5);
-  assert.equal(updated.budget, 0);
-  assert.deepEqual(updated.roster, career.roster);
-});
 
 test('old balances and pending match income convert to euros exactly once', () => {
   const initial = createCareer(42);
@@ -62,21 +45,6 @@ test('the starting roster uses real catalog players and can fill every formation
     assert.equal(new Set(picks.map(({player}) => player.id)).size, 11);
     assert.ok(picks.every(({player, slot}) => positionFit(player, slot) !== null));
   }
-});
-
-test('the academy adds an unused catalog player on upgrade and on season rollover', () => {
-  const initial = createCareer(42);
-  const upgraded = upgradeCareerFacility(initial, 'academy');
-  const recruit = upgraded.roster.at(-1);
-  assert.equal(upgraded.roster.length, initial.roster.length + 1);
-  assert.ok(catalogPlayers.has(recruit));
-  assert.ok(initial.roster.every(player => player.id !== recruit.id));
-  const fixtures = careerFixtures(upgraded);
-  const results = fixtures.map(round => round.map(([home, away]) => ({home, away, homeGoals: 0, awayGoals: 0})));
-  const next = advanceCareerSeason({...upgraded, round: fixtures.length, results});
-  assert.equal(next.roster.length, upgraded.roster.length + 1);
-  assert.ok(catalogPlayers.has(next.roster.at(-1)));
-  assert.equal(new Set(next.roster.map(player => player.id)).size, next.roster.length);
 });
 
 test('old saves replace fictitious players, avoid existing signings and retain progress and the pending replay', () => {

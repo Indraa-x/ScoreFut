@@ -15,8 +15,8 @@ import {renderMatchGoals} from './match-goals.js';
 import {currentMatch} from './match-session.js';
 import {matchHasEnded, penaltyProgress} from './match-penalties.js';
 import {
-  CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, CHAMPIONS_PLACES, careerChampionsFixture, careerNextCompetition, careerHasChampions, FACILITIES, MAX_FACILITY_LEVEL, careerClub, careerStyle,
-  careerCompetitionName, careerDestinations, careerFacilityLevel, careerFixtures, careerPicks, careerRelegation, careerRosterLimit, careerTable, careerTopScorers, careerSeasonScorers, facilityPrice, nextCareerMatch,
+  CAREER_CRESTS, CAREER_STYLES, CAREER_TEAM, CHAMPIONS_PLACES, careerChampionsFixture, careerNextCompetition, careerHasChampions, careerClub, careerStyle,
+  careerCompetitionName, careerDestinations, careerFixtures, careerPicks, careerRelegation, careerRosterLimit, careerTable, careerTopScorers, careerSeasonScorers, nextCareerMatch,
 } from './career.js';
 
 export const CAREER_TABS = {
@@ -26,7 +26,6 @@ export const CAREER_TABS = {
   squad: {label: 'Elenco', icon: 'users'},
   market: {label: 'Mercado', icon: 'subs'},
   transfers: {label: 'Negociações', icon: 'wallet'},
-  facilities: {label: 'Instalações', icon: 'bolt'},
   club: {label: 'Meu clube', icon: 'shield'},
 };
 const careerCoaches = [
@@ -62,7 +61,6 @@ export function renderCareerIntro(career, ui) {
       <ul class="hero-steps" aria-label="Opções disponíveis na Carreira">
         <li><span>${Object.keys(FORMATIONS).length}</span> Formações</li>
         <li><span>${CAREER_CRESTS.length}</span> Escudos</li>
-        <li><span>${Object.keys(FACILITIES).length}</span> Instalações</li>
         <li><span>${CAREER_LEAGUES.length}</span> Ligas</li>
       </ul>
     </div>
@@ -80,7 +78,6 @@ function renderCareerHub(career, ui) {
   const features = [
     ['squad', 'Monte o time no campinho', 'Escolha os titulares, teste formações e organize o banco.'],
     ['market', 'Busque novos reforços', 'Encontre jogadores dos elencos 2026/27 e do Brasileirão 2026.'],
-    ['facilities', 'Evolua a estrutura', 'Invista no estádio, na base e no centro de treinamento.'],
   ];
   return `<section class="career-intro-hub" aria-labelledby="career-hub-title">
     <h2 id="career-hub-title">Central da Carreira</h2>
@@ -631,37 +628,6 @@ function market(career, ui, filters = {}) {
   </section>`;
 }
 
-function facilities(career, ui) {
-  const cards = {
-    training: {icon: 'bolt', photo: 'assets/career/facilities/training.jpg'},
-    academy: {icon: 'users', photo: 'assets/career/facilities/academy.jpg'},
-    stadium: {icon: 'shield', photo: 'assets/career/facilities/stadium.jpg'},
-    gym: {icon: 'ball', photo: 'assets/career/facilities/gym.jpg'},
-    shop: {icon: 'card', photo: 'assets/career/facilities/shop.jpg'},
-    recovery: {icon: 'shield', photo: 'assets/career/facilities/recovery.jpg'},
-    analysis: {icon: 'chart', photo: 'assets/career/facilities/analysis.jpg'},
-    hospitality: {icon: 'users', photo: 'assets/career/facilities/hospitality.jpg'},
-  };
-  return `<section class="career-card panel career-facilities">
-    ${title('Instalações do clube', 'Invista na estrutura do clube para melhorar o desempenho, a formação de jogadores e a receita.')}
-    <div class="career-facility-grid">${Object.entries(FACILITIES).map(([key, facility]) => {
-      const {icon, photo} = cards[key];
-      const level = careerFacilityLevel(career, key);
-      const maxed = level >= MAX_FACILITY_LEVEL;
-      const price = facilityPrice(career, key);
-      const canUpgrade = career.budget >= price;
-      return `<article class="career-facility" data-facility="${key}">
-        <img class="career-facility-photo" src="${assetUrl(photo)}" alt="" loading="lazy" decoding="async">
-        <div class="career-card-heading"><span class="career-section-icon">${ui.icon(icon)}</span><span class="career-pill">Nível ${level} de ${MAX_FACILITY_LEVEL}</span></div>
-        <h3>${facility.name}</h3><p>${facility.effect}</p>
-        <div class="career-level-meter" aria-hidden="true">${Array.from({length: MAX_FACILITY_LEVEL}, (_, index) => `<span${index < level ? ' class="is-filled"' : ''}></span>`).join('')}</div>
-        <div class="career-facility-action">${maxed ? '<strong>Nível máximo</strong>' : `<strong>${money(price)}</strong>${button('Melhorar', 'career-upgrade', key, true, !canUpgrade)}`}</div>
-      </article>`;
-    }).join('')}</div>
-    <a class="career-facility-credits" href="CREDITS.md">Créditos das fotos</a>
-  </section>`;
-}
-
 export function renderCareerOfferNotice(career, offers, ui) {
   const offer = [...offers].sort((a, b) => b.price - a.price)[0];
   const player = career.roster.find(player => player.id === offer?.playerId);
@@ -743,7 +709,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
   const league = careerLeague(career.leagueId);
   const [primary, secondary] = careerClub(career, CAREER_TEAM).cores
     ?? badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(career.crest))];
-  const pages = {overview, standings, facilities, club, transfers};
+  const pages = {overview, standings, club, transfers};
   const tabs = Object.entries(CAREER_TABS);
   const activeTab = tabs.some(([id]) => id === tab) ? tab : 'overview';
   const entering = previousTab === undefined;

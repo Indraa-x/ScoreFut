@@ -40,9 +40,9 @@ Escolha uma liga, assuma seu clube e construa a temporada dentro e fora do campo
   </tr>
   <tr>
     <td valign="top">
-      <h3>🏟️ Um clube para desenvolver</h3>
-      <p>Evolua oito instalações, do centro de treinamento à academia de base. Cada investimento tem efeito no desempenho ou na receita.</p>
-      <p><strong>Cinco níveis por instalação</strong></p>
+      <h3>📊 Sua história no clube</h3>
+      <p>Acompanhe os jogos e gols da temporada e reúna os títulos conquistados ao longo da sua carreira.</p>
+      <p><strong>Estatísticas · Temporadas · Galeria de títulos</strong></p>
     </td>
     <td valign="top">
       <h3>🏆 Uma temporada na Europa</h3>
@@ -139,7 +139,7 @@ O ScoreFut usa **HTML, CSS e JavaScript com módulos nativos**.
 O GitHub Actions executa os testes, valida o projeto, prepara `dist/` e publica no GitHub Pages.
 
 ```text
-assets/     Escudos, retratos, instalações, troféus e áudio
+assets/     Escudos, retratos, troféus e áudio
 data/       Ligas, jogadores, épocas e referências
 js/         Carreira, mercado, draft e simulação
 css/        Interface, temas e animações

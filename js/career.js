@@ -42,20 +42,6 @@ export function changeCareerStyle(career, style) {
 }
 
 export const CAREER_CRESTS = ['bola', 'leao', 'aguia', 'montanha', 'estrela', 'listras', 'raio', 'torre'];
-export const FACILITIES = {
-  training: {name: 'Centro de treinamento', effect: 'Cada melhoria dá +1 de OVR efetivo aos titulares durante as partidas.', cost: 228},
-  academy: {name: 'Academia de base', effect: 'Revela um jogador ao melhorar e outro a cada nova temporada a partir do nível 2, quando houver vaga no elenco.', cost: 163},
-  stadium: {name: 'Estádio', effect: 'Cada melhoria aumenta em € 20 mil a receita por jogo em casa.', cost: 293},
-  gym: {name: 'Academia de preparação física', effect: 'Cada melhoria aumenta em 2% a força defensiva usada na simulação.', cost: 203},
-  shop: {name: 'Loja oficial', effect: 'Cada melhoria rende € 11 mil extras por partida com a venda de produtos.', cost: 179},
-  recovery: {name: 'Centro de recuperação', effect: 'Cada melhoria aumenta em 2% a força do meio-campo na simulação.', cost: 220},
-  analysis: {name: 'Análise de desempenho', effect: 'Cada melhoria aumenta em 2% a força ofensiva na simulação.', cost: 236},
-  hospitality: {name: 'Camarotes', effect: 'Cada melhoria rende € 16 mil extras por partida em casa.', cost: 260},
-};
-export const MAX_FACILITY_LEVEL = 5;
-const initialFacilityLevels = Object.fromEntries(Object.keys(FACILITIES).map(key => [key, 1]));
-
-export const careerFacilityLevel = (career, key) => career.facilities[key] ?? 1;
 export const MAX_CAREER_ROSTER = 32;
 export const careerRosterLimit = career => Math.max(MAX_CAREER_ROSTER, (careerSeasonTeam(career.clubId)?.jogadores.length ?? 0) + 3);
 const CAREER_VERSION = 2;
@@ -179,7 +165,7 @@ export function createCareer(seed, clubId) {
     const roster = [...club.jogadores];
     return migrateCareerChampions({
       version: CAREER_VERSION, seed, clubId, leagueId: league.id, name: club.nome,
-      season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET, facilities: {...initialFacilityLevels},
+      season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET,
       roster, opponentIds: league.teams.filter(team => team.id !== clubId).map(team => team.id),
       ...startingLineup(roster), results: [], seasons: [],
     });
@@ -189,7 +175,7 @@ export function createCareer(seed, clubId) {
   if (opponentIds.length % 2 === 0) opponentIds.pop();
   return {
     version: CAREER_VERSION, seed, name: 'Meu time', crest: CAREER_CRESTS[0],
-    season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET, facilities: {...initialFacilityLevels},
+    season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET,
     roster, opponentIds, formation: '4-3-3', lineup: bestLineup(roster, '4-3-3'), results: [], seasons: [],
   };
 }
@@ -223,6 +209,10 @@ function updateEstimatedBrazilRatings(career) {
 }
 
 export function migrateCareerRoster(career) {
+  if (Object.hasOwn(career, 'facilities')) {
+    career = {...career};
+    delete career.facilities;
+  }
   if (career.version >= CAREER_VERSION) return updateEstimatedBrazilRatings(career);
   const used = new Set(career.roster.filter(player => !isLegacyPlayer(player)).map(player => player.id));
   const lineup = {...career.lineup};
@@ -384,34 +374,6 @@ export function renameCareerClub(career, name, crest) {
   return {...career, name: clean, crest};
 }
 
-export function facilityPrice(career, key) {
-  return FACILITIES[key].cost * careerFacilityLevel(career, key);
-}
-
-function addAcademyPlayer(career) {
-  if (career.roster.length >= careerRosterLimit(career)) return career;
-  const used = new Set(career.roster.map(player => player.id));
-  const target = 69 + career.facilities.academy * 2;
-  const league = careerLeague(career.leagueId);
-  const pool = league ? league.teams.flatMap(team => team.jogadores) : careerPlayerPool;
-  const eligible = pool.filter(player => !used.has(player.id)).sort((a, b) => ratingGap(a, target) - ratingGap(b, target));
-  const closest = eligible[0];
-  if (!closest) return career;
-  const prospects = [...new Map(eligible.filter(player => ratingGap(player, target) === ratingGap(closest, target))
-    .map(player => [player.id, player])).values()];
-  const rng = mulberry32(career.seed + career.season * 19 + career.facilities.academy * 47);
-  return {...career, roster: [...career.roster, prospects[Math.floor(rng() * prospects.length)]]};
-}
-
-export function upgradeCareerFacility(career, key) {
-  const level = careerFacilityLevel(career, key);
-  if (!Object.hasOwn(FACILITIES, key) || level >= MAX_FACILITY_LEVEL) throw Error('Essa melhoria não está disponível.');
-  const price = facilityPrice(career, key);
-  if (career.budget < price) throw Error('Saldo insuficiente para a melhoria.');
-  const updated = {...career, budget: career.budget - price, facilities: {...career.facilities, [key]: level + 1}};
-  return key === 'academy' ? addAcademyPlayer(updated) : updated;
-}
-
 export function careerTable(career) {
   return leagueTable(career, [CAREER_TEAM, ...career.opponentIds], career.results);
 }
@@ -528,8 +490,7 @@ function matchTeam(career, id) {
     }
     return opponentTeams.get(cacheKey);
   }
-  const bonus = career.facilities.training - 1;
-  const entryFor = player => ({player: {...player, ovr: Math.min(99, player.ovr + bonus)}, clubId: CAREER_TEAM, ano: career.season});
+  const entryFor = player => ({player, clubId: CAREER_TEAM, ano: career.season});
   const lineup = careerPicks(career).map(pick => {
     if (!pick.player || positionFit(pick.player, pick.slot) === null) throw Error('Complete a escalação antes de jogar.');
     return {...pick, ...entryFor(pick.player)};
@@ -537,16 +498,8 @@ function matchTeam(career, id) {
   const starters = new Set(Object.values(career.lineup));
   const reserves = career.roster.filter(player => !starters.has(player.id)).map(entryFor);
   const style = CAREER_STYLES[careerStyle(career)].profile;
-  const defenseBonus = (careerFacilityLevel(career, 'gym') - 1) * 0.02;
-  const midfieldBonus = (careerFacilityLevel(career, 'recovery') - 1) * 0.02;
-  const attackBonus = (careerFacilityLevel(career, 'analysis') - 1) * 0.02;
-  const tacticalProfile = defenseBonus || midfieldBonus || attackBonus ? {
-    attack: (style?.attack ?? 1) * (1 + attackBonus),
-    midfield: (style?.midfield ?? 1) * (1 + midfieldBonus),
-    defense: (style?.defense ?? 1) * (1 + defenseBonus),
-    tempo: style?.tempo ?? 0,
-  } : style;
-  return {id, name: career.name, crest: career.crest, isUser: true, lineup, reserves, strength: calculateTeam(lineup), formation: career.formation, ...(tacticalProfile && {tacticalProfile})};
+  // Explicit null clears old Champions bonuses and survives JSON save/restore.
+  return {id, name: career.name, crest: career.crest, isUser: true, lineup, reserves, strength: calculateTeam(lineup), formation: career.formation, tacticalProfile: style ?? null};
 }
 
 export function careerScorers(match) {
@@ -568,12 +521,10 @@ function simulateCareerLeagueMatch(home, away, seed) {
 // Career budgets and receipts are in thousands of euros.
 const matchBaseIncome = {league: 5_200, group: 7_500, round16: 12_000, quarter: 12_000, semi: 12_000, final: 85_000};
 
-function careerMatchIncome(career, isHome, result, stage = 'league') {
+function careerMatchIncome(isHome, result, stage = 'league') {
   const base = matchBaseIncome[stage];
   if (stage === 'final') return base;
-  const shopIncome = (careerFacilityLevel(career, 'shop') - 1) * 11;
-  const homeIncome = 42 + (career.facilities.stadium - 1) * 20 + (careerFacilityLevel(career, 'hospitality') - 1) * 16;
-  return base + (isHome ? homeIncome : 16) + shopIncome
+  return base + (isHome ? 42 : 16)
     + (result.winnerId === CAREER_TEAM ? 26 : result.homeGoals === result.awayGoals ? 13 : 0);
 }
 
@@ -602,7 +553,7 @@ export function prepareCareerRound(career) {
     const expulsions = matchExpulsions(match);
     const result = {home, away, homeGoals: match.homeGoals, awayGoals: match.awayGoals, scorers, ...(expulsions && {expulsions})};
     if (userMatch) {
-      income = careerMatchIncome(career, home === CAREER_TEAM, match);
+      income = careerMatchIncome(home === CAREER_TEAM, match);
       result.income = income;
       replay = {
         seed, mode: 'career', teams, userTeamId: CAREER_TEAM,
@@ -737,7 +688,7 @@ export function commitCareerChampionsMatch(career) {
   const replay = champions?.replay;
   if (!replay || replay.season !== career.season || replay.id !== careerChampionsFixture(career)?.id
     || !matchHasEnded({tournament: replay.pending, matchMinute: replay.minute, penaltyReplay: replay.penaltyReplay}, replay.match)) return career;
-  const income = careerMatchIncome(career, !replay.match.neutral && replay.match.homeId === CAREER_TEAM, replay.match.result, replay.match.stage);
+  const income = careerMatchIncome(!replay.match.neutral && replay.match.homeId === CAREER_TEAM, replay.match.result, replay.match.stage);
   const {pending, match} = replay;
   const recorded = pending.matches.find(fixture => fixture.id === match.id)?.result;
   const tournament = matchExpulsions(match.result) && !recorded?.expulsions
@@ -769,5 +720,5 @@ export function advanceCareerSeason(career) {
   if (carryover?.length) next.leagueCarryover = carryover;
   else delete next.leagueCarryover;
   if (careerHasChampions(career)) next.champions = nextCareerChampions(career, table);
-  return career.facilities.academy > 1 ? addAcademyPlayer(next) : next;
+  return next;
 }

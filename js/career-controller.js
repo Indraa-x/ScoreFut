@@ -2,7 +2,7 @@ import {
   listCareerPlayer, cancelCareerListing, updateCareerTransferOffers, acceptCareerOffer, rejectCareerOffer,
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
   careerReserveReplacements, careerSale, commitCareerRound, migrateCareerChampions, migrateCareerCurrency, migrateCareerRoster, prepareCareerRound, renameCareerClub,
-  careerChampionsFixture, careerNextCompetition, commitCareerChampionsMatch, prepareCareerChampionsMatch, signCareerPlayer, upgradeCareerFacility,
+  careerChampionsFixture, careerNextCompetition, commitCareerChampionsMatch, prepareCareerChampionsMatch, signCareerPlayer,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale, renderCareerOfferNotice} from './career-view.js';
@@ -543,7 +543,6 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         const card = document.getElementById(`career-offer-${value}`);
         (card || app.querySelector('#career-market-count'))?.focus({preventScroll: true});
       },
-      'career-upgrade': value => change(career => upgradeCareerFacility(career, value), 'Instalação melhorada.'),
       'career-sell': openSale,
       'career-transfer-open': openTransferOffer,
       'career-transfer-confirm': confirmSale,

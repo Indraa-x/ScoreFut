@@ -43,7 +43,7 @@ test('the saved career can be continued and the intro offers a new campaign', ()
   assert.match(intro, /data-action="career-start">/);
   assert.match(intro, /Campanha salva<\/small><strong>Clube salvo/);
   assert.match(intro, /Próxima partida · Rodada 1/);
-  assert.equal(intro.match(/class="career-intro-card panel" data-action="career-tab"/g)?.length, 3);
+  assert.equal(intro.match(/class="career-intro-card panel" data-action="career-tab"/g)?.length, 2);
   assert.match(intro, /data-action="career-new" data-value="">Nova campanha/);
   assert.equal(page.slots.get(CAREER_KEY), saved);
   assert.equal(page.writes, 0);
@@ -74,4 +74,14 @@ test('career navigation animates on entry and on a tab change', () => {
 
   content.dataset.careerTab = 'standings';
   assert.match(career.open(), /class="career-tabs"/);
+});
+
+test('installations cannot be opened or upgraded and disappear from career navigation', () => {
+  const page = entry(createCareer(42));
+  assert.equal(page.career.actions['career-upgrade'], undefined);
+  assert.doesNotMatch(page.career.open(), /Instalações|data-value="facilities"/);
+  page.career.setTab('overview');
+  assert.doesNotMatch(page.career.open(), /Instalações|data-value="facilities"/);
+  page.career.setTab('facilities');
+  assert.doesNotMatch(page.career.open(), /Instalações|data-value="facilities"|career-upgrade/);
 });
