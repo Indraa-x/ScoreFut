@@ -1,9 +1,9 @@
 const value=(player,key)=>Number(player.atributos?.[key]??player.ovr??70);
-function pick(team,rng,kind,exclude){
+function pick(team,rng,kind,exclude,modern=false){
  const pool=team.lineup.filter(e=>e.slot.position!=='GOL'&&e.player.id!==exclude);
  if(!pool.length)return null;
  const weights=pool.map(({player,slot})=>{
-  const header=kind==='header',role=slot.position;
+  const header=kind==='header',role=modern?(slot.label??slot.position):slot.position;
   const skill=header?(value(player,'ataque')+value(player,'finalizacao'))/2:(value(player,'meio')+value(player,'finalizacao'))/2;
   const roleWeight=header?(['CA','ZAG','SA'].includes(role)?2.2:.65):(['MC','MEI','MD','ME','PE','PD'].includes(role)?2:1);
   return Math.max(1,skill-40)**2*roleWeight;
@@ -13,7 +13,7 @@ function pick(team,rng,kind,exclude){
 }
 
 /** Assign goal origins without changing the score distribution or the match RNG. */
-export function assignSetPieceGoals(events,home,away,rng){
+export function assignSetPieceGoals(events,home,away,rng,modern=false){
  const goals=events.filter(e=>e.type==='goal'&&!e.shootout);
  for(const [index,goal]of goals.entries()){
   if(goal.minute<5||goals.some(other=>other!==goal&&Math.abs(other.minute-goal.minute)<5))continue;
@@ -21,9 +21,9 @@ export function assignSetPieceGoals(events,home,away,rng){
   const team=goal.team==='home'?home:away,roll=rng();
   const origin=roll<.008?'olympic':roll<.078?'free-kick':roll<.158?'corner-header':roll<.198?'free-kick-header':null;
   if(!origin)continue;
-  const header=origin.endsWith('header'),scorer=pick(team,rng,header?'header':'kick');
+  const header=origin.endsWith('header'),scorer=pick(team,rng,header?'header':'kick',undefined,modern);
   if(!scorer)continue;
-  const taker=header?pick(team,rng,'kick',scorer.id):scorer;
+  const taker=header?pick(team,rng,'kick',scorer.id,modern):scorer;
   if(!taker)continue;
   const restartId=`goal-restart-${goal.team}-${index}`;
   Object.assign(goal,{player:scorer,origin,restartId,...(header?{assist:taker}:{})});

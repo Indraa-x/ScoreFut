@@ -94,7 +94,7 @@ export const SIMULATION_DIFFICULTIES=Object.freeze({
 });
 export const SIMULATION_SETTINGS=Object.freeze({
   modelVersion:6,difficulty:'Normal',baseXG:1.3,xGExponent:2.5,minXG:.02,maxXG:3.4,
-  ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.5,smoothGapScale:22,
+  ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.12,smoothGapScale:22,
   positionPenalty:.03,chemistryCap:2,midfieldWeight:.4,
   homeAdvantage:.06,redAttackFactor:.65,redDefenseExposure:1.08,redCardChance:.006,
   penaltyFoulChance:.035,substitutionChance:.72,substitutionRecovery:.02,
@@ -300,10 +300,18 @@ export function prepareFixtureTeams(tournament, match, extraMatches = []) {
 }
 
 const choose = (items, rng) => items[Math.floor(rng() * items.length)];
-const weightedPlayer = (team, rng, repeatScorer, repeatChance = 0) => {
+const weightedPlayer = (team, rng, repeatScorer, repeatChance = 0, modern = false) => {
   const lineup = team.lineup.filter(entry => entry.slot.position !== 'GOL');
   if (!lineup.length) return team.lineup[0]?.player || { id: team.id, nome: team.name };
-  const weights = lineup.map(entry => Math.max(1, attribute(entry.player, 'finalizacao') - 25) * (entry.slot.position === 'ATA' ? 1.8 : entry.slot.position === 'MEI' ? 1 : 0.55));
+  const weights = lineup.map(entry => {
+    if (!modern) return Math.max(1, attribute(entry.player, 'finalizacao') - 25) * (entry.slot.position === 'ATA' ? 1.8 : entry.slot.position === 'MEI' ? 1 : 0.55);
+    const role = normalizeRole(entry.slot.label ?? entry.slot.position);
+    let involvement = {CA: 5, SA: 4, PE: 2.8, PD: 2.8, ATA: 3.5, MEI: 1.3, ME: .9, MD: .9, MC: .6, VOL: .28, ZAG: .16, LD: .2, LE: .2, DEF: .18}[role] ?? .6;
+    // A natural striker remains a goal threat when used on the wing.
+    if (entry.slot.position === 'ATA' && normalizeRole(entry.player.tags?.[0]) === 'CA') involvement = Math.max(involvement, 4.5);
+    return Math.max(1, attribute(entry.player, 'finalizacao') - 30) ** 1.5
+      * (Math.max(1, entry.player.ovr ?? 70) / 80) ** 5 * involvement;
+  });
   const roll = rng();
   const preferred = repeatChance && lineup.find(entry => entry.player.id === repeatScorer?.id);
   if (preferred && roll < repeatChance) return preferred.player;
@@ -530,7 +538,7 @@ function simulateStatefulMatch(home,away,rng,{knockout=false,extraTimeAllowed=tr
     0, .95));
   const addGoal=(side,minute,player,extra={})=>{
     score[side]++;
-    const scorer = player || weightedPlayer(activeTeam(side), rng, firstScorers[side], repeatChances[side]);
+    const scorer = player || weightedPlayer(activeTeam(side), rng, firstScorers[side], repeatChances[side], true);
     firstScorers[side] ??= scorer;
     events.push({minute,type:'goal',team:sides[side],player:scorer,...coordinates(side),...extra});
   };
@@ -618,7 +626,7 @@ function simulateStatefulMatch(home,away,rng,{knockout=false,extraTimeAllowed=tr
   // Preserve the causal penalty/scorer; decorate only open-play goals. A separate
   // seeded stream never changes the score or the match generator's state.
   const decorating=events.filter(e=>!(e.type==='goal' && e.origin==='penalty') && !e.shootout),originalLength=decorating.length;
-  assignSetPieceGoals(decorating,withoutDismissed(home,'home',events),withoutDismissed(away,'away',events),mulberry32(hashSeed(`${home.id}:${away.id}:${events.filter(e=>e.type==='goal').map(e=>e.minute+e.team).join('|')}:goal-origins-v6`)));
+  assignSetPieceGoals(decorating,withoutDismissed(home,'home',events),withoutDismissed(away,'away',events),mulberry32(hashSeed(`${home.id}:${away.id}:${events.filter(e=>e.type==='goal').map(e=>e.minute+e.team).join('|')}:goal-origins-v6`)),true);
   events.push(...decorating.slice(originalLength));
   events.sort((a,b)=>a.minute-b.minute);
   const scorers=new Map();
