@@ -94,7 +94,7 @@ export const SIMULATION_DIFFICULTIES=Object.freeze({
 });
 export const SIMULATION_SETTINGS=Object.freeze({
   modelVersion:6,difficulty:'Normal',baseXG:1.3,xGExponent:2.5,minXG:.02,maxXG:3.4,
-  ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.12,smoothGapScale:22,
+  ...SIMULATION_DIFFICULTIES.Normal,smoothGapWeight:.5,smoothGapScale:22,
   positionPenalty:.03,chemistryCap:2,midfieldWeight:.4,
   homeAdvantage:.06,redAttackFactor:.65,redDefenseExposure:1.08,redCardChance:.006,
   penaltyFoulChance:.035,substitutionChance:.72,substitutionRecovery:.02,
