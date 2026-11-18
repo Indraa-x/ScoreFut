@@ -208,7 +208,6 @@ function scoringLeaders(career, ui) {
 
 function standings(career, ui, rows) {
   const totalRounds = careerFixtures(career).length;
-  const lastRound = career.results.at(-1);
   const seasonFinished = career.round >= totalRounds;
   const {firstRelegation, playoffPosition} = careerRelegation(career);
   const relegationLabel = seasonFinished ? 'Rebaixados' : 'Zona de rebaixamento';
@@ -223,17 +222,6 @@ function standings(career, ui, rows) {
       <label><input type="radio" name="career-standings-view" value="scorers" aria-controls="career-standings-scorers"><span>Artilheiros</span></label>
     </div>
     <div class="career-standings-clubs" id="career-standings-clubs">
-    ${lastRound ? `<details class="career-standings-results">
-      <summary>Resultados da rodada ${career.round}</summary>
-      <table class="career-table" aria-label="Resultados da rodada ${career.round}">
-        <thead><tr><th scope="col">Mandante</th><th scope="col">Placar</th><th scope="col">Visitante</th></tr></thead>
-        <tbody>${lastRound.map(({home, away, homeGoals, awayGoals}) => `<tr${[home, away].includes(CAREER_TEAM) ? ' class="career-own-row"' : ''}>
-          <td>${esc(careerClub(career, home).nome)}</td>
-          <td><strong>${homeGoals} × ${awayGoals}</strong></td>
-          <td>${esc(careerClub(career, away).nome)}</td>
-        </tr>`).join('')}</tbody>
-      </table>
-    </details>` : ''}
 
     <div class="career-table-wrap">
       <table class="career-table" aria-labelledby="career-standings-title">

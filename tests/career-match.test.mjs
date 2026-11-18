@@ -52,11 +52,8 @@ test('Brasileirão standings follow the committed scores through all 38 rounds',
   }
   assert.equal(played.length, 380);
   const html = renderCareer(career, 'standings', ui);
-  assert.match(html, /Resultados da rodada 38/);
+  assert.doesNotMatch(html, /Resultados da rodada|career-standings-results/);
   assert.match(html, /title="Empates">E/);
-  const resultRows = html.match(/aria-label="Resultados da rodada 38">[\s\S]*?<tbody>([\s\S]*?)<\/tbody>/)[1];
-  assert.deepEqual([...resultRows.matchAll(/<strong>(\d+) × (\d+)<\/strong>/g)].map(([, home, away]) => [+home, +away]),
-    career.results.at(-1).map(result => [result.homeGoals, result.awayGoals]));
 });
 
 test('career marks the relegation places for each league and records the same clubs at season end', () => {
