@@ -5,7 +5,7 @@ import {
   careerChampionsFixture, careerNextCompetition, commitCareerChampionsMatch, prepareCareerChampionsMatch, signCareerPlayer, upgradeCareerFacility,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
-import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale} from './career-view.js';
+import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale, renderCareerOfferNotice} from './career-view.js';
 import {renderCareerSetup} from './career-setup-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
@@ -46,10 +46,13 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     render();
   }
   function save(next) {
-    const previousOffers = savedCareer()?.transferOffers?.length ?? 0;
+    const previousOffers = new Set((savedCareer()?.transferOffers ?? []).map(offer => offer.id));
     next = updateCareerTransferOffers(next);
     if (!storage.write(activeSlot(), next)) throw Error('O navegador não conseguiu salvar a carreira.');
-    if ((next.transferOffers?.length ?? 0) > previousOffers) toast('Novas propostas recebidas em Negociações.');
+    const received = (next.transferOffers ?? []).filter(offer => !previousOffers.has(offer.id));
+    if (received.length) queueMicrotask(() => toast('Nova proposta de transferência', {
+      html: renderCareerOfferNotice(next, received, ui), duration: 10000,
+    }));
   }
   function loadMatch(career = read(), competition = careerNextCompetition(career)) {
     const champions = competition === 'champions';

@@ -1570,3 +1570,28 @@ body > .career-drag-avatar {
   .career-transfer-list li { flex-wrap: wrap; }
   .career-transfer-list .btn { margin-left: auto; }
 }
+.career-transfers .career-transfer-offer { display: flex; flex-direction: column; padding: 22px; gap: 20px; background: linear-gradient(150deg, var(--accent-soft), var(--surface-alt) 55%); }
+.career-transfers .career-transfer-player .career-roster-avatar { border-radius: 50%; }
+.career-transfer-details { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 16px; align-items: center; padding-block: 18px; border-block: 1px solid var(--border); }
+.career-transfers .career-transfer-buyer { margin: 0; font-weight: 700; }
+.career-transfers .career-transfer-buyer small { margin: 0 0 5px; font-weight: 400; }
+.career-transfer-value { text-align: right; }
+.career-transfer-value small { margin: 0 0 7px; }
+.career-transfers .career-transfer-price { font-size: 24px; font-weight: 800; }
+.career-transfers .career-transfer-actions { margin: auto 0 0; }
+.career-transfer-actions .btn-primary { flex: 1; }
+.career-transfers > .career-transfers-head:not(:first-child) { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--border); }
+#toast.is-rich { width: min(420px, calc(100vw - 32px)); max-width: none; padding: 18px; border: 1px solid var(--border); border-left: 3px solid var(--green); background: var(--surface); color: var(--text); border-radius: 14px; box-shadow: 0 16px 50px #0005; text-align: left; white-space: normal; }
+.career-offer-notice { position: relative; display: grid; grid-template-columns: 52px minmax(0,1fr); align-items: center; gap: 14px; }
+.career-offer-notice .career-roster-avatar { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; }
+.career-notice-copy { padding-right: 18px; }
+.career-notice-copy > span { color: var(--green); font-size: 11px; font-weight: 800; }
+.career-notice-copy strong { display: block; font-size: 16px; margin: 4px 0; }
+.career-notice-copy p { font-size: 12px; line-height: 1.6; color: var(--muted); }
+.career-notice-copy b { color: var(--text); white-space: nowrap; margin-left: 5px; }
+.career-notice-copy small { display: block; margin-top: 4px; font-size: 11px; color: var(--muted); }
+.career-notice-close { position: absolute; right: -4px; top: -4px; width: 28px; height: 28px; display: grid; place-items: center; background: transparent; border: 0; color: var(--muted); cursor: pointer; }
+.career-notice-close svg { width: 16px; height: 16px; }
+.career-offer-notice > .btn { grid-column: 1/-1; width: 100%; margin-top: 2px; }
+@media(max-width: 430px) { .career-transfer-details { grid-template-columns: 1fr; } .career-transfer-value { text-align: left; } }
+.toast.is-rich.show { pointer-events: auto; }

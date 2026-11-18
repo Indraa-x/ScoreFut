@@ -647,6 +647,21 @@ function facilities(career, ui) {
   </section>`;
 }
 
+export function renderCareerOfferNotice(career, offers, ui) {
+  const offer = [...offers].sort((a, b) => b.price - a.price)[0];
+  const player = career.roster.find(player => player.id === offer?.playerId);
+  if (!player) return '';
+  return `<div class="career-offer-notice">
+    ${rosterPortrait(player, ui)}
+    <div class="career-notice-copy"><span>Nova proposta</span><strong>${esc(player.nome)}</strong>
+      <p>${esc(careerClub(career, offer.clubId).nome)} <b>${money(offer.price)}</b></p>
+      ${offers.length > 1 ? `<small>+ ${offers.length - 1} ${offers.length === 2 ? 'proposta recebida' : 'propostas recebidas'}</small>` : ''}
+    </div>
+    <button class="career-notice-close" type="button" data-toast-close aria-label="Fechar notificação">${ui.icon('close')}</button>
+    ${button('Ver propostas', 'career-tab', 'transfers', true)}
+  </div>`;
+}
+
 function transfers(career, ui) {
   const offers = career.transferOffers ?? [], listings = career.transferListings ?? [], deals = career.transferDeals ?? [];
   return `<section class="career-card panel career-transfers">
@@ -658,8 +673,8 @@ function transfers(career, ui) {
       if (!player) return '';
       return `<article class="career-transfer-offer">
         <div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>${player.ovr} OVR</small></div></div>
-        <div class="career-transfer-buyer">${clubBadge(career, offer.clubId, ui)}<span>${esc(careerClub(career, offer.clubId).nome)}</span></div>
-        <strong class="career-transfer-price">${money(offer.price)}</strong>
+        <div class="career-transfer-details"><div class="career-transfer-buyer">${clubBadge(career, offer.clubId, ui)}<span><small>Clube interessado</small>${esc(careerClub(career, offer.clubId).nome)}</span></div>
+        <div class="career-transfer-value"><small>Proposta de compra</small><strong class="career-transfer-price">${money(offer.price)}</strong></div></div>
         <div class="career-transfer-actions">${button('Recusar', 'career-transfer-reject', offer.id)}${button('Analisar proposta', 'career-transfer-open', offer.id, true)}</div>
       </article>`;
     }).join('')}</div>` : '<p class="career-transfer-empty">Nenhuma proposta por enquanto. Os clubes avaliam os jogadores à venda conforme as partidas avançam.</p>'}

@@ -66,7 +66,19 @@ const celebration=initCelebration({app});
 initSkipFeedback({app,getDraft:()=>state.screen==='draft'&&!state.rolling?state.draft:null});
 const validation=validateData();
 if(!validation.valid) console.error('Base ScoreFut inválida',validation.errors);
-function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3400);}
+function toast(message,options={}){
+  const el=document.getElementById('toast');
+  el.classList.toggle('is-rich',Boolean(options.html));
+  if(options.html)el.innerHTML=options.html;else el.textContent=message;
+  el.querySelectorAll('[data-career-portrait]').forEach(img=>{
+    const loaded=()=>img.classList.add('is-loaded');
+    if(img.complete&&img.naturalWidth)loaded();else img.addEventListener('load',loaded,{once:true});
+  });
+  const hide=()=>{el.classList.remove('show');el.inert=true;};
+  el.querySelectorAll('[data-toast-close],[data-action]').forEach(button=>button.addEventListener('click',hide,{once:true}));
+  el.inert=false;el.classList.add('show');clearTimeout(toastTimer);
+  toastTimer=setTimeout(hide,options.duration??3400);
+}
 async function downloadResult(record){const exporter=await import('./share.js');return exporter.downloadResult(record);}
 let challengeDialogPromise=null;
 async function openChallenge(kind='create',code=''){

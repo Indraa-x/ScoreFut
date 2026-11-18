@@ -4,7 +4,7 @@ import {CAREER_TEAM, createCareer, careerSale, listCareerPlayer, updateCareerTra
   rejectCareerOffer, cancelCareerListing, prepareCareerRound, commitCareerRound, careerClub, advanceCareerSeason, careerFixtures} from '../js/career.js';
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
 import {careerMarketPage} from '../js/career-market.js';
-import {renderCareer} from '../js/career-view.js';
+import {renderCareer, renderCareerOfferNotice} from '../js/career-view.js';
 import * as ui from '../js/ui.js';
 
 function played(career) {
@@ -33,6 +33,14 @@ test('listing waits for played games, persists without rerolling and never pays 
   assert.throws(() => listCareerPlayer(career, player.id));
   assert.match(renderCareer(career, 'transfers', ui), /Propostas recebidas/);
   assert.match(renderCareer(career, 'transfers', ui), /Analisar proposta/);
+  const notice = renderCareerOfferNotice(career, career.transferOffers, ui);
+  assert.match(notice, /Nova proposta/);
+  assert.match(notice, /data-career-portrait/);
+  assert.match(notice, /data-value="transfers"/);
+  assert.match(notice, /Fechar notificação/);
+  const escaped = renderCareerOfferNotice({...career, roster: career.roster.map(p =>
+    p.id === player.id ? {...p, nome: '<img onerror="x">'} : p)}, career.transferOffers, ui);
+  assert.ok(!escaped.includes('<img onerror='));
 });
 
 test('accepted offer transfers ownership, credits its exact fee once and updates buyer squad and market', () => {
