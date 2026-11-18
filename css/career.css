@@ -1602,3 +1602,20 @@ body > .career-drag-avatar {
 .career-offer-notice > .btn { grid-column: 1/-1; width: 100%; margin-top: 2px; }
 @media(max-width: 430px) { .career-transfer-details { grid-template-columns: 1fr; } .career-transfer-value { text-align: left; } }
 .toast.is-rich.show { pointer-events: auto; }
+.career-transfers .career-sales-history { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.career-transfers .career-sales-history li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 22px; padding: 18px 20px; background: var(--surface-alt); }
+.career-sales-history .career-transfer-player strong { font-size: 15px; }
+.career-sales-history .career-roster-avatar { width: 44px; height: 44px; }
+.career-sale-destination { display: flex; align-items: center; gap: 10px; min-width: 0; font-size: 13px; font-weight: 600; }
+.career-sale-destination > span:last-child { overflow-wrap: anywhere; }
+.career-sale-arrow { display: flex; color: var(--muted); margin-right: 6px; }
+.career-sale-arrow svg { width: 16px; height: 16px; }
+.career-sale-destination .club-badge { width: 30px; height: 30px; flex: 0 0 30px; }
+.career-transfers .career-sales-history .career-transfer-price { font-size: 22px; text-align: right; font-variant-numeric: tabular-nums; }
+@media(max-width: 650px) {
+  .career-transfers .career-sales-history li { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 16px; }
+  .career-sales-history .career-sale-destination { grid-column: 1/-1; grid-row: 2; padding-left: 56px; font-size: 12px; }
+  .career-sales-history .career-sale-arrow { display: none; }
+  .career-transfers .career-sales-history .career-transfer-price { grid-column: 2; grid-row: 1; font-size: 19px; }
+  .career-sale-destination .club-badge { width: 24px; height: 24px; flex-basis: 24px; }
+}

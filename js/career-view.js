@@ -685,8 +685,16 @@ function transfers(career, ui) {
       return player ? `<li><div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>Valor de referência · ${money(entry.price)}</small></div></div>
         ${button('Retirar da venda', 'career-transfer-cancel', player.id)}</li>` : '';
     }).join('')}</ul>` : '<p class="career-transfer-empty">Use o $ no elenco para colocar um jogador à venda.</p>'}
-    ${deals.length ? `<h3>Vendas concluídas</h3><ul class="career-transfer-list">${[...deals].reverse().slice(0, 12).map(deal =>
-      `<li><div><strong>${esc(deal.player.nome)}</strong><small>${esc(careerClub(career, deal.clubId).nome)} · Temporada ${deal.season}</small></div><strong class="career-transfer-price">${money(deal.price)}</strong></li>`).join('')}</ul>` : ''}
+    ${deals.length ? `<h3>Vendas concluídas</h3><ul class="career-transfer-list career-sales-history">${[...deals].reverse().slice(0, 12).map(deal => {
+      const year = 2025 + deal.season;
+      const edition = career.leagueId === 'brasileirao' ? year : `${String(year).slice(-2)}/${String(year + 1).slice(-2)}`;
+      return `<li>
+        <div class="career-transfer-player">${rosterPortrait(deal.player, ui)}<div><strong>${esc(deal.player.nome)}</strong><small>${edition}</small></div></div>
+        <div class="career-sale-destination"><span class="career-sale-arrow" aria-hidden="true">${ui.icon('arrow')}</span>
+          ${clubBadge(career, deal.clubId, ui)}<span>${esc(careerClub(career, deal.clubId).nome)}</span></div>
+        <strong class="career-transfer-price">${money(deal.price)}</strong>
+      </li>`;
+    }).join('')}</ul>` : ''}
   </section>`;
 }
 
