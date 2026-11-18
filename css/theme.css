@@ -121,3 +121,53 @@ html[data-theme="dark"] dialog::backdrop{background:#000a}
 @media(max-width:480px){.header-inner .nav-link svg{display:none}}
 @media(max-width:340px){.brand .brand-logo{width:96px}}
 @media(prefers-reduced-motion:reduce){.header-inner .nav-link{transition:none}}
+
+
+/* Main navigation: one compact control with restrained motion. */
+.site-header .header-inner nav {
+  align-self: center; align-items: center; gap: 5px; margin: 0 0 0 auto;
+  padding: 5px; height: auto; min-height: 54px; width: fit-content; max-width: 100%;
+  border: 1px solid var(--border); border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-alt) 78%, transparent);
+}
+.site-header .header-inner .nav-link {
+  position: relative; min-height: 42px; padding: 0 17px; gap: 9px;
+  border-radius: 9px; color: var(--muted); font-size: 13px; line-height: 1.2;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+}
+.site-header .header-inner .nav-link svg { width: 18px; height: 18px; stroke-width: 1.7; transition: transform .22s ease; }
+.site-header .header-inner .nav-link:hover { color: var(--text); background: var(--accent-soft); }
+.site-header .header-inner .nav-link.active {
+  color: var(--green); background: linear-gradient(130deg, var(--accent-soft), color-mix(in srgb, var(--green) 8%, var(--surface)));
+  border-color: color-mix(in srgb, var(--green) 35%, var(--border)); box-shadow: inset 0 1px 0 #ffffff08;
+}
+.site-header .header-inner .nav-link.active::after { display: none; }
+.site-header .header-inner .nav-link:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.site-header .header-inner .release-notice--icon {
+  position: relative; height: 42px; min-height: 42px; width: 42px; flex-basis: 42px;
+  margin-left: 5px; border-radius: 9px; border-color: transparent; background: transparent;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.site-header .release-notice--icon::before { content: ''; position: absolute; width: 1px; height: 22px; left: -6px; top: 9px; background: var(--border); }
+.site-header .header-inner .release-notice--icon:hover { background: color-mix(in srgb, var(--gold) 10%, var(--surface)); border-color: color-mix(in srgb, var(--gold) 30%, transparent); }
+.site-header .release-maintenance-icon { transition: transform .25s ease; }
+@media(prefers-reduced-motion:no-preference) {
+  .site-header .nav-link:hover svg { transform: translateY(-2px) rotate(-5deg); }
+  .site-header .nav-link.active svg { animation: header-icon-select .28s ease-out; }
+  .site-header .release-notice--icon:hover .release-maintenance-icon { transform: rotate(-12deg); }
+  .site-header .header-inner :is(.nav-link,.release-notice--icon):active { transform: scale(.96); }
+}
+@keyframes header-icon-select { from { transform: translateY(3px) scale(.88); } to { transform: translateY(0) scale(1); } }
+@media(max-width:760px) {
+  .site-header .header-inner nav { gap: 3px; padding: 4px; min-height: 50px; }
+  .site-header .header-inner .nav-link { padding-inline: 9px; gap: 6px; font-size: 12px; }
+}
+@media(max-width:480px) {
+  .site-header .header-inner nav { margin: 0 auto; width: 100%; justify-content: center; flex-wrap: nowrap; border-radius: 11px; }
+  .site-header .header-inner .nav-link { flex: 1; padding-inline: 6px; min-height: 40px; font-size: 11px; }
+  .site-header .header-inner .release-notice--icon { width: 34px; flex-basis: 34px; height: 40px; min-height: 40px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .site-header .header-inner :is(.nav-link,.release-notice--icon),
+  .site-header :is(.nav-link svg,.release-maintenance-icon) { transition: none; animation: none; }
+}
