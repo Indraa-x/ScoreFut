@@ -1,0 +1,129 @@
+{
+  "checkedAt": "2026-11-18T20:27:46.997Z",
+  "ratings": "https://www.ea.com/pt-br/games/ea-sports-fc/ratings",
+  "component": "https://ratings-images-prod.pulse.ea.com/FC27/components/js/ut-item.js",
+  "portraitTemplate": "https://ratings-images-prod.pulse.ea.com/FC27/components/players/p{eaId}.webp",
+  "europeanPortraits": 2269,
+  "bahiaPortraits": 19,
+  "unavailable": [
+    {
+      "id": "ea-89421",
+      "eaId": 89421,
+      "name": "Fritz Gagzow",
+      "club": "1. FC Union Berlin",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/89421_pt-BR.webp"
+    },
+    {
+      "id": "ea-84386",
+      "eaId": 84386,
+      "name": "Maycon Cardozo",
+      "club": "Bayern Munich",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/84386_pt-BR.webp"
+    },
+    {
+      "id": "ea-85225",
+      "eaId": 85225,
+      "name": "Bara Sapoko Ndiaye",
+      "club": "Bayern Munich",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/85225_pt-BR.webp"
+    },
+    {
+      "id": "ea-86362",
+      "eaId": 86362,
+      "name": "Enzo dos Santos",
+      "club": "Borussia Dortmund",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/86362_pt-BR.webp"
+    },
+    {
+      "id": "ea-88443",
+      "eaId": 88443,
+      "name": "Mathieu Nguefack",
+      "club": "Borussia Mönchengladbach",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/88443_pt-BR.webp"
+    },
+    {
+      "id": "ea-88442",
+      "eaId": 88442,
+      "name": "Danfa",
+      "club": "Borussia Mönchengladbach",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/88442_pt-BR.webp"
+    },
+    {
+      "id": "ea-82098",
+      "eaId": 82098,
+      "name": "Jeremiaha Maluze",
+      "club": "Eintracht Frankfurt",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/82098_pt-BR.webp"
+    },
+    {
+      "id": "ea-88333",
+      "eaId": 88333,
+      "name": "Gil Neves",
+      "club": "FC Cologne",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/88333_pt-BR.webp"
+    },
+    {
+      "id": "ea-89424",
+      "eaId": 89424,
+      "name": "Rael Nakuzola",
+      "club": "Mainz",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/89424_pt-BR.webp"
+    },
+    {
+      "id": "ea-74892",
+      "eaId": 74892,
+      "name": "Tommy Setford",
+      "club": "Arsenal",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/74892_pt-BR.webp"
+    },
+    {
+      "id": "ea-85912",
+      "eaId": 85912,
+      "name": "Alfie Cresswell",
+      "club": "Leeds United",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/85912_pt-BR.webp"
+    },
+    {
+      "id": "ea-73353",
+      "eaId": 73353,
+      "name": "Rhys Chadwick",
+      "club": "Leeds United",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/73353_pt-BR.webp"
+    },
+    {
+      "id": "ea-88609",
+      "eaId": 88609,
+      "name": "Callum Mills",
+      "club": "Leeds United",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/88609_pt-BR.webp"
+    },
+    {
+      "id": "ea-85700",
+      "eaId": 85700,
+      "name": "Jayden Lienou",
+      "club": "Leeds United",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/85700_pt-BR.webp"
+    },
+    {
+      "id": "ea-88606",
+      "eaId": 88606,
+      "name": "Rory Mahady",
+      "club": "Leeds United",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/88606_pt-BR.webp"
+    },
+    {
+      "id": "ea-83028",
+      "eaId": 83028,
+      "name": "Oliver Irow",
+      "club": "Tottenham Hotspur",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/83028_pt-BR.webp"
+    },
+    {
+      "id": "ea-75770",
+      "eaId": 75770,
+      "name": "Callum Olusesi",
+      "club": "Tottenham Hotspur",
+      "card": "https://ratings-images-prod.pulse.ea.com/FC27/components/items/75770_pt-BR.webp"
+    }
+  ]
+}

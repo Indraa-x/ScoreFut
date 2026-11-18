@@ -1,5 +1,5 @@
 import {BRAZIL_PORTRAITS} from './brasileirao-portraits.js';
-import {EUROPEAN_PORTRAITS} from './european-portraits.js';
+import {EA_PORTRAIT_IDS, EA_PORTRAIT_UNAVAILABLE} from './ea-portraits.js';
 
 const legacyIds = new Map([
   ['adrien-rabiot', 210008],
@@ -208,10 +208,12 @@ const legacyIds = new Map([
 
 export function careerPortraitUrl(player) {
   const {id: playerId, camisa} = player;
+  if (EA_PORTRAIT_IDS.has(playerId)) {
+    return EA_PORTRAIT_UNAVAILABLE.has(playerId) ? null :
+      `https://ratings-images-prod.pulse.ea.com/FC27/components/players/p${EA_PORTRAIT_IDS.get(playerId)}.webp`;
+  }
   const portrait = BRAZIL_PORTRAITS.get(`${playerId}/${camisa}`) ?? BRAZIL_PORTRAITS.get(playerId);
   if (portrait) return `https://img.a.transfermarkt.technology/portrait/medium/${portrait}?lm=4711`;
-  const europeanPortrait = EUROPEAN_PORTRAITS.get(playerId);
-  if (europeanPortrait) return europeanPortrait;
   const eaId = /^ea-(\d+)$/.exec(playerId)?.[1] ?? legacyIds.get(playerId);
   return eaId ? `https://ratings-images-prod.pulse.ea.com/FC25/full/player-portraits/p${eaId}.png?padding=0.7` : null;
 }
