@@ -3,7 +3,7 @@ import {assetUrl} from './asset-url.js';
 import {championConfetti} from './celebration.js';
 import {careerClubStats} from './career.js';
 import {competitionLogo} from '../data/competitions.js';
-import {renderChampionsStages, renderChampionsTieDetails, championsGroup} from './champions-view.js';
+import {renderChampionsStages, renderChampionsTieDetails, championsGroup, renderVerticalChampionsBracket} from './champions-view.js';
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
 import {seasonCrest} from './career-setup-view.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
@@ -353,15 +353,24 @@ function championsStandings(career, ui, view = {}) {
       <button type="button" data-action="career-champions-view" data-value="knockout" aria-pressed="${knockout}">Mata-mata</button>
     </div>
     ${winner ? `<div class="career-ucl-winner">${clubBadge(career, winner, ui)}<span>Campeão <strong>${esc(careerClub(career, winner).nome)}</strong></span></div>` : ''}
-    ${knockout ? `<div class="champions-competition career-ucl-bracket">${renderChampionsStages({...view, championsView: 'knockout', tournament}, careerChampionsHelpers(career, ui))}</div>`
+${knockout ? `<div class="career-ucl-desktop champions-competition career-ucl-bracket">${renderChampionsStages({...view, championsView: 'knockout', tournament}, careerChampionsHelpers(career, ui))}</div>
+      <div class="career-ucl-mobile">${renderVerticalChampionsBracket(tournament, careerChampionsHelpers(career, ui))}</div>`
       : group ? `<div class="career-ucl-groups" role="group" aria-label="Escolher grupo">${tournament.groups.map(item => `<button type="button" data-action="career-champions-group" data-value="${esc(item.id)}" aria-pressed="${item.id === group.id}">Grupo ${esc(item.id)}${item.teamIds.includes(CAREER_TEAM) ? '<i aria-label="Seu grupo"></i>' : ''}</button>`).join('')}</div>
-        <div class="career-ucl-group-title"><h3>${esc(group.name)}</h3><span>${group.complete ? 'Grupo encerrado' : 'Fase de grupos'}</span></div>
-        <div class="career-table-wrap"><table class="career-table career-ucl-table" aria-label="Classificação do ${esc(group.name)}">
-          <thead><tr><th scope="col">Pos.</th><th scope="col">Clube</th><th scope="col">Pts</th><th scope="col">J</th><th scope="col">V</th><th scope="col">E</th><th scope="col">D</th><th scope="col">SG</th></tr></thead>
-          <tbody>${group.standings.map((row, index) => `<tr${row.teamId === CAREER_TEAM ? ' class="career-own-row"' : ''}>
-            <td>${index + 1}</td><th scope="row"><span class="career-table-team">${clubBadge(career, row.teamId, ui)}<span>${esc(careerClub(career, row.teamId).nome)}</span></span></th>
-            <td class="career-table-points">${row.points}</td><td>${row.played}</td><td>${row.wins}</td><td>${row.draws}</td><td>${row.losses}</td><td>${row.goalDifference > 0 ? '+' : ''}${row.goalDifference}</td>
-          </tr>`).join('')}</tbody></table></div>` : '<p class="muted">Os grupos ainda não foram definidos.</p>'}
+      <div class="career-ucl-density" role="group" aria-label="Detalhes da tabela">
+        <label><input type="radio" name="career-ucl-density" value="short" checked><span>Resumida</span></label>
+        <label><input type="radio" name="career-ucl-density" value="full"><span>Completa</span></label>
+      </div>
+      <div class="career-ucl-group-list">${tournament.groups.map(item => {
+        const current = championsGroup(tournament, item.id);
+        return `<section class="career-ucl-group-card" data-selected="${item.id === group.id}">
+          <div class="career-ucl-group-title"><h3>${esc(current.name)}</h3><span>${current.complete ? 'Grupo encerrado' : 'Fase de grupos'}</span></div>
+          <div class="career-table-wrap" tabindex="0" role="region" aria-label="Tabela do ${esc(current.name)}"><table class="career-table career-ucl-table" aria-label="Classificação do ${esc(current.name)}">
+            <thead><tr><th scope="col">Pos.</th><th scope="col">Clube</th><th scope="col">Pts</th><th scope="col">J</th><th scope="col" class="career-ucl-extra">V</th><th scope="col" class="career-ucl-extra">E</th><th scope="col" class="career-ucl-extra">D</th><th scope="col">SG</th></tr></thead>
+            <tbody>${current.standings.map((row, index) => `<tr${row.teamId === CAREER_TEAM ? ' class="career-own-row"' : ''}>
+              <td>${index + 1}</td><th scope="row"><span class="career-table-team">${clubBadge(career, row.teamId, ui)}<span>${esc(careerClub(career, row.teamId).nome)}</span></span></th>
+              <td class="career-table-points">${row.points}</td><td>${row.played}</td><td class="career-ucl-extra">${row.wins}</td><td class="career-ucl-extra">${row.draws}</td><td class="career-ucl-extra">${row.losses}</td><td>${row.goalDifference > 0 ? '+' : ''}${row.goalDifference}</td>
+            </tr>`).join('')}</tbody></table></div></section>`;
+      }).join('')}</div>` : '<p class="muted">Os grupos ainda não foram definidos.</p>'}
   </section>`;
 }
 

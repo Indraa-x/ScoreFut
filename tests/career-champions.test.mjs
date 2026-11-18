@@ -44,7 +44,8 @@ test('career standings switch competitions at the top and show one consistent gr
     const html = renderCareer(career, 'standings', ui, null, undefined, undefined, undefined,
       {standingsCompetition: 'champions', championsView: 'groups', championsGroupId: group.id});
     assert.match(html, /career-ucl-table/);
-    assert.equal((html.match(/<table /g) ?? []).length, 1);
+    assert.equal((html.match(/<table /g) ?? []).length, career.champions.tournament.groups.length);
+    assert.equal((html.match(/data-selected="true"/g) ?? []).length, 1);
     assert.match(html, /Pts<\/th><th scope="col">J/);
     assert.doesNotMatch(html, /Zona de rebaixamento|Forma<\/th>|Gols<\/th>/);
     for (const id of group.teamIds) assert.ok(html.includes(career.champions.tournament.teams.find(team => team.id === id).name));
@@ -222,4 +223,7 @@ test('the Career knockout begins at the round of 16 and waits for the deciding s
   const html = renderCareer(career, 'standings', ui, null, undefined, undefined, undefined, {championsView: 'knockout'});
   assert.match(html, /career-champions-tie/);
   assert.match(html, /Oitavas de final/);
+  assert.match(html, /career-vertical-bracket/);
+  assert.equal((html.match(/class="career-vertical-node/g) ?? []).length, 15);
+  assert.match(html, /career-vertical-winner/);
 });

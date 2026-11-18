@@ -140,6 +140,34 @@ export function renderKnockoutBracket(s,helpers) {
 
 const phaseIcon=phase=>`<svg class="competition-phase-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${phase==='groups'?'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 8h16M8 12h.01M8 17h.01M12 12h4M12 17h4"/>':'<rect x="2.5" y="3.5" width="5" height="5" rx="1.2"/><rect x="2.5" y="15.5" width="5" height="5" rx="1.2"/><rect x="16.5" y="9.5" width="5" height="5" rx="1.2"/><path d="M7.5 6H11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7.5M12 12h4.5"/>'}</svg>`;
 
+/** Vertical mobile bracket, derived from the same committed ties as the desktop tree. */
+export function renderVerticalChampionsBracket(t, helpers) {
+  const {esc, badge} = helpers, rounds = championsBracket(t);
+  const before = rounds.slice(0, -1), center = before.length;
+  const rowCount = center * 2 + 1, height = rowCount * 124;
+  const rows = before.map((round, i) => ({nodes: round.slice(0, round.length / 2), row: i}))
+    .concat([{nodes: rounds.at(-1), row: center}],
+      before.map((round, i) => ({nodes: round.slice(round.length / 2), row: center * 2 - i})));
+  const paths = [];
+  for (const lower of [false, true]) for (let i = 0; i < center; i++) {
+    const source = rows.find(row => row.row === (lower ? center * 2 - i : i));
+    const target = rows.find(row => row.row === (lower ? center * 2 - i - 1 : i + 1));
+    for (const [j, node] of source.nodes.entries()) {
+      const x = (j + .5) * 1000 / source.nodes.length;
+      const nx = (Math.floor(j / 2) + .5) * 1000 / target.nodes.length;
+      const y = source.row * 124 + (lower ? 12 : 96), ny = target.row * 124 + (lower ? 96 : 12);
+      paths.push(`<path class="${node.winnerId && node.winnerId === (t.championId || t.userTeamId) ? 'is-winning' : ''}" d="M${x} ${y} V${(y + ny) / 2} H${nx} V${ny}"/>`);
+    }
+  }
+  const champion = t.championId ? teamFor(t, t.championId) : null;
+  return `<div class="career-vertical-bracket" style="height:${height}px" aria-label="Chave completa da Champions League">
+    <svg class="career-vertical-lines" viewBox="0 0 1000 ${height}" preserveAspectRatio="none" aria-hidden="true">${paths.join('')}</svg>
+    ${rows.map(({nodes, row}) => nodes.map((node, index) => `<div class="career-vertical-node${node.stage === 'final' ? ' is-final' : ''}" style="left:${(index + .5) * 100 / nodes.length}%;top:${row * 124 + 12}px">
+      ${renderTie(t, node, helpers)}${node.stage === 'final' ? '<span class="career-vertical-final">Final</span>' : ''}</div>`).join('')).join('')}
+    ${champion ? `<div class="career-vertical-winner" style="top:${center * 124 + 6}px"><div><img src="${assetUrl('assets/competitions/champions-trophy.png')}" alt="" width="48" height="64">${badge(champion)}</div><strong>${esc(shortName(champion))}</strong><small>Campeão</small></div>` : ''}
+  </div>`;
+}
+
 export function renderChampionsStages(s,helpers) {
   const {esc,actionPrefix='champions-'}=helpers,t=s.tournament,view=s.championsView || (t.bracket.length?'knockout':'groups');
   return `<nav class="champions-phase-picker" aria-label="Fases da ${esc(competitionName(t.mode))}"><button data-action="${actionPrefix}view" data-value="groups" aria-pressed="${view==='groups'}">${phaseIcon('groups')}<span>Classificação</span></button><button data-action="${actionPrefix}view" data-value="knockout" aria-pressed="${view==='knockout'}">${phaseIcon('knockout')}<span>Mata-mata</span></button></nav><div id="champions-content">${view==='knockout'?renderKnockoutBracket(s,helpers):renderGroups(s,helpers)}</div>`;

@@ -1679,3 +1679,57 @@ body > .career-drag-avatar {
   .career-competition-switch button { transition: none; }
   .career-competition-switch button:is(:hover, :active) { transform: none; }
 }
+.career-standings-motion, .career-ucl, .career-ucl-bracket, .career-ucl-group-list { min-width: 0; max-width: 100%; }
+.career-ucl-group-card[data-selected="false"], .career-ucl-mobile, .career-ucl-density { display: none; }
+@media(max-width: 650px) {
+  .career-page { min-width: 0; }
+  .career-content { grid-template-columns: minmax(0, 1fr); }
+  .career-competition-switch { min-width: 0; grid-template-columns: repeat(2, minmax(0,1fr)); align-self: auto; }
+  .career-competition-switch button { min-width: 0; gap: 6px; padding-inline: 6px; font-size: 11px; }
+  .career-competition-switch button span:not(.career-season-crest) { white-space: normal; }
+  .career-competition-switch img, .career-competition-switch .career-season-crest { width: 22px; height: 22px; flex: 0 0 22px; }
+  .career-ucl { padding: 16px 10px; }
+  .career-ucl .career-ucl-desktop, .career-ucl .career-ucl-groups { display: none; }
+  .career-ucl-mobile { display: block; width: 100%; min-width: 0; }
+  .career-ucl-group-card[data-selected="false"] { display: block; }
+  .career-ucl-group-card { margin: 16px 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface-alt); }
+  .career-ucl-group-title { margin: 0; padding: 16px 12px; }
+  .career-ucl-group-title h3 { font-size: 16px; }
+  .career-ucl-group-title > span { font-size: 10px; }
+  .career-ucl .career-ucl-table { min-width: 0; width: 100%; table-layout: fixed; }
+  .career-ucl-table :is(th,td) { padding: 14px 5px; font-size: 12px; width: 34px; }
+  .career-ucl-table :is(th,td):first-child { width: 26px; }
+  .career-ucl-table th:nth-child(2) { width: auto; }
+  .career-ucl .career-table-team { min-width: 0; gap: 7px; white-space: normal; }
+  .career-ucl .career-table-team > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+  .career-ucl .career-table-team :is(.club-badge,.career-season-crest) { width: 26px; height: 26px; flex: 0 0 26px; }
+  .career-ucl:not(:has(input[name="career-ucl-density"][value="full"]:checked)) .career-ucl-extra { display: none; }
+  .career-ucl:has(input[name="career-ucl-density"][value="full"]:checked) .career-ucl-table { min-width: 500px; table-layout: auto; }
+  .career-ucl-density { display: flex; gap: 4px; padding: 4px; background: var(--surface-alt); border-radius: 9px; width: fit-content; margin: 16px 0; }
+  .career-ucl-density label { position: relative; cursor: pointer; }
+  .career-ucl-density input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .career-ucl-density span { display: block; padding: 8px 14px; color: var(--muted); border-radius: 6px; font-size: 12px; font-weight: 700; }
+  .career-ucl-density input:checked + span { background: var(--accent-soft); color: var(--text); }
+  .career-ucl-density input:focus-visible + span { outline: 2px solid var(--green); }
+}
+.career-vertical-bracket { position: relative; width: 100%; }
+.career-vertical-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; fill: none; stroke: var(--muted); }
+.career-vertical-lines path { stroke-width: 1; vector-effect: non-scaling-stroke; }
+.career-vertical-lines .is-winning { stroke: #5889f3; }
+.career-vertical-node { position: absolute; width: 22%; max-width: 92px; height: 84px; transform: translateX(-50%); }
+#app .career-vertical-node .champions-tie { position: relative; display: block; width: 100%; height: 84px; min-height: 84px; padding: 8px 3px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-alt); color: var(--text); box-shadow: none; transform: none; }
+#app .career-vertical-node .champions-tie.user-tie { border-color: #5889f3; }
+#app .career-vertical-node .champions-tie-teams { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); height: 100%; gap: 2px; align-items: center; }
+#app .career-vertical-node .champions-tie-team { display: grid; grid-template-rows: 22px 14px 16px; gap: 4px; min-width: 0; justify-items: center; align-items: center; }
+#app .career-vertical-node :is(.club-badge,.career-season-crest,.champions-unknown) { width: 22px; height: 22px; min-width: 22px; max-width: 22px; min-height: 22px; max-height: 22px; flex: 0 0 22px; }
+#app .career-vertical-node .club-badge img { width: 100%; height: 100%; }
+#app .career-vertical-node .tree-abbr { font-size: 10px; line-height: 14px; }
+#app .career-vertical-node .champions-tie-team > strong { font-size: 14px; line-height: 16px; margin: 0; }
+.career-vertical-node .champions-score-dash { display: none; }
+.career-vertical-final { position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%); padding: 3px 6px; border-radius: 4px; background: #ffd53d; color: #191919; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.career-vertical-winner { position: absolute; left: 70%; width: 28%; text-align: center; color: var(--text); }
+.career-vertical-winner > div { position: relative; width: 48px; height: 64px; margin: 0 auto 6px; }
+.career-vertical-winner img { object-fit: contain; opacity: .65; }
+.career-vertical-winner > div > :is(.club-badge,.career-season-crest) { position: absolute; left: 50%; top: 24px; transform: translateX(-50%); width: 22px; height: 22px; }
+.career-vertical-winner strong { display: block; font-size: 11px; overflow-wrap: anywhere; }
+.career-vertical-winner small { display: block; margin-top: 5px; font-size: 9px; text-transform: uppercase; color: var(--muted); }
