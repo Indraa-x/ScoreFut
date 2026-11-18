@@ -1570,7 +1570,14 @@ body > .career-drag-avatar {
   .career-transfer-list li { flex-wrap: wrap; }
   .career-transfer-list .btn { margin-left: auto; }
 }
-.career-transfers .career-transfer-offer { display: flex; flex-direction: column; padding: 22px; gap: 20px; background: linear-gradient(150deg, var(--accent-soft), var(--surface-alt) 55%); }
+.career-transfers .career-transfer-offer {
+  display: flex; flex-direction: column; padding: 22px; gap: 20px;
+  border-color: color-mix(in srgb, var(--offer-primary, #19734b) 45%, var(--border));
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--offer-primary, #19734b) 38%, var(--surface)) 0%,
+    var(--surface) 52%,
+    color-mix(in srgb, var(--offer-secondary, #ffffff) 24%, var(--surface)) 100%);
+}
 .career-transfers .career-transfer-player .career-roster-avatar { border-radius: 50%; }
 .career-transfer-details { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 16px; align-items: center; padding-block: 18px; border-block: 1px solid var(--border); }
 .career-transfers .career-transfer-buyer { margin: 0; font-weight: 700; }

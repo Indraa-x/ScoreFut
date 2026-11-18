@@ -671,7 +671,8 @@ function transfers(career, ui) {
     ${offers.length ? `<div class="career-transfer-grid">${offers.map(offer => {
       const player = career.roster.find(player => player.id === offer.playerId);
       if (!player) return '';
-      return `<article class="career-transfer-offer">
+      const [primary, secondary] = careerClub(career, offer.clubId).cores ?? ['#19734b', '#ffffff'];
+      return `<article class="career-transfer-offer" style="--offer-primary:${esc(primary)};--offer-secondary:${esc(secondary)}">
         <div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>${player.ovr} OVR</small></div></div>
         <div class="career-transfer-details"><div class="career-transfer-buyer">${clubBadge(career, offer.clubId, ui)}<span><small>Clube interessado</small>${esc(careerClub(career, offer.clubId).nome)}</span></div>
         <div class="career-transfer-value"><small>Proposta de compra</small><strong class="career-transfer-price">${money(offer.price)}</strong></div></div>
