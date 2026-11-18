@@ -344,6 +344,7 @@ function championsStandings(career, ui, view = {}) {
   const knockout = (view.championsView ?? (tournament.bracket.length ? 'knockout' : 'groups')) === 'knockout';
   const group = championsGroup(tournament, view.championsGroupId);
   const winner = tournament.championId;
+  const [winnerPrimary, winnerSecondary] = winner ? careerClub(career, winner).cores ?? ['#19734b', '#ffffff'] : [];
   const year = 2025 + career.season;
   return `<section class="career-card panel career-standings career-ucl">
     <header class="career-standings-header"><h2>Classificação</h2><p class="career-ucl-heading">${championsLogo()}Champions League · ${String(year).slice(-2)}/${String(year + 1).slice(-2)}</p></header>
@@ -352,7 +353,7 @@ function championsStandings(career, ui, view = {}) {
       <button type="button" data-action="career-champions-view" data-value="groups" aria-pressed="${!knockout}">Grupos</button>
       <button type="button" data-action="career-champions-view" data-value="knockout" aria-pressed="${knockout}">Mata-mata</button>
     </div>
-    ${winner ? `<div class="career-ucl-winner">${clubBadge(career, winner, ui)}<span>Campeão <strong>${esc(careerClub(career, winner).nome)}</strong></span></div>` : ''}
+    ${winner ? `<div class="career-ucl-winner" style="--winner-primary:${esc(winnerPrimary)};--winner-secondary:${esc(winnerSecondary)}">${clubBadge(career, winner, ui)}<span>Campeão <strong>${esc(careerClub(career, winner).nome)}</strong></span></div>` : ''}
 ${knockout ? `<div class="career-ucl-desktop champions-competition career-ucl-bracket">${renderChampionsStages({...view, championsView: 'knockout', tournament}, careerChampionsHelpers(career, ui))}</div>
       <div class="career-ucl-mobile">${renderVerticalChampionsBracket(tournament, careerChampionsHelpers(career, ui))}</div>`
       : group ? `<div class="career-ucl-groups" role="group" aria-label="Escolher grupo">${tournament.groups.map(item => `<button type="button" data-action="career-champions-group" data-value="${esc(item.id)}" aria-pressed="${item.id === group.id}">Grupo ${esc(item.id)}${item.teamIds.includes(CAREER_TEAM) ? '<i aria-label="Seu grupo"></i>' : ''}</button>`).join('')}</div>

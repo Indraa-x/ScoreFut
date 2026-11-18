@@ -1726,3 +1726,7 @@ body > .career-drag-avatar {
 .career-vertical-winner > div > :is(.club-badge,.career-season-crest) { position: absolute; left: 50%; top: 24px; transform: translateX(-50%); width: 22px; height: 22px; }
 .career-vertical-winner strong { display: block; font-size: 11px; overflow-wrap: anywhere; }
 .career-vertical-winner small { display: block; margin-top: 5px; font-size: 9px; text-transform: uppercase; color: var(--muted); }
+.career-ucl .career-ucl-winner {
+  background: linear-gradient(115deg, color-mix(in srgb, var(--winner-primary, #19734b) 24%, var(--surface)), color-mix(in srgb, var(--winner-secondary, #fff) 12%, var(--surface)));
+  border-color: color-mix(in srgb, var(--winner-primary, #19734b) 35%, var(--border));
+}
