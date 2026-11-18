@@ -339,10 +339,10 @@ function standingsCompetition(career, ui, rows, view = {}) {
   const european = Boolean(career.champions) && (view.standingsCompetition === 'champions' ||
     !view.standingsCompetition && Boolean(view.championsView));
   const picker = career.champions ? `<nav class="career-competition-switch" aria-label="Competição da classificação">
-    <button type="button" data-action="career-standings-competition" data-value="league" aria-pressed="${!european}">${competitionMark(career)}<span>${esc(careerCompetitionName(career))}</span></button>
-    <button type="button" data-action="career-standings-competition" data-value="champions" aria-pressed="${european}">${championsLogo()}<span>Champions League</span></button>
+    <button type="button" data-action="career-standings-competition" data-value="league" data-competition="${esc(career.leagueId ?? 'brasileirao')}" aria-pressed="${!european}">${competitionMark(career)}<span>${esc(careerCompetitionName(career))}</span></button>
+    <button type="button" data-action="career-standings-competition" data-value="champions" data-competition="champions" aria-pressed="${european}">${championsLogo()}<span>Champions League</span></button>
   </nav>` : '';
-  return picker + (european ? championsStandings(career, ui, view) : standings(career, ui, rows));
+  return picker + `<div class="career-standings-motion">${european ? championsStandings(career, ui, view) : standings(career, ui, rows)}</div>`;
 }
 
 function competitionMark(career) {
