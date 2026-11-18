@@ -1619,8 +1619,8 @@ body > .career-drag-avatar {
   .career-transfers .career-sales-history .career-transfer-price { grid-column: 2; grid-row: 1; font-size: 19px; }
   .career-sale-destination .club-badge { width: 24px; height: 24px; flex-basis: 24px; }
 }
-.career-competition-switch { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
-.career-competition-switch button { display: flex; align-items: center; gap: 10px; padding: 12px 18px; min-height: 54px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--muted); font: 700 13px var(--body); cursor: pointer; transition: background .18s, border-color .18s; }
+.career-competition-switch { display: flex; gap: 5px; margin: 0 0 16px; padding: 5px; align-self: flex-start; width: fit-content; max-width: 100%; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); flex-wrap: wrap; }
+.career-competition-switch button { display: flex; align-items: center; justify-content: center; gap: 9px; padding: 10px 16px; min-height: 44px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); font: 700 13px var(--body); cursor: pointer; transition: background .18s, border-color .18s; }
 .career-competition-switch button[aria-pressed="true"] { background: var(--accent-soft); color: var(--text); border-color: var(--green); }
 .career-competition-switch img { width: 26px; height: 26px; object-fit: contain; }
 .career-competition-switch button:focus-visible, .career-ucl button:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
@@ -1647,7 +1647,7 @@ body > .career-drag-avatar {
 .career-ucl-winner strong { display: block; font-size: 16px; color: var(--text); margin-top: 4px; }
 .career-ucl-winner .club-badge { width: 36px; height: 36px; }
 @media(max-width: 650px) {
-  .career-competition-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .career-competition-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; width: 100%; }
   .career-competition-switch button { padding: 10px; font-size: 12px; min-width: 0; }
   .career-ucl .career-ucl-table { min-width: 560px; }
   .career-ucl-table :is(td, th) { padding: 14px 10px; }
