@@ -165,8 +165,7 @@ function pitch(career, ui, picks) {
     ${picks.map(pick => {
       const {slot, player} = pick;
       return `<div class="career-pitch-player" style="left:${slot.x}%;top:${slot.y}%" title="${esc(describe(pick))}">
-      ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-token-photo', 56))}
-      <span class="career-squad-role">${slot.label}</span>
+      ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-token-photo', 72))}
       <span class="career-squad-name">${esc(player.nome)}</span>
     </div>`;
     }).join('')}
@@ -539,9 +538,8 @@ function squad(career, ui, {selectedId = null} = {}) {
             style="left:${slot.x}%;top:${slot.y}%" data-action="career-pick-slot" data-value="${slot.id}"
             data-career-drag-player="${esc(player.id)}"
             aria-label="${esc(label)}" title="${esc(label)}" aria-pressed="${origin}"${selected && !origin && !target ? ' disabled' : ''}>
-            ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-token-photo', 56))}
-            <span class="career-squad-role">${slot.label}</span>
-            <span class="career-squad-name">${esc(player.nome)}</span>
+            ${playerToken(player, crest, 'career-squad-token', playerPortrait(player, 'career-token-photo', 72))}
+                  <span class="career-squad-name">${esc(player.nome)}</span>
           </button>`;
         }).join('')}
       </div>

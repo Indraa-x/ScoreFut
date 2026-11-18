@@ -710,7 +710,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
 .career-squad-slot:disabled { opacity: .43; }
 .career-squad-slot:is(.is-target, .is-origin, :focus-visible) { z-index: 1; }
 .career-squad-slot .career-squad-token {
-  width: clamp(32px, 13.5cqw, 56px);
+  width: clamp(40px, 16cqw, 70px);
   height: auto;
   aspect-ratio: 1;
   padding-top: 1px;
@@ -737,7 +737,7 @@ button.career-intro-card:hover { border-color: var(--green); background: var(--s
   background: #101b16e6;
   color: #fff;
 }
-.career-squad-slot .career-squad-token > strong { font-size: clamp(11px, 3.8cqw, 17px); }
+.career-squad-slot .career-squad-token > strong { font-size: clamp(12px, 4.2cqw, 19px); }
 .career-squad-slot:is(:hover:not(:disabled), .is-origin) .career-squad-token { box-shadow: 0 0 0 3px #fff8; }
 .career-squad-slot.is-target .career-squad-token { border-color: #78efb4; box-shadow: 0 0 0 4px #52db97a6; }
 [data-career-drag-player]:not(:disabled) { cursor: grab; user-select: none; }
@@ -762,19 +762,6 @@ body > .career-drag-avatar {
 }
 .career-roster-player.is-drop-ready { box-shadow: inset 3px 0 var(--green); }
 .career-roster.is-drop-hover, .career-roster-player.is-drop-hover { background: var(--accent-soft); }
-.career-squad-role {
-  position: absolute;
-  top: 0;
-  right: 1%;
-  padding: 1px 3px;
-  border-radius: 4px;
-  background: #123d2b;
-  color: #dcf6e8;
-  font-size: clamp(7px, 2.25cqw, 9px);
-  font-weight: 800;
-  line-height: 1.15;
-}
-.career-squad-slot.is-target .career-squad-role { background: #78efb4; color: #102c21; }
 .career-squad-name {
   position: absolute;
   inset: calc(100% + 3px) 0 auto;
@@ -1387,9 +1374,8 @@ body > .career-drag-avatar {
   text-align: center;
   transform: translate(-50%, -50%);
 }
-.career-pitch-player .career-squad-token { width: 13cqw; height: auto; aspect-ratio: 1; padding-top: 1px; }
-.career-pitch-player .career-squad-token > strong { font-size: clamp(8px, 3.9cqw, 12px); }
-.career-pitch-player .career-squad-role { right: 0; }
+.career-pitch-player .career-squad-token { width: 16cqw; height: auto; aspect-ratio: 1; padding-top: 1px; }
+.career-pitch-player .career-squad-token > strong { font-size: clamp(9px, 4.2cqw, 14px); }
 .career-pitch-player .career-squad-name { font-size: clamp(8px, 3.3cqw, 10px); }
 #app[data-screen="career"] .career-live-scoreboard .score-numbers {
   border-color: var(--border);
