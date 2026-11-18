@@ -378,7 +378,25 @@ function smoothExpectedGoals(team,opponent,settings){
   return clamp(2*settings.baseXG*pace/(1+Math.exp(-difference)),settings.minXG,settings.maxXG);
 }
 
+/** Player ability follows the player across clubs; only the available lineup can take a kick. */
+export function penaltyTakers(team, includeGoalkeeper = false) {
+  const entries = team.lineup.filter(entry => includeGoalkeeper || entry.slot.position !== 'GOL');
+  const skill = player => Number(player.atributos?.penaltis ?? attribute(player, 'finalizacao')) * .85 + Number(player.ovr ?? 70) * .15;
+  return [...entries].sort((a, b) =>
+    Number(a.slot.position === 'GOL') - Number(b.slot.position === 'GOL')
+      || skill(b.player) - skill(a.player) || String(a.player.id).localeCompare(String(b.player.id)))
+    .map(entry => entry.player);
+}
+
 function shootout(home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
+  const orders = [home, away].map(team => penaltyTakers(team, true));
+  const takenBySide = [0, 0];
+  const takerFor = (team, side) => {
+    const legacy = weightedPlayer(team, rng);
+    if (settings.modelVersion < 6) return legacy;
+    const order = orders[side];
+    return order[takenBySide[side]++ % order.length] ?? legacy;
+  };
   const chance = (team, opponent) => {
     const finishing = average(team.lineup.filter(entry => entry.slot.position !== 'GOL').map(entry => attribute(entry.player, 'finalizacao')*(settings.modelVersion>=6 && normalizeRole(entry.player.tags?.[0])!==normalizeRole(entry.slot.label)?1-(settings.positionPenalty??.03):1)));
     const keeper = (settings.modelVersion>=6?effectiveMetrics(opponent,settings):(opponent.strength || calculateTeam(opponent.lineup))).goalkeeper;
@@ -392,7 +410,7 @@ function shootout(home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
     const side = kick % 2;
     const converted = rng() < (side === 0 ? homeChance : awayChance);
     if (converted) score[side] += 1;
-    events.push({ minute: 120, type: 'penalty', team: side ? 'away' : 'home', player: weightedPlayer(side ? away : home, rng), x: 0.5, y: side ? 0.85 : 0.15, converted, shootout: true });
+    events.push({ minute: 120, type: 'penalty', team: side ? 'away' : 'home', player: takerFor(side ? away : home, side), x: 0.5, y: side ? 0.85 : 0.15, converted, shootout: true });
     const taken = [Math.ceil((kick + 1) / 2), Math.floor((kick + 1) / 2)];
     if (score[0] > score[1] + 5 - taken[1] || score[1] > score[0] + 5 - taken[0]) return { score, events };
   }
@@ -403,7 +421,7 @@ function shootout(home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
     for (let side = 0; side < 2; side += 1) {
       const converted = rng() < (side === 0 ? homeChance : awayChance);
       if (converted) score[side] += 1;
-      events.push({ minute: 120, type: 'penalty', team: side ? 'away' : 'home', player: weightedPlayer(side ? away : home, rng), x: 0.5, y: side ? 0.85 : 0.15, converted, shootout: true });
+      events.push({ minute: 120, type: 'penalty', team: side ? 'away' : 'home', player: takerFor(side ? away : home, side), x: 0.5, y: side ? 0.85 : 0.15, converted, shootout: true });
     }
   }
   if (score[0] === score[1]) {
@@ -415,7 +433,7 @@ function shootout(home, away, rng, settings=LEGACY_SIMULATION_SETTINGS) {
     const homeWins = rng() < homeDecisive / (homeDecisive + awayDecisive);
     score[homeWins ? 0 : 1] += 1;
     [home, away].forEach((team, side) => {
-      events.push({ minute: 120, type: 'penalty', team: side ? 'away' : 'home', player: weightedPlayer(team, rng), x: 0.5, y: side ? 0.85 : 0.15, converted: side === (homeWins ? 0 : 1), shootout: true });
+      events.push({ minute: 120, type: 'penalty', team: side ? 'away' : 'home', player: takerFor(team, side), x: 0.5, y: side ? 0.85 : 0.15, converted: side === (homeWins ? 0 : 1), shootout: true });
     });
   }
   return { score, events };
@@ -556,7 +574,8 @@ function simulateStatefulMatch(home,away,rng,{knockout=false,extraTimeAllowed=tr
   const incident=(item,agenda)=>{
     const {side,type,at}=item,other=1-side,eligible=pool(side);
     if(type==='penalty-kick'){
-      const taker=weightedPlayer(activeTeam(side),rng),keeper=effectiveMetrics(teams[other],settings).goalkeeper;
+      const available=activeTeam(side),fallback=weightedPlayer(available,rng);
+      const taker=penaltyTakers(available)[0]??fallback,keeper=effectiveMetrics(teams[other],settings).goalkeeper;
       const probability=clamp(.75*(Math.max(1,attribute(taker,'finalizacao'))/Math.max(1,keeper))**.18,.58,.88);
       xG[side]+=probability;
       const converted=rng()<probability;
