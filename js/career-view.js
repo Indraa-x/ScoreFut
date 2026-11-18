@@ -356,10 +356,6 @@ function championsStandings(career, ui, view = {}) {
 ${knockout ? `<div class="career-ucl-desktop champions-competition career-ucl-bracket">${renderChampionsStages({...view, championsView: 'knockout', tournament}, careerChampionsHelpers(career, ui))}</div>
       <div class="career-ucl-mobile">${renderVerticalChampionsBracket(tournament, careerChampionsHelpers(career, ui))}</div>`
       : group ? `<div class="career-ucl-groups" role="group" aria-label="Escolher grupo">${tournament.groups.map(item => `<button type="button" data-action="career-champions-group" data-value="${esc(item.id)}" aria-pressed="${item.id === group.id}">Grupo ${esc(item.id)}${item.teamIds.includes(CAREER_TEAM) ? '<i aria-label="Seu grupo"></i>' : ''}</button>`).join('')}</div>
-      <div class="career-ucl-density" role="group" aria-label="Detalhes da tabela">
-        <label><input type="radio" name="career-ucl-density" value="short" checked><span>Resumida</span></label>
-        <label><input type="radio" name="career-ucl-density" value="full"><span>Completa</span></label>
-      </div>
       <div class="career-ucl-group-list">${tournament.groups.map(item => {
         const current = championsGroup(tournament, item.id);
         return `<section class="career-ucl-group-card" data-selected="${item.id === group.id}">

@@ -1680,7 +1680,7 @@ body > .career-drag-avatar {
   .career-competition-switch button:is(:hover, :active) { transform: none; }
 }
 .career-standings-motion, .career-ucl, .career-ucl-bracket, .career-ucl-group-list { min-width: 0; max-width: 100%; }
-.career-ucl-group-card[data-selected="false"], .career-ucl-mobile, .career-ucl-density { display: none; }
+.career-ucl-group-card[data-selected="false"], .career-ucl-mobile { display: none; }
 @media(max-width: 650px) {
   .career-page { min-width: 0; }
   .career-content { grid-template-columns: minmax(0, 1fr); }
@@ -1703,14 +1703,7 @@ body > .career-drag-avatar {
   .career-ucl .career-table-team { min-width: 0; gap: 7px; white-space: normal; }
   .career-ucl .career-table-team > span:last-child { min-width: 0; overflow-wrap: anywhere; }
   .career-ucl .career-table-team :is(.club-badge,.career-season-crest) { width: 26px; height: 26px; flex: 0 0 26px; }
-  .career-ucl:not(:has(input[name="career-ucl-density"][value="full"]:checked)) .career-ucl-extra { display: none; }
-  .career-ucl:has(input[name="career-ucl-density"][value="full"]:checked) .career-ucl-table { min-width: 500px; table-layout: auto; }
-  .career-ucl-density { display: flex; gap: 4px; padding: 4px; background: var(--surface-alt); border-radius: 9px; width: fit-content; margin: 16px 0; }
-  .career-ucl-density label { position: relative; cursor: pointer; }
-  .career-ucl-density input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-  .career-ucl-density span { display: block; padding: 8px 14px; color: var(--muted); border-radius: 6px; font-size: 12px; font-weight: 700; }
-  .career-ucl-density input:checked + span { background: var(--accent-soft); color: var(--text); }
-  .career-ucl-density input:focus-visible + span { outline: 2px solid var(--green); }
+  .career-ucl .career-ucl-extra { display: none; }
 }
 .career-vertical-bracket { position: relative; width: 100%; }
 .career-vertical-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; fill: none; stroke: var(--muted); }
