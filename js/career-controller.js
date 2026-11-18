@@ -499,6 +499,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       'career-play': startMatch,
       'career-champions-play': startChampionsMatch,
       'career-champions-view': value => updateChampionsView('championsView', value),
+      'career-standings-competition': value => updateChampionsView('standingsCompetition', value === 'champions' ? 'champions' : 'league'),
       'career-champions-group': value => updateChampionsView('championsGroupId', value),
       'career-champions-round': value => updateChampionsView('championsRound', value),
       'career-champions-table-detail': () => updateChampionsView('championsTableDetailed', !championsView.championsTableDetailed),

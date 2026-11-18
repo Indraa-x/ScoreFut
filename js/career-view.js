@@ -3,7 +3,7 @@ import {assetUrl} from './asset-url.js';
 import {championConfetti} from './celebration.js';
 import {careerClubStats} from './career.js';
 import {competitionLogo} from '../data/competitions.js';
-import {renderChampionsStages, renderChampionsTieDetails} from './champions-view.js';
+import {renderChampionsStages, renderChampionsTieDetails, championsGroup} from './champions-view.js';
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
 import {seasonCrest} from './career-setup-view.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
@@ -335,23 +335,46 @@ export function renderCareerChampionsTie(career, id, ui) {
   return renderChampionsTieDetails(career.champions.tournament, id, careerChampionsHelpers(career, ui));
 }
 
-function championsStandings(career, ui, view) {
+function standingsCompetition(career, ui, rows, view = {}) {
+  const european = Boolean(career.champions) && (view.standingsCompetition === 'champions' ||
+    !view.standingsCompetition && Boolean(view.championsView));
+  const picker = career.champions ? `<nav class="career-competition-switch" aria-label="Competição da classificação">
+    <button type="button" data-action="career-standings-competition" data-value="league" aria-pressed="${!european}">${competitionMark(career)}<span>${esc(careerCompetitionName(career))}</span></button>
+    <button type="button" data-action="career-standings-competition" data-value="champions" aria-pressed="${european}">${championsLogo()}<span>Champions League</span></button>
+  </nav>` : '';
+  return picker + (european ? championsStandings(career, ui, view) : standings(career, ui, rows));
+}
+
+function competitionMark(career) {
+  const league = careerLeague(career.leagueId);
+  return league ? seasonCrest(league) : '';
+}
+
+function championsStandings(career, ui, view = {}) {
   const tournament = career.champions?.tournament;
   if (!tournament) return '';
-  const qualified = tournament.teams.some(team => team.id === CAREER_TEAM);
-  const description = tournament.campaign.champion ? 'Seu clube conquistou a Champions League!'
-    : tournament.campaign.eliminated ? `Seu clube encerrou a campanha · ${tournament.campaign.stageLabel}`
-    : !qualified ? 'Seu clube ficou fora dos quatro primeiros na temporada passada.' : '16 clubes · Quatro grupos · Final em jogo único';
+  const knockout = (view.championsView ?? (tournament.bracket.length ? 'knockout' : 'groups')) === 'knockout';
+  const group = championsGroup(tournament, view.championsGroupId);
   const winner = tournament.championId;
-  return `<details class="career-card panel champions-competition career-champions"${view?.championsDetailsOpen ? ' open' : ''}>
-    <summary>Champions League</summary>
-    <section class="career-card panel career-champions-header">
-      ${championsLogo()}
-      <div><h2>Champions League</h2><p class="muted">${esc(description)}</p></div>
-      ${winner ? `<div class="career-champions-winner">${clubBadge(career, winner, ui)}<span><small>Campeão</small><strong>${esc(careerClub(career, winner).nome)}</strong></span></div>` : ''}
-    </section>
-    ${renderChampionsStages({...view, tournament}, careerChampionsHelpers(career, ui))}
-  </details>`;
+  const year = 2025 + career.season;
+  return `<section class="career-card panel career-standings career-ucl">
+    <header class="career-standings-header"><h2>Classificação</h2><p class="career-ucl-heading">${championsLogo()}Champions League · ${String(year).slice(-2)}/${String(year + 1).slice(-2)}</p></header>
+    ${!tournament.teams.some(team => team.id === CAREER_TEAM) ? '<p class="muted career-ucl-absent">Seu clube ficou fora dos quatro primeiros na temporada passada.</p>' : ''}
+    <div class="career-ucl-views" role="group" aria-label="Fase da Champions League">
+      <button type="button" data-action="career-champions-view" data-value="groups" aria-pressed="${!knockout}">Grupos</button>
+      <button type="button" data-action="career-champions-view" data-value="knockout" aria-pressed="${knockout}">Mata-mata</button>
+    </div>
+    ${winner ? `<div class="career-ucl-winner">${clubBadge(career, winner, ui)}<span>Campeão <strong>${esc(careerClub(career, winner).nome)}</strong></span></div>` : ''}
+    ${knockout ? `<div class="champions-competition career-ucl-bracket">${renderChampionsStages({...view, championsView: 'knockout', tournament}, careerChampionsHelpers(career, ui))}</div>`
+      : group ? `<div class="career-ucl-groups" role="group" aria-label="Escolher grupo">${tournament.groups.map(item => `<button type="button" data-action="career-champions-group" data-value="${esc(item.id)}" aria-pressed="${item.id === group.id}">Grupo ${esc(item.id)}${item.teamIds.includes(CAREER_TEAM) ? '<i aria-label="Seu grupo"></i>' : ''}</button>`).join('')}</div>
+        <div class="career-ucl-group-title"><h3>${esc(group.name)}</h3><span>${group.complete ? 'Grupo encerrado' : 'Fase de grupos'}</span></div>
+        <div class="career-table-wrap"><table class="career-table career-ucl-table" aria-label="Classificação do ${esc(group.name)}">
+          <thead><tr><th scope="col">Pos.</th><th scope="col">Clube</th><th scope="col">Pts</th><th scope="col">J</th><th scope="col">V</th><th scope="col">E</th><th scope="col">D</th><th scope="col">SG</th></tr></thead>
+          <tbody>${group.standings.map((row, index) => `<tr${row.teamId === CAREER_TEAM ? ' class="career-own-row"' : ''}>
+            <td>${index + 1}</td><th scope="row"><span class="career-table-team">${clubBadge(career, row.teamId, ui)}<span>${esc(careerClub(career, row.teamId).nome)}</span></span></th>
+            <td class="career-table-points">${row.points}</td><td>${row.played}</td><td>${row.wins}</td><td>${row.draws}</td><td>${row.losses}</td><td>${row.goalDifference > 0 ? '+' : ''}${row.goalDifference}</td>
+          </tr>`).join('')}</tbody></table></div>` : '<p class="muted">Os grupos ainda não foram definidos.</p>'}
+  </section>`;
 }
 
 const SEASON_TROPHIES = {
@@ -754,10 +777,10 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
       ${tabs.map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === activeTab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
     </nav>
     <div class="career-content" data-career-tab="${activeTab}">
-      ${activeTab === 'market' ? market(career, ui, marketFilters)
+      ${activeTab === 'standings' ? standingsCompetition(career, ui, rows, championsView)
+        : activeTab === 'market' ? market(career, ui, marketFilters)
         : activeTab === 'squad' ? squad(career, ui, squadState)
         : pages[activeTab](career, ui, rows, live)}
-      ${activeTab === 'standings' ? championsStandings(career, ui, championsView) : ''}
     </div>
   </div>`;
 }

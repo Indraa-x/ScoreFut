@@ -1619,3 +1619,40 @@ body > .career-drag-avatar {
   .career-transfers .career-sales-history .career-transfer-price { grid-column: 2; grid-row: 1; font-size: 19px; }
   .career-sale-destination .club-badge { width: 24px; height: 24px; flex-basis: 24px; }
 }
+.career-competition-switch { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.career-competition-switch button { display: flex; align-items: center; gap: 10px; padding: 12px 18px; min-height: 54px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--muted); font: 700 13px var(--body); cursor: pointer; transition: background .18s, border-color .18s; }
+.career-competition-switch button[aria-pressed="true"] { background: var(--accent-soft); color: var(--text); border-color: var(--green); }
+.career-competition-switch img { width: 26px; height: 26px; object-fit: contain; }
+.career-competition-switch button:focus-visible, .career-ucl button:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+.career-ucl-heading { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.career-ucl-heading img { width: 24px; height: 24px; object-fit: contain; }
+.career-ucl-views { display: flex; gap: 6px; padding: 4px; width: fit-content; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 9px; margin: 20px 0; }
+.career-ucl-views button, .career-ucl-groups button { background: transparent; color: var(--muted); border: 0; border-radius: 6px; font: 700 13px var(--body); padding: 9px 16px; cursor: pointer; }
+.career-ucl-views button[aria-pressed="true"], .career-ucl-groups button[aria-pressed="true"] { background: var(--accent-soft); color: var(--green); }
+.career-ucl-groups { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+.career-ucl-groups button { display: flex; align-items: center; gap: 7px; border: 1px solid var(--border); }
+.career-ucl-groups i { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+.career-ucl-group-title { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 22px 0 16px; }
+.career-ucl-group-title h3 { font: 800 19px var(--body); }
+.career-ucl-group-title > span { font-size: 12px; color: var(--muted); }
+.career-ucl .career-ucl-table { width: 100%; table-layout: auto; }
+.career-ucl-table th:first-child, .career-ucl-table td:first-child { width: 48px; }
+.career-ucl-table th:nth-child(2) { width: 45%; }
+.career-ucl-table :is(td, th) { padding: 18px 12px; }
+.career-ucl .career-table-team .club-badge { width: 36px; height: 36px; flex: 0 0 36px; }
+.career-ucl .career-table-points { color: var(--green); font-weight: 800; }
+.career-ucl-bracket > .champions-phase-picker { display: none; }
+.career-ucl-bracket .champions-knockout-panel { box-shadow: none; background: transparent; }
+.career-ucl-winner { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--accent-soft); margin-bottom: 20px; font-size: 12px; color: var(--muted); }
+.career-ucl-winner strong { display: block; font-size: 16px; color: var(--text); margin-top: 4px; }
+.career-ucl-winner .club-badge { width: 36px; height: 36px; }
+@media(max-width: 650px) {
+  .career-competition-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .career-competition-switch button { padding: 10px; font-size: 12px; min-width: 0; }
+  .career-ucl .career-ucl-table { min-width: 560px; }
+  .career-ucl-table :is(td, th) { padding: 14px 10px; }
+}
+.career-competition-switch .career-season-crest { width: 26px; height: 26px; flex: 0 0 26px; }
+.career-competition-switch button[data-value="champions"] img, .career-ucl-heading img { filter: brightness(0) invert(.8); }
+.career-ucl .career-table-team .career-season-crest { width: 36px; height: 36px; flex: 0 0 36px; }
+.career-ucl-absent { font-size: 13px; margin: 12px 0; }

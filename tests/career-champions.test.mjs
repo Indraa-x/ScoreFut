@@ -10,6 +10,7 @@ import {initCareer} from '../js/career-controller.js';
 import {playNextRound} from '../js/engine.js';
 import {renderCareer} from '../js/career-view.js';
 import {renderCareerSetup} from '../js/career-setup-view.js';
+
 import * as ui from '../js/ui.js';
 
 function finishLeague(career) {
@@ -32,6 +33,25 @@ function finishChampions(career) {
 const bayern = careerLeague('bundesliga').teams.find(team => team.nome === 'Bayern Munich');
 const seasonOne = finishChampions(finishLeague(createCareer(42, bayern.id)));
 const seasonTwo = advanceCareerSeason(seasonOne);
+
+test('career standings switch competitions at the top and show one consistent group table', () => {
+  const career = createCareer(42, bayern.id);
+  const national = renderCareer(career, 'standings', ui);
+  assert.match(national, /career-competition-switch/);
+  assert.match(national, /career-standings-competition/);
+  assert.doesNotMatch(national, /career-ucl-table|<details[^>]*career-champions/);
+  for (const group of career.champions.tournament.groups) {
+    const html = renderCareer(career, 'standings', ui, null, undefined, undefined, undefined,
+      {standingsCompetition: 'champions', championsView: 'groups', championsGroupId: group.id});
+    assert.match(html, /career-ucl-table/);
+    assert.equal((html.match(/<table /g) ?? []).length, 1);
+    assert.match(html, /Pts<\/th><th scope="col">J/);
+    assert.doesNotMatch(html, /Zona de rebaixamento|Forma<\/th>|Gols<\/th>/);
+    for (const id of group.teamIds) assert.ok(html.includes(career.champions.tournament.teams.find(team => team.id === id).name));
+  }
+  const brazil = createCareer(42, careerLeague('brasileirao').teams[0].id);
+  assert.doesNotMatch(renderCareer(brazil, 'standings', ui), /career-competition-switch/);
+});
 
 test('the 2026/27 European top four start with domestic and Champions fixtures', () => {
   const expected = {
@@ -104,7 +124,7 @@ test('Champions excludes Brazil and runs in the background when the European clu
   assert.ok(next.champions.tournament.championId);
   assert.equal(careerChampionsFixture(next), undefined);
   assert.equal(next.champions.tournament.bracket.at(-1).matches.length, 1);
-  assert.match(renderCareer(next, 'standings', ui), /ficou fora dos quatro primeiros/);
+  assert.match(renderCareer(next, 'standings', ui, null, undefined, undefined, undefined, {standingsCompetition: 'champions'}), /ficou fora dos quatro primeiros/);
 });
 
 test('Champions results stay private until full time and advance independently of the league', () => {
@@ -193,6 +213,7 @@ test('the Career knockout begins at the round of 16 and waits for the deciding s
     career = commitCareerChampionsMatch(career);
   }
   assert.deepEqual(played.slice(0, 5).map(match => match.stage), ['group', 'group', 'group', 'round16', 'round16']);
+
   const tournament = career.champions.tournament;
   assert.ok(tournament.complete);
   assert.deepEqual(tournament.bracket.map(stage => stage.ties.length), [8, 4, 2, 1]);
