@@ -129,7 +129,7 @@ export function careerClub(career, id) {
   if (!club || !careerSeasonTeam(id)) return club;
   const deals = new Map((career.transferDeals ?? []).map(deal => [deal.player.id, deal]));
   const owned = new Set(career.roster.map(player => player.id));
-  const jogadores = club.jogadores.filter(player => !owned.has(player.id) && !deals.has(player.id));
+  const jogadores = club.jogadores.filter(player => !deals.has(player.id));
   for (const deal of deals.values()) if (deal.clubId === id && !owned.has(deal.player.id)) jogadores.push(deal.player);
   return {...club, jogadores};
 }
