@@ -1813,3 +1813,114 @@ body > .career-drag-avatar {
 .career-dev-form { display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center; margin:14px 0 0; padding:10px 12px; border-radius:8px; background:color-mix(in srgb,var(--red) 9%,transparent); font-size:11px; }
 .career-dev-form strong { color:var(--red); }
 .career-dev-form span { color:var(--muted); }
+
+/* Club selection and saved campaigns. */
+.career-setup .career-setup-hero { padding:26px 30px; }
+.career-setup .career-setup-hero-copy h1 { font-size:clamp(30px,4vw,44px); }
+.career-setup .career-league-choice { position:relative; display:flex; align-items:center; justify-content:flex-start; min-height:86px; gap:10px; padding:12px; }
+.career-setup .career-league-mark { width:36px; height:40px; background:none; }
+.career-setup .career-league-mark .career-season-crest { width:36px; height:36px; }
+.career-setup .career-league-choice-top { flex:none; }
+.career-setup .career-league-choice-copy strong { font-size:12px; }
+.career-setup .career-league-choice-copy small { font-size:10px; }
+.career-setup .career-league-indicator { display:none; }
+.career-setup .career-league-choice[aria-pressed="true"] .career-league-indicator { display:block; position:absolute; top:7px; right:7px; }
+.career-club-stage { container-type:inline-size; }
+.career-club-browser { display:grid; grid-template-columns:minmax(0,1fr) 300px; align-items:start; gap:24px; }
+.career-club-catalog { min-width:0; }
+.career-club-search { display:flex; align-items:center; gap:9px; margin-bottom:16px; padding:0 12px; border:1px solid var(--border); border-radius:9px; background:var(--bg); }
+.career-club-search:focus-within { border-color:var(--green); }
+.career-club-search svg { flex:none; width:17px; height:17px; color:var(--muted); }
+.career-setup .career-club-search input { min-width:0; flex:1; width:100%; min-height:44px; padding:0; margin:0; border:0; border-radius:0; outline:none; box-shadow:none; background:transparent; font-size:13px; color:var(--text); }
+.career-club-search > span { flex:none; color:var(--muted); font-size:11px; }
+.career-club-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; max-height:548px; overflow:auto; padding:3px; scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:var(--border) transparent; }
+.career-club-tile { position:relative; display:grid; align-content:center; justify-items:center; gap:12px; min-width:0; min-height:146px; padding:30px 10px 13px; border:1px solid var(--border); border-radius:11px; color:var(--text); background:linear-gradient(145deg,color-mix(in srgb,var(--pick-primary) 10%,var(--surface-alt)),var(--surface-alt) 70%); transition:background .2s,border-color .2s,transform .2s; }
+.career-club-tile .career-season-crest { width:56px; height:56px; }
+.career-club-tile > strong { font-size:13px; line-height:1.2; text-align:center; overflow-wrap:anywhere; }
+.career-club-tile-top { position:absolute; top:9px; left:11px; right:11px; display:flex; justify-content:space-between; align-items:center; color:var(--muted); }
+.career-club-tile-top svg { width:14px; height:14px; color:var(--green); }
+.career-club-tile-rating { display:flex; gap:3px; align-items:center; font-size:11px; font-weight:800; }
+.career-setup .career-club-tile-rating small { margin:0; font-size:8px; font-weight:500; }
+.career-club-tile[aria-pressed="true"] { border-color:var(--green); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--green) 40%,transparent); background:linear-gradient(145deg,color-mix(in srgb,var(--pick-primary) 22%,var(--surface)),var(--accent-soft)); }
+.career-club-catalog-note { margin:12px 3px 0; color:var(--muted); font-size:11px; }
+.career-club-search-empty { grid-column:1/-1; min-height:220px; display:grid; align-content:center; justify-items:center; gap:12px; color:var(--muted); }
+.career-club-search-empty > svg { width:26px; height:26px; }
+.career-club-search-empty button { background:none; color:var(--green); font-weight:700; }
+.career-club-preview { position:sticky; top:20px; min-width:0; padding:24px 20px 18px; border:1px solid var(--border); border-radius:14px; background:linear-gradient(135deg,color-mix(in srgb,var(--pick-primary,var(--green)) 24%,var(--surface)),var(--surface) 58%,color-mix(in srgb,var(--pick-secondary,var(--green)) 12%,var(--surface))); }
+.career-club-preview-brand { display:grid; justify-items:center; gap:10px; text-align:center; }
+.career-club-preview-brand .career-season-crest { width:84px; height:84px; margin:4px 0 8px; }
+.career-club-preview-brand > span:not(.career-season-crest) { font-size:10px; color:var(--muted); }
+.career-club-preview-brand h3 { font-size:27px; letter-spacing:-.7px; line-height:1.12; overflow-wrap:anywhere; }
+.career-club-preview-stats { display:grid; grid-template-columns:1fr 1fr; margin:24px 0; padding:16px 0; border-block:1px solid var(--border); }
+.career-club-preview-stats > div { text-align:center; }
+.career-club-preview-stats > div + div { border-left:1px solid var(--border); }
+.career-club-preview-stats dt { color:var(--muted); font-size:11px; }
+.career-club-preview-stats dd { margin:7px 0 0; font-size:25px; font-weight:800; line-height:1; }
+.career-club-preview-stars h4 { margin:0 0 12px; font-size:12px; font-weight:700; }
+.career-club-preview-stars > div { display:flex; gap:9px; align-items:center; margin:10px 0; min-width:0; }
+.career-setup-player-photo { position:relative; flex:0 0 36px; height:36px; overflow:hidden; border-radius:50%; background:var(--accent-soft); display:grid; place-items:center; color:var(--green); }
+.career-setup-player-photo svg { width:19px; height:19px; }
+.career-setup-player-photo img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center top; background:var(--surface-alt); }
+.career-club-preview-stars > div > span:nth-child(2) { flex:1; min-width:0; }
+.career-club-preview-stars strong { display:block; font-size:12px; line-height:1.3; overflow-wrap:anywhere; }
+.career-club-preview-stars small { display:block; margin-top:3px; color:var(--muted); font-size:9px; }
+.career-club-preview-stars b { margin-left:auto; color:var(--green); font-size:17px; }
+.career-club-preview-competition { display:flex; justify-content:center; align-items:center; gap:7px; margin:18px 0 14px; font-size:11px; color:var(--muted); }
+.career-club-preview-competition svg { width:15px; height:15px; color:var(--green); }
+.career-club-preview > .btn { width:100%; gap:9px; }
+.career-club-preview.is-empty { min-height:330px; display:grid; align-content:center; justify-items:center; gap:16px; text-align:center; background:var(--surface-alt); }
+.career-club-preview.is-empty .career-season-crest { width:68px; height:68px; opacity:.75; }
+.career-club-preview.is-empty h3 { font-size:20px; }
+.career-club-preview.is-empty p { color:var(--muted); font-size:12px; max-width:23ch; }
+.career-save-card { display:flex; flex-wrap:wrap; align-items:center; min-width:0; border:1px solid var(--border); border-radius:12px; background:var(--surface-alt); overflow:hidden; }
+.career-save-card .career-save-choice { flex:1; min-width:0; border:0; border-radius:0; padding:14px 12px; background:none; }
+.career-save-card .career-save-choice:hover { transform:none; box-shadow:none; background:var(--accent-soft); }
+.career-save-card .career-save-mark { width:43px; height:43px; background:none; }
+.career-save-card .career-save-mark .career-season-crest { width:39px; height:39px; }
+.career-save-card .career-save-choice strong { display:block; font-size:13px; }
+.career-save-card .career-save-choice small { font-size:10px; }
+.career-save-card .career-save-arrow { width:13px; height:13px; }
+.career-save-delete { display:grid; place-items:center; flex:0 0 36px; width:36px; height:38px; padding:8px; margin-right:8px; border:1px solid transparent; border-radius:8px; background:transparent; color:var(--muted); transition:background .2s,color .2s; }
+.career-save-delete svg { width:18px; height:18px; }
+.career-save-delete:hover,.career-save-delete[aria-expanded="true"] { color:var(--red); background:color-mix(in srgb,var(--red) 10%,transparent); }
+.career-save-card.is-confirming { border-color:color-mix(in srgb,var(--red) 50%,var(--border)); }
+.career-save-confirm { flex-basis:100%; padding:16px; border-top:1px solid var(--border); background:var(--surface); }
+.career-save-confirm > strong { font-size:14px; }
+.career-save-confirm p { margin:7px 0 14px; font-size:12px; line-height:1.5; color:var(--muted); }
+.career-save-confirm > div { display:flex; justify-content:flex-end; gap:8px; }
+.career-save-confirm .btn { min-height:38px; padding:9px 11px; font-size:11px; }
+.career-save-delete-confirm { background:#a83240; color:#fff; }
+.career-save-undo { display:flex; justify-content:space-between; align-items:center; gap:16px; margin:0 0 14px; font-size:12px; color:var(--muted); }
+.career-save-undo button { background:none; color:var(--green); padding:8px 0; font-weight:700; }
+@media (hover:hover) and (pointer:fine) { .career-club-tile:hover { transform:translateY(-2px); border-color:var(--green); } }
+@media (prefers-reduced-motion:no-preference) { .career-club-preview.is-changing { animation:career-setup-confirm-in .23s ease-out both; } }
+@media (prefers-reduced-motion:reduce) { .career-setup :is(.career-club-tile,.career-save-delete) { transition:none; } .career-club-tile:hover { transform:none; } }
+@container (max-width:760px) {
+ .career-club-browser { grid-template-columns:1fr; gap:20px; }
+ .career-club-grid { max-height:350px; }
+ .career-club-preview { position:static; }
+ .career-club-preview.is-empty { display:none; }
+}
+@container (max-width:440px) {
+ .career-club-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+ .career-club-tile { min-height:135px; }
+ .career-club-tile .career-season-crest { width:52px; height:52px; }
+ .career-club-search > span { font-size:10px; }
+ .career-setup .career-club-search input { font-size:16px; }
+}
+@media (max-width:760px) {
+ .career-setup .career-setup-hero { padding:22px; }
+ .career-setup .career-setup-leagues { display:flex; overflow-x:auto; scroll-snap-type:x proximity; padding-bottom:6px; }
+ .career-setup .career-league-choice { flex:0 0 180px; scroll-snap-align:start; min-height:78px; }
+ .career-save-delete { width:42px; height:42px; flex-basis:42px; }
+}
+
+.career-setup .career-setup-saves { grid-template-columns:repeat(3,minmax(0,1fr)); }
+html[data-theme="dark"] .career-league-choice[data-value="premier"] .career-league-mark .career-season-crest,
+html[data-theme="dark"] .career-club-stage[data-league="premier"] :is(.career-setup-league-label,.career-club-preview.is-empty) > .career-season-crest { filter:brightness(0) invert(1); }
+@media(max-width:850px) { .career-setup .career-setup-saves { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:580px) { .career-setup .career-setup-saves { grid-template-columns:1fr; } }
+
+.career-setup .career-setup-saves { align-items:start; }
+
+@media(max-width:760px) { .career-setup .career-setup-leagues { scrollbar-width:none; } .career-setup-leagues::-webkit-scrollbar { display:none; } }

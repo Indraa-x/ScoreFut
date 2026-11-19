@@ -8,7 +8,7 @@ import {
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale, renderCareerOfferNotice, renderCareerDevelopment} from './career-view.js';
-import {renderCareerSetup} from './career-setup-view.js';
+import {renderCareerSetup, renderCareerClubChoices} from './career-setup-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
 import {currentMatch} from './match-session.js';
@@ -28,7 +28,8 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let squadPress = null;
   let squadDrag = null;
   let ignoreSquadClick = false;
-  const selection = {leagueId: null, clubId: null};
+  const selection = {leagueId: null, clubId: null, search: '', pendingDelete: null, animate: false};
+  let removedCampaign = null;
   const activeSlot = () => careerSlot(careerSeasonTeam(storage.read(activeCareerKey))?.id);
   const savedCareer = () => storage.read(activeSlot());
   function read() {
@@ -398,15 +399,68 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     };
     updateMarketResults();
   }
+  function savedCampaigns() {
+    return [null, ...CAREER_LEAGUES.flatMap(league => league.teams.map(team => team.id))]
+      .map(id => storage.read(careerSlot(id))).filter(Boolean);
+  }
+  function renderSetup(resetList=false) {
+    const leagueScroll=app.querySelector('.career-setup-leagues')?.scrollLeft??0;
+    const listScroll=app.querySelector('.career-club-grid')?.scrollTop??0;
+    render();
+    const leagues=app.querySelector('.career-setup-leagues'),grid=app.querySelector('.career-club-grid');
+    if(leagues)leagues.scrollLeft=leagueScroll;
+    if(grid)grid.scrollTop=resetList?0:listScroll;
+  }
+  function focusSetupAction(action,id) {
+    app.querySelector('[data-action="'+action+'"][data-value="'+id+'"]')?.focus?.({preventScroll:true});
+  }
+  function requestDeleteCampaign(id) {
+    if(tab!=='setup'||id&&!careerSeasonTeam(id)||!storage.read(careerSlot(id)))return;
+    selection.pendingDelete=id;
+    renderSetup();
+    focusSetupAction('career-delete-cancel',id);
+  }
+  function deleteCampaign(id) {
+    if(tab!=='setup'||selection.pendingDelete!==id||id&&!careerSeasonTeam(id))return;
+    const slot=careerSlot(id),isActive=activeSlot()===slot;
+    if(isActive)leaveMatch();
+    const saved=storage.read(slot);
+    if(!saved)return;
+    const activeBefore=storage.read(activeCareerKey);
+    const fallback=savedCampaigns().find(save=>careerSlot(save.clubId)!==slot);
+    try{
+      if(isActive&&!storage.write(activeCareerKey,fallback?.clubId??null))throw Error('Não foi possível excluir a campanha.');
+      if(!storage.write(slot,null)){
+        if(isActive)storage.write(activeCareerKey,activeBefore);
+        throw Error('Não foi possível excluir a campanha.');
+      }
+      removedCampaign={slot,saved,isActive,activeBefore,activeAfter:fallback?.clubId??null};
+      if(isActive||!id)initial=undefined;
+      selection.pendingDelete=null;
+      renderSetup();
+      app.querySelector('[data-action="career-delete-undo"]')?.focus?.({preventScroll:true});
+    }catch(error){toast(error.message);}
+  }
+  function undoDeleteCampaign() {
+    if(tab!=='setup'||!removedCampaign)return;
+    const {slot,saved,isActive,activeBefore,activeAfter}=removedCampaign;
+    if(storage.read(slot)){toast('Já existe uma campanha deste clube.');return;}
+    if(!storage.write(slot,saved)){toast('Não foi possível restaurar a campanha.');return;}
+    // Restore routing only when it still points to the fallback chosen at deletion.
+    if(isActive&&storage.read(activeCareerKey)===activeAfter&&!storage.write(activeCareerKey,activeBefore)){
+      storage.write(slot,null);toast('Não foi possível restaurar a campanha.');return;
+    }
+    removedCampaign=null;
+    renderSetup();
+    focusSetupAction('career-load',saved.clubId??'');
+  }
   function open() {
     if (tab === 'intro') {
       const saved = savedCareer();
       return renderCareerIntro(saved ? migrateCareerCurrency(saved) : initial, ui);
     }
     if (tab === 'setup') {
-      const ids = [null, ...CAREER_LEAGUES.flatMap(league => league.teams.map(team => team.id))];
-      const saves = ids.map(id => storage.read(careerSlot(id))).filter(Boolean);
-      return renderCareerSetup(selection.leagueId, selection.clubId, saves, ui);
+      return renderCareerSetup(selection.leagueId, selection.clubId, savedCampaigns(), ui, {...selection, deletedName:removedCampaign?.saved.name});
     }
     const career = read();
     if (career === initial) storage.write(activeSlot(), career);
@@ -493,6 +547,16 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     }
   });
   app.addEventListener('input', event => {
+    if(tab==='setup'&&event.target.id==='career-setup-search'){
+      selection.search=event.target.value;
+      const grid=app.querySelector('.career-club-grid');
+      if(!grid){render();return;}
+      const choices=renderCareerClubChoices(careerLeague(selection.leagueId),careerSeasonTeam(selection.clubId),ui,selection.search);
+      grid.innerHTML=choices.html;
+      grid.scrollTop=0;
+      const count=app.querySelector('[data-club-search-count]');
+      if(count)count.textContent=choices.count+' '+(choices.count===1?'clube':'clubes');
+    }
     if (event.target.id === 'career-market-search') updateMarketFilters(event.target.form);
     if (tab === 'club' && event.target.id === 'career-development-search') {
       development.search = event.target.value;
@@ -521,17 +585,29 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     actions: {
       career: () => { setTab('intro'); navigate('career'); },
       'career-start': (_value, button) => startCampaign(button),
-      'career-new': () => { setTab('setup'); navigate('career'); },
+      'career-new': () => { leaveMatch(); selection.pendingDelete=null; setTab('setup'); navigate('career'); },
+      'career-delete-request': requestDeleteCampaign,
+      'career-delete-confirm': deleteCampaign,
+      'career-delete-cancel': id => {if(tab!=='setup')return;selection.pendingDelete=null;renderSetup();focusSetupAction('career-delete-request',id);},
+      'career-delete-undo': undoDeleteCampaign,
+      'career-setup-clear': () => {if(tab!=='setup')return;selection.search='';renderSetup(true);app.querySelector('#career-setup-search')?.focus?.({preventScroll:true});},
       'career-select-league': id => {
         if (tab !== 'setup' || !careerLeague(id)) return;
         selection.leagueId = id;
         selection.clubId = null;
-        render();
+        selection.search = '';
+        renderSetup(true);
+        focusSetupAction('career-select-league',id);
       },
       'career-select-club': id => {
         if (tab !== 'setup' || careerSeasonTeam(id)?.leagueId !== selection.leagueId) return;
         selection.clubId = id;
-        render();
+        selection.animate = true;
+        renderSetup();
+        selection.animate = false;
+        focusSetupAction('career-select-club',id);
+        const preview=app.querySelector('.career-club-preview');
+        if(preview&&matchMedia('(max-width: 760px)').matches)preview.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
       },
       'career-create': () => openCampaign(selection.clubId, true),
       'career-load': id => openCampaign(id),
