@@ -65,7 +65,6 @@ export function renderDevelopmentPanel(career, ui, input, {portrait, crest, mone
 function renderPlayerFocus(career, ui, {selected: {player, state}, plan, preset, trained, blocked}, {portrait, crest, money}) {
   const percent = player.ovr >= state.potential ? 100 : Math.max(0, Math.min(100, Math.floor(state.xp / developmentThreshold(player.ovr) * 100))) || 0;
   const gain = player.ovr - state.baseOvr;
-  const design = planDesign[plan];
   const status = state.injury ? 'Em recuperação' : trained ? 'Treino concluído' : state.formLoss ? 'Em má fase' : state.badStreak ? 'Forma em alerta' : 'Pronto para treinar';
   return `<div class="career-dev-profile${state.injury ? ' is-injured' : ''}${trained ? ' is-trained' : ''}">
     <div class="career-dev-profile-top"><span class="career-dev-status">${ui.icon(state.injury ? 'shield' : trained ? 'check' : 'bolt')}${status}</span>${gain > 0 && !state.formLoss ? `<span class="career-dev-gain">${ui.icon('chart')}+${gain} OVR</span>` : ''}</div>
@@ -79,11 +78,10 @@ function renderPlayerFocus(career, ui, {selected: {player, state}, plan, preset,
     <div class="career-dev-progress"><div><span>${state.formLoss ? 'Evolução pausada pela má fase' : player.ovr >= state.potential ? 'Teto atual atingido' : `A caminho do OVR ${Math.min(player.ovr + 1, 99)}`}</span><b>${percent}%</b></div><progress max="100" value="${percent}" aria-label="Experiência para o próximo OVR" title="${state.xp} de ${developmentThreshold(player.ovr)} XP"></progress></div>
   </div>
   <div class="career-dev-session">
-    <div class="career-dev-session-heading"><h4>Plano de treino</h4><span>1 sessão por partida</span></div>
+    <div class="career-dev-session-heading"><h4>Plano de treino</h4></div>
     <div class="career-dev-plans" role="group" aria-label="Escolher plano de treino">
       ${Object.entries(planDesign).filter(([key]) => !['form','intense'].includes(key) || state.formLoss || state.badStreak).map(([key, item]) => `<button type="button" data-action="career-development-plan" data-value="${key}" aria-pressed="${plan === key}"${state.injury ? key !== 'recovery' ? ' disabled' : '' : key === 'recovery' ? ' disabled' : ''}><span class="career-dev-plan-icon">${ui.icon(item.icon)}</span><strong>${item.label}</strong><small>${item.hint}</small><span class="career-dev-plan-check">${ui.icon('check')}</span></button>`).join('')}
     </div>
-    <div class="career-dev-plan-detail"><p>${design.detail}</p>${plan === 'form' || plan === 'intense' ? `<span>${state.formRecovery}/2 etapas</span>` : plan === 'potential' ? `<span>${state.potentialSessions % 4}/4 sessões</span>` : state.injury ? `<span>${state.injury} ${state.injury === 1 ? 'partida fora' : 'partidas fora'}</span>` : ''}</div>
     <div class="career-dev-session-footer"><div><small>Custo da sessão</small><strong>${money(preset.cost)}</strong></div>
       <button type="button" class="btn btn-primary career-dev-start" data-action="career-train" data-value="${plan}:${esc(player.id)}"${blocked ? ' disabled' : ''}>${ui.icon(trained ? 'check' : 'bolt')}${trained ? 'Sessão concluída' : plan === 'recovery' ? 'Iniciar recuperação' : 'Iniciar treino'}</button>
     </div>
