@@ -392,7 +392,7 @@ function seasonEnd(career, ui, position, message, earnedChampions) {
       <h2>${champion ? 'É campeão!' : 'Temporada encerrada'}</h2>
       <strong class="career-season-team">${esc(career.name)}</strong>
       <span class="career-season-year">${edition}</span>
-      ${champion ? '<p>Uma temporada para entrar na história.</p>' : `<p>${position}º lugar</p>`}
+      ${champion ? '<p>Uma temporada para entrar na história.</p>' : ''}
     </header>
     <div class="career-season-award">
       ${champion && trophy ? `<img class="champion-trophy career-season-trophy" src="${assetUrl(trophy)}" alt="Taça da ${esc(careerCompetitionName(career))}" width="240" height="260">` : `<div class="career-season-club">${clubBadge(career, CAREER_TEAM, ui)}</div><p>${esc(message)}</p>`}
@@ -401,7 +401,7 @@ function seasonEnd(career, ui, position, message, earnedChampions) {
       <span class="career-season-label">${leaders.length > 1 ? 'Artilheiros do time' : 'Artilheiro do time'}</span>
       <div class="career-season-leaders">${leaders.map(leader => `<div class="career-season-scorer">
         ${rosterPortrait(scorerPlayer(career, leader), ui)}
-        <div><strong>${esc(leader.name)}</strong><span>${leader.goals} gols${career.champions ? ' · Liga + Champions' : ''}</span></div>
+        <div><strong>${esc(leader.name)}</strong><span>${leader.goals} gols</span></div>
       </div>`).join('')}</div>
     </div>` : '<p class="career-season-empty">Nenhum gol registrado nesta temporada.</p>'}
     ${incomplete ? '<small class="career-season-note">Algumas partidas antigas não têm os autores dos gols registrados.</small>' : ''}

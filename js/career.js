@@ -435,15 +435,9 @@ export function careerTopScorers(career) {
   };
 }
 
-// Season awards combine committed domestic and European games, never a pending replay.
+// Season awards count domestic matches only; Champions has its own statistics.
 export function careerSeasonScorers(career) {
-  const european = (career.champions?.tournament?.matches ?? [])
-    .filter(match => match.result)
-    .map(({homeId, awayId, result}) => ({
-      home: homeId, away: awayId, homeGoals: result.homeGoals, awayGoals: result.awayGoals,
-      scorers: result.scorers,
-    }));
-  const results = [...career.results, european].map(round => round
+  const results = career.results.map(round => round
     .filter(match => match.home === CAREER_TEAM || match.away === CAREER_TEAM)
     .map(match => {
       const side = match.home === CAREER_TEAM ? 'home' : 'away';

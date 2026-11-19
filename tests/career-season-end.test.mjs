@@ -6,7 +6,7 @@ import {renderCareer} from '../js/career-view.js';
 import * as ui from '../js/ui.js';
 import fs from 'node:fs';
 
-test('season scorer combines only committed goals for the user club across both competitions', () => {
+test('season scorer counts domestic goals only and excludes Champions and other clubs', () => {
   const career = {
     results: [[
       {home: 'rival', away: CAREER_TEAM, homeGoals: 5, awayGoals: 2,
@@ -22,7 +22,7 @@ test('season scorer combines only committed goals for the user club across both 
   };
   const original = structuredClone(career);
   const ranking = careerSeasonScorers(career);
-  assert.deepEqual(ranking.players.map(({name, goals}) => [name, goals]), [['A', 3], ['B', 2]]);
+  assert.deepEqual(ranking.players.map(({name, goals}) => [name, goals]), [['A', 2]]);
   assert.equal(ranking.incomplete, false);
   assert.equal(careerTopScorers(career).players.find(player => player.clubId === CAREER_TEAM).goals, 2);
   assert.deepEqual(career, original);

@@ -1429,17 +1429,21 @@ body > .career-drag-avatar {
   .career-season-field { width: 65%; right: -40%; opacity: .06; }
 }
 .career-season-team { font-family: var(--body); font-weight: 800; letter-spacing: -1px; background: linear-gradient(110deg, var(--career-club-primary, #19d879), var(--career-club-secondary, #fff)); background-clip: text; -webkit-background-clip: text; color: transparent; filter: saturate(1.65) brightness(1.3); }
-.career-season-award { display: grid; place-items: center; margin: 18px 0; }
+.career-season-award { display: grid; justify-items: center; gap: 14px; width: 100%; margin: 22px 0; }
+.career-season-award p { margin: 0; max-width: 34ch; line-height: 1.5; }
+.career-season-end .career-season-club :is(.club-badge, .career-season-crest, .career-crest) { display: block; width: 72px; height: 72px; margin: 0 auto; }
+.career-season-end .career-season-club :is(img, svg) { width: 100%; height: 100%; object-fit: contain; }
 .career-season-end.result-hero .career-season-trophy { width: 240px; height: 260px; margin: 0; filter: drop-shadow(0 10px 20px #0005); animation: career-award-in .7s ease-out both; }
 .career-season-club .club-badge { width: 130px; height: 130px; }
 .career-season-scorers { display: grid; gap: 12px; width: 100%; }
 .career-season-label { color: var(--muted); font-size: 12px; font-weight: 700; }
-.career-season-leaders { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
+.career-season-leaders { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 100%; }
 .career-season-scorer { display: flex; align-items: center; gap: 12px; text-align: left; }
 .career-season-scorer .career-roster-avatar { width: 52px; height: 52px; flex: 0 0 52px; border-radius: 50%; overflow: hidden; background: radial-gradient(ellipse at 50% 30%, #467357, #18382a 80%); box-shadow: 0 3px 9px #091e1836; }
-.career-season-scorer .career-roster-photo { width: 100%; height: 100%; padding: 4% 6% 0; box-sizing: border-box; border-radius: 50%; object-fit: contain; object-position: center top; background: radial-gradient(ellipse at 50% 30%, #467357, #18382a 80%); }
+.career-season-scorer .career-roster-photo { width: 100%; height: 100%; padding: 0; box-sizing: border-box; border-radius: 50%; object-fit: contain; object-position: center top; transform: scale(1.12); transform-origin: center 30%; background: radial-gradient(ellipse at 50% 30%, #467357, #18382a 80%); }
 .career-season-scorer strong { display: block; font-size: 17px; }
-.career-season-scorer span:not(.career-roster-avatar) { display: block; color: var(--text); margin-top: 5px; font-size: 16px; font-weight: 700; line-height: 1.25; }
+.career-season-scorer > div { min-width: 0; }
+.career-season-scorer > div > span { display: block; color: var(--text); margin-top: 5px; font-size: 16px; font-weight: 700; line-height: 1.25; }
 .career-season-note, .career-season-empty { color: var(--muted); margin-top: 14px; font-size: 12px; }
 .career-season-footer { width: 100%; margin-top: auto; padding-top: 32px; border: 0; }
 .career-season-footer p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
