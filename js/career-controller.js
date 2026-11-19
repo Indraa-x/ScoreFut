@@ -8,7 +8,7 @@ import {
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
 import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale, renderCareerOfferNotice, renderCareerDevelopment} from './career-view.js';
-import {renderCareerSetup, renderCareerClubChoices} from './career-setup-view.js';
+import {renderCareerSetup, renderCareerClubChoices, CAREER_SAVE_LIMIT} from './career-setup-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
 import {currentMatch} from './match-session.js';
@@ -30,6 +30,8 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let ignoreSquadClick = false;
   const selection = {leagueId: null, clubId: null, search: '', pendingDelete: null, animate: false};
   let removedCampaign = null;
+  let limitWarningShown = false;
+  let saveLimitChecked = false;
   const activeSlot = () => careerSlot(careerSeasonTeam(storage.read(activeCareerKey))?.id);
   const savedCareer = () => storage.read(activeSlot());
   function read() {
@@ -50,6 +52,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     render();
   }
   function save(next) {
+    if(!savedCareer()&&savedCampaigns().length>=CAREER_SAVE_LIMIT)throw Error('Limite de 3 campanhas. Exclua uma antes de iniciar outra.');
     const previousOffers = new Set((savedCareer()?.transferOffers ?? []).map(offer => offer.id));
     next = updateCareerTransferOffers(next);
     if (!storage.write(activeSlot(), next)) throw Error('O navegador não conseguiu salvar a carreira.');
@@ -399,9 +402,34 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     };
     updateMarketResults();
   }
-  function savedCampaigns() {
-    return [null, ...CAREER_LEAGUES.flatMap(league => league.teams.map(team => team.id))]
-      .map(id => storage.read(careerSlot(id))).filter(Boolean);
+  function campaignEntries() {
+    return [null, ...CAREER_LEAGUES.flatMap(league=>league.teams.map(team=>team.id))]
+      .map(id=>({id,slot:careerSlot(id),saved:storage.read(careerSlot(id))})).filter(entry=>entry.saved);
+  }
+  function savedCampaigns() { return campaignEntries().map(entry=>entry.saved); }
+  function enforceSaveLimit(force=false) {
+    if(saveLimitChecked&&!force)return true;
+    const entries=campaignEntries(),keep=entries.slice(0,CAREER_SAVE_LIMIT),overflow=entries.slice(CAREER_SAVE_LIMIT);
+    const oldActive=storage.read(activeCareerKey),oldSlot=activeSlot();
+    const reroute=keep.length&&!keep.some(entry=>entry.slot===oldSlot);
+    const removed=[];
+    try {
+      if(reroute&&!storage.write(activeCareerKey,keep[0].id))throw Error('Não foi possível atualizar as campanhas salvas.');
+      for(const entry of overflow){
+        if(!storage.write(entry.slot,null))throw Error('Não foi possível remover as campanhas excedentes.');
+        removed.push(entry);
+      }
+      if(reroute)initial=undefined;
+      limitWarningShown=false;
+      saveLimitChecked=true;
+      return true;
+    } catch(error) {
+      saveLimitChecked=false;
+      for(const entry of removed)storage.write(entry.slot,entry.saved);
+      if(reroute)storage.write(activeCareerKey,oldActive);
+      if(!limitWarningShown){limitWarningShown=true;toast(error.message);}
+      return false;
+    }
   }
   function renderSetup(resetList=false) {
     const leagueScroll=app.querySelector('.career-setup-leagues')?.scrollLeft??0;
@@ -445,6 +473,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     if(tab!=='setup'||!removedCampaign)return;
     const {slot,saved,isActive,activeBefore,activeAfter}=removedCampaign;
     if(storage.read(slot)){toast('Já existe uma campanha deste clube.');return;}
+    if(savedCampaigns().length>=CAREER_SAVE_LIMIT){toast('Limite de 3 campanhas. Exclua uma antes de restaurar esta.');return;}
     if(!storage.write(slot,saved)){toast('Não foi possível restaurar a campanha.');return;}
     // Restore routing only when it still points to the fallback chosen at deletion.
     if(isActive&&storage.read(activeCareerKey)===activeAfter&&!storage.write(activeCareerKey,activeBefore)){
@@ -455,6 +484,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     focusSetupAction('career-load',saved.clubId??'');
   }
   function open() {
+    enforceSaveLimit(tab==='setup');
     if (tab === 'intro') {
       const saved = savedCareer();
       return renderCareerIntro(saved ? migrateCareerCurrency(saved) : initial, ui);
@@ -463,6 +493,10 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       return renderCareerSetup(selection.leagueId, selection.clubId, savedCampaigns(), ui, {...selection, deletedName:removedCampaign?.saved.name});
     }
     const career = read();
+    if(career===initial&&savedCampaigns().length>=CAREER_SAVE_LIMIT){
+      setTab('setup');
+      return renderCareerSetup(selection.leagueId,selection.clubId,savedCampaigns(),ui,selection);
+    }
     if (career === initial) storage.write(activeSlot(), career);
     const previousTab = app.querySelector('.career-content')?.dataset.careerTab;
     return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab, championsView, development);
@@ -485,9 +519,11 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function openCampaign(clubId, create = false) {
     if (tab !== 'setup' || (clubId && !careerSeasonTeam(clubId))) return;
     try {
+      if(!enforceSaveLimit(true))return;
       const slot = careerSlot(clubId);
       if (!storage.read(slot)) {
         if (!create || !clubId) return;
+        if(savedCampaigns().length>=CAREER_SAVE_LIMIT)throw Error('Limite de 3 campanhas. Exclua uma antes de iniciar outra.');
         const campaign = createCareer(crypto.getRandomValues(new Uint32Array(1))[0], clubId);
         if (!storage.write(slot, campaign)) throw Error('O navegador não conseguiu salvar a carreira.');
       }

@@ -137,7 +137,10 @@ test('Champions results stay private until full time and advance independently o
   let saved = {...initial, champions: {...initial.champions, replay: {...replay, minute: 15}}};
   const restore = () => initCareer({
     app: {addEventListener() {}, querySelector: () => null},
-    storage: {read: () => JSON.parse(JSON.stringify(saved)), write: (_key, next) => { saved = next; return true; }},
+    storage: {
+      read: key => key === 'coach-career-active' ? saved.clubId : key === 'coach-career:'+saved.clubId ? JSON.parse(JSON.stringify(saved)) : null,
+      write: (key, next) => {assert.equal(key, 'coach-career:'+saved.clubId); saved = next; return true;},
+    },
     ui, render() {}, toast: message => assert.fail(message),
   });
   assert.equal(commitCareerChampionsMatch(saved), saved);

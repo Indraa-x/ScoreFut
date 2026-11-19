@@ -6,7 +6,7 @@ import {renderCareerSetup} from '../js/career-setup-view.js';
 import {CAREER_LEAGUES} from '../data/career-leagues.js';
 import * as ui from '../js/ui.js';
 const activeKey='coach-career-active';
-const ids=['career26-bundesliga-21','career26-laliga-243','career26-brasileirao-20002'];
+const ids=['career26-bundesliga-21','career26-laliga-243'];
 const key=id=>id?CAREER_KEY+':'+id:CAREER_KEY;
 function page(active=ids[0]){
   const saves=ids.map((id,i)=>({...createCareer(42+i,id),season:i+1}));
@@ -60,7 +60,7 @@ test('deleting a specific inactive campaign requires confirmation and preserves 
   assert.deepEqual(p.slots,before);
   p.controller.actions['career-delete-confirm'](ids[1]);
   assert.equal(p.slots.get(key(ids[1])),null);
-  for(const id of [ids[0],ids[2],null])assert.deepEqual(p.slots.get(key(id)),before.get(key(id)));
+  for(const id of [ids[0],null])assert.deepEqual(p.slots.get(key(id)),before.get(key(id)));
   assert.equal(p.slots.get(activeKey),ids[0]);
   assert.match(p.controller.open(),/Desfazer/);
   p.controller.actions['career-delete-undo']();
@@ -130,4 +130,57 @@ test('routing failures prevent deletion, and undo keeps a subsequently selected 
   p.controller.actions['career-delete-undo']();
   assert.equal(p.slots.get(activeKey),ids[1]);
   assert.deepEqual(p.slots.get(key(ids[0])),before.get(key(ids[0])));
+});
+
+test('three campaigns block new creation but allow continuing an existing campaign',()=>{
+  const p=page(),extra='career26-brasileirao-20002',before=structuredClone(p.slots);
+  p.controller.actions['career-select-league']('brasileirao');
+  p.controller.actions['career-select-club'](extra);
+  assert.match(p.controller.open(),/data-action="career-create" disabled/);
+  assert.match(p.controller.open(),/3 \/ 3/);
+  p.controller.actions['career-create']();
+  assert.deepEqual(p.slots,before);
+  assert.ok(p.errors.at(-1).includes('Limite de 3'));
+  p.controller.actions['career-load'](ids[0]);
+  assert.equal(p.controller.tab,'overview');
+  assert.ok(p.controller.open().includes('Bayern Munich'));
+});
+
+test('a deletion frees one slot and undo cannot create a fourth campaign',()=>{
+  const p=page(),extra='career26-brasileirao-20002';
+  p.controller.actions['career-delete-request'](ids[1]);
+  p.controller.actions['career-delete-confirm'](ids[1]);
+  p.controller.actions['career-select-league']('brasileirao');
+  p.controller.actions['career-select-club'](extra);
+  p.controller.actions['career-create']();
+  assert.ok(p.slots.get(key(extra)));
+  p.controller.actions['career-new']();
+  p.controller.actions['career-delete-undo']();
+  assert.equal(p.slots.get(key(ids[1])),null);
+  assert.ok(p.errors.at(-1).includes('Limite de 3'));
+});
+
+test('existing excess campaigns retain the first three shown, with their complete saves unchanged',()=>{
+  const p=page();p.slots.clear();
+  const desired=['Bayern Munich','Manchester City','Athletic Club','Barcelona','Palmeiras','AC Milan','Monza'];
+  const teams=desired.map(name=>CAREER_LEAGUES.flatMap(league=>league.teams).find(team=>team.nome===name));
+  for(const [index,team] of teams.entries())p.slots.set(key(team.id),{...createCareer(90+index,team.id),season:index+1});
+  p.slots.set(activeKey,teams[2].id);
+  const before=structuredClone(p.slots);
+  const html=p.controller.open();
+  assert.match(html,/3 \/ 3/);
+  for(const team of teams.slice(0,3))assert.deepEqual(p.slots.get(key(team.id)),before.get(key(team.id)));
+  for(const team of teams.slice(3))assert.equal(p.slots.get(key(team.id)),null);
+  assert.equal(p.slots.get(activeKey),teams[2].id);
+  const after=structuredClone(p.slots);p.controller.open();assert.deepEqual(p.slots,after);
+});
+
+test('failed excess cleanup restores removed saves and the original active routing',()=>{
+  const p=page(ids[1]);
+  for(const id of ['career26-laliga-241','career26-brasileirao-20002'])p.slots.set(key(id),createCareer(45,id));
+  const before=structuredClone(p.slots);
+  p.reject(key('career26-brasileirao-20002'));
+  p.controller.open();
+  assert.deepEqual(p.slots,before);
+  assert.equal(p.errors.length,1);
 });

@@ -1924,3 +1924,5 @@ html[data-theme="dark"] .career-club-stage[data-league="premier"] :is(.career-se
 .career-setup .career-setup-saves { align-items:start; }
 
 @media(max-width:760px) { .career-setup .career-setup-leagues { scrollbar-width:none; } .career-setup-leagues::-webkit-scrollbar { display:none; } }
+
+.career-save-limit-count { color:var(--muted); font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; }

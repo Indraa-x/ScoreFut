@@ -4,6 +4,8 @@ import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-lea
 import {careerPortraitUrl} from '../data/career-2026/player-portraits.js';
 import {startsInChampions} from '../data/career-2026/champions-qualifiers.js';
 
+export const CAREER_SAVE_LIMIT = 3;
+
 export function seasonCrest(league, index = 0) {
   const x = index % 6 * 20;
   const y = Math.floor(index / 6) * 100 / 3;
@@ -33,7 +35,8 @@ function clubPreview(league, selected, hasSave, ui, state) {
     <dl class="career-club-preview-stats"><div><dt>OVR médio</dt><dd>${average(selected)}</dd></div><div><dt>Jogadores</dt><dd>${selected.jogadores.length}</dd></div></dl>
     <div class="career-club-preview-stars"><h4>Destaques do elenco</h4>${stars.map(player=>{const photo=careerPortraitUrl(player);return `<div><span class="career-setup-player-photo">${ui.icon('users')}${photo ? `<img src="${esc(photo)}" alt="" loading="lazy" referrerpolicy="no-referrer" decoding="async">` : ''}</span><span><strong>${esc(player.nome)}</strong><small>${esc(player.tags.join(' / '))}</small></span><b>${player.ovr}</b></div>`;}).join('')}</div>
     <p class="career-club-preview-competition">${ui.icon(startsInChampions(selected.id)?'trophy':'calendar')}${startsInChampions(selected.id)?'Liga nacional + Champions':'Liga nacional'}</p>
-    <button class="btn btn-primary" type="button" data-action="career-create">${hasSave?'Continuar campanha':'Iniciar campanha'}${ui.icon('arrow')}</button>
+    <button class="btn btn-primary" type="button" data-action="career-create"${state.full&&!hasSave?' disabled':''}>${hasSave?'Continuar campanha':state.full?'Limite de campanhas':'Iniciar campanha'}${ui.icon('arrow')}</button>
+    ${state.full&&!hasSave?'<p class="career-club-catalog-note">Exclua uma campanha salva para iniciar outra.</p>':''}
   </aside>`;
 }
 
@@ -68,6 +71,7 @@ function savedCampaignCard(save, ui, state) {
 }
 
 export function renderCareerSetup(leagueId, clubId, saves, ui, state = {}) {
+  state = {...state, full:saves.length>=CAREER_SAVE_LIMIT};
   const league = careerLeague(leagueId);
   const team = careerSeasonTeam(clubId);
   const selected = team?.leagueId === league?.id ? team : null;
@@ -88,7 +92,7 @@ export function renderCareerSetup(leagueId, clubId, saves, ui, state = {}) {
     </section>
     ${league ? clubPicker(league, selected, hasSave, ui, state) : ''}
     ${saves.length || state.deletedName ? `<section class="career-card panel career-setup-stage" aria-labelledby="career-setup-saves">
-      <div class="career-setup-section-heading"><h2 id="career-setup-saves">Campanhas salvas</h2></div>
+      <div class="career-setup-section-heading"><h2 id="career-setup-saves">Campanhas salvas</h2><span class="career-save-limit-count">${saves.length} / ${CAREER_SAVE_LIMIT}</span></div>
       ${state.deletedName ? `<p class="career-save-undo" role="status">Campanha de ${esc(state.deletedName)} excluída.<button type="button" data-action="career-delete-undo">Desfazer</button></p>` : ''}
       <div class="career-setup-saves">${saves.map(save => savedCampaignCard(save, ui, state)).join('')}</div>
     </section>` : ''}
