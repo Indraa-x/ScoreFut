@@ -1693,8 +1693,9 @@ body > .career-drag-avatar {
 .career-dev-player-ovr,.career-dev-player-pot { font-variant-numeric:tabular-nums; text-align:center; font-size:20px; font-weight:800; line-height:1; }
 .career-dev-player-pot { color:var(--green); font-size:16px; }
 .career-dev-focus { min-width:0; padding:20px; }
-.career-dev-profile { position:relative; overflow:hidden; padding:18px; border:1px solid color-mix(in srgb,var(--green) 25%,var(--border)); border-radius:12px; background:linear-gradient(135deg,color-mix(in srgb,var(--green) 8%,var(--surface)),var(--surface) 65%); }
-.career-dev-profile::before { content:''; position:absolute; height:2px; top:0; inset-inline:0; background:linear-gradient(90deg,var(--green),color-mix(in srgb,var(--career-club-primary,var(--green)) 60%,var(--green)),transparent); }
+.career-dev-profile { position:relative; isolation:isolate; overflow:hidden; padding:18px; border:1px solid color-mix(in srgb,var(--career-club-primary,var(--green)) 35%,var(--border)); border-radius:12px; background:linear-gradient(125deg,color-mix(in srgb,var(--career-club-primary,var(--green)) 26%,var(--surface)),var(--surface) 55%,color-mix(in srgb,var(--career-club-secondary,var(--green)) 18%,var(--surface))); }
+.career-dev-profile::before { content:''; position:absolute; height:2px; top:0; inset-inline:0; background:linear-gradient(90deg,var(--career-club-primary,var(--green)),var(--career-club-secondary,var(--green))); }
+.career-dev-profile > :not(.career-dev-watermark) { position:relative; z-index:1; }
 .career-dev-profile-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .career-dev-status,.career-dev-gain { display:inline-flex; align-items:center; gap:5px; color:var(--green); font-size:10px; font-weight:700; }
 .career-dev-status svg,.career-dev-gain svg { width:13px; height:13px; }
@@ -1709,8 +1710,9 @@ body > .career-drag-avatar {
 .career-dev-identity-copy h3 { margin:0; font-size:25px; font-weight:800; letter-spacing:-.7px; line-height:1.12; overflow-wrap:anywhere; outline:none; }
 .career-dev-identity-copy p { display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin:10px 0 0; color:var(--muted); font-size:12px; }
 .career-dev-identity-copy p > span { padding:3px 6px; border-radius:4px; color:var(--green); background:var(--accent-soft); font-size:10px; font-weight:800; }
-.career-dev-watermark { position:absolute; z-index:-1; right:-16px; top:8px; width:138px; height:138px; opacity:.065; transform:rotate(-12deg); pointer-events:none; }
-.career-dev-watermark > :is(.career-season-crest,.career-crest) { width:100%; height:100%; }
+.career-dev-watermark { position:absolute; z-index:0; right:18px; top:50%; width:clamp(110px,30%,170px); aspect-ratio:1; opacity:.12; transform:translateY(-50%); display:grid; place-items:center; pointer-events:none; }
+.career-dev-watermark > :is(.career-season-crest,.career-crest,.club-badge) { width:100%; height:100%; }
+.career-dev-watermark :is(img,svg) { width:100%; height:100%; object-fit:contain; }
 .career-dev-trajectory { display:flex; align-items:center; gap:20px; padding:0 0 16px; }
 .career-dev-trajectory > div { display:grid; gap:7px; }
 .career-dev-trajectory > div > span { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:10px; }

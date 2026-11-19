@@ -67,8 +67,9 @@ function renderPlayerFocus(career, ui, {selected: {player, state}, plan, preset,
   const gain = player.ovr - state.baseOvr;
   const status = state.injury ? 'Em recuperação' : trained ? 'Treino concluído' : state.formLoss ? 'Em má fase' : state.badStreak ? 'Forma em alerta' : 'Pronto para treinar';
   return `<div class="career-dev-profile${state.injury ? ' is-injured' : ''}${trained ? ' is-trained' : ''}">
+    <span class="career-dev-watermark" aria-hidden="true">${crest}</span>
     <div class="career-dev-profile-top"><span class="career-dev-status">${ui.icon(state.injury ? 'shield' : trained ? 'check' : 'bolt')}${status}</span>${gain > 0 && !state.formLoss ? `<span class="career-dev-gain">${ui.icon('chart')}+${gain} OVR</span>` : ''}</div>
-    <div class="career-dev-identity"><span class="career-dev-watermark" aria-hidden="true">${crest}</span>
+    <div class="career-dev-identity">
       <div class="career-dev-portrait">${portrait(player)}</div><div class="career-dev-identity-copy"><h3 tabindex="-1">${esc(player.nome)}</h3><p><span>${esc(player.tags[0])}</span>${state.age === null ? 'Idade não cadastrada' : `${state.age} anos`}</p></div>
     </div>
     <div class="career-dev-trajectory"><div><span>OVR atual</span><strong>${player.ovr}</strong></div><span class="career-dev-trajectory-arrow">${ui.icon('arrow')}</span><div class="career-dev-ceiling"><span>Potencial <span title="Projeção do ScoreFut. Pode aumentar com os treinos." class="career-dev-info">${ui.icon('info')}</span></span><strong>${state.potential}</strong></div>
