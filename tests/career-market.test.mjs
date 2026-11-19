@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {CAREER_LEAGUES} from '../data/career-leagues.js';
 import {careerSale, createCareer, MAX_CAREER_ROSTER, sellCareerPlayer, signCareerPlayer} from '../js/career.js';
-import {careerMarketCatalog, careerMarketPage} from '../js/career-market.js';
+import {careerMarketCatalog, careerMarketPage, MAX_CAREER_PRICE} from '../js/career-market.js';
 import {renderCareer} from '../js/career-view.js';
 import * as ui from '../js/ui.js';
 
@@ -28,15 +28,15 @@ test('the market uses only the current career leagues and pages filtered results
   }
 });
 
-test('buying uses the euro price curve and selling credits the market value', () => {
+test('buying and selling use the same capped in-game euro valuation', () => {
   const career = {...createCareer(42), budget: 2_000_000};
   const unknown = offers.find(offer => offer.price === null);
   assert.equal(mbappe.euros, 200_000_000);
-  assert.equal(mbappe.price, 478_258);
-  assert.equal(Math.max(...offers.map(offer => offer.price ?? 0)), 550_000);
+  assert.ok(mbappe.price > 80_000);
+  assert.ok(Math.max(...offers.map(offer => offer.price ?? 0)) < MAX_CAREER_PRICE);
   const vini = byId.get('career26-laliga-243/vinicius-junior');
   assert.equal(vini.euros, 130_000_000);
-  assert.equal(vini.price, 263_047);
+  assert.ok(vini.price > 60_000 && vini.price < mbappe.price);
   const courtois = offers.find(offer => offer.player.nome === 'Thibaut Courtois');
   assert.equal(courtois.euros, 15_000_000);
   assert.equal(courtois.price, 64_840);
@@ -45,8 +45,8 @@ test('buying uses the euro price curve and selling credits the market value', ()
   const signed = signCareerPlayer(career, mbappe.id);
   assert.deepEqual(signed.roster.at(-1), mbappe.player);
   assert.equal(signed.budget, career.budget - mbappe.price);
-  assert.equal(careerSale(signed, mbappe.player.id).price, 200_000);
-  assert.equal(sellCareerPlayer(signed, mbappe.player.id).budget, signed.budget + 200_000);
+  assert.equal(careerSale(signed, mbappe.player.id).price, mbappe.price);
+  assert.equal(sellCareerPlayer(signed, mbappe.player.id).budget, signed.budget + mbappe.price);
   assert.deepEqual(signed.lineup, career.lineup);
   assert.throws(() => signCareerPlayer(JSON.parse(JSON.stringify(signed)), mbappe.id), /já está no elenco/);
   assert.throws(() => signCareerPlayer({...career, budget: mbappe.price - 1}, mbappe.id), /Saldo insuficiente/);
@@ -65,7 +65,7 @@ test('market cards show the club crest below the name, OVR, price in euros and p
   assert.match(html, /class="career-market-token" aria-hidden="true"><span class="career-season-crest"[^>]+league-laliga\.webp[^>]+><\/span><img[^>]+width="68" height="68"[^>]*><\/span>/);
   assert.match(html, /<h3>Kylian Mbappé<\/h3>\s*<div class="career-market-club">\s*<strong class="career-market-rating" aria-label="\d+ OVR">\d+<\/strong>\s*<span role="img" aria-label="Real Madrid"/);
   assert.doesNotMatch(html, /career-market-watermark/);
-  assert.match(html, /<small>Preço de compra<\/small>\s*<strong>€ 478,26 mi<\/strong>/);
+  assert.match(html, /<small>Preço de compra<\/small>\s*<strong>€ 93,25 mi<\/strong>/);
   assert.doesNotMatch(html, /R\$|<time\b/);
   assert.match(html, /data-action="career-sign" data-value="career26-laliga-243\/kylian-mbappe">Contratar/);
 });

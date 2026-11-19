@@ -12,7 +12,7 @@ import {goalsAt} from './match-goals.js';
 import {matchExpulsions} from './match-discipline.js';
 import {formatMatchEventMinute} from './match-motion.js';
 import {matchHasEnded} from './match-penalties.js';
-import {careerMarketCatalog, careerPlayerValuation} from './career-market.js';
+import {careerPlayerValuation, careerMarketOffer, capCareerPrice} from './career-market.js';
 import {movableSlots} from './draft.js';
 
 export const CAREER_KEY = 'coach-career';
@@ -210,6 +210,8 @@ function updateEstimatedBrazilRatings(career) {
 }
 
 export function migrateCareerRoster(career) {
+  if ((career.transferOffers ?? []).some(offer => offer.price > capCareerPrice(offer.price)))
+    career = {...career, transferOffers: career.transferOffers.map(offer => ({...offer, price: capCareerPrice(offer.price)}))};
   if (Object.hasOwn(career, 'facilities')) {
     career = {...career};
     delete career.facilities;
@@ -267,7 +269,7 @@ export function changeCareerStarter(career, slotId, playerId) {
 }
 
 export function signCareerPlayer(career, id) {
-  const offer = careerMarketCatalog().byId.get(id);
+  const offer = careerMarketOffer(career, id);
   if (!offer) throw Error('Jogador não encontrado no mercado.');
   if (career.roster.some(player => player.id === offer.player.id)) throw Error('Esse jogador já está no elenco.');
   if (career.roster.length >= careerRosterLimit(career)) throw Error('O elenco está cheio. Conclua uma venda em Negociações para abrir vaga.');
@@ -291,7 +293,7 @@ export function careerSale(career, id) {
   if (!player) throw Error('Jogador não encontrado no elenco.');
   const valuation = careerPlayerValuation(player);
   if (!valuation?.euros) throw Error('Jogador sem valor de mercado confirmado no Transfermarkt.');
-  const price = Math.round(valuation.euros / 1_000);
+  const price = valuation.price;
 
   const roster = career.roster.filter(candidate => candidate.id !== id);
   const slot = FORMATIONS[career.formation].slots.find(slot => career.lineup[slot.id] === id);
@@ -328,16 +330,18 @@ export function updateCareerTransferOffers(career) {
   const now = transferClock(career), offers = [...(career.transferOffers ?? [])];
   let changed = false;
   const listings = (career.transferListings ?? []).filter(entry => career.roster.some(player => player.id === entry.playerId)).map(entry => {
+    const price = careerPlayerValuation(career.roster.find(player => player.id === entry.playerId))?.price;
+    if (price !== null && price !== undefined && price !== entry.price) {entry = {...entry, price}; changed = true;}
     if (now < entry.due || offers.some(offer => offer.playerId === entry.playerId)) return entry;
     const player = career.roster.find(player => player.id === entry.playerId);
     const candidates = CAREER_LEAGUES.flatMap(league => league.teams)
       .filter(club => club.id !== career.clubId && !careerClub(career, club.id).jogadores.some(candidate => candidate.id === player.id)
-        && Math.max(...club.jogadores.map(candidate => candidate.ovr)) >= player.ovr - 7)
+        && Math.max(...club.jogadores.map(candidate => candidate.ovr)) >= Math.min(91, player.ovr) - 7)
       .sort((a, b) => hashSeed(`${career.seed}:${entry.playerId}:${entry.wave}:${a.id}`) - hashSeed(`${career.seed}:${entry.playerId}:${entry.wave}:${b.id}`));
     for (const club of candidates.slice(0, 2)) {
       const id = `${career.season}:${entry.playerId}:${entry.wave}:${club.id}`;
       const factor = .9 + (hashSeed(id) % 26) / 100;
-      offers.push({id, playerId: player.id, clubId: club.id, price: Math.max(1, Math.round(entry.price * factor)), season: career.season});
+      offers.push({id, playerId: player.id, clubId: club.id, price: capCareerPrice(entry.price * factor), season: career.season});
     }
     changed = true;
     return {...entry, wave: entry.wave + 1, due: now + 3};
@@ -355,7 +359,8 @@ export function rejectCareerOffer(career, id) {
 export function acceptCareerOffer(career, id) {
   if (career.replay?.round === career.round && career.replay?.season === career.season || career.champions?.replay)
     throw Error('Conclua a partida em andamento antes de negociar.');
-  const offer = (career.transferOffers ?? []).find(candidate => candidate.id === id);
+  const pendingOffer = (career.transferOffers ?? []).find(candidate => candidate.id === id);
+  const offer = pendingOffer ? {...pendingOffer, price: capCareerPrice(pendingOffer.price)} : null;
   if (!offer || !(career.transferListings ?? []).some(entry => entry.playerId === offer.playerId)) throw Error('Proposta indisponível.');
   const {player, roster, lineup} = careerSale(career, offer.playerId);
   const next = cancelCareerListing(career, player.id);

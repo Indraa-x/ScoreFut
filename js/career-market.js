@@ -1,12 +1,17 @@
 import {CAREER_LEAGUES} from '../data/career-leagues.js';
-import {MARKET_VALUES} from '../data/career-2026/market-values.js';
+import {MARKET_VALUES, MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
 
 const PAGE_SIZE = 12;
 const MAX_PURCHASE_EUROS = 550_000_000;
+// Balances and transfer fees are stored in thousands of euros; retain the game's fixed FX rate.
+export const MAX_CAREER_PRICE = Math.floor(950_000_000 / MARKET_EUR_TO_BRL / 1_000);
+export const capCareerPrice = price => Math.max(1, Math.min(MAX_CAREER_PRICE, Math.round(price)));
 const OVERALL_PREMIUM_THRESHOLD = 78;
 const OVERALL_PREMIUM_EUROS = 360_000;
 const highestMarketValue = Math.max(...Object.values(MARKET_VALUES).flatMap(squad =>
   Object.values(squad).map(([euros]) => euros)));
+
+const sportingFloor = overall => MAX_CAREER_PRICE * .9 * (Math.max(0, overall - 60) / 39) ** 4;
 
 function purchasePrice(euros, overall) {
   if (!euros) return null;
@@ -15,7 +20,8 @@ function purchasePrice(euros, overall) {
   const ratingAboveThreshold = Math.max(0, overall - OVERALL_PREMIUM_THRESHOLD);
   const sportingPremium = OVERALL_PREMIUM_EUROS * ratingAboveThreshold ** 2 * (1 - share);
   // Career balances are stored in thousands of euros.
-  return Math.round(Math.min(MAX_PURCHASE_EUROS, euros + marketPremium + sportingPremium) / 1_000);
+  const ratingCeiling = MAX_CAREER_PRICE * (Math.min(99, overall) / 99) ** 6;
+  return capCareerPrice(Math.min(ratingCeiling, Math.max(sportingFloor(overall), (euros + marketPremium + sportingPremium) / 1_000)));
 }
 const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
 const byPrice = (a, b, direction) => {
@@ -49,7 +55,7 @@ for (const offer of offers) {
   offersByPlayer.set(offer.player.id, [...previous, offer]);
 }
 
-export function careerPlayerValuation(player) {
+function originalValuation(player) {
   if (player.marketOfferId) {
     const offer = catalog.byId.get(player.marketOfferId);
     return offer?.player.id === player.id ? offer : null;
@@ -61,13 +67,33 @@ export function careerPlayerValuation(player) {
   return identified.length === 1 ? identified[0] : null;
 }
 
+// Keep the real market source intact while recalculating the in-game fee from current OVR.
+export function careerPlayerValuation(player) {
+  const offer = originalValuation(player);
+  if (!offer || offer.price === null) return offer;
+  if (player.ovr === offer.player.ovr) return offer;
+  const overall = Math.max(40, Math.min(99, player.ovr));
+  const growth = offer.price * 1.12 ** (overall - offer.player.ovr);
+  return {...offer, price: capCareerPrice(Math.max(growth, sportingFloor(overall)))};
+}
+
+export function careerMarketOffer(career, id) {
+  return campaignOffers(career).find(offer => offer.id === id) ?? null;
+}
+
 export function careerMarketCatalog() {
   return catalog;
 }
 
 function campaignOffers(career) {
   const deals = new Map((career.transferDeals ?? []).map(deal => [deal.player.id, deal]));
-  return offers.map(offer => {
+  const players = new Map([...deals.values()].map(deal => [deal.player.id, deal.player]));
+  for (const player of career.roster) players.set(player.id, player);
+  return offers.map(original => {
+    const current = players.get(original.player.id);
+    const valuation = current && careerPlayerValuation(current);
+    const offer = valuation?.id === original.id && current.ovr !== original.player.ovr
+      ? {...original, player: current, price: valuation.price} : original;
     const deal = deals.get(offer.player.id);
     if (!deal) return offer;
     const league = CAREER_LEAGUES.find(league => league.teams.some(team => team.id === deal.clubId));

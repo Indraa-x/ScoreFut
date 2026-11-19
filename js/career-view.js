@@ -9,7 +9,7 @@ import {renderChampionsStages, renderChampionsTieDetails, championsGroup, render
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
 import {seasonCrest} from './career-setup-view.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
-import {careerMarketCatalog, careerMarketPage} from './career-market.js';
+import {careerMarketCatalog, careerMarketPage, careerPlayerValuation} from './career-market.js';
 import {careerPortraitUrl} from '../data/career-2026/player-portraits.js';
 import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchScoreDetails, renderMatchSpeed} from './match-view.js';
 import {scoreAt} from './match-motion.js';
@@ -666,7 +666,7 @@ function transfers(career, ui) {
     <div class="career-transfers-head"><h3>À venda <span class="career-pill">${listings.length}</span></h3>${button('Ver elenco', 'career-tab', 'squad')}</div>
     ${listings.length ? `<ul class="career-transfer-list">${listings.map(entry => {
       const player = career.roster.find(player => player.id === entry.playerId);
-      return player ? `<li><div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>Valor de referência · ${money(entry.price)}</small></div></div>
+      return player ? `<li><div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>Valor de referência · ${money(careerPlayerValuation(player)?.price ?? entry.price)}</small></div></div>
         ${button('Retirar da venda', 'career-transfer-cancel', player.id)}</li>` : '';
     }).join('')}</ul>` : '<p class="career-transfer-empty">Use o $ no elenco para colocar um jogador à venda.</p>'}
     ${deals.length ? `<h3>Vendas concluídas</h3><ul class="career-transfer-list career-sales-history">${[...deals].reverse().slice(0, 12).map(deal => {
