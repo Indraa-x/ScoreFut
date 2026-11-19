@@ -1653,3 +1653,38 @@ body > .career-drag-avatar {
   background: linear-gradient(115deg, color-mix(in srgb, var(--winner-primary, #19734b) 24%, var(--surface)), color-mix(in srgb, var(--winner-secondary, #fff) 12%, var(--surface)));
   border-color: color-mix(in srgb, var(--winner-primary, #19734b) 35%, var(--border));
 }
+/* Individual development in Meu clube. */
+.career-development { margin-top:20px; }
+.career-development-heading { display:flex;align-items:center;justify-content:space-between;gap:14px; }
+.career-development-heading h2 { margin:4px 0 0; }
+.career-development > .muted { max-width:660px;font-size:13px;line-height:1.6;margin:14px 0 20px; }
+.career-development-list { max-height:640px;overflow:auto;scrollbar-color:var(--border) transparent;border:1px solid var(--border);border-radius:12px; }
+.career-development-player + .career-development-player { border-top:1px solid var(--border); }
+.career-development-player summary { display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;list-style:none;transition:background .18s ease; }
+.career-development-player summary::-webkit-details-marker { display:none; }
+.career-development-player summary:hover,.career-development-player[open] summary { background:var(--accent-soft); }
+.career-development-player .career-roster-avatar { width:44px;height:44px;flex:0 0 44px;border-radius:50%;overflow:hidden; }
+.career-development-name { flex:1;min-width:0;display:grid;gap:5px; }
+.career-development-name strong { overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.career-development-name small,.career-development-rating small,.career-development-potential small { color:var(--muted);font-size:11px; }
+.career-development-rating,.career-development-potential { display:grid;justify-items:center;gap:3px;min-width:48px; }
+.career-development-rating b { font-size:25px;line-height:1; }
+.career-development-potential b { color:var(--green);font-size:23px;line-height:1; }
+.career-development-body { padding:4px 16px 16px; }
+.career-development-progress > span { display:flex;justify-content:space-between;font-size:12px;color:var(--muted); }
+.career-development-progress progress { width:100%;height:7px;accent-color:var(--green);border:0;border-radius:8px;overflow:hidden;margin-top:8px; }
+.career-development-progress progress::-webkit-progress-bar { background:var(--border); }
+.career-development-progress progress::-webkit-progress-value { background:var(--green);border-radius:8px; }
+.career-development-meta { display:flex;justify-content:space-between;margin:10px 0 16px;font-size:12px;color:var(--muted); }
+.career-development-meta strong { color:var(--green); }
+.career-development-plans { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px; }
+.career-development-plans button { display:grid;text-align:left;gap:7px;padding:12px;border:1px solid var(--border);background:var(--surface-alt);border-radius:8px;color:var(--text);cursor:pointer;transition:border-color .18s ease,transform .18s ease; }
+.career-development-plans button:not(:disabled):hover { border-color:var(--green);transform:translateY(-2px); }
+.career-development-plans button:disabled { opacity:.45;cursor:default; }
+.career-development-plans small { color:var(--muted);line-height:1.5;font-size:11px; }
+.career-development-plans span { color:var(--green);font-weight:800;font-size:12px; }
+.career-development-note,.career-development-hint { color:var(--muted);font-size:11px;line-height:1.6;margin:12px 0 0; }
+.career-injury-label { color:#ff9393;font-size:10px; }
+@media(max-width:600px) { .career-development-plans { grid-template-columns:1fr; }.career-development-player summary { gap:8px;padding:12px 8px; }.career-development-potential,.career-development-rating { min-width:38px; }.career-development-name strong { font-size:13px; }.career-development-heading { align-items:flex-start;flex-direction:column; } }
+@media(prefers-reduced-motion:reduce) { .career-development-plans button,.career-development-player summary { transition:none; } }
+@media(prefers-reduced-motion:no-preference) { .career-development-body { animation:career-dashboard-in .22s ease-out both; } }

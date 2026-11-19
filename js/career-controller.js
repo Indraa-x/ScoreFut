@@ -1,3 +1,4 @@
+import {trainCareerPlayer} from './career-development.js';
 import {
   listCareerPlayer, cancelCareerListing, updateCareerTransferOffers, acceptCareerOffer, rejectCareerOffer,
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
@@ -543,6 +544,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         const card = document.getElementById(`career-offer-${value}`);
         (card || app.querySelector('#career-market-count'))?.focus({preventScroll: true});
       },
+      'career-train': value => { const [plan,id] = value.split(':'); change(career => trainCareerPlayer(career,id,plan), 'Sessão concluída.'); },
       'career-sell': openSale,
       'career-transfer-open': openTransferOffer,
       'career-transfer-confirm': confirmSale,

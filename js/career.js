@@ -1,3 +1,4 @@
+import {playerInjured, progressCareerPlayers} from './career-development.js';
 import {allSquads} from '../data/game-squads.js';
 import {squadsForMode} from '../data/competitions.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
@@ -199,7 +200,7 @@ export function migrateCareerCurrency(career) {
 function updateEstimatedBrazilRatings(career) {
   let changed = false;
   const roster = career.roster.map(player => {
-    if (player.ratingKind !== 'career-estimate') return player;
+    if (player.ratingKind !== 'career-estimate' || career.development?.players?.[player.id]) return player;
     const offer = careerPlayerValuation(player);
     if (offer?.league.id !== 'brasileirao' || offer.player.ratingKind !== 'career-estimate' || offer.player.ovr === player.ovr) return player;
     changed = true;
@@ -248,6 +249,7 @@ export function changeCareerFormation(career, formation) {
 }
 
 export function careerDestinations(career, playerId) {
+  if (playerInjured(career, playerId)) return [];
   const candidate = career.roster.find(player => player.id === playerId);
   if (!candidate) return [];
   const picks = careerPicks(career);
@@ -491,6 +493,7 @@ function matchTeam(career, id) {
     return opponentTeams.get(cacheKey);
   }
   const entryFor = player => ({player, clubId: CAREER_TEAM, ano: career.season});
+  if (careerPicks(career).some(pick => playerInjured(career, pick.player.id))) throw Error('Recupere ou substitua os jogadores lesionados antes de jogar.');
   const lineup = careerPicks(career).map(pick => {
     if (!pick.player || positionFit(pick.player, pick.slot) === null) throw Error('Complete a escalação antes de jogar.');
     return {...pick, ...entryFor(pick.player)};
@@ -579,10 +582,10 @@ export function commitCareerRound(career) {
       ? {...result, homeGoals: match.result.homeGoals, awayGoals: match.result.awayGoals, scorers: careerScorers(match.result), ...(expulsions && {expulsions})}
       : result
   );
-  return {
+  return developAfterMatch({
     ...career, round: career.round + 1, results: [...career.results, results],
     budget: career.budget + replay.income,
-  };
+  }, match, replay.tournament.teams?.find(team => team.id === CAREER_TEAM));
 }
 
 function simulatedLeagueQualifiers(career, league) {
@@ -693,7 +696,7 @@ export function commitCareerChampionsMatch(career) {
   const recorded = pending.matches.find(fixture => fixture.id === match.id)?.result;
   const tournament = matchExpulsions(match.result) && !recorded?.expulsions
     ? compactChampionsTournament(pending, match) : pending;
-  return {...career, budget: career.budget + income, champions: {tournament, replay: null}};
+  return developAfterMatch({...career, budget: career.budget + income, champions: {tournament, replay: null}}, match, pending.teams?.find(team => team.id === CAREER_TEAM));
 }
 
 const relegationStarts = {bundesliga: 17, premier: 18, laliga: 18, brasileirao: 17, seriea: 18};
@@ -720,5 +723,16 @@ export function advanceCareerSeason(career) {
   if (carryover?.length) next.leagueCarryover = carryover;
   else delete next.leagueCarryover;
   if (careerHasChampions(career)) next.champions = nextCareerChampions(career, table);
+  return next;
+}
+
+function developAfterMatch(career, match, team) {
+  if (!team?.lineup || !match.result.events) return career;
+  const healthy = career.roster.filter(p => !playerInjured(career, p.id));
+  const next = progressCareerPlayers(career, match, team, id => Boolean(bestLineup(healthy.filter(p => p.id !== id), career.formation)));
+  if (Object.values(next.lineup).some(id => playerInjured(next,id))) {
+    const lineup = bestLineup(next.roster.filter(p=>!playerInjured(next,p.id)),next.formation);
+    if (lineup) next.lineup=lineup;
+  }
   return next;
 }
