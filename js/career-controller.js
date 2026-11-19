@@ -1,4 +1,5 @@
 import {trainCareerPlayer} from './career-development.js';
+import {developmentView, DEVELOPMENT_FILTERS} from './career-development-view.js';
 import {
   listCareerPlayer, cancelCareerListing, updateCareerTransferOffers, acceptCareerOffer, rejectCareerOffer,
   CAREER_KEY, advanceCareerSeason, careerDestinations, changeCareerFormation, changeCareerStarter, changeCareerStyle, createCareer,
@@ -6,7 +7,7 @@ import {
   careerChampionsFixture, careerNextCompetition, commitCareerChampionsMatch, prepareCareerChampionsMatch, signCareerPlayer,
 } from './career.js';
 import {CAREER_LEAGUES, careerLeague, careerSeasonTeam} from '../data/career-leagues.js';
-import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale, renderCareerOfferNotice} from './career-view.js';
+import {CAREER_TABS, renderCareer, renderCareerChampionsTie, renderCareerIntro, renderCareerMarketResults, renderCareerSale, renderCareerOfferNotice, renderCareerDevelopment} from './career-view.js';
 import {renderCareerSetup} from './career-setup-view.js';
 import {initMatchPlayback} from './match-playback.js';
 import {MATCH_SPEEDS, normalizeMatchSpeed} from './match-motion.js';
@@ -23,6 +24,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let filters = {...marketDefaults};
   let championsView = {};
   const squad = {selectedId: null};
+  const development = {selectedId: null, plan: 'technique', search: '', filter: 'all'};
   let squadPress = null;
   let squadDrag = null;
   let ignoreSquadClick = false;
@@ -350,6 +352,40 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       return changeCareerStarter(career, origin, replacement.id);
     }, 'Escalação atualizada.'));
   }
+  function updateDevelopment({resetList = false, reveal = false} = {}) {
+    const panel = app.querySelector('.career-development');
+    if (!panel) { render(); return; }
+    const oldPlayer = panel.querySelector('[data-development-player]')?.dataset.developmentPlayer;
+    const listScroll = resetList ? 0 : panel.querySelector('[data-development-list]')?.scrollTop ?? 0;
+    const field = panel.querySelector('#career-development-search');
+    const editing = field === document.activeElement;
+    const active = panel.contains(document.activeElement) ? document.activeElement.closest('[data-action]')?.dataset : null;
+    const activeAction = active ? {action: active.action, value: active.value} : null;
+    const caret = editing ? [field.selectionStart, field.selectionEnd] : null;
+    const career = read();
+    development.animate = oldPlayer !== developmentView(career, development).selected?.player.id;
+    panel.outerHTML = renderCareerDevelopment(career, ui, development);
+    development.animate = false;
+    const next = app.querySelector('.career-development');
+    const list = next.querySelector('[data-development-list]');
+    if (list) list.scrollTop = listScroll;
+    next.querySelectorAll('[data-career-portrait]').forEach(img => {
+      if (img.complete && img.naturalWidth) img.classList.add('is-loaded');
+    });
+    if (editing) {
+      const input = next.querySelector('#career-development-search');
+      input.focus({preventScroll: true});
+      input.setSelectionRange(...caret);
+    }
+    if (!editing && !reveal && activeAction) {
+      [...next.querySelectorAll('[data-action]')].find(button => button.dataset.action === activeAction.action && button.dataset.value === activeAction.value)?.focus({preventScroll: true});
+    }
+    if (reveal) {
+      const focus = next.querySelector('.career-dev-focus');
+      focus.querySelector('h3')?.focus({preventScroll: true});
+      if (next.clientWidth < 680) focus.scrollIntoView({block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+    }
+  }
   function updateMarketResults() {
     const results = app.querySelector('[data-career-market-results]');
     if (results) results.innerHTML = renderCareerMarketResults(read(), ui, filters);
@@ -375,7 +411,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     const career = read();
     if (career === initial) storage.write(activeSlot(), career);
     const previousTab = app.querySelector('.career-content')?.dataset.careerTab;
-    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab, championsView);
+    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab, championsView, development);
   }
   async function startCampaign(button) {
     if (tab !== 'intro' || button?.disabled) return;
@@ -403,6 +439,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       }
       if (!storage.write(activeCareerKey, clubId || null)) throw Error('O navegador não conseguiu abrir a carreira.');
       championsView = {};
+      Object.assign(development, {selectedId: null, plan: 'technique', search: '', filter: 'all'});
       setTab('overview');
       navigate('career');
     } catch (error) {
@@ -457,6 +494,10 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   });
   app.addEventListener('input', event => {
     if (event.target.id === 'career-market-search') updateMarketFilters(event.target.form);
+    if (tab === 'club' && event.target.id === 'career-development-search') {
+      development.search = event.target.value;
+      updateDevelopment({resetList: true});
+    }
   });
   app.addEventListener('reset', event => {
     if (event.target.id !== 'career-market-filters') return;
@@ -544,7 +585,37 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         const card = document.getElementById(`career-offer-${value}`);
         (card || app.querySelector('#career-market-count'))?.focus({preventScroll: true});
       },
-      'career-train': value => { const [plan,id] = value.split(':'); change(career => trainCareerPlayer(career,id,plan), 'Sessão concluída.'); },
+      'career-development-player': id => {
+        if (tab !== 'club' || !read().roster.some(player => player.id === id)) return;
+        development.selectedId = id;
+        development.plan = 'technique';
+        updateDevelopment({reveal: true});
+      },
+      'career-development-filter': value => {
+        if (tab !== 'club' || !Object.hasOwn(DEVELOPMENT_FILTERS, value)) return;
+        development.filter = value;
+        updateDevelopment({resetList: true});
+      },
+      'career-development-plan': value => {
+        if (tab !== 'club' || !['technique', 'potential', 'recovery'].includes(value)) return;
+        development.plan = value;
+        updateDevelopment();
+      },
+      'career-development-reset': () => {
+        Object.assign(development, {search: '', filter: 'all'});
+        updateDevelopment({resetList: true});
+      },
+      'career-train': value => {
+        const [plan,id] = value.split(':');
+        const scroll = app.querySelector('[data-development-list]')?.scrollTop ?? 0;
+        development.selectedId = id;
+        development.animate = true;
+        change(career => trainCareerPlayer(career,id,plan), 'Sessão concluída.');
+        development.animate = false;
+        const list = app.querySelector('[data-development-list]');
+        if (list) list.scrollTop = scroll;
+        app.querySelector('.career-dev-feedback')?.focus({preventScroll: true});
+      },
       'career-sell': openSale,
       'career-transfer-open': openTransferOffer,
       'career-transfer-confirm': confirmSale,

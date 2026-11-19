@@ -1,4 +1,5 @@
-import {DEVELOPMENT_PLANS, playerDevelopment, developmentThreshold, developmentLocked} from './career-development.js';
+import {playerDevelopment} from './career-development.js';
+import {renderDevelopmentPanel} from './career-development-view.js';
 import {escapeHtml as esc} from './html.js';
 import {assetUrl} from './asset-url.js';
 import {championConfetti} from './celebration.js';
@@ -681,7 +682,7 @@ function transfers(career, ui) {
   </section>`;
 }
 
-function club(career, ui) {
+function club(career, ui, developmentState) {
   const {played, goals, titles} = careerClubStats(career);
   const edition = season => {
     const year = 2025 + season;
@@ -702,10 +703,10 @@ function club(career, ui) {
           <div><strong>${esc(european ? 'Champions League' : careerCompetitionName(career))}</strong><span>Campeão · ${edition(title.season)}</span></div></li>`;
       }).join('')}</ul>` : '<p class="muted">Sua história de títulos começa aqui.</p>'}
     </div>
-  </section>${developmentPanel(career, ui)}`;
+  </section>${renderCareerDevelopment(career, ui, developmentState)}`;
 }
 
-export function renderCareer(career, tab, ui, live = null, marketFilters, squadState, previousTab, championsView) {
+export function renderCareer(career, tab, ui, live = null, marketFilters, squadState, previousTab, championsView, developmentState) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const league = careerLeague(career.leagueId);
@@ -740,29 +741,16 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
       ${activeTab === 'standings' ? standingsCompetition(career, ui, rows, championsView)
         : activeTab === 'market' ? market(career, ui, marketFilters)
         : activeTab === 'squad' ? squad(career, ui, squadState)
+        : activeTab === 'club' ? club(career, ui, developmentState)
         : pages[activeTab](career, ui, rows, live)}
     </div>
   </div>`;
 }
 
-function developmentPanel(career,ui) {
- const tick=career.development?.tick??0, locked=developmentLocked(career);
- const rows=career.roster.map(player=>({player,state:playerDevelopment(career,player)})).sort((a,b)=>b.state.injury-a.state.injury||(a.state.age??40)-(b.state.age??40)||b.player.ovr-a.player.ovr);
- return `<section class="career-card panel career-development" aria-labelledby="career-development-title">
-  <header class="career-development-heading"><div><span class="eyebrow accent">Treinos e recuperação</span><h2 id="career-development-title">Desenvolvimento do elenco</h2></div><span class="career-pill">${rows.filter(r=>r.state.injury).length} lesionado(s)</span></header>
-  <p class="muted">Abra um jogador para escolher o treino. Uma sessão entre partidas; participar e marcar gols também gera experiência.</p>
-  ${locked?'<p class="career-development-hint">Conclua a partida para liberar os treinos.</p>':''}
-  <div class="career-development-list">${rows.map(({player,state})=>{
-   const trained=state.lastTraining===tick,percent=Math.min(100,Math.floor(state.xp/developmentThreshold(player.ovr)*100));
-   return `<details class="career-development-player"${state.injury?' open':''}><summary>
-    ${rosterPortrait(player,ui)}<span class="career-development-name"><strong>${esc(player.nome)}</strong><small>${state.age===null?'Idade não cadastrada':state.age+' anos na temporada'}${state.injury?' · Lesionado: '+state.injury+' jogo(s)':''}</small></span>
-    <span class="career-development-rating"><b>${player.ovr}</b><small>OVR</small></span><span class="career-development-potential"><b>${state.potential}</b><small>Potencial</small></span>
-   </summary><div class="career-development-body">
-    <div class="career-development-progress"><span>${player.ovr>=state.potential?'Teto atual atingido':'Próximo OVR'}<b>${percent}%</b></span><progress max="100" value="${percent}" aria-label="Experiência para o próximo OVR"></progress></div>
-    <div class="career-development-meta"><span>${state.appearances} jogos acompanhados · ${state.goals} gols</span><strong>+${player.ovr-state.baseOvr} OVR</strong></div>
-    <div class="career-development-plans">${Object.entries(DEVELOPMENT_PLANS).map(([key,preset])=>`<button type="button" data-action="career-train" data-value="${key}:${esc(player.id)}"${locked||trained||career.budget<preset.cost||(state.injury?key!=='recovery':key==='recovery')?' disabled':''}><strong>${preset.name}</strong><small>${preset.description}</small><span>${money(preset.cost)}</span></button>`).join('')}</div>
-    ${trained?'<p class="career-development-hint">Sessão concluída. Nova sessão após a próxima partida.</p>':''}
-   </div></details>`;
-  }).join('')}</div><p class="career-development-note">O potencial é uma projeção do ScoreFut, não uma nota oficial da EA. Bons jogos e treino de potencial podem ampliar esse teto até 99; quatro sessões de potencial aumentam o teto em 1 ponto.</p>
- </section>`;
+
+export function renderCareerDevelopment(career, ui, state = {}) {
+  return renderDevelopmentPanel(career, ui, state, {
+    portrait: player => rosterPortrait(player, ui),
+    crest: clubBadge(career, CAREER_TEAM, ui), money,
+  });
 }
