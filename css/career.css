@@ -1355,7 +1355,8 @@ body > .career-drag-avatar {
 .career-pitch-legend i.is-own { background: #52cf99; }
 .career-lineup-preview .career-pitch, .career-squad-field .career-pitch { box-shadow: 0 7px 16px #0003; }
 .career-content .career-market-player {
-  background-image: linear-gradient(160deg, var(--accent-soft), transparent 58%);
+  background: linear-gradient(125deg, color-mix(in srgb, var(--market-club-primary) 30%, var(--surface-alt)), var(--surface-alt) 55%, color-mix(in srgb, var(--market-club-secondary) 20%, var(--surface-alt)));
+  border-color: color-mix(in srgb, var(--market-club-primary) 28%, var(--border));
 }
 .career-content .career-squad-field .career-card-heading {
   padding-bottom: 12px;

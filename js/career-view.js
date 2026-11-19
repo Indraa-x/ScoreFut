@@ -567,7 +567,8 @@ export function renderCareerMarketResults(career, ui, filters) {
       const label = signed ? 'No elenco' : price === null ? 'Sem cotação' : full ? 'Sem vaga' : affordable ? 'Contratar' : 'Sem saldo';
       const crest = seasonCrest(league, squad.crestIndex);
       const clubName = esc(squad.nome);
-      return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}">
+      const [primary, secondary] = squad.cores;
+      return `<article class="career-market-player" tabindex="-1" id="career-offer-${esc(id)}" style="--market-club-primary:${esc(primary)};--market-club-secondary:${esc(secondary)}">
         <div class="career-market-player-head">
           <span class="career-market-token" aria-hidden="true">${crest}${playerPortrait(player, 'career-token-photo', 68)}</span>
           <div>
