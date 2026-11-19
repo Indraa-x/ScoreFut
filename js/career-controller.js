@@ -597,7 +597,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         updateDevelopment({resetList: true});
       },
       'career-development-plan': value => {
-        if (tab !== 'club' || !['technique', 'potential', 'recovery'].includes(value)) return;
+        if (tab !== 'club' || !['technique', 'potential', 'recovery', 'form', 'intense'].includes(value)) return;
         development.plan = value;
         updateDevelopment();
       },

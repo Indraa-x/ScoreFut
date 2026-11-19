@@ -1805,3 +1805,7 @@ body > .career-drag-avatar {
 @media(prefers-reduced-motion:reduce) {
   .career-development * { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
 }
+
+.career-dev-form { display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center; margin:14px 0 0; padding:10px 12px; border-radius:8px; background:color-mix(in srgb,var(--red) 9%,transparent); font-size:11px; }
+.career-dev-form strong { color:var(--red); }
+.career-dev-form span { color:var(--muted); }
