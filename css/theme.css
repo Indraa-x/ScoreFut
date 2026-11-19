@@ -171,3 +171,11 @@ html[data-theme="dark"] dialog::backdrop{background:#000a}
   .site-header .header-inner :is(.nav-link,.release-notice--icon),
   .site-header :is(.nav-link svg,.release-maintenance-icon) { transition: none; animation: none; }
 }
+
+/* Distinct icon accents keep navigation labels and selected states unchanged. */
+.site-header .header-inner nav { --nav-play-color:#2367bd; --nav-trophy-color:#966600; --nav-career-color:#14764c; --nav-tools-color:#a56316; }
+html[data-theme="dark"] .site-header .header-inner nav { --nav-play-color:#82bbff; --nav-trophy-color:#f1ce65; --nav-career-color:#6addaa; --nav-tools-color:#f3b96b; }
+.site-header .header-inner .nav-link[data-action="home"] svg { color:var(--nav-play-color); }
+.site-header .header-inner .nav-link[data-action="achievements"] svg { color:var(--nav-trophy-color); }
+.site-header .header-inner .nav-link[data-action="career"] svg { color:var(--nav-career-color); }
+.site-header .header-inner .release-maintenance-icon { color:var(--nav-tools-color); }
