@@ -55,7 +55,6 @@ function clubPicker(league, selected, hasSave, ui, state) {
     <div class="career-club-browser"><div class="career-club-catalog">
       <label class="career-club-search">${ui.icon('search')}<input id="career-setup-search" type="search" placeholder="Buscar clube" aria-label="Buscar clube" value="${esc(state.search??'')}" autocomplete="off"><span data-club-search-count aria-live="polite">${choices.count} ${choices.count===1?'clube':'clubes'}</span></label>
       <div class="career-club-grid">${choices.html}</div>
-      <p class="career-club-catalog-note">${league.id==='brasileirao'?'OVRs sem nota oficial aparecem como estimativa.':'OVRs oficiais do EA FC 27.'}</p>
     </div>${clubPreview(league,selected,hasSave,ui,state)}</div>
   </section>`;
 }
