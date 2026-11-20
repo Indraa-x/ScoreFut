@@ -1926,3 +1926,71 @@ html[data-theme="dark"] .career-club-stage[data-league="premier"] :is(.career-se
 @media(max-width:760px) { .career-setup .career-setup-leagues { scrollbar-width:none; } .career-setup-leagues::-webkit-scrollbar { display:none; } }
 
 .career-save-limit-count { color:var(--muted); font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; }
+
+/* The monthly campaign calendar shares the navigation rail. */
+.career-sidebar { display:grid; align-content:start; gap:12px; min-width:0; }
+.career-calendar { min-width:0; border:1px solid var(--border); border-radius:13px; background:var(--surface); overflow:hidden; }
+.career-calendar > summary { display:flex; align-items:center; gap:7px; padding:13px 12px; min-height:45px; cursor:pointer; list-style:none; }
+.career-calendar > summary::-webkit-details-marker { display:none; }
+.career-calendar > summary > svg { width:15px; height:15px; color:var(--green); flex:none; }
+.career-calendar > summary > strong { font-size:12px; }
+.career-calendar > summary > span { color:var(--muted); font-size:10px; margin-left:auto; white-space:nowrap; }
+.career-calendar > summary > svg:last-child { width:12px; height:12px; color:var(--muted); transition:transform .2s; }
+.career-calendar[open] > summary > svg:last-child { transform:rotate(90deg); }
+.career-calendar[open] > summary { border-bottom:1px solid var(--border); }
+.career-calendar summary:focus-visible { outline:2px solid var(--green); outline-offset:-3px; border-radius:10px; }
+.career-calendar-body { padding:10px; }
+.career-calendar-month { display:flex; align-items:center; justify-content:space-between; gap:4px; }
+.career-calendar-month h3 { font:700 11px var(--body); text-transform:capitalize; text-align:center; line-height:1.3; }
+.career-calendar .career-calendar-month button { display:grid; place-items:center; width:24px; height:26px; min-height:0; padding:4px; border-radius:6px; background:var(--surface-alt); color:var(--muted); flex:none; }
+.career-calendar-month button svg { width:13px; height:13px; }
+.career-calendar-shortcuts { display:flex; align-items:center; justify-content:space-between; margin:8px 0 10px; }
+.career-calendar .career-calendar-shortcuts button { display:flex; align-items:center; gap:4px; min-height:24px; padding:2px 0; font-size:9px; background:none; color:var(--muted); }
+.career-calendar-shortcuts button svg { width:11px; height:11px; }
+.career-calendar-week,.career-calendar-days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; }
+.career-calendar-week { text-align:center; margin-bottom:6px; font-size:8px; font-weight:700; color:var(--muted); }
+.career-calendar .career-calendar-day { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-width:0; min-height:44px; padding:3px 0 2px; gap:2px; border:1px solid transparent; border-radius:5px; background:color-mix(in srgb,var(--surface-alt) 70%,transparent); color:var(--muted); }
+.career-calendar-day > span:first-child { font-size:9px; line-height:1; font-weight:600; }
+.career-calendar-day.is-outside { opacity:.4; }
+.career-calendar .career-calendar-day.is-match { background:color-mix(in srgb,var(--career-club-primary,var(--green)) 12%,var(--surface-alt)); color:var(--text); }
+.career-calendar .career-calendar-day.is-champions { background:color-mix(in srgb,#728dff 17%,var(--surface-alt)); }
+.career-calendar .career-calendar-day.is-win { background:color-mix(in srgb,var(--green) 20%,var(--surface-alt)); }
+.career-calendar .career-calendar-day.is-loss { background:color-mix(in srgb,var(--red) 18%,var(--surface-alt)); }
+.career-calendar .career-calendar-day.is-draw { background:color-mix(in srgb,var(--gold) 18%,var(--surface-alt)); }
+.career-calendar .career-calendar-day.is-today { box-shadow:inset 0 -2px var(--green); }
+.career-calendar .career-calendar-day[aria-pressed="true"] { border-color:var(--green); }
+.career-calendar-day-crest { display:grid; place-items:center; width:13px; height:13px; }
+.career-calendar-day-crest :is(.career-season-crest,.career-crest,.club-badge,.club-badge img) { width:100%; height:100%; padding:0; border:0; background-color:transparent; }
+.career-calendar-day b { font-size:8px; line-height:1; font-variant-numeric:tabular-nums; letter-spacing:-.3px; }
+.career-calendar-day.is-match:not(.is-win):not(.is-loss):not(.is-draw) b { font-size:6px; font-weight:700; letter-spacing:0; color:var(--muted); }
+.career-calendar-selection { margin-top:11px; padding-top:10px; border-top:1px solid var(--border); }
+.career-calendar-selection > span { display:block; color:var(--muted); font-size:9px; margin-bottom:8px; }
+.career-calendar-selection > div { display:flex; align-items:center; gap:7px; min-width:0; }
+.career-calendar-selection > div > :is(.career-season-crest,.career-crest,.club-badge) { width:24px; height:24px; flex:none; }
+.career-calendar-selection strong { flex:1; min-width:0; font-size:11px; line-height:1.2; overflow-wrap:anywhere; }
+.career-calendar-selection b { white-space:nowrap; font-size:16px; font-variant-numeric:tabular-nums; }
+.career-calendar-selection .is-win { color:var(--green); }
+.career-calendar-selection .is-loss { color:var(--red); }
+.career-calendar-selection .is-draw { color:var(--gold); }
+.career-calendar-selection > small { display:block; font-size:9px; color:var(--muted); margin-top:6px; }
+.career-calendar-selection p { font-size:10px; color:var(--muted); }
+.career-calendar .career-calendar-advance { width:100%; padding:9px 5px; min-height:36px; font-size:10px; gap:6px; margin-top:12px; }
+.career-calendar-advance svg { width:13px; height:13px; }
+.career-calendar-feedback { display:block; font-size:9px; line-height:1.4; color:var(--muted); margin-top:8px; }
+.career-calendar button:focus-visible { outline:2px solid var(--green); outline-offset:1px; }
+@media(min-width:1024px) {
+ .career-sidebar { grid-area:1 / 1 / 3 / 2; position:sticky; top:16px; align-self:start; width:var(--career-sidebar-width); max-height:calc(100dvh - 32px); overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent; padding-right:3px; }
+ .career-sidebar .career-tabs { grid-area:auto; position:static; width:100%; max-height:none; overflow:visible; }
+}
+@media(max-width:1023px) {
+ .career-calendar-body { padding:14px; }
+ .career-calendar .career-calendar-day { min-height:52px; }
+ .career-calendar-day-crest { width:17px; height:17px; }
+ .career-calendar-day b { font-size:10px; }
+ .career-calendar-week { font-size:10px; }
+ .career-calendar-month h3 { font-size:14px; }
+ .career-calendar .career-calendar-shortcuts button { font-size:11px; }
+ .career-calendar .career-calendar-advance { min-height:42px; font-size:12px; }
+}
+@media(hover:hover) and (pointer:fine) { .career-calendar button:not(:disabled):hover { filter:brightness(1.2); } }
+@media(prefers-reduced-motion:reduce) { .career-calendar > summary > svg:last-child { transition:none; } }

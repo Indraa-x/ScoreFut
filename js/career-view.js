@@ -1,3 +1,4 @@
+import {renderCareerCalendar} from './career-calendar-view.js';
 import {playerDevelopment} from './career-development.js';
 import {renderDevelopmentPanel} from './career-development-view.js';
 import {escapeHtml as esc} from './html.js';
@@ -707,7 +708,7 @@ function club(career, ui, developmentState) {
   </section>${renderCareerDevelopment(career, ui, developmentState)}`;
 }
 
-export function renderCareer(career, tab, ui, live = null, marketFilters, squadState, previousTab, championsView, developmentState) {
+export function renderCareer(career, tab, ui, live = null, marketFilters, squadState, previousTab, championsView, developmentState, calendarState) {
   const rows = careerTable(career);
   const position = rows.findIndex(row => row.id === CAREER_TEAM) + 1;
   const league = careerLeague(career.leagueId);
@@ -735,9 +736,9 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
         <div><dt>${ui.icon('wallet')} Orçamento</dt><dd>${money(career.budget)}</dd></div>
       </dl>
     </header>
-    <nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}" aria-label="Seções da carreira">
+    <aside class="career-sidebar"><nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}" aria-label="Seções da carreira">
       ${tabs.map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === activeTab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
-    </nav>
+    </nav>${renderCareerCalendar(career,ui,calendarState,{badge:id=>clubBadge(career,id,ui),name:id=>careerClub(career,id)?.nome??'Clube'})}</aside>
     <div class="career-content" data-career-tab="${activeTab}">
       ${activeTab === 'standings' ? standingsCompetition(career, ui, rows, championsView)
         : activeTab === 'market' ? market(career, ui, marketFilters)

@@ -660,14 +660,14 @@ export function careerChampionsFixture(career) {
     && [match.homeId, match.awayId].includes(CAREER_TEAM));
 }
 
-const championsMatchdays = [4, 8, 12, 14, 16, 19, 21, 24, 26, 30];
+export const CAREER_CHAMPIONS_MATCHDAYS = [4, 8, 12, 14, 16, 19, 21, 24, 26, 30];
 
 export function careerNextCompetition(career) {
   const league = nextCareerMatch(career);
   if (league && career.replay?.round === career.round && career.replay.season === career.season) return 'league';
   const champions = careerChampionsFixture(career);
   if (champions && (career.champions.replay?.id === champions.id ||
-    !league || career.round >= championsMatchdays[champions.round - 1])) return 'champions';
+    !league || career.round >= CAREER_CHAMPIONS_MATCHDAYS[champions.round - 1])) return 'champions';
   return league ? 'league' : null;
 }
 

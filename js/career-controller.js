@@ -1,3 +1,4 @@
+import {advanceCareerCalendar, careerCalendarMonth, careerCalendarEvents, careerCalendarToday, careerCalendarPending, calendarValidDay} from './career-calendar.js';
 import {trainCareerPlayer} from './career-development.js';
 import {developmentView, DEVELOPMENT_FILTERS} from './career-development-view.js';
 import {
@@ -23,6 +24,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let initial;
   let filters = {...marketDefaults};
   let championsView = {};
+  const calendar = {month:null,selected:null,open:typeof matchMedia==='function'?matchMedia('(min-width:1024px)').matches:true,busy:false,message:''};
   const squad = {selectedId: null};
   const development = {selectedId: null, plan: 'technique', search: '', filter: 'all'};
   let squadPress = null;
@@ -406,6 +408,40 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     return [null, ...CAREER_LEAGUES.flatMap(league=>league.teams.map(team=>team.id))]
       .map(id=>({id,slot:careerSlot(id),saved:storage.read(careerSlot(id))})).filter(entry=>entry.saved);
   }
+  const calendarAvailable = () => tab!=='intro'&&tab!=='setup'&&!calendar.busy;
+  function renderCalendarAction(action,value) {
+    const scroll=app.querySelector('.career-sidebar')?.scrollTop??0;
+    render();
+    const sidebar=app.querySelector('.career-sidebar');if(sidebar)sidebar.scrollTop=scroll;
+    if(action)app.querySelector('[data-action="'+action+'"][data-value="'+value+'"]')?.focus?.({preventScroll:true});
+  }
+  function selectCalendarDay(day) {
+    if(!calendarAvailable()||!calendarValidDay(day))return;
+    const range=careerCalendarMonth(read()).range;
+    if(day<range.start||day>range.end)return;
+    Object.assign(calendar,{selected:day,month:day.slice(0,7),open:true,message:''});
+    renderCalendarAction('career-calendar-day',day);
+  }
+  async function advanceCalendar(day) {
+    if(!calendarAvailable())return;
+    const before=read(),slot=activeSlot();
+    if(careerCalendarPending(before)){toast('Conclua a partida em andamento antes de avançar.');return;}
+    calendar.busy=true;calendar.message='';renderCalendarAction();
+    await new Promise(resolve=>setTimeout(resolve,0));
+    try {
+      const current=read();
+      if(activeSlot()!==slot||current.season!==before.season||current.round!==before.round)return;
+      const next=advanceCareerCalendar(before,day);
+      if(next!==before){
+        save(next);
+        playback.stop();live.matchPlaying=false;live.screen=null;live.tournament=null;live.penaltyReplay=null;
+        const count=careerCalendarEvents(next).filter(event=>event.result).length-careerCalendarEvents(before).filter(event=>event.result).length;
+        Object.assign(calendar,{selected:day,month:day.slice(0,7),open:true,
+          message:count?count+' '+(count===1?'partida concluída.':'partidas concluídas.'):'Data atualizada.'});
+      }
+    } catch(error){toast(error.message);}
+    finally{calendar.busy=false;renderCalendarAction('career-calendar-day',calendar.selected);}
+  }
   function savedCampaigns() { return campaignEntries().map(entry=>entry.saved); }
   function enforceSaveLimit(force=false) {
     if(saveLimitChecked&&!force)return true;
@@ -499,7 +535,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     }
     if (career === initial) storage.write(activeSlot(), career);
     const previousTab = app.querySelector('.career-content')?.dataset.careerTab;
-    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab, championsView, development);
+    return renderCareer(career, tab, ui, live.tournament ? live : null, filters, squad, previousTab, championsView, development, calendar);
   }
   async function startCampaign(button) {
     if (tab !== 'intro' || button?.disabled) return;
@@ -529,6 +565,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       }
       if (!storage.write(activeCareerKey, clubId || null)) throw Error('O navegador não conseguiu abrir a carreira.');
       championsView = {};
+      Object.assign(calendar,{month:null,selected:null,busy:false,message:''});
       Object.assign(development, {selectedId: null, plan: 'technique', search: '', filter: 'all'});
       setTab('overview');
       navigate('career');
@@ -558,6 +595,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       event.target.classList.add('is-loaded');
     }
   }, true);
+  app.addEventListener('toggle',event=>{if(event.target.classList?.contains('career-calendar'))calendar.open=event.target.open;},true);
   app.addEventListener('change', event => {
     if (app.dataset.screen !== 'career') return;
     const field = event.target;
@@ -647,6 +685,16 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       },
       'career-create': () => openCampaign(selection.clubId, true),
       'career-load': id => openCampaign(id),
+      'career-calendar-day':selectCalendarDay,
+      'career-calendar-month':month=>{
+        if(!calendarAvailable())return;
+        const model=careerCalendarMonth(read(),{month});
+        if(model.month!==month)return;
+        Object.assign(calendar,{month,open:true,message:''});renderCalendarAction();
+      },
+      'career-calendar-today':()=>{if(!calendarAvailable())return;selectCalendarDay(careerCalendarToday(read()));},
+      'career-calendar-next':()=>{if(!calendarAvailable())return;const next=careerCalendarMonth(read()).next;if(next)selectCalendarDay(next.date);},
+      'career-calendar-advance':advanceCalendar,
       'career-tab': value => { setTab(value); navigate('career'); },
       'career-select-player': id => selectSquadPlayer(id, true),
       'career-pick-slot': pickSlot,
@@ -684,6 +732,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       'career-next-season': value => change(career => {
         if (career.season !== Number(value)) return career;
         const next = advanceCareerSeason(career);
+        Object.assign(calendar,{month:null,selected:null,message:''});
         championsView = {};
         return next;
       }, 'Nova temporada iniciada.'),
