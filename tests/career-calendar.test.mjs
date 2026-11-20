@@ -109,7 +109,7 @@ function controllerFixture(fail=false){
     storage:{read:key=>key==='coach-career-active'?saved.clubId:key===CAREER_KEY+':'+saved.clubId?saved:null,
       write:(key,next)=>{if(fail)return false;saved=next;writes++;return true;}},
     render(){},navigate(){},toast:message=>errors.push(message)});
-  page.setTab('overview');
+  page.setTab('calendar');
   return {page,get saved(){return saved;},get writes(){return writes;},errors};
 }
 test('calendar controller persists one batch, prevents duplicate clicks and retains results on reopening',async()=>{
@@ -130,4 +130,19 @@ test('calendar persistence failure leaves the original campaign and its results 
   assert.deepEqual(p.saved,before);
   assert.equal(p.errors.length,1);
   assert.equal(careerCalendarEvents(p.saved).filter(e=>e.result).length,0);
+});
+
+test('calendar opens as a career section from the shared menu and stays hidden on other pages',()=>{
+  const p=controllerFixture();
+  p.page.setTab('overview');
+  const overview=p.page.open();
+  assert.match(overview,/<nav[^>]*class="career-tabs[^>]*>[\s\S]*data-value="calendar"[\s\S]*<\/nav>/);
+  assert.doesNotMatch(overview,/class="career-calendar career-calendar-page"/);
+  p.page.actions['career-tab']('calendar');
+  const html=p.page.open();
+  assert.equal(p.page.tab,'calendar');
+  assert.match(html,/data-value="calendar" aria-current="page"/);
+  assert.match(html,/data-career-tab="calendar">[\s\S]*class="career-calendar career-calendar-page"/);
+  assert.doesNotMatch(html,/<aside[\s\S]*class="career-calendar career-calendar-page"[\s\S]*<\/aside>/);
+  assert.equal(p.writes,0);
 });

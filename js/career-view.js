@@ -30,6 +30,7 @@ export const CAREER_TABS = {
   market: {label: 'Mercado', icon: 'subs'},
   transfers: {label: 'Negociações', icon: 'wallet'},
   club: {label: 'Meu clube', icon: 'shield'},
+  calendar: {label: 'Calendário', icon: 'calendar'},
 };
 const careerCoaches = [
   {name: 'Alex Ferguson', src: 'assets/career/ferguson.webp', key: 'ferguson'},
@@ -738,9 +739,10 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
     </header>
     <aside class="career-sidebar"><nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}" aria-label="Seções da carreira">
       ${tabs.map(([id, {label, icon}]) => `<button type="button" data-action="career-tab" data-value="${id}"${id === activeTab ? ' aria-current="page"' : ''}>${ui.icon(icon)}<span>${label}</span></button>`).join('')}
-    </nav>${renderCareerCalendar(career,ui,calendarState,{badge:id=>clubBadge(career,id,ui),name:id=>careerClub(career,id)?.nome??'Clube'})}</aside>
+    </nav></aside>
     <div class="career-content" data-career-tab="${activeTab}">
-      ${activeTab === 'standings' ? standingsCompetition(career, ui, rows, championsView)
+      ${activeTab === 'calendar' ? renderCareerCalendar(career,ui,calendarState,{badge:id=>clubBadge(career,id,ui),name:id=>careerClub(career,id)?.nome??'Clube'})
+        : activeTab === 'standings' ? standingsCompetition(career, ui, rows, championsView)
         : activeTab === 'market' ? market(career, ui, marketFilters)
         : activeTab === 'squad' ? squad(career, ui, squadState)
         : activeTab === 'club' ? club(career, ui, developmentState)

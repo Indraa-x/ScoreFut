@@ -24,7 +24,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   let initial;
   let filters = {...marketDefaults};
   let championsView = {};
-  const calendar = {month:null,selected:null,open:typeof matchMedia==='function'?matchMedia('(min-width:1024px)').matches:true,busy:false,message:''};
+  const calendar = {month:null,selected:null,busy:false,message:''};
   const squad = {selectedId: null};
   const development = {selectedId: null, plan: 'technique', search: '', filter: 'all'};
   let squadPress = null;
@@ -419,7 +419,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     if(!calendarAvailable()||!calendarValidDay(day))return;
     const range=careerCalendarMonth(read()).range;
     if(day<range.start||day>range.end)return;
-    Object.assign(calendar,{selected:day,month:day.slice(0,7),open:true,message:''});
+    Object.assign(calendar,{selected:day,month:day.slice(0,7),message:''});
     renderCalendarAction('career-calendar-day',day);
   }
   async function advanceCalendar(day) {
@@ -436,7 +436,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         save(next);
         playback.stop();live.matchPlaying=false;live.screen=null;live.tournament=null;live.penaltyReplay=null;
         const count=careerCalendarEvents(next).filter(event=>event.result).length-careerCalendarEvents(before).filter(event=>event.result).length;
-        Object.assign(calendar,{selected:day,month:day.slice(0,7),open:true,
+        Object.assign(calendar,{selected:day,month:day.slice(0,7),
           message:count?count+' '+(count===1?'partida concluída.':'partidas concluídas.'):'Data atualizada.'});
       }
     } catch(error){toast(error.message);}
@@ -595,7 +595,6 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       event.target.classList.add('is-loaded');
     }
   }, true);
-  app.addEventListener('toggle',event=>{if(event.target.classList?.contains('career-calendar'))calendar.open=event.target.open;},true);
   app.addEventListener('change', event => {
     if (app.dataset.screen !== 'career') return;
     const field = event.target;
@@ -690,7 +689,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
         if(!calendarAvailable())return;
         const model=careerCalendarMonth(read(),{month});
         if(model.month!==month)return;
-        Object.assign(calendar,{month,open:true,message:''});renderCalendarAction();
+        Object.assign(calendar,{month,message:''});renderCalendarAction();
       },
       'career-calendar-today':()=>{if(!calendarAvailable())return;selectCalendarDay(careerCalendarToday(read()));},
       'career-calendar-next':()=>{if(!calendarAvailable())return;const next=careerCalendarMonth(read()).next;if(next)selectCalendarDay(next.date);},

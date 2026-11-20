@@ -17,9 +17,10 @@ export function renderCareerCalendar(career,ui,input={}, {badge,name}) {
   const chosen=events.find(event=>event.date===selected),score=calendarScore(chosen);
   const competition=event=>event.competition==='champions'?'Champions League':careerCompetitionName(career);
   const describe=event=>`${event.homeId===CAREER_TEAM?'Em casa':'Fora'} contra ${name(event.opponentId)} · ${competition(event)}`;
-  return `<details class="career-calendar"${input.open===false?'':' open'}${input.busy?' aria-busy="true"':''}>
-    <summary>${ui.icon('calendar')}<strong>Calendário</strong><span>${shortDate(today)}</span>${ui.icon('arrow')}</summary>
+  return `<section class="career-calendar career-calendar-page" aria-labelledby="career-calendar-title"${input.busy?' aria-busy="true"':''}>
+    <header><h2 id="career-calendar-title">Calendário</h2><span>${longDate(today)}</span></header>
     <div class="career-calendar-body">
+      <div class="career-calendar-month-view">
       <div class="career-calendar-month"><button type="button" data-action="career-calendar-month" data-value="${model.previous}" aria-label="Mês anterior"${month<=model.firstMonth?' disabled':''}>${ui.icon('back')}</button><h3>${new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric',timeZone:'UTC'}).format(date(month+'-01'))}</h3><button type="button" data-action="career-calendar-month" data-value="${model.nextMonth}" aria-label="Próximo mês"${month>=model.lastMonth?' disabled':''}>${ui.icon('arrow')}</button></div>
       <div class="career-calendar-shortcuts"><button type="button" data-action="career-calendar-today">Hoje</button>${model.next?'<button type="button" data-action="career-calendar-next">Próximo jogo '+ui.icon('arrow')+'</button>':''}</div>
       <div class="career-calendar-week" aria-hidden="true">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(day=>'<span>'+day+'</span>').join('')}</div>
@@ -28,9 +29,10 @@ export function renderCareerCalendar(career,ui,input={}, {badge,name}) {
         const label=longDate(day.date)+(day.event?' · '+describe(day.event)+(result?' · Seu time '+result.text+(result.penalties?' · Pênaltis '+result.penalties:''):' · A jogar'):' · Sem partida');
         return `<button type="button" class="career-calendar-day${day.outside?' is-outside':''}${day.event?' is-match is-'+day.event.competition:''}${result?' is-'+result.outcome:''}${day.date===today?' is-today':''}" data-action="career-calendar-day" data-value="${day.date}" aria-label="${esc(label)}" title="${esc(label)}" aria-pressed="${day.date===selected}"${day.disabled?' disabled':''}><span>${day.number}</span>${day.event?`<span class="career-calendar-day-crest" aria-hidden="true">${badge(day.event.opponentId)}</span><b>${result?result.text:day.event.competition==='champions'?'UCL':'LIGA'}</b>`:''}</button>`;
       }).join('')}</div>
-      <div class="career-calendar-selection" role="status"><span>${longDate(selected)}</span>${chosen?`<div>${badge(chosen.opponentId)}<strong>${esc(name(chosen.opponentId))}</strong>${score?`<b class="is-${score.outcome}">${score.text}</b>`:''}</div><small>${chosen.homeId===CAREER_TEAM?'Em casa':'Fora'} · ${esc(competition(chosen))}${score?.penalties?' · Pênaltis '+score.penalties:''}</small>`:'<p>Sem partida marcada.</p>'}</div>
+      </div><div class="career-calendar-day-view"><div class="career-calendar-selection" role="status"><span>${longDate(selected)}</span>${chosen?`<div>${badge(chosen.opponentId)}<strong>${esc(name(chosen.opponentId))}</strong>${score?`<b class="is-${score.outcome}">${score.text}</b>`:''}</div><small>${chosen.homeId===CAREER_TEAM?'Em casa':'Fora'} · ${esc(competition(chosen))}${score?.penalties?' · Pênaltis '+score.penalties:''}</small>`:'<p>Sem partida marcada.</p>'}</div>
       <button type="button" class="btn btn-primary career-calendar-advance" data-action="career-calendar-advance" data-value="${selected}"${selected<=today||pending||input.busy?' disabled':''}>${ui.icon(input.busy?'clock':'skip')}${input.busy?'Simulando…':'Avançar até '+shortDate(selected)}</button>
       ${pending?'<small class="career-calendar-feedback">Conclua a partida em andamento.</small>':input.message?`<small class="career-calendar-feedback" role="status">${esc(input.message)}</small>`:''}
+      </div>
     </div>
-  </details>`;
+  </section>`;
 }
