@@ -17,23 +17,76 @@ export function careerCalendarRange(career) {
   const year=2025+career.season, european=career.leagueId && career.leagueId!=='brasileirao';
   const anchor=new Date(Date.UTC(year,european?7:0,european?15:24));
   const first=iso(anchor.getTime()+((6-anchor.getUTCDay()+7)%7)*DAY);
-  return {first,start:calendarAddDays(first,-3),end:calendarAddDays(first,7*(careerFixtures(career).length-1)+4)};
+  const stored=career.calendar?.season===career.season?career.calendar.schedule:null;
+  const last=stored?[...stored.league,...stored.champions].filter(calendarValidDay).sort().at(-1):null;
+  const end=calendarAddDays(first,7*(careerFixtures(career).length-1)+4);
+  return {first,start:calendarAddDays(first,-3),end:last&&last>end?last:end};
 }
-function fixtureDay(first, competition, round) {
+function legacyFixtureDay(first, competition, round) {
   return calendarAddDays(first,competition==='league' ? (round-1)*7
     : ((CAREER_CHAMPIONS_MATCHDAYS[round-1]??(30+(round-10)*2))-1)*7+3);
 }
+const scheduleHash = value => [...String(value)].reduce((hash,char)=>(Math.imul(hash,31)+char.charCodeAt(0))>>>0,7);
+function calendarSchedule(career) {
+  const range=careerCalendarRange(career),saved=career.calendar?.season===career.season?career.calendar:null;
+  if(saved?.version===2&&saved.schedule)return saved.schedule;
+  const count=careerFixtures(career).length,league=[],champions=[];
+  const legacy=saved?.version!==2&&(career.round>0||saved?.day||career.champions?.tournament?.matches.some(match=>match.result));
+  const playedChampions=new Set((career.champions?.tournament?.matches??[]).filter(match=>match.result).map(match=>match.round));
+  const activeChampions=career.champions?.replay?.match?.round;
+  const before=new Set(career.champions?CAREER_CHAMPIONS_MATCHDAYS:[]);
+  const hash=scheduleHash(career.seed+':'+career.clubId+':'+career.season);
+  const pattern=[0,1,-1,1,0,-3,2,0,1,-1,0,1];
+  const entries=[];
+  for(let round=1;round<=count;round++){
+    let offset=pattern[(round-1+hash)%pattern.length];
+    if(before.has(round))offset=Math.min(offset,0);
+    if(before.has(round-1))offset=Math.max(offset,0);
+    entries.push({competition:'league',round,order:round*2,candidate:calendarAddDays(range.first,(round-1)*7+offset),
+      fixed:legacy&&(round<=career.round||career.replay?.season===career.season&&career.replay.round===round-1)});
+  }
+  for(let round=1;round<=CAREER_CHAMPIONS_MATCHDAYS.length;round++){
+    entries.push({competition:'champions',round,order:CAREER_CHAMPIONS_MATCHDAYS[round-1]*2+1,
+      candidate:calendarAddDays(range.first,(CAREER_CHAMPIONS_MATCHDAYS[round-1]-1)*7+3+(hash+round)%2),
+      fixed:legacy&&(playedChampions.has(round)||activeChampions===round)});
+  }
+  let cursor=range.start;
+  if(legacy){
+    for(const entry of entries)if(entry.fixed){
+      entry.date=legacyFixtureDay(range.first,entry.competition,entry.round);
+      if(entry.date>cursor)cursor=entry.date;
+    }
+    if(calendarValidDay(saved?.day)&&saved.day>cursor&&saved.day<=range.end)cursor=saved.day;
+  }
+  for(const entry of entries.sort((a,b)=>a.order-b.order)){
+    if(!entry.fixed){
+      // Reserve European midweek slots only for campaigns that participate.
+      const reserve=entry.competition==='league'||Boolean(career.champions&&(!legacy||!career.champions.tournament.complete));
+      const earliest=calendarAddDays(cursor,3);
+      entry.date=reserve&&entry.candidate<earliest?earliest:entry.candidate;
+      if(reserve)cursor=entry.date;
+    }
+    (entry.competition==='league'?league:champions)[entry.round-1]=entry.date;
+  }
+  return {league,champions};
+}
+export function migrateCareerCalendar(career) {
+  if(career.calendar?.season===career.season&&career.calendar.version===2)return career;
+  const schedule=calendarSchedule(career);
+  const day=career.calendar?.season===career.season&&calendarValidDay(career.calendar.day)?career.calendar.day:undefined;
+  return {...career,calendar:{season:career.season,version:2,schedule,...(day?{day}:{})}};
+}
 export function careerCalendarEvents(career) {
-  const {first}=careerCalendarRange(career);
+  const schedule=calendarSchedule(career);
   const league=careerFixtures(career).map((fixtures,index)=>{
     const [homeId,awayId]=fixtures.find(pair=>pair.includes(CAREER_TEAM));
     const result=index<career.round ? career.results[index]?.find(game=>[game.home,game.away].includes(CAREER_TEAM))??null : null;
-    return {key:'league:'+index,date:fixtureDay(first,'league',index+1),competition:'league',round:index+1,
+    return {key:'league:'+index,date:schedule.league[index],competition:'league',round:index+1,
       homeId,awayId,opponentId:homeId===CAREER_TEAM?awayId:homeId,result};
   });
   const european=(career.champions?.tournament?.matches??[])
     .filter(match=>Number.isInteger(match.round)&&match.round>0&&[match.homeId,match.awayId].includes(CAREER_TEAM))
-    .map(match=>({key:'champions:'+match.id,date:fixtureDay(first,'champions',match.round),competition:'champions',
+    .map(match=>({key:'champions:'+match.id,date:schedule.champions[match.round-1]??legacyFixtureDay(careerCalendarRange(career).first,'champions',match.round),competition:'champions',
       round:match.round,homeId:match.homeId,awayId:match.awayId,
       opponentId:match.homeId===CAREER_TEAM?match.awayId:match.homeId,result:match.result??null}));
   return [...league,...european].sort((a,b)=>a.date.localeCompare(b.date));
@@ -78,7 +131,7 @@ export function advanceCareerCalendar(career,target) {
   if(!calendarValidDay(target)||target<range.start||target>range.end)throw Error('Escolha uma data desta temporada.');
   if(target<=today)return career;
   if(careerCalendarPending(career))throw Error('Conclua a partida em andamento antes de avançar o calendário.');
-  let next=career;
+  let next=migrateCareerCalendar(career);
   for(let count=0;count<64;count++){
     const fixture=careerCalendarNext(next);
     if(!fixture||fixture.date>target)break;
@@ -94,5 +147,5 @@ export function advanceCareerCalendar(career,target) {
       throw Error('Não foi possível concluir a partida do calendário.');
     next=updateCareerTransferOffers(next);
   }
-  return {...next,calendar:{season:career.season,day:target}};
+  return {...next,calendar:{...next.calendar,season:career.season,day:target}};
 }

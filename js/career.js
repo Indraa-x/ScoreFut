@@ -166,7 +166,7 @@ export function createCareer(seed, clubId) {
     const roster = [...club.jogadores];
     return migrateCareerChampions({
       version: CAREER_VERSION, seed, clubId, leagueId: league.id, name: club.nome,
-      season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET,
+      season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET, calendar: {season:1,version:2},
       roster, opponentIds: league.teams.filter(team => team.id !== clubId).map(team => team.id),
       ...startingLineup(roster), results: [], seasons: [],
     });
@@ -176,7 +176,7 @@ export function createCareer(seed, clubId) {
   if (opponentIds.length % 2 === 0) opponentIds.pop();
   return {
     version: CAREER_VERSION, seed, name: 'Meu time', crest: CAREER_CRESTS[0],
-    season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET,
+    season: 1, round: 0, currency: 'EUR', budget: STARTING_BUDGET, calendar: {season:1,version:2},
     roster, opponentIds, formation: '4-3-3', lineup: bestLineup(roster, '4-3-3'), results: [], seasons: [],
   };
 }
@@ -716,7 +716,7 @@ export function advanceCareerSeason(career) {
   const relegated = table.slice(firstRelegation - 1).map(row => row.id);
   const season = {number: career.season, position, points: table[position - 1].points, prize, relegated};
   if (champions?.championId) season.championsWinner = champions.championId;
-  const next = {...career, season: career.season + 1, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
+  const next = {...career, season: career.season + 1, calendar:{season:career.season+1,version:2}, round: 0, results: [], replay: null, budget: career.budget + prize, seasons: [...career.seasons, season]};
   const carryover = career.results.at(-1)?.filter(match => match.expulsions)
     .map(({home, away, expulsions}) => ({home, away, expulsions}));
   if (carryover?.length) next.leagueCarryover = carryover;

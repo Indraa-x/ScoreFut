@@ -36,7 +36,7 @@ test('the career intro lets a new player start a campaign', () => {
 });
 
 test('the saved career can be continued and the intro offers a new campaign', () => {
-  const saved = {...createCareer(42), name: 'Clube salvo', season: 10, budget: 60710};
+  const saved = {...createCareer(42), name: 'Clube salvo', season: 10, calendar:{season:10,version:2}, budget: 60710};
   const page = entry(saved);
   const intro = page.career.open();
   assert.match(intro, /Continuar campanha/);

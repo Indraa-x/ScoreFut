@@ -1,4 +1,4 @@
-import {advanceCareerCalendar, careerCalendarMonth, careerCalendarEvents, careerCalendarToday, careerCalendarPending, calendarValidDay} from './career-calendar.js';
+import {advanceCareerCalendar, migrateCareerCalendar, calendarAddDays, careerCalendarMonth, careerCalendarEvents, careerCalendarToday, careerCalendarPending, calendarValidDay} from './career-calendar.js';
 import {trainCareerPlayer} from './career-development.js';
 import {developmentView, DEVELOPMENT_FILTERS} from './career-development-view.js';
 import {
@@ -19,12 +19,15 @@ const marketDefaults = {search: '', position: '', leagueId: '', order: 'overall'
 const activeCareerKey = 'coach-career-active';
 const careerSlot = clubId => clubId ? `${CAREER_KEY}:${clubId}` : CAREER_KEY;
 
-export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
+export function initCareer({app, modal, navigate, render, storage, toast, ui,
+  calendarWait=ms=>new Promise(resolve=>setTimeout(resolve,ms)),
+  calendarReducedMotion=()=>typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches}) {
   let tab = 'intro';
   let initial;
   let filters = {...marketDefaults};
   let championsView = {};
   const calendar = {month:null,selected:null,busy:false,message:''};
+  let calendarPreview=null,calendarRun=0,calendarSlot=null,calendarSavedSignature=null;
   const squad = {selectedId: null};
   const development = {selectedId: null, plan: 'technique', search: '', filter: 'all'};
   let squadPress = null;
@@ -39,7 +42,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
   function read() {
     const saved = savedCareer();
     if (!saved) return initial ??= createCareer(crypto.getRandomValues(new Uint32Array(1))[0]);
-    const career = migrateCareerChampions(migrateCareerCurrency(migrateCareerRoster(saved)));
+    const career = migrateCareerCalendar(migrateCareerChampions(migrateCareerCurrency(migrateCareerRoster(saved))));
     if (career !== saved) storage.write(activeSlot(), career);
     return career;
   }
@@ -117,6 +120,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     saveReplay();
   }
   function leaveMatch() {
+    stopCalendarAdvance();
     pauseMatch();
     live.screen = null;
     live.tournament = null;
@@ -185,6 +189,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     render();
   }
   function setTab(value) {
+    stopCalendarAdvance();
     clearSquadDrag();
     tab = value === 'champions' ? 'overview' : value === 'setup' || Object.hasOwn(CAREER_TABS, value) ? value : 'intro';
     squad.selectedId = null;
@@ -413,6 +418,12 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     const scroll=app.querySelector('.career-sidebar')?.scrollTop??0;
     render();
     const sidebar=app.querySelector('.career-sidebar');if(sidebar)sidebar.scrollTop=scroll;
+    const cursor=calendar.busy?app.querySelector('.career-calendar-day.is-advancing'):null;
+    const viewport=cursor?.ownerDocument?.defaultView?.innerHeight;
+    if(cursor&&viewport){
+      const bounds=cursor.getBoundingClientRect();
+      if(bounds.top<8||bounds.bottom>viewport-8)cursor.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
+    }
     if(action)app.querySelector('[data-action="'+action+'"][data-value="'+value+'"]')?.focus?.({preventScroll:true});
   }
   function selectCalendarDay(day) {
@@ -426,21 +437,47 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     if(!calendarAvailable())return;
     const before=read(),slot=activeSlot();
     if(careerCalendarPending(before)){toast('Conclua a partida em andamento antes de avançar.');return;}
-    calendar.busy=true;calendar.message='';renderCalendarAction();
-    await new Promise(resolve=>setTimeout(resolve,0));
+    const today=careerCalendarToday(before),range=careerCalendarMonth(before).range;
+    if(!calendarValidDay(day)||day<range.start||day>range.end){toast('Escolha uma data desta temporada.');return;}
+    if(day<=today)return;
+    const run=++calendarRun,total=Math.round((Date.parse(day)-Date.parse(today))/86400000);
+    calendarSlot=slot;calendarSavedSignature=JSON.stringify(before);calendarPreview=before;
+    Object.assign(calendar,{busy:true,message:'',cursor:today,target:day,selected:today,month:today.slice(0,7),progress:0});
+    renderCalendarAction();
+    const initialCount=careerCalendarEvents(before).filter(event=>event.result).length;
     try {
-      const current=read();
-      if(activeSlot()!==slot||current.season!==before.season||current.round!==before.round)return;
-      const next=advanceCareerCalendar(before,day);
-      if(next!==before){
-        save(next);
-        playback.stop();live.matchPlaying=false;live.screen=null;live.tournament=null;live.penaltyReplay=null;
-        const count=careerCalendarEvents(next).filter(event=>event.result).length-careerCalendarEvents(before).filter(event=>event.result).length;
-        Object.assign(calendar,{selected:day,month:day.slice(0,7),
-          message:count?count+' '+(count===1?'partida concluída.':'partidas concluídas.'):'Data atualizada.'});
+      const reduced=calendarReducedMotion(),delay=Math.max(12,Math.min(150,4200/total));
+      const steps=reduced?[day]:Array.from({length:total},(_,index)=>calendarAddDays(today,index+1));
+      let count=initialCount;
+      for(let index=0;index<steps.length;index++){
+        await calendarWait(reduced?0:delay);
+        if(run!==calendarRun)return;
+        if(activeSlot()!==slot||JSON.stringify(read())!==calendarSavedSignature)throw Error('A campanha mudou. O avanço foi interrompido.');
+        const next=advanceCareerCalendar(calendarPreview,steps[index]);
+        const nextCount=careerCalendarEvents(next).filter(event=>event.result).length;
+        // Commit each match before revealing its result; free days need only a final save.
+        if(nextCount>count||index===steps.length-1){
+          save(next);calendarSavedSignature=JSON.stringify(read());
+        }
+        calendarPreview=next;
+        Object.assign(calendar,{cursor:steps[index],selected:steps[index],month:steps[index].slice(0,7),progress:Math.round((index+1)/steps.length*100)});
+        renderCalendarAction();
+        if(!reduced&&nextCount>count)await calendarWait(delay*1.8);
+        count=nextCount;
       }
+      if(run!==calendarRun)return;
+      playback.stop();live.matchPlaying=false;live.screen=null;live.tournament=null;live.penaltyReplay=null;
+      const finishedCount=careerCalendarEvents(calendarPreview).filter(event=>event.result).length-initialCount;
+      calendar.message=finishedCount?finishedCount+' '+(finishedCount===1?'partida concluída.':'partidas concluídas.'):'Data atualizada.';
     } catch(error){toast(error.message);}
-    finally{calendar.busy=false;renderCalendarAction('career-calendar-day',calendar.selected);}
+    finally{if(run===calendarRun){calendar.busy=false;calendarPreview=null;calendar.cursor=null;renderCalendarAction('career-calendar-day',calendar.selected);}}
+  }
+  function stopCalendarAdvance() {
+    if(!calendar.busy)return;
+    if(calendarPreview&&activeSlot()===calendarSlot&&JSON.stringify(read())===calendarSavedSignature){
+      try{if(JSON.stringify(calendarPreview)!==calendarSavedSignature)save(calendarPreview);}catch(error){toast(error.message);}
+    }
+    calendarRun++;calendarPreview=null;Object.assign(calendar,{busy:false,cursor:null,message:'Avanço interrompido.'});
   }
   function savedCampaigns() { return campaignEntries().map(entry=>entry.saved); }
   function enforceSaveLimit(force=false) {
@@ -528,7 +565,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
     if (tab === 'setup') {
       return renderCareerSetup(selection.leagueId, selection.clubId, savedCampaigns(), ui, {...selection, deletedName:removedCampaign?.saved.name});
     }
-    const career = read();
+    const career = calendar.busy&&calendarPreview&&activeSlot()===calendarSlot?calendarPreview:read();
     if(career===initial&&savedCampaigns().length>=CAREER_SAVE_LIMIT){
       setTab('setup');
       return renderCareerSetup(selection.leagueId,selection.clubId,savedCampaigns(),ui,selection);
@@ -694,6 +731,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui}) {
       'career-calendar-today':()=>{if(!calendarAvailable())return;selectCalendarDay(careerCalendarToday(read()));},
       'career-calendar-next':()=>{if(!calendarAvailable())return;const next=careerCalendarMonth(read()).next;if(next)selectCalendarDay(next.date);},
       'career-calendar-advance':advanceCalendar,
+      'career-calendar-stop':()=>{stopCalendarAdvance();renderCalendarAction();},
       'career-tab': value => { setTab(value); navigate('career'); },
       'career-select-player': id => selectSquadPlayer(id, true),
       'career-pick-slot': pickSlot,
