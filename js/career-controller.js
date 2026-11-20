@@ -231,7 +231,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui,
       const career = read(), offer = career.transferOffers?.find(offer => offer.id === id);
       if (!offer) throw Error('Proposta indisponível.');
       const sale = careerSale(career, offer.playerId);
-      modal.querySelector('#modal-content').innerHTML = renderCareerSale({...sale, price: offer.price,
+      modal.querySelector('#modal-content').innerHTML = renderCareerSale({...sale, career, price: offer.price,
         proposalId: id, buyer: careerSeasonTeam(offer.clubId).nome}, ui);
       modal.showModal();
     } catch (error) { toast(error.message); }

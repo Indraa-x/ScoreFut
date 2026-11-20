@@ -10,7 +10,7 @@ import {renderChampionsStages, renderChampionsTieDetails, championsGroup, render
 import {CAREER_LEAGUES, careerLeague} from '../data/career-leagues.js';
 import {seasonCrest} from './career-setup-view.js';
 import {FORMATIONS, ROLE_COMPATIBILITY, calculateTeam} from './engine.js';
-import {careerMarketCatalog, careerMarketPage, careerPlayerValuation} from './career-market.js';
+import {CAREER_BRL_PRICE_FACTOR, careerMarketCatalog, careerMarketPage, careerPlayerValuation} from './career-market.js';
 import {careerPortraitUrl} from '../data/career-2026/player-portraits.js';
 import {renderLivePitch, renderMatchClock, renderMatchScore, renderMatchScoreDetails, renderMatchSpeed} from './match-view.js';
 import {scoreAt} from './match-motion.js';
@@ -92,7 +92,7 @@ function renderCareerHub(career, ui) {
       <dl class="career-intro-stats">
         <div><dt>Temporada</dt><dd>${career.season}</dd></div>
         <div><dt>Posição</dt><dd>${position ? `${position}º` : '—'}</dd></div>
-        <div><dt>Orçamento</dt><dd>${money(career.budget)}</dd></div>
+        <div><dt>Orçamento</dt><dd>${money(career.budget, career)}</dd></div>
       </dl>
       <div class="career-intro-opponent">
         ${opponent ? clubBadge(career, opponent.id, ui) : ui.icon('trophy')}
@@ -127,10 +127,13 @@ function careerCrest(id) {
   const [fill, color, art] = badgeDesigns[Math.max(0, CAREER_CRESTS.indexOf(id))];
   return `<svg class="career-crest" viewBox="0 0 48 48" aria-hidden="true" focusable="false" style="color:${color}"><path d="M24 3 42 9v11c0 11-7 19-18 24C13 39 6 31 6 20V9Z" fill="${fill}" stroke="currentColor" stroke-width="2"/><g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${art}</g></svg>`;
 }
-const money = amount => {
-  if (amount < 1000) return `€ ${amount.toLocaleString('pt-BR')} mil`;
+const money = (value, career) => {
+  const brazil=career?.leagueId==='brasileirao';
+  const amount=brazil?Math.round(value*CAREER_BRL_PRICE_FACTOR):value;
+  const symbol=brazil?'R$':'€';
+  if (amount < 1000) return `${symbol} ${amount.toLocaleString('pt-BR')} mil`;
   const [divisor, unit] = amount >= 1_000_000 ? [1_000_000, 'Bi'] : [1000, 'mi'];
-  return `€ ${(amount / divisor).toLocaleString('pt-BR', {maximumFractionDigits: 2})} ${unit}`;
+  return `${symbol} ${(amount / divisor).toLocaleString('pt-BR', {maximumFractionDigits: 2})} ${unit}`;
 };
 const button = (label, action, value = '', primary = false, disabled = false) =>
   `<button type="button" class="btn ${primary ? 'btn-primary' : 'btn-outline'}" data-action="${action}" data-value="${esc(value)}"${disabled ? ' disabled' : ''}>${label}</button>`;
@@ -453,7 +456,7 @@ function overview(career, ui, rows, live) {
   </div>
 
   ${career.seasons.length ? `<details class="career-card panel"><summary>Temporadas anteriores</summary><ul class="career-history">${[...career.seasons].reverse().map(season =>
-    `<li>Temporada ${season.number} · ${season.position === 1 ? 'Campeão' : `${season.position}º lugar`} · ${season.points} pts · ${money(season.prize)} em premiação
+    `<li>Temporada ${season.number} · ${season.position === 1 ? 'Campeão' : `${season.position}º lugar`} · ${season.points} pts · ${money(season.prize, career)} em premiação
       ${season.championsWinner ? `<small>Campeão da Champions League: ${esc(careerClub(career, season.championsWinner).nome)}</small>` : ''}
       ${season.relegated?.length ? `<small>Rebaixados: ${season.relegated.map(id => esc(careerClub(career, id).nome)).join(', ')}</small>` : ''}
     </li>`).join('')}</ul></details>` : ''}`;
@@ -475,14 +478,14 @@ function rosterPortrait(player, ui) {
   </span>`;
 }
 
-export function renderCareerSale({player, valuation, price, changesLineup, proposalId, buyer}, ui) {
+export function renderCareerSale({player, valuation, price, changesLineup, proposalId, buyer, career}, ui) {
   return `<section class="career-sale-dialog">
     <div class="modal-head">
       <h2 id="modal-title">Vender ${esc(player.nome)}?</h2>
       <button type="button" class="icon-button" data-action="close-modal" aria-label="Fechar">${ui.icon('close')}</button>
     </div>
     <div class="career-sale-value">
-      <span>Receita da venda</span><strong>${money(price)}</strong>
+      <span>Receita da venda</span><strong>${money(price, career)}</strong>
       ${valuation.sourceUrl ? `<a href="${esc(valuation.sourceUrl)}" target="_blank" rel="noopener noreferrer">Valor de mercado no Transfermarkt</a>` : '<small>Valor de mercado do Transfermarkt</small>'}
     </div>
     <p class="muted">${buyer ? `${esc(buyer)} receberá o jogador. ` : ''}O jogador sai do elenco e o valor entra no orçamento.${changesLineup ? ' A escalação será ajustada automaticamente.' : ''}</p>
@@ -586,7 +589,7 @@ export function renderCareerMarketResults(career, ui, filters) {
         <div class="career-market-deal">
           <div>
             <small>Preço de compra</small>
-            <strong>${price === null ? 'Indisponível' : money(price)}</strong>
+            <strong>${price === null ? 'Indisponível' : money(price, career)}</strong>
           </div>
           ${button(label, 'career-sign', id, affordable && !full && !signed, full || signed || !affordable)}
         </div>
@@ -641,7 +644,7 @@ export function renderCareerOfferNotice(career, offers, ui) {
   return `<div class="career-offer-notice">
     ${rosterPortrait(player, ui)}
     <div class="career-notice-copy"><span>Nova proposta</span><strong>${esc(player.nome)}</strong>
-      <p>${esc(careerClub(career, offer.clubId).nome)} <b>${money(offer.price)}</b></p>
+      <p>${esc(careerClub(career, offer.clubId).nome)} <b>${money(offer.price, career)}</b></p>
       ${offers.length > 1 ? `<small>+ ${offers.length - 1} ${offers.length === 2 ? 'proposta recebida' : 'propostas recebidas'}</small>` : ''}
     </div>
     <button class="career-notice-close" type="button" data-toast-close aria-label="Fechar notificação">${ui.icon('close')}</button>
@@ -662,14 +665,14 @@ function transfers(career, ui) {
       return `<article class="career-transfer-offer" style="--offer-primary:${esc(primary)};--offer-secondary:${esc(secondary)}">
         <div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>${player.ovr} OVR</small></div></div>
         <div class="career-transfer-details"><div class="career-transfer-buyer">${clubBadge(career, offer.clubId, ui)}<span><small>Clube interessado</small>${esc(careerClub(career, offer.clubId).nome)}</span></div>
-        <div class="career-transfer-value"><small>Proposta de compra</small><strong class="career-transfer-price">${money(offer.price)}</strong></div></div>
+        <div class="career-transfer-value"><small>Proposta de compra</small><strong class="career-transfer-price">${money(offer.price, career)}</strong></div></div>
         <div class="career-transfer-actions">${button('Recusar', 'career-transfer-reject', offer.id)}${button('Analisar proposta', 'career-transfer-open', offer.id, true)}</div>
       </article>`;
     }).join('')}</div>` : '<p class="career-transfer-empty">Nenhuma proposta por enquanto. Os clubes avaliam os jogadores à venda conforme as partidas avançam.</p>'}
     <div class="career-transfers-head"><h3>À venda <span class="career-pill">${listings.length}</span></h3>${button('Ver elenco', 'career-tab', 'squad')}</div>
     ${listings.length ? `<ul class="career-transfer-list">${listings.map(entry => {
       const player = career.roster.find(player => player.id === entry.playerId);
-      return player ? `<li><div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>Valor de referência · ${money(careerPlayerValuation(player)?.price ?? entry.price)}</small></div></div>
+      return player ? `<li><div class="career-transfer-player">${rosterPortrait(player, ui)}<div><strong>${esc(player.nome)}</strong><small>Valor de referência · ${money(careerPlayerValuation(player)?.price ?? entry.price, career)}</small></div></div>
         ${button('Retirar da venda', 'career-transfer-cancel', player.id)}</li>` : '';
     }).join('')}</ul>` : '<p class="career-transfer-empty">Use o $ no elenco para colocar um jogador à venda.</p>'}
     ${deals.length ? `<h3>Vendas concluídas</h3><ul class="career-transfer-list career-sales-history">${[...deals].reverse().slice(0, 12).map(deal => {
@@ -679,7 +682,7 @@ function transfers(career, ui) {
         <div class="career-transfer-player">${rosterPortrait(deal.player, ui)}<div><strong>${esc(deal.player.nome)}</strong><small>${edition}</small></div></div>
         <div class="career-sale-destination"><span class="career-sale-arrow" aria-hidden="true">${ui.icon('arrow')}</span>
           ${clubBadge(career, deal.clubId, ui)}<span>${esc(careerClub(career, deal.clubId).nome)}</span></div>
-        <strong class="career-transfer-price">${money(deal.price)}</strong>
+        <strong class="career-transfer-price">${money(deal.price, career)}</strong>
       </li>`;
     }).join('')}</ul>` : ''}
   </section>`;
@@ -734,7 +737,7 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
       <dl class="career-summary">
         <div><dt>${ui.icon('calendar')} Temporada</dt><dd>${career.season}</dd></div>
         <div><dt>${ui.icon('chart')} Posição</dt><dd>${career.round ? `${position}º lugar` : '—'}</dd></div>
-        <div><dt>${ui.icon('wallet')} Orçamento</dt><dd>${money(career.budget)}</dd></div>
+        <div><dt>${ui.icon('wallet')} Orçamento</dt><dd>${money(career.budget, career)}</dd></div>
       </dl>
     </header>
     <aside class="career-sidebar"><nav class="career-tabs${entering ? ' is-entering' : ''}${switching ? ' is-switching' : ''}" aria-label="Seções da carreira">
@@ -755,6 +758,6 @@ export function renderCareer(career, tab, ui, live = null, marketFilters, squadS
 export function renderCareerDevelopment(career, ui, state = {}) {
   return renderDevelopmentPanel(career, ui, state, {
     portrait: player => rosterPortrait(player, ui),
-    crest: clubBadge(career, CAREER_TEAM, ui), money,
+    crest: clubBadge(career, CAREER_TEAM, ui), money:amount=>money(amount,career),
   });
 }

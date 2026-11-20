@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {careerMarketCatalog, careerMarketPage, careerPlayerValuation, MAX_CAREER_PRICE} from '../js/career-market.js';
-import {MARKET_EUR_TO_BRL} from '../data/career-2026/market-values.js';
+import {careerMarketCatalog, careerMarketPage, careerPlayerValuation, MAX_CAREER_PRICE, CAREER_BRL_PRICE_FACTOR} from '../js/career-market.js';
 import {createCareer, careerSale, listCareerPlayer, updateCareerTransferOffers, acceptCareerOffer, signCareerPlayer, migrateCareerRoster} from '../js/career.js';
 import {playerDevelopment, trainCareerPlayer, developmentThreshold} from '../js/career-development.js';
 
@@ -11,7 +10,7 @@ const base = () => ({...createCareer(77, haaland.squad.id), budget: 1_000_000});
 
 test('all valued players appreciate with OVR and respect the ceiling in reais', () => {
   const original = structuredClone(offers);
-  assert.ok(MAX_CAREER_PRICE * 1000 * MARKET_EUR_TO_BRL <= 950_000_000);
+  assert.ok(MAX_CAREER_PRICE * 1000 * CAREER_BRL_PRICE_FACTOR <= 950_000_000);
   for (const offer of offers.filter(offer => offer.price !== null)) {
     const initial = offer.player.ovr;
     let last = 0;

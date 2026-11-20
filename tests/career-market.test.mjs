@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {CAREER_LEAGUES} from '../data/career-leagues.js';
 import {careerSale, createCareer, MAX_CAREER_ROSTER, sellCareerPlayer, signCareerPlayer} from '../js/career.js';
 import {careerMarketCatalog, careerMarketPage, MAX_CAREER_PRICE} from '../js/career-market.js';
-import {renderCareer} from '../js/career-view.js';
+import {renderCareer,renderCareerSale} from '../js/career-view.js';
 import * as ui from '../js/ui.js';
 
 const {offers, byId} = careerMarketCatalog();
@@ -39,7 +39,7 @@ test('buying and selling use the same capped in-game euro valuation', () => {
   assert.ok(vini.price > 60_000 && vini.price < mbappe.price);
   const courtois = offers.find(offer => offer.player.nome === 'Thibaut Courtois');
   assert.equal(courtois.euros, 15_000_000);
-  assert.equal(courtois.price, 64_840);
+  assert.equal(courtois.price, 61_942);
   assert.ok(courtois.price < offers.find(offer => offer.player.nome === 'Gianluigi Donnarumma').price);
   assert.equal(byId.get('career26-brasileirao-20008/neymar').euros, 8_000_000);
   const signed = signCareerPlayer(career, mbappe.id);
@@ -65,7 +65,30 @@ test('market cards show the club crest below the name, OVR, price in euros and p
   assert.match(html, /class="career-market-token" aria-hidden="true"><span class="career-season-crest"[^>]+league-laliga\.webp[^>]+><\/span><img[^>]+width="68" height="68"[^>]*><\/span>/);
   assert.match(html, /<h3>Kylian Mbappé<\/h3>\s*<div class="career-market-club">\s*<strong class="career-market-rating" aria-label="\d+ OVR">\d+<\/strong>\s*<span role="img" aria-label="Real Madrid"/);
   assert.doesNotMatch(html, /career-market-watermark/);
-  assert.match(html, /<small>Preço de compra<\/small>\s*<strong>€ 93,25 mi<\/strong>/);
+  assert.match(html, /<small>Preço de compra<\/small>\s*<strong>€ 187,35 mi<\/strong>/);
   assert.doesNotMatch(html, /R\$|<time\b/);
   assert.match(html, /data-action="career-sign" data-value="career26-laliga-243\/kylian-mbappe">Contratar/);
+});
+
+
+test('Yamal uses the requested European price and regional Brazilian price without mismatched balances',()=>{
+ const yamal=offers.find(offer=>offer.player.nome==='Lamine Yamal');
+ assert.equal(yamal.price,200_000);
+ const european={...createCareer(13,yamal.squad.id),budget:300_000,roster:[],lineup:{}};
+ const brazilian={...createCareer(13,CAREER_LEAGUES.find(l=>l.id==='brasileirao').teams[0].id),budget:300_000,roster:[],lineup:{}};
+ const filters={search:'Lamine Yamal'};
+ const euro=renderCareer(european,'market',ui,null,filters);
+ const br=renderCareer(brazilian,'market',ui,null,filters);
+ assert.match(euro,/<strong>€ 200 mi<\/strong>/);
+ assert.match(br,/<strong>R\$ 450 mi<\/strong>/);
+ assert.match(br,/<dd>R\$ 675 mi<\/dd>/);
+ assert.doesNotMatch(br,/€/);
+ const signed=signCareerPlayer(brazilian,yamal.id);
+ assert.equal(signed.budget,100_000);
+ assert.match(renderCareer(signed,'market',ui,null,filters),/<dd>R\$ 225 mi<\/dd>/);
+ const sale=careerSale(signed,yamal.player.id);
+ assert.equal(sale.price,yamal.price);
+ assert.match(renderCareerSale({...sale,career:signed},ui),/R\$ 450 mi/);
+ assert.equal(sellCareerPlayer(signed,yamal.player.id).budget,brazilian.budget);
+ assert.equal(JSON.parse(JSON.stringify(signed)).budget,signed.budget);
 });
