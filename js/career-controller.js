@@ -446,7 +446,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui,
     renderCalendarAction();
     const initialCount=careerCalendarEvents(before).filter(event=>event.result).length;
     try {
-      const reduced=calendarReducedMotion(),delay=Math.max(12,Math.min(150,4200/total));
+      const reduced=calendarReducedMotion(),delay=450;
       const steps=reduced?[day]:Array.from({length:total},(_,index)=>calendarAddDays(today,index+1));
       let count=initialCount;
       for(let index=0;index<steps.length;index++){
@@ -462,7 +462,7 @@ export function initCareer({app, modal, navigate, render, storage, toast, ui,
         calendarPreview=next;
         Object.assign(calendar,{cursor:steps[index],selected:steps[index],month:steps[index].slice(0,7),progress:Math.round((index+1)/steps.length*100)});
         renderCalendarAction();
-        if(!reduced&&nextCount>count)await calendarWait(delay*1.8);
+        if(!reduced&&nextCount>count)await calendarWait(900);
         count=nextCount;
       }
       if(run!==calendarRun)return;
