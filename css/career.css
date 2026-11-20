@@ -2074,3 +2074,9 @@ html[data-theme="dark"] .career-club-stage[data-league="premier"] :is(.career-se
 .career-calendar-day.is-draw b { color:var(--gold); }
 
 .career-calendar .career-calendar-day.is-match[aria-pressed="true"] { border-color:var(--switch-edge,var(--green)); box-shadow:inset 0 0 0 1px var(--switch-edge,var(--green)); }
+
+.career-calendar .career-calendar-day.is-match { isolation:isolate; overflow:hidden; }
+.career-calendar-day > :not(.career-calendar-watermark) { position:relative; z-index:1; }
+.career-calendar .career-calendar-day > .career-calendar-watermark { position:absolute; z-index:0; inset:15%; display:grid; place-items:center; width:70%; height:70%; opacity:.14; pointer-events:none; }
+.career-calendar-watermark > :is(img,.career-season-crest) { display:block; width:100%; height:100%; object-fit:contain; }
+html[data-theme="dark"] .career-calendar-day:is([data-competition="champions"],[data-competition="premier"]) .career-calendar-watermark { filter:brightness(0) invert(1); }
