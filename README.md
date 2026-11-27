@@ -34,7 +34,7 @@ Escolha uma liga, assuma seu clube e construa a temporada dentro e fora do campo
     </td>
     <td width="50%" valign="top">
       <h3>↔ Um elenco em construção</h3>
-      <p>Busque reforços, venda jogadores e administre o orçamento em euros. Compare rostos, posições, OVRs e valores de compra.</p>
+      <p>Busque reforços, venda jogadores e administre o orçamento em euros nas ligas europeias ou em reais no Brasileirão. Compare rostos, posições, OVRs e valores de compra.</p>
       <p><strong>Mercado · Transferências · Finanças</strong></p>
     </td>
   </tr>
